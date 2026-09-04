@@ -1,0 +1,9 @@
+<h2 class="page-title">Panel de control</h2>
+<section class="page-card accesos" aria-label="Opciones del panel de control">
+  @for (acceso of accesos; track acceso.ruta) {
+    <a [routerLink]="acceso.ruta" class="acceso">
+      <img [src]="'assets/images/' + acceso.icono" alt="" width="80" height="80">
+      <span>{{ acceso.titulo }}</span>
+    </a>
+  }
+</section>

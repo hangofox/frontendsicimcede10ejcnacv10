@@ -1,0 +1,901 @@
+/* ==========================================================================
+   Recuperacion de contraseña — mismo lenguaje visual que el cuadro de ACCESO.
+   Lienzo base 896 x 420; toda medida en cqw (1cqw = 1% del ancho del cuadro),
+   de modo que la composicion escala sin deformarse.
+   ========================================================================== */
+
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100dvh;
+
+  --login-black: #020203;
+  --login-red-deep: #35080d;
+  --login-burgundy: #661019;
+  --login-red: #c8172b;
+  --login-neon: #ff1738;
+  --login-hot-pink: #ff4962;
+  --login-highlight: #ffd7dc;
+  --login-metal: #766569;
+  --login-muted: #9d777c;
+  --login-white: #f4eeee;
+
+  --fuente-tec: 'Bahnschrift', 'DIN Alternate', 'Segoe UI Variable Display', 'Segoe UI', Arial, sans-serif;
+  --fuente-ui: 'Segoe UI', 'Roboto', Arial, sans-serif;
+}
+
+.aplicacion-recuperacion {
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  background: var(--login-black);
+}
+
+main {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow: hidden;
+  background: #000 url('../../../assets/images/imagen_fondo_cuerpo_index_01.png') center / 100% 100% no-repeat;
+}
+
+.division-recuperacion,
+.division-pie-pagina {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  min-height: 100%;
+}
+
+/* alineada arriba, igual que .division-login en el cuadro de ACCESO */
+.division-recuperacion {
+  display: grid;
+  place-items: start center;
+  padding: clamp(6px, 1vw, 12px) clamp(6px, 1.2vw, 16px) clamp(10px, 2vw, 24px);
+}
+
+.division-pie-pagina {
+  display: flex;
+  align-items: flex-end;
+}
+
+.division-pie-pagina app-pie-pagina {
+  width: 100%;
+}
+
+/* ==========================================================================
+   Lienzo
+   ========================================================================== */
+
+.consola {
+  position: relative;
+  container-type: inline-size;
+  width: min(896px, 100%);
+  max-width: calc(100vw - 24px);
+  aspect-ratio: 896 / 420;
+  isolation: isolate;
+}
+
+/* ==========================================================================
+   Marco SVG
+   ========================================================================== */
+
+.marco {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  .riel,
+  .chispa path,
+  .chispa-interna path,
+  .circuito path,
+  .marca-esquina path,
+  .borde-panel,
+  .riel-volver,
+  .pulso-estela,
+  .pulso-recorrido {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .riel-1 {
+    stroke: url(#rec-grad-neon);
+    stroke-width: 1.6;
+    opacity: .85;
+  }
+
+  .riel-2 {
+    stroke: var(--login-burgundy);
+    stroke-width: 3.4;
+  }
+
+  .riel-3 {
+    stroke: url(#rec-grad-medio);
+    stroke-width: 2;
+    opacity: .9;
+  }
+
+  .riel-4 {
+    stroke: var(--login-neon);
+    stroke-width: 1.7;
+    filter: drop-shadow(0 0 2px rgb(255 23 56 / 65%));
+    animation: respiro-riel 6.5s ease-in-out infinite;
+  }
+
+  .chispa path {
+    stroke: var(--login-highlight);
+    stroke-width: 1.2;
+    opacity: .5;
+    filter: drop-shadow(0 0 2px rgb(255 73 98 / 70%));
+    animation: destello 4.8s ease-in-out infinite;
+
+    &:nth-child(1) { animation-delay: 0s; }
+    &:nth-child(2) { animation-delay: 1.6s; }
+    &:nth-child(3) { animation-delay: .8s; }
+    &:nth-child(4) { animation-delay: 2.7s; }
+    &:nth-child(5) { animation-delay: 3.4s; }
+    &:nth-child(6) { animation-delay: 2.1s; }
+    &:nth-child(7) { animation-delay: 4.1s; }
+    &:nth-child(8) { animation-delay: 1.2s; }
+    &:nth-child(9) { animation-delay: 2.9s; }
+    &:nth-child(10) { animation-delay: .4s; }
+    &:nth-child(11) { animation-delay: 3.8s; }
+    &:nth-child(12) { animation-delay: 1.9s; }
+  }
+
+  .chispa-interna path {
+    stroke: var(--login-highlight);
+    stroke-width: 1.7;
+    filter: drop-shadow(0 0 3px rgb(255 73 98 / 80%));
+    animation: destello 4.8s ease-in-out infinite;
+
+    &:nth-child(1) { animation-delay: 2.4s; }
+    &:nth-child(2) { animation-delay: .6s; }
+    &:nth-child(3) { animation-delay: 3.6s; }
+    &:nth-child(4) { animation-delay: 1.4s; }
+    &:nth-child(5) { animation-delay: 4.4s; }
+    &:nth-child(6) { animation-delay: 2s; }
+    &:nth-child(7) { animation-delay: 1s; }
+    &:nth-child(8) { animation-delay: 3.2s; }
+  }
+
+  .circuito path {
+    stroke: var(--login-red-deep);
+    stroke-width: 1.6;
+  }
+
+  .marca-esquina path {
+    stroke: var(--login-hot-pink);
+    stroke-width: 1.5;
+    opacity: .75;
+  }
+
+  /* contorno del panel: rectos a 1px y biseles compensados 1.41 para que su
+     peso aparente sea el mismo pese al antialiasing a 45 grados */
+  .borde-panel {
+    stroke: #c8172b;
+  }
+
+  .borde-panel.recto {
+    stroke-width: 1;
+  }
+
+  .borde-panel.diagonal {
+    stroke-width: 1.41;
+  }
+
+  .riel-volver {
+    stroke: var(--login-red);
+    stroke-width: 1.5;
+    opacity: .8;
+  }
+
+  /* pulso que recorre el riel: nucleo y estela, degradado hacia la cola */
+  .pulso-estela {
+    stroke: rgb(255 73 98 / 26%);
+    stroke-width: 3.4;
+    stroke-dasharray: 130 1870;
+    filter: blur(1.6px);
+    animation: rec-recorrido-estela 9s linear infinite;
+  }
+
+  .pulso-recorrido {
+    stroke: rgb(255 150 168 / 62%);
+    stroke-width: 2;
+    stroke-dasharray: 38 1962;
+    filter: blur(.7px) drop-shadow(0 0 4px rgb(255 73 98 / 55%));
+    animation: rec-recorrido 9s linear infinite;
+  }
+}
+
+/* ==========================================================================
+   Encabezado
+   ========================================================================== */
+
+.encabezado {
+  position: absolute;
+  z-index: 1;
+  top: 15%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 1.9cqw;
+  transform: translateX(-50%);
+}
+
+.triangulo {
+  position: absolute;
+  top: -3.6cqw;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-top: 1.1cqw solid var(--login-neon);
+  border-right: .78cqw solid transparent;
+  border-left: .78cqw solid transparent;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 0 .4cqw rgb(255 23 56 / 75%));
+  animation: respiro-riel 6.5s ease-in-out infinite;
+}
+
+.insignia {
+  width: 5.4cqw;
+  flex: 0 0 auto;
+  display: block;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .insignia-borde {
+    fill: #0a0406;
+    stroke: var(--login-neon);
+    stroke-width: 1.6;
+    vector-effect: non-scaling-stroke;
+    filter: drop-shadow(0 0 2px rgb(255 23 56 / 70%));
+  }
+
+  .insignia-interior {
+    fill: none;
+    stroke: var(--login-burgundy);
+    stroke-width: 1.2;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Seis luces equidistantes girando en sentido horario. Cada una lleva cinco
+     capas centradas en el mismo punto, con largo, ancho y desenfoque
+     crecientes, de modo que las dos puntas se degradan. */
+  .insignia-halo3,
+  .insignia-halo2,
+  .insignia-halo,
+  .insignia-estela,
+  .insignia-recorrido {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .insignia-halo3 {
+    stroke: rgb(255 73 98 / 6%);
+    stroke-width: 4.6;
+    stroke-dasharray: 19.4 .6;
+    filter: blur(2.8px);
+    animation: recorrido-hex-halo3 11s linear infinite;
+  }
+
+  .insignia-halo2 {
+    stroke: rgb(255 73 98 / 10%);
+    stroke-width: 4;
+    stroke-dasharray: 18.6 1.4;
+    filter: blur(1.9px);
+    animation: recorrido-hex-halo2 11s linear infinite;
+  }
+
+  .insignia-halo {
+    stroke: rgb(255 85 108 / 17%);
+    stroke-width: 3.4;
+    stroke-dasharray: 17.6 2.4;
+    filter: blur(1.2px);
+    animation: recorrido-hex-halo 11s linear infinite;
+  }
+
+  .insignia-estela {
+    stroke: rgb(255 118 140 / 32%);
+    stroke-width: 2.7;
+    stroke-dasharray: 16.5 3.5;
+    filter: blur(.7px);
+    animation: recorrido-hex-estela 11s linear infinite;
+  }
+
+  .insignia-recorrido {
+    stroke: rgb(255 152 170 / 62%);
+    stroke-width: 2.1;
+    stroke-dasharray: 15 5;
+    filter: blur(.3px) drop-shadow(0 0 2px rgb(255 23 56 / 50%));
+    animation: recorrido-hex 11s linear infinite;
+  }
+
+  .insignia-arco {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2.6;
+    stroke-linecap: butt;
+    stroke-linejoin: round;
+  }
+
+  .insignia-cuerpo {
+    fill: #fff;
+    stroke: none;
+  }
+}
+
+.titulos {
+  display: grid;
+  gap: 0;
+  justify-items: start;
+
+  strong {
+    font-family: var(--fuente-tec);
+    font-size: 2.6cqw;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--login-white);
+    text-shadow: 0 0 1cqw rgb(255 23 56 / 45%);
+  }
+
+  small {
+    font-size: 1.2cqw;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--login-muted);
+  }
+}
+
+/* ==========================================================================
+   Panel central
+   ========================================================================== */
+
+/* x 250..646, y 130..306 sobre el lienzo de 896 x 420 */
+.panel {
+  position: absolute;
+  z-index: 1;
+  top: 31%;
+  left: 27.9%;
+  width: 44.2%;
+  height: 42%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: .7cqw;
+  padding: 1.3cqw 2.4cqw;
+  clip-path: polygon(
+    1.7cqw 0,
+    calc(100% - 1.7cqw) 0,
+    100% 1.7cqw,
+    100% calc(100% - 1.7cqw),
+    calc(100% - 1.7cqw) 100%,
+    1.7cqw 100%,
+    0 calc(100% - 1.7cqw),
+    0 1.7cqw
+  );
+  background: linear-gradient(158deg, rgb(12 7 9 / 46%), rgb(3 2 4 / 52%) 60%);
+  box-shadow: inset 0 0 2.4cqw rgb(102 16 25 / 22%);
+}
+
+.indicacion {
+  margin: 0 0 .4cqw;
+  font-family: var(--fuente-ui);
+  font-size: 1.4cqw;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--login-muted);
+}
+
+label {
+  display: flex;
+  align-items: center;
+  gap: .85cqw;
+  font-family: var(--fuente-ui);
+  font-size: 1.72cqw;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--login-white);
+}
+
+.ico {
+  width: 2.55cqw;
+  height: 2.55cqw;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: var(--login-white);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+input {
+  width: 100%;
+  /* misma altura que Usuario y Contraseña en el cuadro de ACCESO.
+     flex: 0 0 auto evita que el panel lo comprima: sin eso, al ser un item
+     flex de altura fija, flex-shrink lo reducia hasta 20px. */
+  flex: 0 0 auto;
+  height: 3.85cqw;
+  padding: 0 .95cqw;
+  border: 1px solid rgb(118 101 105 / 45%);
+  border-radius: .4cqw;
+  background: #e9e7e7;
+  color: #171314;
+  font-family: var(--fuente-ui);
+  font-size: 1.54cqw;
+  line-height: 1;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+
+input::placeholder {
+  color: #6f696b;
+  opacity: 1;
+}
+
+input:hover {
+  border-color: rgb(200 23 43 / 55%);
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--login-neon);
+  box-shadow: 0 0 0 1px var(--login-neon), 0 0 1.4cqw rgb(255 23 56 / 40%);
+}
+
+input.ng-touched.ng-invalid {
+  border-color: var(--login-red);
+  box-shadow: 0 0 0 1px rgb(200 23 43 / 65%);
+}
+
+/* ==========================================================================
+   Boton Continuar — mismo tratamiento que el LOGIN
+   ========================================================================== */
+
+button {
+  position: relative;
+  align-self: center;
+  width: 58%;
+  min-height: 4.4cqw;
+  margin-top: .5cqw;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  clip-path: polygon(
+    1.5cqw 0,
+    calc(100% - 1.5cqw) 0,
+    100% 1.5cqw,
+    100% calc(100% - 1.5cqw),
+    calc(100% - 1.5cqw) 100%,
+    1.5cqw 100%,
+    0 calc(100% - 1.5cqw),
+    0 1.5cqw
+  );
+  /* degradado horizontal: mas claro en el centro, apagado hacia los bordes */
+  background: linear-gradient(
+    90deg,
+    #380509 0%,
+    #5c0c15 12%,
+    #8d1526 28%,
+    #bc1e37 42%,
+    #dc2645 50%,
+    #bc1e37 58%,
+    #8d1526 72%,
+    #5c0c15 88%,
+    #380509 100%
+  );
+  box-shadow:
+    inset 0 .25cqw .8cqw rgb(0 0 0 / 40%),
+    0 0 1.6cqw rgb(255 23 56 / 45%);
+  cursor: pointer;
+  transition: transform .12s ease, filter .2s ease;
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    content: '';
+    clip-path: inherit;
+    background: linear-gradient(180deg, rgb(255 215 220 / 12%) 0%, transparent 42%);
+    pointer-events: none;
+  }
+}
+
+.continuar-texto {
+  position: relative;
+  z-index: 1;
+  font-family: var(--fuente-tec);
+  font-size: 2.1cqw;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: .16em;
+  text-indent: .16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff;
+  text-shadow: 0 .2cqw .4cqw rgb(0 0 0 / 85%), 0 0 1.4cqw rgb(255 23 56 / 60%);
+}
+
+button:hover:not(:disabled) {
+  filter: brightness(1.16);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(.18cqw) scale(.988);
+}
+
+/* Deshabilitado: es el estado inicial (formulario vacio); mismo degradado
+   horizontal pero apagado, sin glow, y con el texto atenuado. */
+button:disabled {
+  cursor: not-allowed;
+  background: linear-gradient(
+    90deg,
+    #33080e 0%,
+    #4c0c15 14%,
+    #6b1220 32%,
+    #8d1829 50%,
+    #6b1220 68%,
+    #4c0c15 86%,
+    #33080e 100%
+  );
+  box-shadow:
+    inset 0 0 0 1px rgb(200 100 115 / 48%),
+    inset 0 .3cqw 1cqw rgb(0 0 0 / 45%);
+
+  .continuar-texto {
+    color: #b09a9e;
+    text-shadow: 0 .15cqw .3cqw rgb(0 0 0 / 70%);
+  }
+
+  &::before {
+    opacity: .5;
+  }
+}
+
+/* ==========================================================================
+   Confirmacion y barra inferior
+   ========================================================================== */
+
+.mensaje-error {
+  position: absolute;
+  z-index: 1;
+  top: 70.5%;
+  left: 50%;
+  width: 60%;
+  margin: 0;
+  transform: translateX(-50%);
+  font-family: var(--fuente-ui);
+  font-size: 1.3cqw;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  color: #ff8296;
+  text-shadow: 0 0 .6cqw rgb(255 23 56 / 45%);
+}
+
+.confirmacion {
+  position: absolute;
+  z-index: 1;
+  top: 70.5%;
+  left: 50%;
+  width: 60%;
+  margin: 0;
+  transform: translateX(-50%);
+  font-family: var(--fuente-ui);
+  font-size: 1.3cqw;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  color: #9ee89a;
+  text-shadow: 0 0 .6cqw rgb(120 220 120 / 35%);
+}
+
+/* x 330..566, y 318..350 */
+.volver {
+  position: absolute;
+  z-index: 1;
+  top: 75.7%;
+  left: 36.8%;
+  width: 26.3%;
+  height: 7.6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.6cqw;
+  background: linear-gradient(90deg, rgb(53 8 13 / 55%), rgb(2 2 3 / 30%) 50%, rgb(53 8 13 / 55%));
+  clip-path: polygon(
+    1.8cqw 0,
+    calc(100% - 1.8cqw) 0,
+    100% 50%,
+    calc(100% - 1.8cqw) 100%,
+    1.8cqw 100%,
+    0 50%
+  );
+}
+
+.chevron {
+  width: 2.2cqw;
+  height: 1.9cqw;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  filter:
+    drop-shadow(0 0 .18cqw rgb(255 255 255 / 70%))
+    drop-shadow(0 0 .4cqw rgb(255 23 56 / 60%));
+  animation: destello-suave 4.8s ease-in-out infinite;
+}
+
+.volver a {
+  font-family: var(--fuente-ui);
+  font-size: 1.38cqw;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--login-muted);
+  transition: color .18s ease, text-shadow .18s ease;
+
+  &:hover {
+    color: var(--login-white);
+    text-shadow: 0 0 1cqw rgb(255 23 56 / 45%);
+  }
+}
+
+/* ==========================================================================
+   Foco visible
+   ========================================================================== */
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--login-hot-pink);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Animaciones
+   ========================================================================== */
+
+@keyframes respiro-riel {
+  0%, 100% { opacity: .82; }
+  50% { opacity: 1; }
+}
+
+@keyframes destello {
+  0%, 72%, 100% { opacity: .38; }
+  84% { opacity: .95; }
+}
+
+@keyframes destello-suave {
+  0%, 70%, 100% { opacity: .82; }
+  85% { opacity: 1; }
+}
+
+@keyframes rec-recorrido {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -2000; }
+}
+
+@keyframes rec-recorrido-estela {
+  from { stroke-dashoffset: 92; }
+  to { stroke-dashoffset: -1908; }
+}
+
+/* Recorrido horario del hexagono: las cinco capas se desplazan la mitad de lo
+   que exceden al nucleo ((largo-15)/2), asi quedan centradas y ambas puntas
+   se degradan. */
+@keyframes recorrido-hex {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -120; }
+}
+
+@keyframes recorrido-hex-estela {
+  from { stroke-dashoffset: .75; }
+  to { stroke-dashoffset: -119.25; }
+}
+
+@keyframes recorrido-hex-halo {
+  from { stroke-dashoffset: 1.3; }
+  to { stroke-dashoffset: -118.7; }
+}
+
+@keyframes recorrido-hex-halo2 {
+  from { stroke-dashoffset: 1.8; }
+  to { stroke-dashoffset: -118.2; }
+}
+
+@keyframes recorrido-hex-halo3 {
+  from { stroke-dashoffset: 2.2; }
+  to { stroke-dashoffset: -117.8; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marco .riel-4,
+  .marco .chispa path,
+  .marco .chispa-interna path,
+  .marco .pulso-estela,
+  .marco .pulso-recorrido,
+  .triangulo,
+  .chevron,
+  .insignia-halo3,
+  .insignia-halo2,
+  .insignia-halo,
+  .insignia-estela,
+  .insignia-recorrido {
+    animation: none;
+  }
+
+  input,
+  button,
+  .volver a {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  .division-recuperacion,
+  .division-pie-pagina {
+    min-height: auto;
+  }
+
+  .division-recuperacion {
+    padding: 16px 12px;
+  }
+}
+
+@media (max-width: 720px) {
+  .consola {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: auto;
+    display: grid;
+    gap: 16px;
+    padding: 22px 16px 18px;
+    background: linear-gradient(158deg, rgb(12 6 8 / 96%), rgb(2 2 3 / 98%));
+    clip-path: polygon(
+      18px 0, calc(100% - 18px) 0, 100% 18px, 100% calc(100% - 18px),
+      calc(100% - 18px) 100%, 18px 100%, 0 calc(100% - 18px), 0 18px
+    );
+    box-shadow: inset 0 0 0 1px rgb(255 23 56 / 45%), inset 0 0 30px rgb(102 16 25 / 22%);
+  }
+
+  /* el marco decorativo no encaja en vertical */
+  .marco {
+    display: none;
+  }
+
+  .encabezado,
+  .panel,
+  .confirmacion,
+  .volver {
+    position: static;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: auto;
+    transform: none;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .encabezado {
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .triangulo {
+    display: none;
+  }
+
+  .insignia {
+    width: 48px;
+  }
+
+  .titulos strong {
+    font-size: 22px;
+    letter-spacing: .22em;
+  }
+
+  .titulos small {
+    font-size: 10px;
+  }
+
+  .panel {
+    gap: 10px;
+    padding: 16px 14px;
+    clip-path: polygon(
+      14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px),
+      calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px
+    );
+    box-shadow:
+      inset 0 0 0 1px rgb(115 13 25),
+      inset 0 0 24px rgb(102 16 25 / 22%);
+  }
+
+  .indicacion {
+    font-size: 13px;
+  }
+
+  label {
+    gap: 8px;
+    font-size: 15px;
+  }
+
+  .ico {
+    width: 19px;
+    height: 19px;
+  }
+
+  input {
+    height: 48px;
+    padding: 0 13px;
+    border-radius: 5px;
+    font-size: 17px;
+  }
+
+  button {
+    width: 100%;
+    min-height: 56px;
+    clip-path: polygon(
+      12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px),
+      calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px
+    );
+  }
+
+  .continuar-texto {
+    font-size: 20px;
+  }
+
+  .confirmacion,
+  .mensaje-error {
+    font-size: 13px;
+  }
+
+  .volver {
+    gap: 12px;
+    padding: 12px 16px;
+    clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 16px 100%, 0 50%);
+  }
+
+  .chevron {
+    width: 22px;
+    height: 20px;
+  }
+
+  .volver a {
+    font-size: 13px;
+  }
+}

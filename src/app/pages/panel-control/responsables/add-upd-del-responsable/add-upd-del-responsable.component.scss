@@ -1,0 +1,316 @@
+.alerta-eliminar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  background: #fef2f2;
+  border: 1px solid rgba(220, 38, 38, .4);
+  color: #b91c1c;
+  font-size: 13px;
+}
+
+.form-seccion {
+  margin-bottom: 18px;
+
+  &:last-of-type { margin-bottom: 0; }
+}
+
+.seccion-titulo {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  color: var(--sicim-gray);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--sicim-soft);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--sicim-black);
+  }
+
+  input,
+  select {
+    padding: 8px 10px;
+    border: 1px solid var(--sicim-border);
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--sicim-black);
+    background: var(--sicim-white);
+
+    &:focus {
+      outline: none;
+      border-color: var(--sicim-focus);
+    }
+
+    &:disabled { background: var(--sicim-soft); color: var(--sicim-gray); }
+  }
+}
+
+.ayuda-texto {
+  font-size: 11px;
+  color: var(--sicim-gray);
+}
+
+.form-fila-busqueda {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  .form-group { flex: 1; min-width: 220px; }
+
+  .btn-sicim { white-space: nowrap; }
+}
+
+.form-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--sicim-soft);
+}
+
+.btn-sicim {
+  padding: 9px 18px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+
+  &.btn-secundario {
+    background: var(--sicim-soft);
+    color: var(--sicim-black);
+    border-color: var(--sicim-border);
+    &:hover { border-color: var(--sicim-focus); }
+  }
+  &.btn-primario {
+    background: var(--sicim-black);
+    color: var(--sicim-white);
+    &:hover:not(:disabled) { background: var(--sicim-dark); }
+    &:disabled { opacity: .5; cursor: not-allowed; }
+  }
+  &.btn-peligro {
+    background: #b3261e;
+    color: var(--sicim-white);
+    &:hover { background: #8c1d17; }
+  }
+}
+
+/* Foto */
+.alerta-error-foto {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: #fef2f2;
+  border: 1px solid rgba(220, 38, 38, .3);
+  color: #b91c1c;
+  font-size: 12px;
+}
+.foto-upload-area {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.avatar-grande {
+  width: 68px;
+  height: 68px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--sicim-soft);
+  border: 2px dashed var(--sicim-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sicim-gray);
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+}
+.foto-upload-controles {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.btn-archivo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--sicim-soft);
+  border: 1px solid var(--sicim-border);
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--sicim-black);
+  cursor: pointer;
+
+  &:hover { border-color: var(--sicim-focus); }
+}
+.btn-quitar {
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid var(--sicim-border);
+  border-radius: 4px;
+  font-size: 13px;
+  color: #b3261e;
+  cursor: pointer;
+
+  &:hover { border-color: #b3261e; }
+}
+.foto-nombre {
+  font-size: 12px;
+  color: var(--sicim-gray);
+}
+
+/* Confirmación */
+.confirmacion-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 22, 22, .55);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.confirmacion-caja {
+  background: var(--sicim-white);
+  border-radius: 4px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
+  padding: 32px 28px 24px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.confirmacion-icono { color: #f59e0b; }
+.confirmacion-titulo {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--sicim-black);
+}
+.confirmacion-mensaje {
+  margin: 0;
+  font-size: 13px;
+  color: var(--sicim-gray);
+  line-height: 1.5;
+}
+.confirmacion-botones {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+.btn-confirmacion {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+
+  &.btn-si {
+    background: #b3261e;
+    color: #fff;
+    &:hover { background: #8c1d17; }
+  }
+  &.btn-no {
+    background: transparent;
+    color: var(--sicim-black);
+    border: 1px solid var(--sicim-border);
+    &:hover { border-color: var(--sicim-focus); }
+  }
+}
+
+/* Autocompletar (país / departamento o estado de origen) */
+.campo-autocompletar {
+  position: relative;
+}
+
+.autocompletar-caja {
+  position: relative;
+
+  input {
+    width: 100%;
+    padding-right: 28px;
+    box-sizing: border-box;
+  }
+}
+
+.btn-limpiar-autocompletar {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  color: var(--sicim-gray);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover { color: #b3261e; }
+}
+
+.autocompletar-sugerencias {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  max-height: 220px;
+  overflow-y: auto;
+  background: var(--sicim-white);
+  border: 1px solid var(--sicim-border);
+  border-radius: 4px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+
+  li {
+    padding: 8px 12px;
+    font-size: 13px;
+    color: var(--sicim-black);
+    cursor: pointer;
+
+    &:hover { background: var(--sicim-soft); }
+  }
+
+  .autocompletar-sin-resultados {
+    color: var(--sicim-gray);
+    cursor: default;
+    &:hover { background: transparent; }
+  }
+}

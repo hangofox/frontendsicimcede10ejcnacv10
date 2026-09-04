@@ -1,0 +1,13 @@
+@if (usuario$ | async; as usuario) {
+  <section class="usuario" aria-label="Datos del usuario conectado">
+    <div class="avatar" aria-label="Foto del usuario conectado">
+      <img *ngIf="previewUrlFotoUsuario" [src]="previewUrlFotoUsuario" (error)="onErrorFotoUsuario()" alt="Foto de usuario">
+      <img *ngIf="!previewUrlFotoUsuario" src="assets/images/imagen_usuario_incognito_01.png" alt="Avatar sin foto">
+    </div>
+    <div>
+      <div>{{ usuario.grado }} {{ usuario.nombreCompleto }}</div>
+      <div>{{ usuario.rol }}</div>
+      <button type="button" (click)="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </section>
+}

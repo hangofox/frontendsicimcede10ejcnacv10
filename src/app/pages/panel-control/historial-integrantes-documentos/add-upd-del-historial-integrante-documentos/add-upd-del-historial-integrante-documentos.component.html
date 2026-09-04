@@ -1,0 +1,228 @@
+<div class="modal-formulario" *ngIf="historialesIntegrantesDocumentosForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará el registro del historial de integrante de documentos de la lista. ¿Desea continuar?
+  </div>
+
+  <!-- BÚSQUEDA DE RESPONSABLE POR UNIDAD MILITAR Y NÚMERO DE DOCUMENTO DE IDENTIFICACIÓN, PARA CARGAR SUS DATOS EN EL FORMULARIO AL CREAR UN REGISTRO NUEVO -->
+  <div class="form-seccion form-seccion-busqueda" *ngIf="banderaCrudGuardar" [formGroup]="busquedaResponsableForm">
+    <div class="seccion-titulo">Cargar datos desde un responsable</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Unidad militar</label>
+        <select formControlName="unidadMilitarBusquedaSeleccionada" (change)="cargarResponsablesporUnidadMilitarBusqueda()">
+          <option value="">-- Seleccione --</option>
+          <option *ngFor="let unidadMilitar of unidadesMilitares" [value]="unidadMilitar.idUnidadMilitar">
+            {{ unidadMilitar.nombreUnidadMilitar }} ({{ unidadMilitar.siglaoAcronimoUnidadMilitar }})
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>N.° de documento de identificación (responsable)</label>
+        <select formControlName="numeroDocumentoResponsableBusquedaSeleccionado" (change)="cargarDatosDesdeResponsableSeleccionado()">
+          <option value="">-- Seleccione --</option>
+          <option *ngFor="let responsable of responsablesUnidadMilitarBusqueda" [value]="responsable.numeroDocumentoIdentificacionResponsable">
+            {{ responsable.numeroDocumentoIdentificacionResponsable }} — {{ responsable.nombresResponsable }} {{ responsable.primerApellidoResponsable }} {{ responsable.segundoApellidoResponsable }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="historialesIntegrantesDocumentosForm" (ngSubmit)="guardarModificar()">
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Identificación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>N.° de registro (*)</label>
+          <input type="text" formControlName="numRegHistorialIntegranteDocumentos" placeholder="Ej. REG-2026-0001">
+        </div>
+        <div class="form-group">
+          <label>Unidad militar (*)</label>
+          <select formControlName="unidadMilitarSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let unidadMilitar of unidadesMilitares" [value]="unidadMilitar.idUnidadMilitar">
+              {{ unidadMilitar.nombreUnidadMilitar }} ({{ unidadMilitar.siglaoAcronimoUnidadMilitar }})
+            </option>
+          </select>
+        </div>
+        <div class="form-group campo-autocompletar">
+          <label>Grado (*)</label>
+          <input type="hidden" formControlName="gradoIntegranteDocumentos">
+          <div class="autocompletar-caja">
+            <input
+              type="text"
+              [(ngModel)]="terminoBusquedaGrado"
+              [ngModelOptions]="{standalone: true}"
+              [readOnly]="banderaGradoSeleccionado"
+              placeholder="Escriba para buscar el grado..."
+              (input)="onEscribirBusquedaGrado()"
+              (focus)="mostrarSugerenciasGrado = true"
+              (blur)="ocultarSugerenciasGradoConRetraso()">
+            <button
+              type="button"
+              class="btn-limpiar-autocompletar"
+              *ngIf="terminoBusquedaGrado"
+              (mousedown)="limpiarBusquedaGrado()"
+              title="Limpiar">×</button>
+
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasGrado && !banderaGradoSeleccionado && gradosSiathFiltrados.length > 0">
+              <li *ngFor="let grado of gradosSiathFiltrados" (mousedown)="seleccionarGrado(grado)">
+                {{ grado.descripcionGradoSiath }} <span class="autocompletar-sigla">({{ grado.nombreGradoSiath }})</span>
+              </li>
+            </ul>
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasGrado && !banderaGradoSeleccionado && gradosSiathFiltrados.length === 0">
+              <li class="autocompletar-sin-resultados">Sin coincidencias.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Nombres y apellidos (*)</label>
+          <input type="text" formControlName="nombresYApellidosIntegranteDocumentos" placeholder="Ej. JUAN CARLOS PEREZ GOMEZ">
+        </div>
+        <div class="form-group">
+          <label>Tipo de documento (*)</label>
+          <select formControlName="tipoDocumentoIdentificacionSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let tipoDocumentoIdentificacion of tiposDocumentosIdentificacion" [value]="tipoDocumentoIdentificacion.idTipoDocumentoIdentificacion">
+              {{ tipoDocumentoIdentificacion.nombreTipoDocumentoIdentificacion }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>N.° de documento (*)</label>
+          <input type="text" formControlName="numeroDocumentoIdentificacionIntegranteDocumentos" placeholder="Ej. 1000123456">
+        </div>
+        <div class="form-group">
+          <label>SI o NO (*)</label>
+          <select formControlName="siONoIntegranteDocumentos">
+            <option value="">-- Seleccione --</option>
+            <option value="SI">SI</option>
+            <option value="NO">NO</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>SI o NO actual predeterminado (*)</label>
+          <select formControlName="siONoActualIntegranteDocumentosPredeterminado">
+            <option value="">-- Seleccione --</option>
+            <option value="SI">SI</option>
+            <option value="NO">NO</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Cargo</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Cargo (catálogo) (*)</label>
+          <select formControlName="cargoIntegranteDocumentosSeleccionado">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let cargoIntegranteDocumentos of cargosIntegrantesDocumentos" [value]="cargoIntegranteDocumentos.idCargoIntegranteDocumentos">
+              {{ cargoIntegranteDocumentos.nombreCargoIntegranteDocumentos }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Cargo (*)</label>
+          <input type="text" formControlName="cargoIntegranteDocumentos" placeholder="Ej. JEFE DE SECCIÓN">
+        </div>
+      </div>
+    </div>
+
+    <!-- ARCHIVO DE FOTO/FIRMA -->
+    <div class="form-seccion">
+      <div class="seccion-titulo">Archivo de foto/firma (*.jpg, *.gif, *.png, *.bmp — máximo 2 MB)</div>
+      <div class="alerta-error-foto" *ngIf="mensajeErrorFotoFirma">{{ mensajeErrorFotoFirma }}</div>
+      <div class="foto-upload-area">
+        <div class="avatar-grande">
+          <img *ngIf="previewUrlFotoFirmaIntegranteDocumentos" [src]="previewUrlFotoFirmaIntegranteDocumentos" (error)="onErrorPreviewFirma()" alt="Foto/firma del integrante">
+          <svg *ngIf="!previewUrlFotoFirmaIntegranteDocumentos" xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13.5 3H6a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h7"/>
+            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+            <path d="M9 8h1"/>
+            <path d="M9 12h1"/>
+            <path d="M9 16h1"/>
+            <path d="M20.3 18.4c.4-.4.7-1 .7-1.6a2.1 2.1 0 0 0-2.1-2.1c-.6 0-1.2.3-1.6.7L13 20v3h3Z"/>
+          </svg>
+        </div>
+        <div class="foto-upload-controles" *ngIf="!banderaCrudEliminar">
+          <label class="btn-archivo" *ngIf="!isSelectedFileFotoFirmaIntegranteDocumentos">
+            <input type="file" accept="image/*" (change)="onSelectFileFotoFirmaIntegranteDocumentos($event)" style="display:none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            {{ previewUrlFotoFirmaIntegranteDocumentos ? 'Cambiar archivo' : 'Seleccionar archivo' }}
+          </label>
+          <button type="button" class="btn-quitar" *ngIf="isSelectedFileFotoFirmaIntegranteDocumentos" (click)="onRemoveFileFotoFirmaIntegranteDocumentos()">Quitar</button>
+          <button type="button" class="btn-quitar" *ngIf="!isSelectedFileFotoFirmaIntegranteDocumentos && previewUrlFotoFirmaIntegranteDocumentos" (click)="confirmarEliminarFotoFirmaIntegranteDocumentos()">Quitar archivo</button>
+          <span class="foto-nombre" *ngIf="selectedFileFotoFirmaIntegranteDocumentos">{{ selectedFileFotoFirmaIntegranteDocumentos.name }}</span>
+          <span class="foto-nombre" *ngIf="!selectedFileFotoFirmaIntegranteDocumentos && nombreArchivoFotoFirma && !fotoFirmaExistenteEliminada">{{ nombreArchivoFotoFirma }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Curso y escalafón</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>N.° de curso (*)</label>
+          <input type="text" formControlName="numeroCursoIntegranteDocumentos" placeholder="Ej. 001">
+        </div>
+        <div class="form-group">
+          <label>Puesto en el curso (*)</label>
+          <input type="text" formControlName="puestoCursoIntegranteDocumentos" placeholder="Ej. 1">
+        </div>
+        <div class="form-group">
+          <label>Escalafón de antigüedad (*)</label>
+          <input type="text" formControlName="escalafonAntiguedadIntegranteDocumentos" placeholder="Ej. 5">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos de registro</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Fecha de ingreso</label>
+          <input type="datetime-local" formControlName="fechaHMSIngresoIntegranteDocumentos">
+        </div>
+        <div class="form-group">
+          <label>Fecha de modificación</label>
+          <input type="datetime-local" formControlName="fechaHMSModificacionIntegranteDocumentos">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-sicim btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="historialesIntegrantesDocumentosForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-sicim btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>
+
+<!-- CONFIRMACIÓN DE ELIMINACIÓN DE ARCHIVO DE FOTO/FIRMA -->
+<div class="confirmacion-overlay" *ngIf="banderaConfirmacionEliminacionFotoFirma">
+  <div class="confirmacion-caja">
+    <div class="confirmacion-icono">
+      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <h4 class="confirmacion-titulo">Confirmación de eliminación</h4>
+    <p class="confirmacion-mensaje">¿Está seguro de que desea eliminar el archivo de foto/firma de este registro?</p>
+    <div class="confirmacion-botones">
+      <button type="button" class="btn-confirmacion btn-si" (click)="siEliminarFotoFirmaIntegranteDocumentos()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Sí, eliminar
+      </button>
+      <button type="button" class="btn-confirmacion btn-no" (click)="noEliminarFotoFirmaIntegranteDocumentos()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        No, cancelar
+      </button>
+    </div>
+  </div>
+</div>

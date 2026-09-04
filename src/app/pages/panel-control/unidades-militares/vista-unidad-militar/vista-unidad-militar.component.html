@@ -1,0 +1,37 @@
+<div class="vista-unidad-militar" *ngIf="unidadMilitarData as unidadMilitar">
+
+  <div class="perfil-cabecera">
+    <div class="avatar">
+      <img *ngIf="previewUrlFotoUnidadMilitar" [src]="previewUrlFotoUnidadMilitar" (error)="onErrorFotoUnidadMilitar()" alt="Logotipo de la unidad militar">
+      <svg *ngIf="!previewUrlFotoUnidadMilitar" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <div>
+      <h3 class="perfil-nombre">{{ unidadMilitar.nombreUnidadMilitar }}</h3>
+      <p class="perfil-tipo">{{ unidadMilitar.siglaoAcronimoUnidadMilitar }} — {{ unidadMilitar.nivelUnidadMilitar }}</p>
+    </div>
+  </div>
+
+  <div class="datos-grid">
+    <div class="dato-grupo">
+      <span class="dato-label">Código</span>
+      <span class="dato-valor">{{ unidadMilitar.codigoUnidadMilitar }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Sigla o acrónimo</span>
+      <span class="dato-valor">{{ unidadMilitar.siglaoAcronimoUnidadMilitar }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Nivel</span>
+      <span class="dato-valor">{{ unidadMilitar.nivelUnidadMilitar }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Carpeta de almacenamiento</span>
+      <span class="dato-valor">{{ unidadMilitar.nombreCarpetaAlmacenamientoUnidadMilitar || 'No registrada' }}</span>
+    </div>
+  </div>
+
+  <div class="vista-acciones">
+    <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cerrar</button>
+  </div>
+
+</div>

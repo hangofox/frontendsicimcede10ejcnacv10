@@ -1,0 +1,159 @@
+<div class="panel-integrantes-solic-infraest">
+
+  <div class="solicitud-info" *ngIf="solicitudInfraestructura">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+    <span><strong>{{ solicitudInfraestructura.codigoRadicadoSolicitudInfraestructura }}</strong> — {{ solicitudInfraestructura.nombreSolicitudInfraestructura }} ({{ solicitudInfraestructura.unidadMilitarDTO.nivelUnidadMilitar }})</span>
+  </div>
+
+  <div class="nota-info">
+    Adjunte los integrantes uno por uno seleccionando su cargo. Solo aparecen los integrantes del historial marcados como predeterminados (SI). Al adjuntar un integrante su fila queda bloqueada y se habilita la siguiente. Los niveles inferiores al de la unidad militar de la solicitud no aplican.
+  </div>
+
+  <div class="asistente-progreso" *ngIf="algunNivelAplica">
+    {{ totalAdjuntados }} / {{ totalAplicables }} integrantes adjuntados
+  </div>
+
+  <div class="sin-niveles" *ngIf="!algunNivelAplica && !cargando">
+    Ningún nivel aplica para el nivel de la unidad militar de esta solicitud.
+  </div>
+
+  <div class="asistente-grupos">
+    <div class="grupo-nivel" *ngFor="let grupo of grupos" [class.grupo-no-aplica]="!grupo.aplica">
+
+      <div class="grupo-titulo-contenedor">
+        <div class="grupo-titulo">{{ grupo.etiqueta }}</div>
+        <span class="grupo-badge-no-aplica" *ngIf="!grupo.aplica">No aplica</span>
+      </div>
+
+      <div class="asistente-filas" *ngIf="grupo.aplica">
+        <div class="fila-asistente"
+             *ngFor="let fila of grupo.filas"
+             [class.fila-activa]="fila.estado === 'activa'"
+             [class.fila-adjuntada]="fila.estado === 'adjuntada'"
+             [class.fila-pendiente]="fila.estado === 'pendiente'">
+
+          <div class="fila-rol">
+            <span class="fila-rol-etiqueta">{{ fila.rol.etiqueta }}</span>
+            <span class="fila-estado-badge" [ngSwitch]="fila.estado">
+              <ng-container *ngSwitchCase="'adjuntada'">Adjuntado</ng-container>
+              <ng-container *ngSwitchCase="'activa'">Por adjuntar</ng-container>
+              <ng-container *ngSwitchCase="'pendiente'">Bloqueado</ng-container>
+            </span>
+          </div>
+
+          <!-- FILA BLOQUEADA (AÚN NO ES SU TURNO) -->
+          <div class="fila-cuerpo fila-bloqueada" *ngIf="fila.estado === 'pendiente'">
+            Debe adjuntar primero los integrantes anteriores.
+          </div>
+
+          <!-- FILA ACTIVA: SELECCIÓN DE CARGO Y DEL INTEGRANTE DEL HISTORIAL -->
+          <div class="fila-cuerpo" *ngIf="fila.estado === 'activa'">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Cargo</label>
+                <select [(ngModel)]="fila.cargoSeleccionadoId" (ngModelChange)="onCambioCargoFila(fila)">
+                  <option [ngValue]="null">-- Seleccione --</option>
+                  <option *ngFor="let cargo of cargosIntegrantesDocumentos" [ngValue]="cargo.idCargoIntegranteDocumentos">{{ cargo.nombreCargoIntegranteDocumentos }}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Integrante (historial predeterminado)</label>
+                <select [(ngModel)]="fila.idHistorialSeleccionado" [disabled]="!fila.cargoSeleccionadoId">
+                  <option [ngValue]="null">-- Seleccione --</option>
+                  <option *ngFor="let historial of fila.historialesDelCargo" [ngValue]="historial.idHistorialIntegranteDocumentos">
+                    {{ historial.nombresYApellidosIntegranteDocumentos }} ({{ historial.gradoIntegranteDocumentos }})
+                  </option>
+                </select>
+                <span class="fila-sin-resultados" *ngIf="fila.cargoSeleccionadoId && fila.historialesDelCargo.length === 0">
+                  No hay integrantes predeterminados en el historial con ese cargo para la unidad militar de esta solicitud.
+                </span>
+              </div>
+            </div>
+            <div class="fila-acciones">
+              <button type="button" class="btn-sicim btn-primario" [disabled]="!fila.idHistorialSeleccionado" (click)="adjuntarIntegrante(fila)">
+                Adjuntar integrante
+              </button>
+            </div>
+          </div>
+
+          <!-- FILA ADJUNTADA (BLOQUEADA, CON LOS DATOS YA CARGADOS DESDE EL HISTORIAL) -->
+          <div class="fila-cuerpo fila-datos" *ngIf="fila.estado === 'adjuntada'">
+            <div class="datos-grid">
+              <div class="dato-grupo">
+                <span class="dato-label">Grado</span>
+                <span class="dato-valor">{{ fila.grado || '-' }}</span>
+              </div>
+              <div class="dato-grupo">
+                <span class="dato-label">Nombres y apellidos</span>
+                <span class="dato-valor">{{ (fila.nombres + ' ' + fila.primerApellido + ' ' + fila.segundoApellido).trim() || '-' }}</span>
+              </div>
+              <div class="dato-grupo">
+                <span class="dato-label">Cargo</span>
+                <span class="dato-valor">{{ fila.cargo || '-' }}</span>
+              </div>
+            </div>
+            <button type="button" class="btn-quitar" (click)="quitarIntegrante(fila)">Quitar y volver a adjuntar</button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="asistente-acciones">
+    <button type="button" class="btn-sicim btn-buscar" *ngIf="integranteDocumentosSolicInfraest" (click)="abrirModalVista()">Ver detalle guardado</button>
+    <button type="button" class="btn-sicim btn-peligro" *ngIf="integranteDocumentosSolicInfraest" (click)="abrirModalEliminar()">Eliminar integrantes</button>
+    <button type="button" class="btn-sicim btn-primario" [disabled]="guardando || totalAdjuntados === 0" (click)="guardarIntegrantesRegistrados()">
+      {{ guardando ? 'Guardando...' : 'Guardar integrantes' }}
+    </button>
+  </div>
+
+</div>
+
+<!-- MODAL: VISTA DEL REGISTRO GUARDADO -->
+@if (modalVistaVisible) {
+  <div class="modal-overlay" (click)="cerrarModalVista()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Detalle de los integrantes de la solicitud</h3>
+        <button type="button" class="modal-cerrar" (click)="cerrarModalVista()" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-cuerpo">
+        <app-vista-integrante-documentos-solic-infraest [integranteDocumentosSolicInfraestData]="integranteDocumentosSolicInfraest" (cerrarModal)="cerrarModalVista()"></app-vista-integrante-documentos-solic-infraest>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL: CONFIRMAR ELIMINACIÓN DEL REGISTRO COMPLETO -->
+@if (modalEliminarVisible) {
+  <div class="modal-overlay" (click)="cerrarModalEliminar()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Eliminar integrantes de la solicitud</h3>
+        <button type="button" class="modal-cerrar" (click)="cerrarModalEliminar()" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-cuerpo">
+        <app-add-upd-del-integrante-documentos-solic-infraest
+          [modo]="'eliminar'"
+          [integranteDocumentosSolicInfraestData]="integranteDocumentosSolicInfraest"
+          [solicitudInfraestructura]="solicitudInfraestructura"
+          (cerrarModal)="cerrarModalEliminar()"
+          (eliminar)="eliminarIntegrantes($event)">
+        </app-add-upd-del-integrante-documentos-solic-infraest>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- TOAST -->
+@if (toastMensaje) {
+  <div class="toast-global" [class.toast-exito]="toastTipo === 'exito'" [class.toast-error]="toastTipo === 'error'">
+    <span>{{ toastMensaje }}</span>
+  </div>
+}

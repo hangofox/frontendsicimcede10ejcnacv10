@@ -1,0 +1,279 @@
+/* Chaflan del cuadro de bienvenida, en las dos esquinas opuestas, igual que
+   los cortes del marco del cabezote. */
+$chaflan: 14px;
+
+:host {
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.inicio-futurista {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  justify-items: center;
+  overflow: hidden;
+  padding: clamp(18px, 2vw, 30px);
+  background: transparent;
+}
+
+.inicio-futurista::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: '';
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 56%, rgb(255 36 64 / 9%), transparent 36%),
+    linear-gradient(90deg, rgb(0 0 0 / 8%), transparent 28% 72%, rgb(0 0 0 / 8%));
+}
+
+/* El texto se apoya en un cuadro achaflanado con el filo del marco del
+   cabezote. El relleno es negro plano al 50%: separa la letra del plano sin
+   taparlo, el fondo se sigue viendo a traves. */
+.bienvenida {
+  position: relative;
+  z-index: 10;
+  isolation: isolate;
+  justify-self: start;
+  max-width: min(760px, 74%);
+  padding: clamp(12px, 1.35vw, 18px) clamp(18px, 1.9vw, 28px);
+  color: #fff;
+  text-align: left;
+  text-shadow: 0 1px 2px #000;
+}
+
+.bienvenida::before,
+.bienvenida::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  pointer-events: none;
+  clip-path: polygon(
+    #{$chaflan} 0,
+    100% 0,
+    100% calc(100% - #{$chaflan}),
+    calc(100% - #{$chaflan}) 100%,
+    0 100%,
+    0 #{$chaflan}
+  );
+}
+
+/* Borde gris uniforme, sin degradados ni resplandores de color. */
+.bienvenida::before {
+  z-index: -2;
+  background:
+    linear-gradient(#7f7f7f 0 0) top right / calc(100% - #{$chaflan} + 2px) 2px no-repeat,
+    linear-gradient(#7f7f7f 0 0) right top / 2px calc(100% - #{$chaflan} + 2px) no-repeat,
+    linear-gradient(#7f7f7f 0 0) bottom left / calc(100% - #{$chaflan} + 2px) 2px no-repeat,
+    linear-gradient(#7f7f7f 0 0) left bottom / 2px calc(100% - #{$chaflan} + 2px) no-repeat,
+    linear-gradient(135deg, transparent calc(50% - 1.4px), #7f7f7f calc(50% - 1.4px) calc(50% + 1.4px), transparent calc(50% + 1.4px)) top left / #{$chaflan} #{$chaflan} no-repeat,
+    linear-gradient(135deg, transparent calc(50% - 1.4px), #7f7f7f calc(50% - 1.4px) calc(50% + 1.4px), transparent calc(50% + 1.4px)) bottom right / #{$chaflan} #{$chaflan} no-repeat;
+}
+
+/* Relleno: negro al 40%, sin degradado, para que el plano del fondo se siga
+   viendo a traves del cuadro. Retraido 2px para dejar ver el filo. */
+.bienvenida::after {
+  z-index: -1;
+  inset: 2px;
+  background: rgb(0 0 0 / 40%);
+  clip-path: polygon(
+    #{$chaflan - 2px} 0,
+    100% 0,
+    100% calc(100% - #{$chaflan - 2px}),
+    calc(100% - #{$chaflan - 2px}) 100%,
+    0 100%,
+    0 #{$chaflan - 2px}
+  );
+}
+
+.bienvenida h1 {
+  margin: 0 0 6px;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  font-weight: 700;
+}
+
+.bienvenida p {
+  margin: 0;
+  font-size: clamp(.78rem, 1.15vw, .95rem);
+  line-height: 1.45;
+}
+
+.rompecabezas {
+  position: relative;
+  align-self: center;
+  justify-self: center;
+  width: min(36vw, 400px);
+  min-width: 250px;
+  /* Proporcion nativa del nuevo escudo general: todas las coordenadas de las
+     piezas se expresan sobre este lienzo de 1017 x 1405 px. */
+  aspect-ratio: 1017 / 1405;
+  margin-block: clamp(8px, 1.2vh, 14px);
+  filter: drop-shadow(0 10px 14px rgb(0 0 0 / 72%));
+}
+
+.marco-escudo-general {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: translateY(6.5307%);
+  pointer-events: none;
+  user-select: none;
+}
+
+.pieza {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  line-height: 0;
+  text-decoration: none;
+  transform: translateZ(0) scale(1);
+  transform-origin: center;
+  transition: transform .28s cubic-bezier(.2, .75, .25, 1), filter .28s ease;
+  will-change: transform, filter;
+}
+
+.pieza img,
+.titulo-procesos-imagen {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.pieza img {
+  opacity: 1;
+  transition: opacity .16s ease;
+}
+
+.pieza-torres {
+  z-index: 3;
+  top: .1423%;
+  left: 21.3124%;
+  width: 57.7188%;
+  height: 25.1246%;
+  transform-origin: center bottom;
+}
+
+.pieza-digei {
+  top: 22.5264%;
+  left: 9.5627%;
+  width: 45.4018%;
+  height: 31.3167%;
+  transform-origin: right bottom;
+}
+
+.pieza-dinco {
+  top: 22.5264%;
+  left: 49.5768%;
+  width: 41.333%;
+  height: 31.7432%;
+  transform-origin: left bottom;
+}
+
+.pieza-diesp {
+  top: 57.1716%;
+  left: 8.8326%;
+  width: 42.2417%;
+  height: 35.0178%;
+  transform-origin: right top;
+}
+
+.pieza-dipli {
+  top: 57.1716%;
+  left: 45.63%;
+  width: 45.6854%;
+  height: 35.089%;
+  transform-origin: left top;
+}
+
+.titulo-procesos {
+  z-index: 12;
+  top: 46.156%;
+  left: 20.7086%;
+  width: 59.1893%;
+  height: 17.9706%;
+  transform-origin: center;
+}
+
+.titulo-procesos-imagen {
+  object-fit: contain;
+  opacity: 1;
+}
+
+.pieza:hover,
+.pieza:focus-visible {
+  /* Sobrepasa el marco general durante la interacción. */
+  z-index: 11;
+  transform: translateY(-2.2%) scale(1.075);
+  filter:
+    brightness(1.1)
+    saturate(1.08)
+    drop-shadow(0 9px 8px rgb(0 0 0 / 78%))
+    drop-shadow(0 0 8px rgb(255 215 80 / 58%));
+}
+
+.titulo-procesos:hover,
+.titulo-procesos:focus-visible {
+  z-index: 13;
+}
+
+.pieza:hover img,
+.pieza:focus-visible img {
+  opacity: 1;
+}
+
+.pieza:focus-visible {
+  outline: 2px solid #fff3a8;
+  outline-offset: 4px;
+}
+
+@media (max-width: 900px) {
+  .inicio-futurista {
+    background-size: cover;
+  }
+
+  .rompecabezas {
+    width: min(52vw, 390px);
+  }
+}
+
+@media (max-width: 520px) {
+  .inicio-futurista {
+    padding-inline: 10px;
+  }
+
+  .bienvenida {
+    max-width: 100%;
+    padding: 12px 14px;
+  }
+
+  .rompecabezas {
+    width: min(82vw, 340px);
+    min-width: 235px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pieza {
+    transition: none;
+  }
+
+  .pieza:hover,
+  .pieza:focus-visible {
+    transform: none;
+  }
+}

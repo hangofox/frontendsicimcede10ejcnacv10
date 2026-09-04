@@ -1,0 +1,464 @@
+/* Chaflan del cuadro de titulo, en las dos esquinas opuestas, igual que los
+   cortes del marco del cabezote y que el cuadro de bienvenida de Inicio. */
+$chaflan: 14px;
+
+:host {
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+/* El fondo del cuerpo lo pone el contenedor de la aplicacion
+   (.contenido:has(> app-digei) en index.component.scss), igual que en Inicio,
+   de modo que la imagen ocupa todo el cuerpo que va despues del cabezote. */
+.digei-futurista {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  justify-items: center;
+  overflow: hidden;
+  padding: clamp(18px, 2vw, 30px);
+  background: transparent;
+}
+
+.digei-futurista::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: '';
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 56%, rgb(255 36 64 / 9%), transparent 36%),
+    linear-gradient(90deg, rgb(0 0 0 / 8%), transparent 28% 72%, rgb(0 0 0 / 8%));
+}
+
+/* ------------------------------------------------------------------ */
+/* Cuadro del titulo: mismo achaflanado, borde y relleno que el cuadro  */
+/* de bienvenida de Inicio. Texto en blanco junto al icono de DIGEI.    */
+/* ------------------------------------------------------------------ */
+
+.bienvenida {
+  position: relative;
+  z-index: 10;
+  isolation: isolate;
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.3vw, 18px);
+  max-width: min(760px, 74%);
+  padding: clamp(12px, 1.35vw, 18px) clamp(18px, 1.9vw, 28px);
+  color: #fff;
+  text-align: left;
+  text-shadow: 0 1px 2px #000;
+}
+
+.bienvenida::before,
+.bienvenida::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  pointer-events: none;
+  clip-path: polygon(
+    #{$chaflan} 0,
+    100% 0,
+    100% calc(100% - #{$chaflan}),
+    calc(100% - #{$chaflan}) 100%,
+    0 100%,
+    0 #{$chaflan}
+  );
+}
+
+/* Borde gris uniforme, sin degradados ni resplandores de color. */
+.bienvenida::before {
+  z-index: -2;
+  background:
+    linear-gradient(#7f7f7f 0 0) top right / calc(100% - #{$chaflan} + 2px) 2px no-repeat,
+    linear-gradient(#7f7f7f 0 0) right top / 2px calc(100% - #{$chaflan} + 2px) no-repeat,
+    linear-gradient(#7f7f7f 0 0) bottom left / calc(100% - #{$chaflan} + 2px) 2px no-repeat,
+    linear-gradient(#7f7f7f 0 0) left bottom / 2px calc(100% - #{$chaflan} + 2px) no-repeat,
+    linear-gradient(135deg, transparent calc(50% - 1.4px), #7f7f7f calc(50% - 1.4px) calc(50% + 1.4px), transparent calc(50% + 1.4px)) top left / #{$chaflan} #{$chaflan} no-repeat,
+    linear-gradient(135deg, transparent calc(50% - 1.4px), #7f7f7f calc(50% - 1.4px) calc(50% + 1.4px), transparent calc(50% + 1.4px)) bottom right / #{$chaflan} #{$chaflan} no-repeat;
+}
+
+/* Relleno: negro al 40%, sin degradado, para que el plano del fondo se siga
+   viendo a traves del cuadro. Retraido 2px para dejar ver el filo. */
+.bienvenida::after {
+  z-index: -1;
+  inset: 2px;
+  background: rgb(0 0 0 / 40%);
+  clip-path: polygon(
+    #{$chaflan - 2px} 0,
+    100% 0,
+    100% calc(100% - #{$chaflan - 2px}),
+    calc(100% - #{$chaflan - 2px}) 100%,
+    0 100%,
+    0 #{$chaflan - 2px}
+  );
+}
+
+.bienvenida__logo {
+  flex: none;
+  width: clamp(44px, 3.6vw, 62px);
+  height: auto;
+  filter: brightness(0) invert(1);
+}
+
+.bienvenida__texto {
+  min-width: 0;
+}
+
+.bienvenida h1 {
+  margin: 0;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  font-weight: 700;
+}
+
+/* ------------------------------------------------------------------ */
+/* Composicion de engranajes                                           */
+/*                                                                     */
+/* Todas las medidas estan en unidades de diseno (ud) sobre el lienzo   */
+/* proporcional 1020 x 593. Una sola variable convierte diametros,      */
+/* distancias y correcciones de centrado: no hay escalas acumuladas.    */
+/*                                                                     */
+/* Geometria medida sobre los PNG originales (canal alfa, umbral 200,   */
+/* excluyendo la sombra suave del borde):                              */
+/*                                                                     */
+/*   imagen_anillo_pinon_central_01.png  482x482                       */
+/*     23 dientes - paso 15,6522 grados                                */
+/*     radio de cabeza 0,9911 - radio de pie 0,8645 (sobre el radio    */
+/*     de la caja) - primer diente centrado a 4,80 grados              */
+/*                                                                     */
+/*   imagen_anillo_pinon_externo_01.png  350x350                       */
+/*     24 dientes - paso 15,0000 grados                                */
+/*     radio de cabeza 1,0057 - radio de pie 0,8900                    */
+/*     primer diente centrado a 0,75 grados - hueco interior 0,6486    */
+/*     del radio de la caja, que limita el tamano de la imagen         */
+/*     interior                                                        */
+/* ------------------------------------------------------------------ */
+
+.digei-escena {
+  /* ---- Valores ajustables --------------------------------------- */
+
+  /* Diametro del pinon central, en ud. */
+  --digei-d-central: 230;
+  /* Diametro comun de los seis pinones perifericos, en ud. */
+  --digei-d-satelite: 181.13;
+  /* Distancia entre el centro del pinon central y el de cada periferico. */
+  /* Radio coordinado con el nuevo diametro: las puntas entran en los  */
+  /* huecos sin llegar al fondo y los perifericos vecinos no chocan.   */
+  --digei-radio: 196;
+
+  /* El medallon central ocupa el 48% del pinon (referencia: 45-50%).  */
+  /* Los medallones perifericos quedan dentro de la abertura de 0,6486 */
+  /* del diametro del anillo, sin cubrir su banda purpura.             */
+  --digei-contenido-central: 110;
+  --digei-contenido-satelite: 119.5;
+
+  /* Duraciones de giro. El anillo central tiene 30 dientes y el       */
+  /* periferico 24: la relacion correcta es 30/24 = 1,25, o sea el     */
+  /* periferico gira en 48 s por cada 60 s del central. Asi coincide   */
+  /* el ritmo de paso de dientes y el engrane no se desfasa.           */
+  --digei-giro-central: 60s;
+  --digei-giro-satelite: 48s;
+
+  position: relative;
+  align-self: center;
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  aspect-ratio: 1020 / 593;
+  transform: translateY(-98px);
+
+  /* Los piñones conservan su lienzo proporcional mientras el fondo   */
+  /* del cuerpo se expande independientemente en ambos ejes.           */
+  container-type: inline-size;
+}
+
+.digei-engranajes {
+  /* Factor original de la composición sobre el lienzo 1020 x 593. */
+  --digei-u: 0.0980392cqw;
+
+  position: absolute;
+  inset: 0;
+}
+
+.digei-areas {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---- Pinon: tres capas ------------------------------------------- */
+/* 1. .digei-pinon            contenedor de posicion, NO gira          */
+/* 2. .digei-pinon__rotor     anillo dentado, gira                     */
+/* 3. .digei-pinon__contenido ilustracion, hermana del rotor, fija     */
+
+.digei-pinon {
+  position: absolute;
+  /* El posicionamiento usa left/top y margenes negativos, nunca       */
+  /* transform, para que la rotacion del rotor no pueda sobrescribirlo.*/
+  left: calc(50% + var(--digei-u) * var(--digei-radio) * var(--digei-fx, 0)
+    + var(--digei-u) * var(--digei-ajuste-x, 0));
+  top: calc(50% + var(--digei-u) * var(--digei-radio) * var(--digei-fy, 0)
+    + var(--digei-u) * var(--digei-ajuste-y, 0));
+  width: var(--digei-d);
+  height: var(--digei-d);
+  margin-left: calc(var(--digei-d) / -2);
+  margin-top: calc(var(--digei-d) / -2);
+}
+
+.digei-pinon__rotor {
+  position: absolute;
+  inset: 0;
+  transform-origin:
+    calc(50% + var(--digei-u) * var(--digei-rotor-x, 0))
+    calc(50% + var(--digei-u) * var(--digei-rotor-y, 0));
+  will-change: transform;
+}
+
+.digei-pinon__anillo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.digei-pinon__contenido {
+  position: absolute;
+  top: calc(50% + var(--digei-u) * var(--digei-contenido-y, 0)
+    + var(--digei-contenido-ajuste-y, 0px));
+  left: calc(50% + var(--digei-u) * var(--digei-contenido-x, 0)
+    + var(--digei-contenido-ajuste-x, 0px));
+  width: var(--digei-contenido);
+  height: var(--digei-contenido);
+  margin-left: calc(var(--digei-contenido) / -2);
+  margin-top: calc(var(--digei-contenido) / -2);
+  object-fit: contain;
+  image-rendering: auto;
+  backface-visibility: hidden;
+}
+
+/* ---- Pinon central ------------------------------------------------ */
+
+.digei-pinon--central {
+  --digei-d: calc(var(--digei-u) * var(--digei-d-central));
+  --digei-contenido: calc(var(--digei-u) * var(--digei-contenido-central));
+  --digei-fx: 0;
+  --digei-fy: 0;
+  /* El engranaje dibujado no esta centrado en su PNG: se corrige el   */
+  /* eje de giro para que el anillo no bascule al rotar.               */
+  --digei-rotor-x: -0.298;
+  --digei-rotor-y: 0;
+  /* ...y la posicion se compensa al reves, para que ese centro real   */
+  /* caiga exactamente en el centro de la composicion.                 */
+  --digei-ajuste-x: 0.298;
+  --digei-ajuste-y: 0;
+  /* El circulo visible del PNG 400x400 esta 1 px arriba y a la        */
+  /* izquierda del centro del archivo.                                */
+  --digei-contenido-x: -0.175;
+  --digei-contenido-y: -0.142;
+  z-index: 1;
+}
+
+.digei-pinon--central .digei-pinon__rotor {
+  animation: digei-giro-horario var(--digei-giro-central) linear infinite;
+}
+
+/* ---- Pinones perifericos ------------------------------------------ */
+
+.digei-pinon--satelite {
+  /* La abertura transparente del PNG 482x482 mide aprox. 313x312 px  */
+  /* y esta centrada en (240, 237.5), no en el centro de la caja.      */
+  /* El eje se lleva a ese centro y la posicion se compensa al reves. */
+  --digei-rotor-x: -0.070;
+  --digei-rotor-y: 0.528;
+  --digei-ajuste-x: 0.070;
+  --digei-ajuste-y: -0.528;
+  /* --digei-d-extra permite agrandar un pinon concreto sin tocar los     */
+  /* otros cinco. El medallon crece con el mismo factor para conservar    */
+  /* la proporcion 0,6277 entre ilustracion y anillo.                     */
+  /* Tamano extra comun a los seis, sobre --digei-d-satelite.            */
+  --digei-d-extra: 0mm;
+  --digei-d: calc(var(--digei-u) * var(--digei-d-satelite) + var(--digei-d-extra, 0px));
+  --digei-contenido: calc(var(--digei-u) * var(--digei-contenido-satelite)
+    + var(--digei-d-extra, 0px) * 0.6277
+    + var(--digei-contenido-extra, 0px));
+  --digei-contenido-x: 0;
+  --digei-contenido-y: 0;
+  /* Mismo aumento cuadrado afinado primero sobre Finca Raiz. */
+  --digei-contenido-extra: 1.6mm;
+  z-index: 2;
+}
+
+.digei-pinon--satelite .digei-pinon__rotor {
+  animation: digei-giro-antihorario var(--digei-giro-satelite) linear infinite;
+}
+
+/* ---- Zoom del medallon al pasar el cursor -------------------------- */
+/* Mismos tiempos y curva que .pieza del escudo de Inicio.              */
+/* El escalado va con transform-origin en el propio centro, asi que la  */
+/* posicion que fijan left/top y los margenes negativos no se altera:   */
+/* el medallon crece concentrico con su anillo y el engrane no se toca. */
+
+.digei-pinon--satelite .digei-pinon__contenido {
+  cursor: pointer;
+  transform: translateZ(0) scale(1);
+  transform-origin: center;
+  transition: transform .28s cubic-bezier(.2, .75, .25, 1), filter .28s ease;
+  will-change: transform, filter;
+}
+
+.digei-pinon--satelite .digei-pinon__contenido:hover,
+.digei-pinon--satelite a:focus-visible .digei-pinon__contenido {
+  transform: translateZ(0) scale(1.25);
+  filter:
+    brightness(1.1)
+    saturate(1.08)
+    drop-shadow(0 12px 11px rgb(0 0 0 / 78%))
+    drop-shadow(0 0 12px rgb(255 215 80 / 62%));
+}
+
+/* El satelite tiene z-index propio, asi que crea contexto de apilado y
+   el medallon no puede sobresalir por si solo: se sube la pieza entera
+   mientras dura la interaccion. */
+.digei-pinon--satelite:has(.digei-pinon__contenido:hover),
+.digei-pinon--satelite:has(a:focus-visible) {
+  z-index: 6;
+}
+
+/* Distribucion hexagonal: (Cx + R x fx, Cy + R x fy), fy = +-0,8660254. */
+/* --digei-fase es la fase angular inicial de cada anillo, ajustada para */
+/* que el diente que el pinon central presenta en esa direccion caiga    */
+/* dentro de un hueco del periferico.                                   */
+
+.digei-pinon[data-posicion="superior-izquierda"] {
+  --digei-fx: -0.5;
+  --digei-fy: -0.8660254;
+  --digei-fase: 7deg;
+  --digei-contenido-x: -0.058;
+  /* Medallon: circulo visible de 116,75 ud, centrado sobre el eje    */
+  /* real de giro del anillo (no sobre el centro de la caja).         */
+  --digei-contenido-satelite: 123.24;
+  --digei-contenido-y: 0.507;
+}
+
+.digei-pinon[data-posicion="superior-derecha"] {
+  --digei-fx: 0.5;
+  --digei-fy: -0.8660254;
+  --digei-fase: 7deg;
+  --digei-contenido-y: 0.558;
+  /* Medallon: circulo visible de 116,75 ud, centrado sobre el eje    */
+  /* real de giro del anillo (no sobre el centro de la caja).         */
+  --digei-contenido-satelite: 123.72;
+  --digei-contenido-x: -0.103;
+}
+
+.digei-pinon[data-posicion="izquierda"] {
+  --digei-fx: -1;
+  --digei-fy: 0;
+  --digei-fase: 7deg;
+  --digei-contenido-x: -0.123;
+  --digei-contenido-y: 0.493;
+  /* Medallon: circulo visible de 116,75 ud, centrado sobre el eje    */
+  /* real de giro del anillo (no sobre el centro de la caja).         */
+  --digei-contenido-satelite: 126.35;
+}
+
+.digei-pinon[data-posicion="derecha"] {
+  --digei-fx: 1;
+  --digei-fy: 0;
+  --digei-fase: 7deg;
+  --digei-contenido-x: -0.045;
+  --digei-contenido-y: 0.401;
+  /* Medallon: circulo visible de 116,75 ud, centrado sobre el eje    */
+  /* real de giro del anillo (no sobre el centro de la caja).         */
+  --digei-contenido-satelite: 124.27;
+}
+
+.digei-pinon[data-posicion="inferior-izquierda"] {
+  --digei-fx: -0.5;
+  --digei-fy: 0.8660254;
+  --digei-fase: 7deg;
+  --digei-contenido-x: -0.043;
+  --digei-contenido-y: 0.453;
+  /* Medallon: circulo visible de 116,75 ud, centrado sobre el eje    */
+  /* real de giro del anillo (no sobre el centro de la caja).         */
+  --digei-contenido-satelite: 123.86;
+}
+
+.digei-pinon[data-posicion="inferior-derecha"] {
+  --digei-fx: 0.5;
+  --digei-fy: 0.8660254;
+  --digei-fase: 7deg;
+  --digei-contenido-x: -0.086;
+  --digei-contenido-y: 0.515;
+  /* Medallon: circulo visible de 116,75 ud, centrado sobre el eje    */
+  /* real de giro del anillo (no sobre el centro de la caja).         */
+  --digei-contenido-satelite: 122.29;
+}
+
+/* ---- Animaciones -------------------------------------------------- */
+/* La fase inicial va dentro de los propios fotogramas para que la      */
+/* animacion no sobrescriba ningun otro transform y el giro sea         */
+/* continuo, sin saltos al reiniciarse.                                 */
+
+@keyframes digei-giro-horario {
+  from { transform: rotate(var(--digei-fase, 0deg)); }
+  to { transform: rotate(calc(var(--digei-fase, 0deg) + 360deg)); }
+}
+
+@keyframes digei-giro-antihorario {
+  from { transform: rotate(var(--digei-fase, 0deg)); }
+  to { transform: rotate(calc(var(--digei-fase, 0deg) - 360deg)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .digei-pinon__rotor {
+    animation: none;
+    transform: rotate(var(--digei-fase, 0deg));
+  }
+
+  /* Se conserva el realce de color, que no es movimiento, y se retira
+     el escalado. */
+  .digei-pinon--satelite .digei-pinon__contenido {
+    transition: filter .28s ease;
+  }
+
+  .digei-pinon--satelite .digei-pinon__contenido:hover,
+  .digei-pinon--satelite a:focus-visible .digei-pinon__contenido {
+    transform: none;
+  }
+}
+
+/* ---- Responsive ---------------------------------------------------- */
+/* No hay reglas por tamano para la geometria del conjunto: --digei-u    */
+/* depende del ancho y del alto de la escena, asi que diametros, radio   */
+/* y posiciones escalan siempre juntos y la composicion hexagonal se     */
+/* conserva integra.                                                     */
+
+@media (max-width: 900px) {
+  .digei-escena {
+    align-self: start;
+    margin-top: clamp(44px, 7vw, 58px);
+    transform: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .digei-futurista {
+    padding-inline: 10px;
+  }
+
+  .bienvenida {
+    max-width: 100%;
+    padding: 12px 14px;
+  }
+}

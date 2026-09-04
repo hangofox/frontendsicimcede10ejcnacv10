@@ -1,0 +1,81 @@
+.usuario-seleccionado {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+  background: var(--sicim-soft);
+  color: var(--sicim-dark);
+  font-size: 13px;
+}
+
+.nota-info {
+  font-size: 12px;
+  color: var(--sicim-gray);
+  margin-bottom: 14px;
+}
+
+.tabla-privilegios {
+  border: 1px solid var(--sicim-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.privilegio-fila {
+  display: grid;
+  grid-template-columns: 1.2fr 1.6fr .5fr;
+  align-items: center;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--sicim-soft);
+  font-size: 13px;
+
+  &:last-child { border-bottom: none; }
+}
+
+.privilegio-fila-header {
+  background: var(--sicim-soft);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  color: var(--sicim-dark);
+}
+
+.fila-maestra {
+  background: rgba(0, 0, 0, .02);
+  font-weight: 700;
+}
+
+.col-check { text-align: center; }
+
+.form-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--sicim-soft);
+}
+
+.btn-sicim {
+  padding: 9px 18px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+
+  &.btn-secundario {
+    background: var(--sicim-soft);
+    color: var(--sicim-black);
+    border-color: var(--sicim-border);
+    &:hover:not(:disabled) { border-color: var(--sicim-focus); }
+  }
+  &.btn-primario {
+    background: var(--sicim-black);
+    color: var(--sicim-white);
+    &:hover:not(:disabled) { background: var(--sicim-dark); }
+  }
+  &:disabled { opacity: .5; cursor: not-allowed; }
+}

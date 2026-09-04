@@ -1,0 +1,9 @@
+:host { display: block; width: 100%; min-height: 100dvh; }
+
+.seguimiento { min-height: 100dvh; display: grid; place-items: center; padding: 20px; background: #eee; }
+.tarjeta { width: min(440px, 100%); padding: 32px; background: #fff; border: 1px solid #aaa; }
+h1 { text-align: center; font-size: 1.2rem; }
+form { display: grid; gap: 10px; margin: 24px 0; }
+input, button { padding: 10px; }
+button { color: #fff; background: #222; border: 0; cursor: pointer; }
+a { display: block; text-align: center; }

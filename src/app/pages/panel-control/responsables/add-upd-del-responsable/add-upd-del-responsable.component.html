@@ -1,0 +1,287 @@
+<div class="modal-formulario" *ngIf="responsablesForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará el registro del responsable de la lista simulada. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="responsablesForm" (ngSubmit)="guardarModificar()">
+
+    <!-- BÚSQUEDA DE EMPLEADO (SOLO EN MODO GUARDAR) -->
+    <div class="form-seccion" *ngIf="banderaCrudGuardar">
+      <div class="seccion-titulo">Búsqueda de empleado</div>
+      <div class="form-fila-busqueda">
+        <div class="form-group">
+          <label>Número de documento de identificación</label>
+          <input type="text" formControlName="palabraClaveNumeroDocumentoIdentificacionResponsable" placeholder="Ingrese el número de documento...">
+        </div>
+        <button type="button" class="btn-sicim btn-secundario" (click)="buscarEmpleado()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Cargar información del empleado
+        </button>
+      </div>
+      <div class="ayuda-texto" *ngIf="mensajeBusquedaEmpleado">{{ mensajeBusquedaEmpleado }}</div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Identificación personal</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Usuario de red (*)</label>
+          <input type="text" formControlName="usuarioRedResponsable" placeholder="Ej. jperez">
+        </div>
+        <div class="form-group">
+          <label>Tipo de documento (*)</label>
+          <select formControlName="tipoDocumentoIdentificacionSeleccionado">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let td of tiposDocumentos" [value]="td.idTipoDocumentoIdentificacion">
+              {{ td.nombreTipoDocumentoIdentificacion }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Número de documento (*)</label>
+          <input type="text" formControlName="numeroDocumentoIdentificacionResponsable">
+        </div>
+        <div class="form-group">
+          <label>Lugar de expedición (*)</label>
+          <input type="text" formControlName="lugarExpedicionDocumentoIdentificacionResponsable" placeholder="Ej. BOGOTÁ D.C.">
+        </div>
+        <div class="form-group">
+          <label>Grado (*)</label>
+          <input type="text" formControlName="gradoResponsable" placeholder="Ej. SV">
+        </div>
+        <div class="form-group">
+          <label>Arma</label>
+          <input type="text" formControlName="armaResponsable" placeholder="Ej. INGENIEROS">
+        </div>
+        <div class="form-group">
+          <label>Nombres (*)</label>
+          <input type="text" formControlName="nombresResponsable">
+        </div>
+        <div class="form-group">
+          <label>Primer apellido (*)</label>
+          <input type="text" formControlName="primerApellidoResponsable">
+        </div>
+        <div class="form-group">
+          <label>Segundo apellido</label>
+          <input type="text" formControlName="segundoApellidoResponsable">
+        </div>
+        <div class="form-group">
+          <label>Fecha de nacimiento (*)</label>
+          <input type="datetime-local" formControlName="fechaHMSNacimientoResponsable">
+        </div>
+        <div class="form-group">
+          <label>Sexo (*)</label>
+          <select formControlName="sexoResponsable">
+            <option value="">-- Seleccione --</option>
+            <option value="MASCULINO">MASCULINO</option>
+            <option value="FEMENINO">FEMENINO</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOTO DEL RESPONSABLE -->
+    <div class="form-seccion">
+      <div class="seccion-titulo">Foto del responsable (*.jpg, *.gif, *.png, *.bmp — máximo 2 MB)</div>
+      <div class="alerta-error-foto" *ngIf="mensajeErrorFoto">{{ mensajeErrorFoto }}</div>
+      <div class="foto-upload-area">
+        <div class="avatar-grande">
+          <img *ngIf="previewUrlFotoResponsable" [src]="previewUrlFotoResponsable" (error)="onErrorPreviewFotoResponsable()" alt="Foto del responsable">
+          <svg *ngIf="!previewUrlFotoResponsable" xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="foto-upload-controles" *ngIf="!banderaCrudEliminar">
+          <label class="btn-archivo" *ngIf="!isSelectedFileResponsablePhoto">
+            <input type="file" accept="image/*" (change)="onSelectFileResponsablePhoto($event)" style="display:none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            {{ previewUrlFotoResponsable ? 'Cambiar foto' : 'Seleccionar archivo' }}
+          </label>
+          <button type="button" class="btn-quitar" *ngIf="isSelectedFileResponsablePhoto" (click)="onRemoveFileResponsablePhoto()">Quitar</button>
+          <button type="button" class="btn-quitar" *ngIf="!isSelectedFileResponsablePhoto && previewUrlFotoResponsable" (click)="confirmarEliminarFotoResponsable()">Quitar foto</button>
+          <span class="foto-nombre" *ngIf="selectedFileResponsablePhoto">{{ selectedFileResponsablePhoto.name }}</span>
+          <span class="foto-nombre" *ngIf="!selectedFileResponsablePhoto && nombreArchivoFotoResponsable && !fotoExistenteEliminada">{{ nombreArchivoFotoResponsable }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos de contacto</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Dirección (*)</label>
+          <input type="text" formControlName="direccionResponsable">
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text" formControlName="telefonoResponsable">
+        </div>
+        <div class="form-group">
+          <label>Celular (*)</label>
+          <input type="text" formControlName="movilResponsable">
+        </div>
+        <div class="form-group">
+          <label>Correo personal (*)</label>
+          <input type="text" formControlName="correoElectronicoPersonalResponsable">
+        </div>
+        <div class="form-group">
+          <label>Correo institucional</label>
+          <input type="text" formControlName="correoElectronicoInstitucionalResponsable">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Origen</div>
+      <div class="form-grid">
+        <div class="form-group campo-autocompletar">
+          <label>País de origen (*)</label>
+          <input type="hidden" formControlName="paisOrigenResponsable">
+          <div class="autocompletar-caja">
+            <input
+              type="text"
+              [(ngModel)]="terminoBusquedaPaisOrigen"
+              [ngModelOptions]="{standalone: true}"
+              [readOnly]="banderaPaisOrigenSeleccionado"
+              placeholder="Escriba para buscar el país..."
+              (input)="onEscribirBusquedaPaisOrigen()"
+              (focus)="mostrarSugerenciasPaisOrigen = true"
+              (blur)="ocultarSugerenciasPaisOrigenConRetraso()">
+            <button
+              type="button"
+              class="btn-limpiar-autocompletar"
+              *ngIf="terminoBusquedaPaisOrigen"
+              (mousedown)="limpiarBusquedaPaisOrigen()"
+              title="Limpiar">×</button>
+
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasPaisOrigen && !banderaPaisOrigenSeleccionado && paisesMundoFiltrados.length > 0">
+              <li *ngFor="let pais of paisesMundoFiltrados" (mousedown)="seleccionarPaisOrigen(pais)">
+                {{ pais.nombrePaisMundo }}
+              </li>
+            </ul>
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasPaisOrigen && !banderaPaisOrigenSeleccionado && paisesMundoFiltrados.length === 0">
+              <li class="autocompletar-sin-resultados">Sin coincidencias.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="form-group campo-autocompletar">
+          <label>Departamento o estado de origen (*)</label>
+          <input type="hidden" formControlName="departamentooEstadoOrigenResponsable">
+          <div class="autocompletar-caja">
+            <input
+              type="text"
+              [(ngModel)]="terminoBusquedaDepartamentoOrigen"
+              [ngModelOptions]="{standalone: true}"
+              [readOnly]="banderaDepartamentoOrigenSeleccionado"
+              [disabled]="!banderaPaisOrigenSeleccionado"
+              [placeholder]="banderaPaisOrigenSeleccionado ? 'Escriba para buscar el departamento o estado...' : 'Seleccione primero el país de origen'"
+              (input)="onEscribirBusquedaDepartamentoOrigen()"
+              (focus)="mostrarSugerenciasDepartamentoOrigen = true"
+              (blur)="ocultarSugerenciasDepartamentoOrigenConRetraso()">
+            <button
+              type="button"
+              class="btn-limpiar-autocompletar"
+              *ngIf="terminoBusquedaDepartamentoOrigen"
+              (mousedown)="limpiarBusquedaDepartamentoOrigen()"
+              title="Limpiar">×</button>
+
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasDepartamentoOrigen && !banderaDepartamentoOrigenSeleccionado && departamentosoEstadosMundoFiltrados.length > 0">
+              <li *ngFor="let departamento of departamentosoEstadosMundoFiltrados" (mousedown)="seleccionarDepartamentoOrigen(departamento)">
+                {{ departamento.nombreDepartamentooEstadoMundo }}
+              </li>
+            </ul>
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasDepartamentoOrigen && !banderaDepartamentoOrigenSeleccionado && departamentosoEstadosMundoFiltrados.length === 0">
+              <li class="autocompletar-sin-resultados">Sin coincidencias.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Ciudad de origen (*)</label>
+          <input type="text" formControlName="ciudadOrigenResponsable" placeholder="Ej. BOGOTÁ D.C.">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos militares</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Número de curso</label>
+          <input type="text" formControlName="numeroCursoResponsable">
+        </div>
+        <div class="form-group">
+          <label>Puesto en el curso</label>
+          <input type="text" formControlName="puestoCursoResponsable">
+        </div>
+        <div class="form-group">
+          <label>Escalafón de antigüedad</label>
+          <input type="text" formControlName="escalafonAntiguedadResponsable">
+        </div>
+        <div class="form-group">
+          <label>Fecha de incorporación FF.MM.</label>
+          <input type="datetime-local" formControlName="fechaHMSIncorporacionFFMMResponsable">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Unidad militar y estado</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Unidad militar (*)</label>
+          <select formControlName="unidadMilitarSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let unidadMilitar of unidadesMilitares" [value]="unidadMilitar.idUnidadMilitar">
+              {{ unidadMilitar.nombreUnidadMilitar }} ({{ unidadMilitar.siglaoAcronimoUnidadMilitar }})
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fecha de ingreso</label>
+          <input type="datetime-local" formControlName="fechaHMSIngresoResponsable">
+        </div>
+        <div class="form-group">
+          <label>Fecha de modificación</label>
+          <input type="datetime-local" formControlName="fechaHMSModificacionResponsable">
+        </div>
+        <div class="form-group">
+          <label>Estado (*)</label>
+          <select formControlName="estadoResponsable">
+            <option value="ACTIVO">ACTIVO</option>
+            <option value="INACTIVO">INACTIVO</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-sicim btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="responsablesForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-sicim btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>
+
+<!-- CONFIRMACIÓN DE ELIMINACIÓN DE FOTO -->
+<div class="confirmacion-overlay" *ngIf="banderaConfirmacionEliminacionFoto">
+  <div class="confirmacion-caja">
+    <div class="confirmacion-icono">
+      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <h4 class="confirmacion-titulo">Confirmación de eliminación</h4>
+    <p class="confirmacion-mensaje">¿Está seguro de que desea eliminar la foto de este responsable?</p>
+    <div class="confirmacion-botones">
+      <button type="button" class="btn-confirmacion btn-si" (click)="siEliminarFotoResponsable()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Sí, eliminar
+      </button>
+      <button type="button" class="btn-confirmacion btn-no" (click)="noEliminarFotoResponsable()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        No, cancelar
+      </button>
+    </div>
+  </div>
+</div>

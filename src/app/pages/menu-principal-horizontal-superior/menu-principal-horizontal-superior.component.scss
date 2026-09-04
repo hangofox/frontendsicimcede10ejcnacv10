@@ -1,0 +1,425 @@
+/* Geometría centralizada del menú futurista. */
+.menu {
+  --menu-alto: 84px;
+  --marco: 9px;
+  --pieza-alto: 66px;
+  /* Derivados de --pieza-alto. El viewBox es 30x66 y se estira con
+     preserveAspectRatio="none", así que solo manteniendo esta proporción
+     el nudo sigue siendo un círculo y no un óvalo a cualquier tamaño. */
+  --conector-ancho: calc(var(--pieza-alto) * 30 / 66);
+  --conector-profundo: calc(var(--conector-ancho) * 0.777);
+  --trazo-oscuro: 9px;
+  --trazo-oro: 6px;
+  --trazo-luz: 1.5px;
+  --icono: 46px;
+  /* Desplazamiento de la sombra del icono, proporcional a su tamaño. */
+  --icono-sombra: max(2px, calc(var(--icono) * .075));
+  --separacion: 10px;
+  --texto: clamp(12px, .9vw, 16px);
+
+  --oro-negro: #261300;
+  --oro-hondo: #3b2100;
+  --oro-ambar: #7a4300;
+  --oro-medio: #c98200;
+  --oro-vivo: #f6b900;
+  --oro-claro: #ffd85a;
+  --oro-reflejo: #fff2a6;
+
+  position: relative;
+  z-index: 20;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  filter: drop-shadow(0 4px 5px rgb(0 0 0 / 68%));
+}
+
+.menu__defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Tres capas recortadas con el mismo chaflán crean un perímetro continuo:
+   contorno oscuro, cuerpo de oro y cavidad interior. */
+.menu__marco {
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--menu-alto);
+  display: grid;
+  place-items: center;
+  padding: var(--marco);
+  background:
+    linear-gradient(90deg,
+      transparent 2%, rgb(255 255 255 / 42%) 5%, transparent 9% 27%,
+      rgb(255 255 255 / 25%) 31%, transparent 36% 60%,
+      rgb(255 255 255 / 28%) 65%, transparent 70% 90%,
+      rgb(255 255 255 / 38%) 95%, transparent 98%),
+    linear-gradient(180deg,
+      var(--oro-medio) 0%,
+      var(--oro-vivo) 4%,
+      var(--oro-reflejo) 10%,
+      var(--oro-claro) 22%,
+      var(--oro-medio) 50%,
+      var(--oro-claro) 78%,
+      var(--oro-reflejo) 90%,
+      var(--oro-vivo) 96%,
+      var(--oro-medio) 100%);
+  box-shadow:
+    inset 0 -2px 0 #190b00,
+    inset 2px 0 2px rgb(255 240 145 / 55%),
+    inset -2px 0 2px rgb(44 19 0 / 80%);
+}
+
+.menu__interior {
+  width: 100%;
+  height: var(--pieza-alto);
+  min-width: 0;
+  display: grid;
+  grid-template-columns: .92fr .92fr 1fr .92fr .92fr 1.08fr 1.34fr;
+  background: #130817;
+  box-shadow:
+    0 0 0 1px #2a1300,
+    inset 0 2px 4px rgb(0 0 0 / 80%),
+    inset 0 -1px 2px rgb(255 221 95 / 30%);
+}
+
+/* La sección actual no se ofrece como destino: al ocultarse, las otras seis
+   piezas vuelven a repartirse todo el ancho sin dejar una columna vacía. */
+.menu__interior:has(> .opcion.activo) {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.opcion.activo {
+  display: none;
+}
+
+/* Si PANEL DE CONTROL se oculta, PROYECTOS pasa a ser el extremo derecho:
+   se retira su pestaña y el marco exterior le da el remate recto. */
+.opcion:nth-last-child(2):has(+ .opcion:last-child.activo) .separador {
+  display: none;
+}
+
+.opcion {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  min-width: 0;
+  height: var(--pieza-alto);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--separacion);
+  padding: 0 12px;
+  overflow: visible;
+  color: var(--oro-claro);
+  background:
+    radial-gradient(ellipse at 50% 34%, #790082 0%, #52005f 38%, #31003d 68%, #17001e 100%);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: var(--texto);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: .015em;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow:
+    0 1px 0 #2b1100,
+    0 0 2px rgb(255 216 90 / 40%);
+  white-space: nowrap;
+  box-shadow:
+    inset 0 3px 4px rgb(255 203 255 / 12%),
+    inset 0 -5px 7px rgb(0 0 0 / 48%);
+}
+
+/* Cada unión pertenece exclusivamente a la pieza de su izquierda. El orden
+   descendente impide que el panel siguiente tape la pestaña Bézier. */
+.opcion:nth-child(1) { z-index: 7; }
+.opcion:nth-child(2) { z-index: 6; }
+.opcion:nth-child(3) { z-index: 5; }
+.opcion:nth-child(4) { z-index: 4; }
+.opcion:nth-child(5) { z-index: 3; }
+.opcion:nth-child(6) { z-index: 2; }
+.opcion:nth-child(7) { z-index: 1; }
+
+.opcion:nth-child(even of :not(.activo)) {
+  color: #2a1700;
+  background:
+    radial-gradient(ellipse at 50% 32%, #fff 0%, #dedede 32%, #a5a5a5 66%, #555 100%);
+  text-shadow: 0 1px 0 #fff5b7, 0 0 2px rgb(77 40 0 / 22%);
+  box-shadow:
+    inset 0 3px 5px rgb(255 255 255 / 72%),
+    inset 0 -6px 8px rgb(30 30 30 / 35%);
+}
+
+/* El vecino deja sitio al saliente sin dibujar un segundo separador. */
+.opcion + .opcion {
+  padding-left: calc(12px + var(--conector-profundo));
+}
+
+.separador {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  right: calc(var(--conector-ancho) * -1 + 3px);
+  width: var(--conector-ancho);
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.separador path {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.separador__relleno {
+  stroke: none;
+  fill: #450051;
+}
+
+.opcion:nth-child(even of :not(.activo)) .separador__relleno {
+  fill: #aaa;
+}
+
+.separador__sombra,
+.separador__oro,
+.separador__luz {
+  fill: none;
+}
+
+.separador__sombra {
+  stroke: var(--oro-negro);
+  stroke-width: var(--trazo-oscuro);
+}
+
+.separador__oro {
+  stroke: url(#menu-oro);
+  stroke-width: var(--trazo-oro);
+}
+
+.separador__luz {
+  stroke: var(--oro-reflejo);
+  stroke-width: var(--trazo-luz);
+  opacity: .9;
+}
+
+.icono,
+.etiqueta {
+  position: relative;
+  z-index: 2;
+}
+
+/* El rótulo debe poder encogerse dentro del flex, o en las columnas más
+   estrechas se saldría de la pieza en lugar de pasar a dos líneas.
+   'PANEL DE CONTROL' es el único que las necesita, y parte por el espacio. */
+.etiqueta {
+  min-width: 0;
+  line-height: 1.15;
+  overflow-wrap: break-word;
+}
+
+/* El navegador aplica primero `filter` y DESPUÉS `mask`. Si ambos van en
+   el mismo elemento, la máscara recorta la sombra que el filtro acaba de
+   dibujar y no se ve nada. Por eso van separados: la silueta se recorta en
+   ::before y el filtro se queda en el padre, que ya recibe el dibujo
+   recortado. */
+.icono {
+  width: var(--icono);
+  height: var(--icono);
+  flex: 0 0 auto;
+  /* Sombra centrada: al no llevar desplazamiento, sale igual por los
+     cuatro lados. Van dos capas porque una sola centrada queda casi
+     tapada por el propio icono: la corta marca el filo y la larga da la
+     profundidad. */
+  filter:
+    drop-shadow(0 0 calc(var(--icono-sombra) * .5) rgb(0 0 0 / 88%))
+    drop-shadow(0 0 var(--icono-sombra) rgb(0 0 0 / 60%));
+}
+
+.icono::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg,
+    var(--oro-reflejo) 4%, var(--oro-claro) 27%,
+    var(--oro-vivo) 48%, var(--oro-medio) 69%, var(--oro-hondo) 100%);
+  /* --i lo define cada [data-icono] y se hereda hasta aquí. */
+  mask-image: var(--i);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-image: var(--i);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+}
+
+.icono[data-icono='inicio'] {
+  --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='3 3.5 42 39.5'%3E%3Cpath d='M24 3.5 L45 23 H3 Z M8.5 27 H39.5 V43 H28 V33 H20 V43 H8.5 Z'/%3E%3C/svg%3E");
+}
+
+.icono[data-icono='digei'] {
+  --i: url('../../../assets/images/imagen_digei_01.png');
+}
+
+.icono[data-icono='dinco'] {
+  --i: url('../../../assets/images/imagen_dinco_01.png');
+}
+
+.icono[data-icono='dipli'] {
+  --i: url('../../../assets/images/imagen_dipli_01.png');
+}
+
+.icono[data-icono='diesp'] {
+  --i: url('../../../assets/images/imagen_diesp_01.png');
+}
+
+.icono[data-icono='proyectos'] {
+  --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='3 3 42 39' preserveAspectRatio='none'%3E%3Cpath d='M5 3h29v33H5V3Zm5 5v23h19V8H10Zm3 16v-7h4v-4h6v6h4v5h-4v-3h-3v3h-3v-5h-2v5h-2ZM3 38h33v4H3v-4Z'/%3E%3Cpath d='m37 24 3 1 3-1 2 3-1 3 1 3-2 3-3-1-3 1-3-3 1-3-1-3 3-3Zm3 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z'/%3E%3C/svg%3E");
+}
+
+.icono[data-icono='panel'] {
+  --i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='3 4 43 40' preserveAspectRatio='none'%3E%3Cpath d='M3 4h34v29H3V4Zm5 5v19h24V9H8Zm4 15v-7h4v7h-4Zm6 0V12h4v12h-4Zm6 0v-9h4v9h-4ZM14 36h12v3H14v-3ZM9 41h22v3H9v-3Z'/%3E%3Cpath d='m38 25 3 1 3-1 2 3-1 3 1 3-2 3-3-1-3 1-3-3 1-3-1-3 3-3Zm3 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z'/%3E%3C/svg%3E");
+}
+
+/* ---- Ajustes de tamaño por icono ----------------------------------- */
+
+/* SOLO ANCHO. Proyectos y Panel se ensanchan sin crecer en alto, así que
+   no sirve 'contain': hay que dar los dos ejes por separado. El alto se
+   fija en el que ya tenían (.93 de la caja) y el ancho pasa a llenar una
+   caja más ancha. */
+.icono[data-icono='panel'] {
+  width: calc(var(--icono) * 1.25);
+}
+
+/* Proyectos va más ancho que Panel: su dibujo es el más estrecho de los dos. */
+.icono[data-icono='proyectos'] {
+  width: calc(var(--icono) * 1.45);
+}
+
+.icono[data-icono='proyectos']::before,
+.icono[data-icono='panel']::before {
+  mask-size: 100% calc(var(--icono) * .93);
+  -webkit-mask-size: 100% calc(var(--icono) * .93);
+}
+
+/* DIGEI, DIPLI y DIESP son verticales: ocupan 112 de los 120 del lienzo,
+   así que 'contain' los limita por el alto. Aquí basta con agrandar la
+   caja y 'contain' escala solo, sin deformar. Se agranda TAMBIÉN el alto:
+   la máscara no pinta fuera de la caja, y con solo el ancho se cortaría
+   por arriba y por abajo. */
+.icono[data-icono='digei'],
+.icono[data-icono='dipli'],
+.icono[data-icono='diesp'] {
+  width: calc(var(--icono) * 1.16);
+  height: calc(var(--icono) * 1.16);
+}
+
+/* DINCO es apaisado: 112x74 dentro de un lienzo de 120x120. Con 'contain'
+   manda el lienzo cuadrado y el dibujo queda en 28px de alto, frente a los
+   43px de DIGEI, DIPLI y DIESP; por eso se ve pequeño. Se agranda el
+   lienzo por encima de la caja (el margen que se sale es transparente) y
+   se ensancha la caja para que quepa el dibujo. */
+.icono[data-icono='dinco'] {
+  width: calc(var(--icono) * 1.3);
+}
+
+.icono[data-icono='dinco']::before {
+  mask-size: calc(var(--icono) * 1.34) auto;
+  -webkit-mask-size: calc(var(--icono) * 1.34) auto;
+}
+
+.opcion:hover,
+.opcion.activo {
+  filter: brightness(1.14) saturate(1.08);
+  box-shadow:
+    inset 0 2px 4px rgb(255 245 177 / 25%),
+    inset 0 -5px 7px rgb(0 0 0 / 42%),
+    0 0 7px rgb(255 190 25 / 48%);
+}
+
+.opcion:focus-visible {
+  z-index: 7;
+  outline: 2px solid var(--oro-reflejo);
+  outline-offset: -4px;
+}
+
+.opcion--inactiva {
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opcion { transition: none; }
+}
+
+/* Los tres anchos de validación permanecen en una fila. */
+@media (max-width: 1500px) {
+  .menu {
+    --menu-alto: 80px;
+    --marco: 8px;
+    --pieza-alto: 64px;
+    --icono: 42px;
+    --separacion: 7px;
+    --texto: clamp(11px, .85vw, 14px);
+  }
+
+  .opcion { padding-inline: 8px; }
+  .opcion + .opcion { padding-left: calc(8px + var(--conector-profundo)); }
+}
+
+@media (max-width: 1100px) {
+  .menu {
+    --menu-alto: 72px;
+    --marco: 7px;
+    --pieza-alto: 58px;
+    --icono: 35px;
+    --separacion: 5px;
+    --texto: clamp(9px, .82vw, 12px);
+  }
+
+  .opcion { padding-inline: 5px; }
+  .opcion + .opcion { padding-left: calc(5px + var(--conector-profundo)); }
+}
+
+/* Desde aquí las siete piezas ya no caben en una fila. En vez de
+   desplazarlas en horizontal, la rejilla coloca tantas columnas como
+   quepan y las que sobran bajan a la fila siguiente. Ninguna opción se
+   oculta ni se recorta: 'auto-fit' con 'minmax' decide el número de
+   columnas a partir del ancho disponible, sin necesidad de un breakpoint
+   por cada recuento. */
+@media (max-width: 900px) {
+  .menu__marco { height: auto; }
+
+  .menu__interior {
+    height: auto;
+    grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
+    gap: 3px;
+  }
+
+  /* El conector de encaje une piezas contiguas dentro de una fila. Al
+     repartirse en varias, la última de cada fila apuntaría al vacío, así
+     que la separación la hace el hueco de la rejilla: el fondo oscuro del
+     interior asoma por él y las piezas se siguen leyendo sueltas. */
+  .separador { display: none; }
+  .opcion + .opcion { padding-left: 12px; }
+}
+
+/* Columnas estrechas: el rótulo ya no cabe al lado del icono, así que se
+   coloca debajo y la pieza crece en alto lo que necesite. */
+@media (max-width: 520px) {
+  .menu__interior {
+    grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+  }
+
+  .opcion {
+    height: auto;
+    min-height: var(--pieza-alto);
+    flex-direction: column;
+    gap: 5px;
+    padding: 9px 6px;
+  }
+
+  .opcion + .opcion { padding-left: 6px; }
+}

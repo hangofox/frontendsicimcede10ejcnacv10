@@ -1,0 +1,151 @@
+<div class="vista-infraestructura" *ngIf="infraestructuraData as infraestructura">
+
+  <div class="perfil-cabecera">
+    <div class="avatar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+    </div>
+    <div>
+      <h3 class="perfil-nombre">{{ infraestructura.denominacionInfraestructura }}</h3>
+      <p class="perfil-tipo">{{ infraestructura.unidadMilitarDTO.nombreUnidadMilitar }} ({{ infraestructura.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }})</p>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Identificación</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">N.° Inventario</span>
+        <span class="dato-valor">{{ infraestructura.numeroInventarioInfraestructura }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° Activo fijo</span>
+        <span class="dato-valor">{{ infraestructura.numeroActivoFijoInfraestructura }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Unidad militar</span>
+        <span class="dato-valor">{{ infraestructura.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Centro de costo unidad militar</span>
+        <span class="dato-valor">{{ infraestructura.centroCostoUnidadMilitarInfraestructura }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Estado de uso</span>
+        <span class="dato-valor">{{ infraestructura.estadoUsoInfraestructura }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Ubicación</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">País de origen</span>
+        <span class="dato-valor">{{ infraestructura.paisOrigenInfraestructura }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Departamento o estado</span>
+        <span class="dato-valor">{{ infraestructura.departamentoOEstadoOrigenInfraestructura }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Ciudad de origen</span>
+        <span class="dato-valor">{{ infraestructura.ciudadOrigenInfraestructura }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Dirección</span>
+        <span class="dato-valor">{{ infraestructura.direccionInfraestructura }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Latitud</span>
+        <span class="dato-valor">{{ infraestructura.latitudInfraestructura || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Longitud</span>
+        <span class="dato-valor">{{ infraestructura.longitudInfraestructura || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Dimensiones</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Largo</span>
+        <span class="dato-valor">{{ infraestructura.numeroLargoInfraestructura || '-' }} {{ infraestructura.nombreUnidadMedidaLargoInfraestructura }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Anchura</span>
+        <span class="dato-valor">{{ infraestructura.numeroAnchuraInfraestructura || '-' }} {{ infraestructura.nombreUnidadMedidaAnchuraInfraestructura }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Profundidad</span>
+        <span class="dato-valor">{{ infraestructura.numeroProfundidadInfraestructura || '-' }} {{ infraestructura.nombreUnidadMedidaProfundidadInfraestructura }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de pisos</span>
+        <span class="dato-valor">{{ infraestructura.numeroPisosInfraestructura || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Datos técnicos y legales</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Norma sismorresistente</span>
+        <span class="dato-valor">{{ infraestructura.normaSismoresistenteInfraestructura || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Propiedad horizontal</span>
+        <span class="dato-valor">{{ infraestructura.propiedadHorizontalInfraestructura || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Estrato</span>
+        <span class="dato-valor">{{ infraestructura.estratoInfraestructura || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Denominación posterior</span>
+        <span class="dato-valor">{{ infraestructura.denominacionPosteriorInfraestructura || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Datos contables</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de cuenta</span>
+        <span class="dato-valor">{{ infraestructura.numeroCuentaInfraestructura || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de subcuenta</span>
+        <span class="dato-valor">{{ infraestructura.numeroSubcuentaInfraestructura || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Valor contable</span>
+        <span class="dato-valor">{{ infraestructura.valorContableInfraestructura || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de alta</span>
+        <span class="dato-valor">{{ infraestructura.fechaHMSAltaInfraestructura || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de amortización</span>
+        <span class="dato-valor">{{ infraestructura.fechaHMSAmortizacionInfraestructura || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de ingreso</span>
+        <span class="dato-valor">{{ infraestructura.fechaHMSIngresoInfraestructura || 'No registrada' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de modificación</span>
+        <span class="dato-valor">{{ infraestructura.fechaHMSModificacionInfraestructura || 'Sin modificaciones' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-acciones">
+    <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cerrar</button>
+  </div>
+
+</div>

@@ -1,0 +1,363 @@
+<div class="aplicacion-login">
+  <app-cabezote [mostrarUsuario]="false"></app-cabezote>
+
+  <main>
+    <section class="division-login">
+      <div class="consola">
+
+        <svg class="marco" viewBox="0 0 896 477" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="grad-riel-neon" x1="0" y1="0" x2="896" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#661019" />
+              <stop offset=".18" stop-color="#ff1738" />
+              <stop offset=".5" stop-color="#ff4962" />
+              <stop offset=".82" stop-color="#ff1738" />
+              <stop offset="1" stop-color="#661019" />
+            </linearGradient>
+            <linearGradient id="grad-riel-medio" x1="0" y1="0" x2="896" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#35080d" />
+              <stop offset=".3" stop-color="#c8172b" />
+              <stop offset=".7" stop-color="#c8172b" />
+              <stop offset="1" stop-color="#35080d" />
+            </linearGradient>
+            <radialGradient id="grad-nucleo" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#ff1738" stop-opacity=".30" />
+              <stop offset=".55" stop-color="#661019" stop-opacity=".16" />
+              <stop offset="1" stop-color="#020203" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+
+          <!-- === fondo opaco: aisla la consola del fondo del sitio === -->
+          <path class="fondo"
+            d="M106 6 L790 6 Q806 6 816 16 L880 80 Q890 90 890 106 L890 371 Q890 387 880 397 L816 461 Q806 471 790 471 L106 471 Q90 471 80 461 L16 397 Q6 387 6 371 L6 106 Q6 90 16 80 L80 16 Q90 6 106 6 Z" />
+
+          <!-- resplandor ambiental del nucleo central -->
+          <ellipse class="halo-nucleo" cx="448" cy="261" rx="180" ry="140" fill="url(#grad-nucleo)" />
+
+          <!-- === capa 1: riel exterior === -->
+          <path class="riel riel-1"
+            d="M106 6 L790 6 Q806 6 816 16 L880 80 Q890 90 890 106 L890 371 Q890 387 880 397 L816 461 Q806 471 790 471 L106 471 Q90 471 80 461 L16 397 Q6 387 6 371 L6 106 Q6 90 16 80 L80 16 Q90 6 106 6 Z" />
+
+          <!-- === capa 2: riel vinotinto con hombros === -->
+          <path class="riel riel-2"
+            d="M118 22 L300 22 L324 46 L572 46 L596 22 L778 22 Q790 22 798 30 L866 98 Q874 106 874 118 L874 359 Q874 371 866 379 L798 447 Q790 455 778 455 L596 455 L572 431 L324 431 L300 455 L118 455 Q106 455 98 447 L30 379 Q22 371 22 359 L22 118 Q22 106 30 98 L98 30 Q106 22 118 22 Z" />
+
+          <!-- === capa 3: riel medio === -->
+          <path class="riel riel-3"
+            d="M132 38 L292 38 L318 64 L578 64 L604 38 L764 38 Q774 38 781 45 L851 115 Q858 122 858 132 L858 345 Q858 355 851 362 L781 432 Q774 439 764 439 L604 439 L578 413 L318 413 L292 439 L132 439 Q122 439 115 432 L45 362 Q38 355 38 345 L38 132 Q38 122 45 115 L115 45 Q122 38 132 38 Z" />
+
+          <!-- === capa 4: riel oscuro de profundidad === -->
+          <path class="riel riel-5"
+            d="M146 54 L286 54 L314 82 L582 82 L610 54 L750 54 Q758 54 764 60 L836 132 Q842 138 842 146 L842 331 Q842 339 836 345 L764 417 Q758 423 750 423 L610 423 L582 395 L314 395 L286 423 L146 423 Q138 423 132 417 L60 345 Q54 339 54 331 L54 146 Q54 138 60 132 L132 60 Q138 54 146 54 Z" />
+
+          <!-- === capa 5: riel interno con alcoba del encabezado === -->
+          <path class="riel riel-4"
+            d="M366 100 L310 100 L282 72 L166 72 Q160 72 156 76 L76 156 Q72 160 72 166 L72 311 Q72 317 76 321 L156 401 Q160 405 166 405 L223 405 L241 387 L249 387" />
+          <path class="riel riel-4"
+            d="M530 100 L586 100 L614 72 L730 72 Q736 72 740 76 L820 156 Q824 160 824 166 L824 311 Q824 317 820 321 L740 401 Q736 405 730 405 L651 405 L633 387 L625 387" />
+
+          <!-- === destellos sobre el riel interno (riel-4), el trazo mas
+                   luminoso, incluidos los tramos que llegan al recuadro
+                   de recuperacion === -->
+          <g class="chispa-interna">
+            <!-- horizontales superiores -->
+            <path d="M190 72 L262 72" />
+            <path d="M614 72 L686 72" />
+            <!-- diagonales superiores -->
+            <path d="M148 84 L96 136" />
+            <path d="M748 84 L800 136" />
+            <!-- diagonales inferiores -->
+            <path d="M96 341 L148 393" />
+            <path d="M800 341 L748 393" />
+            <!-- horizontales inferiores: terminan justo donde arranca la
+                 diagonal, para que ambos destellos queden encadenados -->
+            <path d="M167 405 L223 405" />
+            <path d="M651 405 L707 405" />
+            <!-- diagonales finales, ya sin llegar al recuadro de recuperacion -->
+            <path d="M223 405 L241 387" />
+            <path d="M651 405 L633 387" />
+          </g>
+
+          <!-- === escalones mecanicos superiores === -->
+          <g class="escalon">
+            <path d="M170 38 L170 22 M204 38 L204 22 M238 38 L238 22" />
+            <path d="M658 38 L658 22 M692 38 L692 22 M726 38 L726 22" />
+            <path d="M324 46 L324 64 M572 46 L572 64" />
+            <path d="M292 38 L292 22 M604 38 L604 22" />
+          </g>
+
+          <!-- === hombros mecanicos: estructura escalonada superior === -->
+          <g class="hombro">
+            <path d="M96 74 L128 42 L214 42 L232 60 L286 60" />
+            <path d="M800 74 L768 42 L682 42 L664 60 L610 60" />
+            <path d="M112 92 L140 64 L206 64 L222 80 L268 80" />
+            <path d="M784 92 L756 64 L690 64 L674 80 L628 80" />
+            <path d="M90 118 L90 168 M806 118 L806 168" />
+            <path d="M106 138 L106 176 M790 138 L790 176" />
+            <path d="M96 402 L128 434 L214 434 L232 416 L286 416" />
+            <path d="M800 402 L768 434 L682 434 L664 416 L610 416" />
+            <path d="M90 359 L90 309 M806 359 L806 309" />
+          </g>
+
+          <!-- === reflejos metalicos cortos === -->
+          <g class="reflejo">
+            <path d="M170 22 L256 22" />
+            <path d="M640 22 L726 22" />
+            <path d="M38 178 L38 250" />
+            <path d="M858 178 L858 250" />
+            <path d="M348 431 L470 431" />
+            <path d="M115 45 L152 82" />
+            <path d="M781 45 L744 82" />
+          </g>
+
+          <!-- === destellos de borde: horizontales, diagonales y verticales,
+                   con su reflejo simetrico en la mitad inferior === -->
+          <g class="chispa">
+            <!-- horizontales superiores -->
+            <path d="M324 46 L406 46" />
+            <path d="M490 46 L572 46" />
+            <!-- diagonales superiores (sobre el bisel del riel-2) -->
+            <path d="M40 88 L88 40" />
+            <path d="M856 88 L808 40" />
+            <!-- horizontales inferiores: reflejo de las superiores -->
+            <path d="M324 431 L406 431" />
+            <path d="M490 431 L572 431" />
+            <!-- diagonales inferiores: reflejo de las superiores -->
+            <path d="M40 389 L88 437" />
+            <path d="M856 389 L808 437" />
+            <!-- verticales laterales, arriba y abajo a cada lado -->
+            <path d="M22 150 L22 215" />
+            <path d="M874 150 L874 215" />
+            <path d="M22 262 L22 327" />
+            <path d="M874 262 L874 327" />
+          </g>
+
+          <!-- === circuitos y conectores === -->
+          <g class="circuito">
+            <path d="M6 142 L22 142 M874 142 L890 142 M6 335 L22 335 M874 335 L890 335" />
+            <path d="M6 168 L22 168 M874 168 L890 168 M6 309 L22 309 M874 309 L890 309" />
+            <path d="M38 96 L66 68 M858 96 L830 68 M38 381 L66 409 M858 381 L830 409" />
+            <path d="M132 38 L132 22 M764 38 L764 22 M132 439 L132 455 M764 439 L764 455" />
+            <path d="M366 82 L392 82 M504 82 L530 82" />
+            <path d="M448 431 L448 447" />
+          </g>
+
+          <!-- === marcas de esquina === -->
+          <g class="marca-esquina">
+            <path d="M72 166 L72 200 M72 166 L106 166" />
+            <path d="M824 166 L824 200 M824 166 L790 166" />
+            <path d="M72 311 L72 277 M72 311 L106 311" />
+            <path d="M824 311 L824 277 M824 311 L790 311" />
+          </g>
+
+          <!-- === recorrido luminoso animado: estela ancha y tenue por detras
+                   + nucleo mas corto, para que el brillo se degrade en lugar
+                   de aparecer como un segmento blanco de bordes duros === -->
+          <path class="pulso-estela"
+            d="M118 22 L300 22 L324 46 L572 46 L596 22 L778 22 Q790 22 798 30 L866 98 Q874 106 874 118 L874 359 Q874 371 866 379 L798 447 Q790 455 778 455 L596 455 L572 431 L324 431 L300 455 L118 455 Q106 455 98 447 L30 379 Q22 371 22 359 L22 118 Q22 106 30 98 L98 30 Q106 22 118 22 Z" />
+          <path class="pulso-recorrido"
+            d="M118 22 L300 22 L324 46 L572 46 L596 22 L778 22 Q790 22 798 30 L866 98 Q874 106 874 118 L874 359 Q874 371 866 379 L798 447 Q790 455 778 455 L596 455 L572 431 L324 431 L300 455 L118 455 Q106 455 98 447 L30 379 Q22 371 22 359 L22 118 Q22 106 30 98 L98 30 Q106 22 118 22 Z" />
+
+          <!-- === carcasa del nucleo LOGIN === -->
+          <g class="carcasa">
+            <!-- linea externa: rectos y biseles con un unico color y peso
+                 aparente identico (los biseles compensan el antialiasing) -->
+            <!-- anillos 1 y 2 (y 170..348 y 179..339): alojan boton e
+                 indicadores; medidas tomadas de la imagen de referencia -->
+            <path class="carcasa-1 recto"
+              d="M356 170.5 L518 170.5 M545.5 198 L545.5 320
+                 M518 347.5 L356 347.5 M328.5 320 L328.5 198" />
+            <path class="carcasa-1 diagonal"
+              d="M518 170.5 L545.5 198 M545.5 320 L518 347.5
+                 M356 347.5 L328.5 320 M328.5 198 L356 170.5" />
+            <path class="carcasa-2 recto"
+              d="M364 179.5 L510 179.5 M534.5 204 L534.5 314
+                 M510 338.5 L364 338.5 M339.5 314 L339.5 204" />
+            <path class="carcasa-2 diagonal"
+              d="M510 179.5 L534.5 204 M534.5 314 L510 338.5
+                 M364 338.5 L339.5 314 M339.5 204 L364 179.5" />
+            <!-- anillo 3: ceñido al boton (x 366..508, y 227..292). Su borde
+                 superior baja a y=218 para dejar la misma holgura respecto a
+                 carcasa-2 que la del lado de los indicadores: 38px arriba
+                 (180->218) y 38px abajo (301->339). -->
+            <path class="carcasa-3-resplandor"
+              d="M359 218 L515 218 L525 228 L525 291 L515 301 L359 301 L349 291 L349 228 Z" />
+            <path class="carcasa-3"
+              d="M359 218 L515 218 L525 228 L525 291 L515 301 L359 301 L349 291 L349 228 Z" />
+          </g>
+
+          <!-- === esquineros de los marcos internos ===
+               siguen el bisel real de cada marco: diagonal en las esquinas
+               cortadas y angulo recto en las esquinas vivas -->
+          <g class="esquineros">
+            <!-- Contorno COMPLETO de cada panel, dibujado solo aqui (el panel
+                 ya no lleva borde CSS): asi rectos y biseles comparten color.
+                 Coordenadas a media rejilla (.5) para caer en 1 px nitido. -->
+            <path class="recto" d="M110.5 180.5 L299.5 180.5 M314.5 195.5 L314.5 329.5
+                                   M299.5 344.5 L110.5 344.5 M95.5 329.5 L95.5 195.5" />
+            <path class="recto" d="M580.5 180.5 L774.5 180.5 M789.5 195.5 L789.5 329.5
+                                   M774.5 344.5 L580.5 344.5 M565.5 329.5 L565.5 195.5" />
+            <!-- Biseles: mismo color; el ancho compensa que a 45 grados el
+                 antialiasing reparte el trazo sobre 1/cos45 = 1.41 px. -->
+            <path class="diagonal" d="M299.5 180.5 L314.5 195.5 M314.5 329.5 L299.5 344.5
+                                      M110.5 344.5 L95.5 329.5 M95.5 195.5 L110.5 180.5" />
+            <path class="diagonal" d="M774.5 180.5 L789.5 195.5 M789.5 329.5 L774.5 344.5
+                                      M580.5 344.5 L565.5 329.5 M565.5 195.5 L580.5 180.5" />
+          </g>
+
+
+          <!-- === carcasa de recuperacion === -->
+          <!-- Hexagono: los laterales terminan en punta (no en lado vertical),
+               y esas puntas caen en y=381.5, el centro vertical del recuadro,
+               que es la misma cota donde queda el vertice de los chevrones.
+               Cierra en y=406, por encima del hombro inferior de riel-3 (413). -->
+          <path class="riel-recuperacion"
+            d="M281 357 L593 357 L609 381.5 L593 406 L281 406 L265 381.5 Z" />
+        </svg>
+
+        <form (ngSubmit)="ingresar()" #formLogin="ngForm" novalidate>
+
+          <header class="encabezado">
+            <span class="triangulo" aria-hidden="true"></span>
+            <span class="insignia" aria-hidden="true">
+              <svg viewBox="0 0 40 44" focusable="false">
+                <path class="insignia-borde" d="M20 2 L37 11 V33 L20 42 L3 33 V11 Z" />
+                <path class="insignia-interior" d="M20 6 L33.5 13 V31 L20 38 L6.5 31 V13 Z" />
+
+                <!-- Luz que recorre el perimetro en sentido horario: arranca en
+                     el vertice superior y va hacia la derecha. pathLength="120"
+                     normaliza el recorrido para poder expresar el guion y su
+                     estela en unidades comodas.
+                     Dos capas: estela larga y tenue detras, nucleo corto y
+                     brillante delante, de modo que el brillo se degrada. -->
+                <path class="insignia-halo3" pathLength="120"
+                  d="M20 2 L37 11 L37 33 L20 42 L3 33 L3 11 Z" />
+                <path class="insignia-halo2" pathLength="120"
+                  d="M20 2 L37 11 L37 33 L20 42 L3 33 L3 11 Z" />
+                <path class="insignia-halo" pathLength="120"
+                  d="M20 2 L37 11 L37 33 L20 42 L3 33 L3 11 Z" />
+                <path class="insignia-estela" pathLength="120"
+                  d="M20 2 L37 11 L37 33 L20 42 L3 33 L3 11 Z" />
+                <path class="insignia-recorrido" pathLength="120"
+                  d="M20 2 L37 11 L37 33 L20 42 L3 33 L3 11 Z" />
+                <!-- Candado centrado en el hexagono (centro y=22): con el arco
+                     arrancando en 16.7 y el cuerpo cerrando en 32.4, el
+                     conjunto ocupa de 11.5 a 32.4, centro 21.95. -->
+                <path class="insignia-arco" d="M16.1 20.6 V16.7 a3.9 3.9 0 0 1 7.8 0 V20.6" />
+                <!-- cuerpo relleno; el segundo subtrazo cala el ojo de la
+                     cerradura con fill-rule evenodd y deja ver el fondo -->
+                <path class="insignia-cuerpo" fill-rule="evenodd"
+                  d="M13.6 20.1 H26.4 A1.9 1.9 0 0 1 28.3 22 V30.5 A1.9 1.9 0 0 1 26.4 32.4
+                     H13.6 A1.9 1.9 0 0 1 11.7 30.5 V22 A1.9 1.9 0 0 1 13.6 20.1 Z
+                     M20 23.1 A2.1 2.1 0 0 0 19.05 27.07 L18.4 30.1 H21.6 L20.95 27.07
+                     A2.1 2.1 0 0 0 20 23.1 Z" />
+              </svg>
+            </span>
+            <span class="titulos">
+              <strong>Acceso</strong>
+              <small>Autenticación segura</small>
+            </span>
+          </header>
+
+          <div class="panel panel-credenciales">
+            <label for="usuario">
+              <svg class="ico" viewBox="3.7 3.7 17.2 17.2" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="8" r="3.6" />
+                <path d="M4.8 20c0-3.8 3.4-5.8 7.2-5.8s7.2 2 7.2 5.8" />
+              </svg>
+              <span>Usuario</span>
+            </label>
+            <input id="usuario" name="usuario" [(ngModel)]="usuario" required autocomplete="username"
+              placeholder="Ingrese su usuario">
+
+            <label for="contrasena">
+              <svg class="ico" viewBox="3.2 2.9 17.7 17.7" aria-hidden="true" focusable="false">
+                <rect x="5" y="10.5" width="14" height="9.5" rx="1.6" />
+                <path d="M8.2 10.5V7.4a3.8 3.8 0 0 1 7.6 0v3.1" />
+                <!-- ojo de la cerradura: circulo y ranura, relleno -->
+                <g class="ico-cerradura">
+                  <circle cx="12" cy="13.9" r="1.25" />
+                  <path d="M11.3 14.8 h1.4 l-.32 3.1 h-.76 Z" />
+                </g>
+              </svg>
+              <span>Contraseña</span>
+            </label>
+            <div class="campo">
+              <input id="contrasena" name="contrasena" [(ngModel)]="contrasena" required
+                [type]="mostrarContrasena ? 'text' : 'password'" autocomplete="current-password"
+                placeholder="Ingrese su contraseña">
+              <button type="button" class="ojo" (click)="alternarContrasena()"
+                [attr.aria-pressed]="mostrarContrasena"
+                [attr.aria-label]="mostrarContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                <svg viewBox="1.0 4.2 22 15.6" aria-hidden="true" focusable="false">
+                  <path d="M1.8 12S5.8 5.4 12 5.4 22.2 12 22.2 12 18.2 18.6 12 18.6 1.8 12 1.8 12Z" />
+                  <circle cx="12" cy="12" r="2.9" />
+                  @if (mostrarContrasena) { <path d="M4 4 L20 20" /> }
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="nucleo">
+            <button class="ingresar" type="submit" [class.cargando]="cargando" [disabled]="formLogin.invalid || cargando">
+              <span class="ingresar-texto">{{ cargando ? 'Ingreso' : 'Login' }}</span>
+            </button>
+            <span class="puntos" [class.cargando]="cargando" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i>
+            </span>
+          </div>
+
+          <div class="panel panel-captcha">
+            <span class="rotulo">Código de verificación</span>
+            <div class="fila-captcha">
+              <span class="marco-icono" aria-hidden="true">
+                <svg class="ico ico-escudo" viewBox="1.8 1.8 20.4 20.4" focusable="false">
+                  <path d="M12 2.6 19.4 5.6v6.2c0 4.3-3.1 7.4-7.4 9.6-4.3-2.2-7.4-5.3-7.4-9.6V5.6Z" />
+                  <path d="M12 8.6v5.2M9.4 11.2h5.2" />
+                </svg>
+              </span>
+              <output aria-label="Código de verificación">{{ codigoCaptcha }}</output>
+              <button type="button" class="recargar" (click)="actualizarCaptcha()"
+                aria-label="Generar otro código de verificación">
+                <svg viewBox="2.7 2.7 18.6 18.6" aria-hidden="true" focusable="false">
+                  <path d="M20.5 12a8.5 8.5 0 0 0-8.5-8.5 9.2 9.2 0 0 0-6.4 2.6L3.5 8.4" />
+                  <path d="M3.5 3.9v4.5H8" />
+                  <path d="M3.5 12a8.5 8.5 0 0 0 8.5 8.5 9.2 9.2 0 0 0 6.4-2.6l2.1-1.9" />
+                  <path d="M20.5 20.1v-4.5H16" />
+                </svg>
+              </button>
+            </div>
+            <label class="oculto" for="captcha">Repita el código mostrado</label>
+            <input id="captcha" name="captcha" [(ngModel)]="captcha" required maxlength="5" autocomplete="off"
+              placeholder="Ingrese el código mostrado">
+            <span class="puntos puntos-captcha" [class.cargando]="cargando" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i>
+            </span>
+          </div>
+
+          <div class="recuperacion">
+            <svg class="chevron" viewBox="0 0 30 26" aria-hidden="true" focusable="false">
+              <path d="M14 4 L6 13 L14 22 M25 4 L17 13 L25 22" />
+            </svg>
+            <span class="recuperacion-centro">
+              <span class="recuperacion-texto">¿Olvidó la contraseña?</span>
+              <a routerLink="/recuperacion-contrasena-acceso-usuario"><i aria-hidden="true">‹</i>Recuperar<i aria-hidden="true">›</i></a>
+            </span>
+            <svg class="chevron" viewBox="0 0 30 26" aria-hidden="true" focusable="false">
+              <path d="M16 4 L24 13 L16 22 M5 4 L13 13 L5 22" />
+            </svg>
+          </div>
+
+          @if (mensajeError) {
+            <p class="error" role="alert">{{ mensajeError }}</p>
+          }
+
+        </form>
+      </div>
+    </section>
+
+    <section class="division-pie-pagina">
+      <app-pie-pagina></app-pie-pagina>
+    </section>
+  </main>
+</div>

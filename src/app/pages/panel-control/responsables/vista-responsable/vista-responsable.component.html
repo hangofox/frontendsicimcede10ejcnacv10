@@ -1,0 +1,80 @@
+<div class="vista-responsable" *ngIf="responsableData as responsable">
+
+  <div class="perfil-cabecera">
+    <div class="avatar">
+      <img *ngIf="previewUrlFotoResponsable" [src]="previewUrlFotoResponsable" (error)="onErrorFotoResponsable()" alt="Foto del responsable">
+      <svg *ngIf="!previewUrlFotoResponsable" xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+    <div>
+      <h3 class="perfil-nombre">{{ responsable.nombresResponsable }} {{ responsable.primerApellidoResponsable }} {{ responsable.segundoApellidoResponsable }}</h3>
+      <p class="perfil-tipo">{{ responsable.gradoResponsable }} — {{ responsable.unidadMilitarDTO.nombreUnidadMilitar }} ({{ responsable.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }})</p>
+      <span class="badge-estado" [class.badge-activo]="responsable.estadoResponsable === 'ACTIVO'" [class.badge-inactivo]="responsable.estadoResponsable !== 'ACTIVO'">
+        {{ responsable.estadoResponsable }}
+      </span>
+    </div>
+  </div>
+
+  <div class="datos-grid">
+    <div class="dato-grupo">
+      <span class="dato-label">Usuario de red</span>
+      <span class="dato-valor">{{ responsable.usuarioRedResponsable }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Tipo de documento</span>
+      <span class="dato-valor">{{ responsable.tipoDocumentoIdentificacionDTO.nombreTipoDocumentoIdentificacion }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Número de documento</span>
+      <span class="dato-valor">{{ responsable.numeroDocumentoIdentificacionResponsable }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Lugar de expedición</span>
+      <span class="dato-valor">{{ responsable.lugarExpedicionDocumentoIdentificacionResponsable }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Arma</span>
+      <span class="dato-valor">{{ responsable.armaResponsable || 'No registrada' }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Sexo</span>
+      <span class="dato-valor">{{ responsable.sexoResponsable }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Dirección</span>
+      <span class="dato-valor">{{ responsable.direccionResponsable }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Celular</span>
+      <span class="dato-valor">{{ responsable.movilResponsable }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Correo personal</span>
+      <span class="dato-valor">{{ responsable.correoElectronicoPersonalResponsable }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Correo institucional</span>
+      <span class="dato-valor">{{ responsable.correoElectronicoInstitucionalResponsable || 'No registrado' }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Ciudad de origen</span>
+      <span class="dato-valor">{{ responsable.ciudadOrigenResponsable }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Número de curso</span>
+      <span class="dato-valor">{{ responsable.numeroCursoResponsable || 'No registrado' }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Escalafón de antigüedad</span>
+      <span class="dato-valor">{{ responsable.escalafonAntiguedadResponsable || 'No registrado' }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Fecha de ingreso</span>
+      <span class="dato-valor">{{ responsable.fechaHMSIngresoResponsable || 'No registrada' }}</span>
+    </div>
+  </div>
+
+  <div class="vista-acciones">
+    <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cerrar</button>
+  </div>
+
+</div>

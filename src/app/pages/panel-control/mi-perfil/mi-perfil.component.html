@@ -1,0 +1,207 @@
+<h2 class="page-title">Mi perfil</h2>
+
+<section class="page-card panel-mi-perfil" *ngIf="miPerfilForm" aria-labelledby="titulo-mi-perfil">
+
+  <p class="panel-subtitulo" id="titulo-mi-perfil">Consulta y actualización de los datos del usuario que ha iniciado sesión.</p>
+
+  <div class="alerta-error" *ngIf="mensajeError">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    {{ mensajeError }}
+  </div>
+
+  <div class="alerta-cargando" *ngIf="cargandoDatos">Cargando datos del perfil...</div>
+
+  <form [formGroup]="miPerfilForm" (ngSubmit)="accionModificarRegistro()">
+
+    <!-- CREDENCIALES DE ACCESO -->
+    <div class="form-card">
+      <div class="form-card-header"><h3>Credenciales de Acceso</h3></div>
+      <div class="form-card-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nickname (*)</label>
+            <input type="text" formControlName="nicknameUsuario">
+          </div>
+          <div class="form-group"></div>
+          <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" formControlName="passwordUsuario1" placeholder="••••••••">
+          </div>
+          <div class="form-group">
+            <label>Confirmar contraseña</label>
+            <input type="password" formControlName="passwordUsuario2" placeholder="••••••••">
+          </div>
+        </div>
+        <div class="nota-politicas">
+          Políticas de contraseña: mínimo 8 caracteres, al menos una mayúscula y un número. Déjela en blanco si no desea cambiarla.
+        </div>
+      </div>
+    </div>
+
+    <!-- IDENTIFICACIÓN PERSONAL -->
+    <div class="form-card">
+      <div class="form-card-header"><h3>Identificación Personal</h3></div>
+      <div class="form-card-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Tipo de documento</label>
+            <input type="text" formControlName="nombreTipoDocumentoIdentificacion">
+          </div>
+          <div class="form-group">
+            <label>Número de documento</label>
+            <input type="text" formControlName="numeroDocumentoIdentificacionUsuario">
+          </div>
+          <div class="form-group">
+            <label>Lugar de expedición</label>
+            <input type="text" formControlName="lugarExpedicionDocumentoIdentificacionUsuario">
+          </div>
+          <div class="form-group">
+            <label>Grado</label>
+            <input type="text" formControlName="gradoUsuario">
+          </div>
+          <div class="form-group">
+            <label>Nombres</label>
+            <input type="text" formControlName="nombresUsuario">
+          </div>
+          <div class="form-group">
+            <label>Primer apellido</label>
+            <input type="text" formControlName="primerApellidoUsuario">
+          </div>
+          <div class="form-group">
+            <label>Segundo apellido</label>
+            <input type="text" formControlName="segundoApellidoUsuario">
+          </div>
+          <div class="form-group">
+            <label>Fecha de nacimiento</label>
+            <input type="datetime-local" formControlName="fechaHMSNacimientoUsuario">
+          </div>
+          <div class="form-group">
+            <label>Sexo</label>
+            <input type="text" formControlName="sexoUsuario">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATOS DE CONTACTO -->
+    <div class="form-card">
+      <div class="form-card-header"><h3>Datos de Contacto</h3></div>
+      <div class="form-card-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Dirección (*)</label>
+            <input type="text" formControlName="direccionUsuario">
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input type="text" formControlName="telefonoUsuario">
+          </div>
+          <div class="form-group">
+            <label>Celular (*)</label>
+            <input type="text" formControlName="movilUsuario">
+          </div>
+          <div class="form-group">
+            <label>Correo personal (*)</label>
+            <input type="text" formControlName="correoElectronicoPersonalUsuario">
+          </div>
+          <div class="form-group">
+            <label>Correo institucional</label>
+            <input type="text" formControlName="correoElectronicoInstitucionalUsuario">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORIGEN Y CLASIFICACIÓN -->
+    <div class="form-card">
+      <div class="form-card-header"><h3>Origen y Clasificación</h3></div>
+      <div class="form-card-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>País de origen</label>
+            <input type="text" formControlName="nombrePaisMundoOrigenUsuario">
+          </div>
+          <div class="form-group">
+            <label>Departamento / Estado de origen</label>
+            <input type="text" formControlName="nombreDepartamentooEstadoMundoOrigenUsuario">
+          </div>
+          <div class="form-group">
+            <label>Ciudad de origen</label>
+            <input type="text" formControlName="nombreCiudadMundoOrigenUsuario">
+          </div>
+          <div class="form-group">
+            <label>Tipo de usuario</label>
+            <input type="text" formControlName="nombreTipoUsuario">
+          </div>
+          <div class="form-group">
+            <label>Fecha de ingreso</label>
+            <input type="datetime-local" formControlName="fechaHMSIngresoUsuario">
+          </div>
+          <div class="form-group">
+            <label>Estado</label>
+            <input type="text" formControlName="estadoUsuario">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOTO DE PERFIL -->
+    <div class="form-card">
+      <div class="form-card-header"><h3>Foto de Perfil (*.jpg, *.gif, *.png, *.bmp — Máximo 2 MB)</h3></div>
+      <div class="form-card-body">
+        <div class="foto-upload-area">
+          <div class="avatar-grande">
+            <img *ngIf="previewUrlFotoUsuario" [src]="previewUrlFotoUsuario" (error)="onErrorPreviewFotoUsuario()" alt="Foto de perfil">
+            <svg *ngIf="!previewUrlFotoUsuario" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div class="foto-upload-controles">
+            <label class="btn-archivo" *ngIf="!isSelectedFileUserPhoto">
+              <input type="file" accept="image/*" (change)="onSelectFileUserPhoto($event)" style="display:none">
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              {{ previewUrlFotoUsuario ? 'Cambiar foto' : 'Seleccionar archivo' }}
+            </label>
+            <button type="button" class="btn-quitar" *ngIf="isSelectedFileUserPhoto" (click)="onRemoveFileUserPhoto()">Quitar</button>
+            <button type="button" class="btn-quitar" *ngIf="!isSelectedFileUserPhoto && previewUrlFotoUsuario" (click)="confirmarEliminarFotoUsuario()">Quitar foto</button>
+            <span class="foto-nombre" *ngIf="selectedFileUserPhoto">{{ selectedFileUserPhoto.name }}</span>
+            <span class="foto-nombre" *ngIf="!selectedFileUserPhoto && nombreArchivoFotoExtensionoFormatoUsuario">{{ nombreArchivoFotoExtensionoFormatoUsuario }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACCIONES -->
+    <div class="form-acciones">
+      <button type="submit" class="btn-sicim btn-primario" [disabled]="miPerfilForm.invalid">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Modificar
+      </button>
+    </div>
+
+  </form>
+</section>
+
+<!-- CONFIRMACIÓN DE ELIMINACIÓN DE FOTO -->
+<div class="confirmacion-overlay" *ngIf="banderaConfirmacionEliminacionFoto">
+  <div class="confirmacion-caja">
+    <div class="confirmacion-icono">
+      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <h4 class="confirmacion-titulo">Confirmación de eliminación</h4>
+    <p class="confirmacion-mensaje">¿Está seguro de que desea eliminar su foto de perfil?</p>
+    <div class="confirmacion-botones">
+      <button type="button" class="btn-confirmacion btn-si" (click)="siEliminarFotoUsuario()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Sí, eliminar
+      </button>
+      <button type="button" class="btn-confirmacion btn-no" (click)="noEliminarFotoUsuario()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        No, cancelar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-global" *ngIf="toastMensaje" [class.toast-exito]="toastTipo === 'exito'" [class.toast-error]="toastTipo === 'error'">
+  <span>{{ toastMensaje }}</span>
+</div>

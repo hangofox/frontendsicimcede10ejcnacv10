@@ -1,0 +1,204 @@
+.pie {
+  position: relative;
+  width: 100%;
+  max-width: 892px;
+  aspect-ratio: 736 / 339.5;
+  flex: 0 0 auto;
+  margin-left: auto;
+  margin-right: 0;
+  transform: translateY(0);
+  background-color: transparent;
+  background-image: url('../../../assets/images/imagen_pie_pagina_01.png');
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: 100% 100%;
+  color: #fff;
+  text-align: center;
+}
+
+.iconos {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  min-height: 0;
+  padding: 0;
+}
+
+.escudo {
+  position: absolute;
+  display: block;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+  transition:
+    transform .32s cubic-bezier(.2, .7, .3, 1),
+    filter .32s ease;
+  will-change: transform, filter;
+  /* sombra fija que recorta el escudo contra el resplandor rojo del fondo */
+  filter:
+    drop-shadow(0 1px 2px rgb(0 0 0 / 80%))
+    drop-shadow(0 0 7px rgb(255 60 84 / 26%));
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* Brillo que recorre el escudo en bucle permanente. La banda de luz viaja
+     dentro de un degradado tres veces mas ancho que la caja, y queda fuera de
+     la zona visible al principio y al final del ciclo, de modo que el bucle
+     no tiene salto. La mascara usa el alfa del propio PNG para que la luz
+     siga la silueta del escudo. */
+  &::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+    pointer-events: none;
+    /* Banda recta y vertical: conserva el 100% de la altura y solo cambia su
+       posicion horizontal, de izquierda a derecha. */
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(255 255 255 / 7%) 16%,
+      rgb(255 255 255 / 18%) 30%,
+      rgb(255 255 255 / 34%) 42%,
+      rgb(255 255 255 / 55%) 50%,
+      rgb(255 255 255 / 34%) 58%,
+      rgb(255 255 255 / 18%) 70%,
+      rgb(255 255 255 / 7%) 84%,
+      transparent 100%
+    );
+    background-size: 38% 100%;
+    background-position: -48% 0;
+    background-repeat: no-repeat;
+    mask-image: var(--escudo-mascara);
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-image: var(--escudo-mascara);
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    animation: barrido-escudo 5s linear infinite;
+  }
+}
+
+/* cada escudo se enmascara con su propia imagen, y arranca desfasado para que
+   la luz no pase por los cuatro a la vez */
+.escudo-ejercito {
+  --escudo-mascara: url('../../../assets/images/imagen_footer_escudo_ejercito_nacional_01.png');
+
+  &::after { animation-delay: 0s; }
+}
+
+.escudo-caocc {
+  --escudo-mascara: url('../../../assets/images/imagen_footer_escudo_caocc_01.png');
+
+  &::after { animation-delay: 1.25s; }
+}
+
+.escudo-baicc {
+  --escudo-mascara: url('../../../assets/images/imagen_footer_escudo_baicc_01.png');
+
+  &::after { animation-delay: 2.5s; }
+}
+
+.escudo-jempp {
+  --escudo-mascara: url('../../../assets/images/imagen_footer_escudo_jempp_cede10_01.png');
+
+  &::after { animation-delay: 3.75s; }
+}
+
+/* al pasar el cursor crece levemente y se ilumina; sube de capa para quedar
+   por encima de los escudos vecinos y del texto circular */
+.escudo:hover,
+.escudo:focus-visible {
+  z-index: 3;
+  transform: translate(-50%, -50%) scale(1.08);
+  filter:
+    drop-shadow(0 2px 4px rgb(0 0 0 / 85%))
+    drop-shadow(0 0 8px rgb(255 235 240 / 38%))
+    drop-shadow(0 0 16px rgb(255 60 84 / 52%));
+}
+
+@keyframes barrido-escudo {
+  from { background-position: -48% 0; }
+  to { background-position: 148% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .escudo {
+    transition: none;
+  }
+
+  .escudo::after {
+    animation: none;
+    opacity: 0;
+  }
+
+  .escudo:hover,
+  .escudo:focus-visible {
+    transform: translate(-50%, -50%);
+  }
+}
+
+.escudo-ejercito {
+  top: 17.7%;
+  left: 50%;
+  width: 13%;
+  height: 32%;
+}
+
+/* object-fit: contain en lugar de fill: la caja mide 0.881 de relacion y el
+   escudo BAICC es 1.028, asi que con fill se aplastaba un 14% en horizontal.
+   Con contain conserva su proporcion dentro de la misma caja y se ve nitido. */
+.escudo-caocc {
+  top: 32.3%;
+  left: 33.04%;
+  width: 13%;
+  height: 32%;
+  max-height: 32%;
+}
+
+.escudo-baicc {
+  top: 32.3%;
+  left: 66.03%;
+  width: 13%;
+  height: 32%;
+  max-height: 32%;
+}
+
+.escudo-jempp {
+  top: 53.4%;
+  left: 50.08%;
+  width: 13%;
+  height: 32%;
+}
+
+.legal-circular {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+
+  path {
+    fill: none;
+  }
+
+  text {
+    fill: #b8b8b8;
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    font-stretch: condensed;
+    letter-spacing: 0;
+    text-shadow:
+      0 1px 1px #000,
+      0 0 3px rgb(184 184 184 / 20%);
+  }
+}

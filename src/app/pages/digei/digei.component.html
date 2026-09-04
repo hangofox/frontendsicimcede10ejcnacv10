@@ -1,0 +1,38 @@
+<section class="digei-futurista" aria-labelledby="titulo-digei">
+  <header class="bienvenida">
+    <img class="bienvenida__logo" src="assets/images/imagen_digei_01.png" alt="" width="76" height="76">
+    <div class="bienvenida__texto">
+      <h1 id="titulo-digei">Dirección de Gestión de Ingenieros</h1>
+    </div>
+  </header>
+
+  <div class="digei-escena" aria-label="Procesos de la Dirección de Gestión de Ingenieros">
+    <div class="digei-engranajes">
+      <div class="digei-pinon digei-pinon--central">
+        <div class="digei-pinon__rotor" aria-hidden="true">
+          <img class="digei-pinon__anillo"
+               src="assets/images/imagen_anillo_pinon_central_01.png"
+               alt="" width="482" height="482">
+        </div>
+        <img class="digei-pinon__contenido"
+             src="assets/images/imagen_circulo_proceso_digei_01.png"
+             alt="Proceso DIGEI" width="400" height="400">
+      </div>
+
+      <ul class="digei-areas">
+        @for (area of areas; track area.id) {
+          <li class="digei-pinon digei-pinon--satelite" [attr.data-posicion]="area.posicion">
+            <div class="digei-pinon__rotor" aria-hidden="true">
+              <img class="digei-pinon__anillo"
+                   [src]="anilloSatelite"
+                   alt="" width="350" height="350">
+            </div>
+            <img class="digei-pinon__contenido"
+                 [src]="area.imagen" [alt]="area.nombre"
+                 width="482" height="482">
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,275 @@
+<h2 class="page-title">Solicitudes de Infraestructuras</h2>
+
+<section class="page-card panel-solicitudes-infraestructuras" [formGroup]="solicitudesInfraestructurasForm" aria-labelledby="titulo-solicitudes-infraestructuras">
+
+  <!-- BARRA DE BÚSQUEDA Y ACCIONES -->
+  <div class="barra-acciones">
+    <input
+      type="text"
+      formControlName="ctextPalabraClave"
+      placeholder="Buscar por código radicado, nombre o unidad militar..."
+      (keyup.enter)="buscar()">
+
+    <button type="button" class="btn-sicim btn-buscar" (click)="buscar()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Buscar
+    </button>
+
+    <select formControlName="cboxSiglaoAcronimoUnidadMilitarSeleccionado" (change)="buscar()">
+      <option value="">TODAS LAS UNIDADES MILITARES</option>
+      @for (unidadMilitar of unidadesMilitares; track unidadMilitar.idUnidadMilitar) {
+        <option [value]="unidadMilitar.siglaoAcronimoUnidadMilitar">{{ unidadMilitar.siglaoAcronimoUnidadMilitar }}</option>
+      }
+    </select>
+
+    <button type="button" class="btn-sicim btn-nuevo" (click)="abrirModalAddUpdDel('guardar')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Nueva Solicitud
+    </button>
+  </div>
+
+  <!-- TABLA -->
+  <div class="tabla-contenedor">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Código radicado</th>
+          <th>Unidad militar</th>
+          <th>Nombre de la solicitud</th>
+          <th>Tipo de solicitud</th>
+          <th>Fecha de solicitud</th>
+          <th class="th-check" title="Dispensario">Dispensario</th>
+          <th class="th-check" title="Batallón">Batallón</th>
+          <th class="th-check" title="Brigada">Brigada</th>
+          <th class="th-check" title="División">División</th>
+          <th class="th-check" title="Departamento">Departamento</th>
+          <th class="th-check" title="Jefatura">Jefatura</th>
+          <th class="th-check" title="Comando">Comando</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (solicitudInfraestructura of solicitudesInfraestructuras; track solicitudInfraestructura.idSolicitudInfraestructura; let i = $index) {
+          <tr>
+            <td>{{ i + 1 + (paginaActual * tandaNumeroRegistrosporPagina) }}</td>
+            <td>{{ solicitudInfraestructura.codigoRadicadoSolicitudInfraestructura }}</td>
+            <td>{{ solicitudInfraestructura.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</td>
+            <td>{{ solicitudInfraestructura.nombreSolicitudInfraestructura }}</td>
+            <td>{{ solicitudInfraestructura.tipoSolicitudInfraestructuraDTO.nombreTipoSolicitudInfraestructura }}</td>
+            <td>{{ solicitudInfraestructura.fechaHMSSolicitudInfraestructura }}</td>
+            <td class="celda-check">
+              @switch (obtenerEstadoNivelListado(solicitudInfraestructura, 'DISPENSARIO')) {
+                @case ('chulo') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#16a34a"><circle cx="12" cy="12" r="10"/><path d="M8.3 12.3l2.6 2.6 5-5.1" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                }
+                @case ('x') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#dc2626"><circle cx="12" cy="12" r="10"/><path d="M9 9l6 6M15 9l-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+                }
+                @default {
+                  <svg class="celda-no-aplica-icono" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.9" y1="4.9" x2="19.1" y2="19.1"/></svg>
+                }
+              }
+            </td>
+            <td class="celda-check">
+              @switch (obtenerEstadoNivelListado(solicitudInfraestructura, 'BATALLON')) {
+                @case ('chulo') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#16a34a"><circle cx="12" cy="12" r="10"/><path d="M8.3 12.3l2.6 2.6 5-5.1" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                }
+                @case ('x') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#dc2626"><circle cx="12" cy="12" r="10"/><path d="M9 9l6 6M15 9l-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+                }
+                @default {
+                  <svg class="celda-no-aplica-icono" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.9" y1="4.9" x2="19.1" y2="19.1"/></svg>
+                }
+              }
+            </td>
+            <td class="celda-check">
+              @switch (obtenerEstadoNivelListado(solicitudInfraestructura, 'BRIGADA')) {
+                @case ('chulo') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#16a34a"><circle cx="12" cy="12" r="10"/><path d="M8.3 12.3l2.6 2.6 5-5.1" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                }
+                @case ('x') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#dc2626"><circle cx="12" cy="12" r="10"/><path d="M9 9l6 6M15 9l-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+                }
+                @default {
+                  <svg class="celda-no-aplica-icono" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.9" y1="4.9" x2="19.1" y2="19.1"/></svg>
+                }
+              }
+            </td>
+            <td class="celda-check">
+              @switch (obtenerEstadoNivelListado(solicitudInfraestructura, 'DIVISION')) {
+                @case ('chulo') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#16a34a"><circle cx="12" cy="12" r="10"/><path d="M8.3 12.3l2.6 2.6 5-5.1" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                }
+                @case ('x') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#dc2626"><circle cx="12" cy="12" r="10"/><path d="M9 9l6 6M15 9l-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+                }
+                @default {
+                  <svg class="celda-no-aplica-icono" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.9" y1="4.9" x2="19.1" y2="19.1"/></svg>
+                }
+              }
+            </td>
+            <td class="celda-check">
+              @switch (obtenerEstadoNivelListado(solicitudInfraestructura, 'DEPARTAMENTO')) {
+                @case ('chulo') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#16a34a"><circle cx="12" cy="12" r="10"/><path d="M8.3 12.3l2.6 2.6 5-5.1" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                }
+                @case ('x') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#dc2626"><circle cx="12" cy="12" r="10"/><path d="M9 9l6 6M15 9l-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+                }
+                @default {
+                  <svg class="celda-no-aplica-icono" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.9" y1="4.9" x2="19.1" y2="19.1"/></svg>
+                }
+              }
+            </td>
+            <td class="celda-check">
+              @switch (obtenerEstadoNivelListado(solicitudInfraestructura, 'JEFATURA')) {
+                @case ('chulo') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#16a34a"><circle cx="12" cy="12" r="10"/><path d="M8.3 12.3l2.6 2.6 5-5.1" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                }
+                @case ('x') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#dc2626"><circle cx="12" cy="12" r="10"/><path d="M9 9l6 6M15 9l-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+                }
+                @default {
+                  <svg class="celda-no-aplica-icono" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.9" y1="4.9" x2="19.1" y2="19.1"/></svg>
+                }
+              }
+            </td>
+            <td class="celda-check">
+              @switch (obtenerEstadoNivelListado(solicitudInfraestructura, 'COMANDO')) {
+                @case ('chulo') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#16a34a"><circle cx="12" cy="12" r="10"/><path d="M8.3 12.3l2.6 2.6 5-5.1" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                }
+                @case ('x') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#dc2626"><circle cx="12" cy="12" r="10"/><path d="M9 9l6 6M15 9l-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+                }
+                @default {
+                  <svg class="celda-no-aplica-icono" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.9" y1="4.9" x2="19.1" y2="19.1"/></svg>
+                }
+              }
+            </td>
+            <td>
+              <div class="acciones-celda">
+                <button type="button" class="btn-accion btn-ver" title="Ver" (click)="abrirModalVista(solicitudInfraestructura)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+
+                <button type="button" class="btn-accion btn-editar" title="Modificar" (click)="abrirModalAddUpdDel('modificar', solicitudInfraestructura)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+
+                <button type="button" class="btn-accion btn-eliminar" title="Eliminar" (click)="abrirModalAddUpdDel('eliminar', solicitudInfraestructura)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                </button>
+
+                <button type="button" class="btn-accion btn-integrantes" title="Integrantes de la solicitud" (click)="abrirModalIntegrantes(solicitudInfraestructura)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M4 20v-1a5 5 0 0 1 5-5h0a5 5 0 0 1 4.9 4"/><path d="M16 3h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-7"/><path d="M17 8h2"/><path d="M17 12h2"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="14" class="tabla-vacia">No se encontraron solicitudes de infraestructuras con los filtros aplicados.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PAGINACIÓN -->
+  <div class="paginacion">
+    <div class="paginacion-info">
+      <span>Registros por página:</span>
+      <select formControlName="cboxTandaNumeroRegistrosporPaginaSeleccionado" (change)="seleccionarTandaNumeroRegistrosporPagina()">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+      <span class="paginacion-total">{{ totalRegistros }} solicitudes de infraestructuras en total</span>
+    </div>
+    <div class="paginacion-controles">
+      <button type="button" class="btn-pag" [disabled]="paginaActual === 0" (click)="cambiarPagina(paginaActual - 1)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <span class="paginacion-texto">{{ paginaActual + 1 }} / {{ calcularTotalPaginas() }}</span>
+      <button type="button" class="btn-pag" [disabled]="paginaActual >= calcularTotalPaginas() - 1" (click)="cambiarPagina(paginaActual + 1)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+</section>
+
+<!-- MODAL: CREAR / MODIFICAR / ELIMINAR -->
+@if (modalAddUpdDelVisible) {
+  <div class="modal-overlay" (click)="cerrarModalAddUpdDel()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>
+          @if (modalModo === 'guardar') { Nueva solicitud de infraestructura }
+          @if (modalModo === 'modificar') { Modificar solicitud de infraestructura }
+          @if (modalModo === 'eliminar') { Eliminar solicitud de infraestructura }
+        </h3>
+        <button type="button" class="modal-cerrar" (click)="cerrarModalAddUpdDel()" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-cuerpo">
+        <app-add-upd-del-solicitud-infraestructura
+          [modo]="modalModo"
+          [solicitudInfraestructuraData]="solicitudInfraestructuraSeleccionada"
+          [unidadesMilitares]="unidadesMilitares"
+          [tiposSolicitudesInfraestructuras]="tiposSolicitudesInfraestructuras"
+          [infraestructuras]="infraestructuras"
+          (cerrarModal)="cerrarModalAddUpdDel()"
+          (guardar)="guardarSolicitudInfraestructura($event)"
+          (eliminar)="eliminarSolicitudInfraestructura($event)">
+        </app-add-upd-del-solicitud-infraestructura>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL: VISTA -->
+@if (modalVistaVisible) {
+  <div class="modal-overlay" (click)="cerrarModalVista()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Detalle de la solicitud de infraestructura</h3>
+        <button type="button" class="modal-cerrar" (click)="cerrarModalVista()" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-cuerpo">
+        <app-vista-solicitud-infraestructura [solicitudInfraestructuraData]="solicitudInfraestructuraSeleccionada" (cerrarModal)="cerrarModalVista()"></app-vista-solicitud-infraestructura>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL: INTEGRANTES DE LA SOLICITUD -->
+@if (modalIntegrantesVisible) {
+  <div class="modal-overlay" (click)="cerrarModalIntegrantes()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Integrantes de la solicitud de infraestructura</h3>
+        <button type="button" class="modal-cerrar" (click)="cerrarModalIntegrantes()" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-cuerpo">
+        <app-listado-integrantes-documentos-solic-infraest [solicitudInfraestructura]="solicitudInfraestructuraParaIntegrantes"></app-listado-integrantes-documentos-solic-infraest>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- TOAST -->
+@if (toastMensaje) {
+  <div class="toast-global" [class.toast-exito]="toastTipo === 'exito'" [class.toast-error]="toastTipo === 'error'">
+    <span>{{ toastMensaje }}</span>
+  </div>
+}

@@ -1,0 +1,50 @@
+<div class="privilegios-contenido" *ngIf="privilegiosForm" [formGroup]="privilegiosForm">
+
+  <div class="usuario-seleccionado" *ngIf="usuarioData">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span><strong>{{ usuarioData.nicknameUsuario }}</strong> — {{ usuarioData.nombresUsuario }} {{ usuarioData.primerApellidoUsuario }} — {{ usuarioData.tipoUsuarioDTO.nombreTipoUsuario }}</span>
+  </div>
+
+  <div class="nota-info" *ngIf="!esSuperAdministrador">
+    Datos simulados: marque los privilegios que desea habilitar para este usuario.
+  </div>
+  <div class="nota-info" *ngIf="esSuperAdministrador">
+    Este es el Super Administrador del sistema: sus privilegios no se pueden modificar, para garantizar siempre el acceso al sistema.
+  </div>
+
+  <div class="tabla-privilegios">
+    <div class="privilegio-fila privilegio-fila-header">
+      <div class="col-funcionalidad">Funcionalidad</div>
+      <div class="col-rol">Rol / Acción</div>
+      <div class="col-check">Acceso</div>
+    </div>
+
+    <div class="privilegio-fila fila-maestra">
+      <div class="col-funcionalidad"><strong>Todas las funcionalidades y roles</strong></div>
+      <div class="col-rol"></div>
+      <div class="col-check">
+        <input type="checkbox" formControlName="checkboxSeleccionarTodos" (change)="onCambioSeleccionarTodos()">
+      </div>
+    </div>
+
+    <ng-container *ngFor="let grupo of funcionalidadesConRoles">
+      <div class="privilegio-fila" *ngFor="let rol of grupo.roles; let ri = index">
+        <div class="col-funcionalidad">
+          <span *ngIf="ri === 0">{{ grupo.funcionalidad.nombreFuncionalidad }}</span>
+        </div>
+        <div class="col-rol">{{ rol.nombreRol }}</div>
+        <div class="col-check">
+          <input type="checkbox" [formControlName]="obtenerNombreControl(rol.idRol)" (change)="onCambioRolIndividual()">
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="form-acciones">
+    <button type="button" class="btn-sicim btn-secundario" [disabled]="guardando" (click)="closeModal()">Cancelar</button>
+    <button type="button" class="btn-sicim btn-primario" [disabled]="guardando || esSuperAdministrador" (click)="guardarPrivilegios()">
+      {{ guardando ? 'Guardando...' : 'Guardar privilegios y/o restricciones' }}
+    </button>
+  </div>
+
+</div>

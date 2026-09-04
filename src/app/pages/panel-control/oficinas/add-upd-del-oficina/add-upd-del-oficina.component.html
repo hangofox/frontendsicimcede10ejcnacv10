@@ -1,0 +1,42 @@
+<div class="modal-formulario" *ngIf="oficinasForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará el registro de la oficina de la lista simulada. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="oficinasForm" (ngSubmit)="guardarModificar()">
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos de la Oficina</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre (*)</label>
+          <input type="text" formControlName="nombreOficina" placeholder="Ej. OFICINA DE PERSONAL">
+        </div>
+        <div class="form-group">
+          <label>Centro de costo (*)</label>
+          <input type="text" formControlName="centroCostoOficina" placeholder="Ej. CC-001">
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Unidad militar (*)</label>
+          <select formControlName="unidadMilitarSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let unidadMilitar of unidadesMilitares" [value]="unidadMilitar.idUnidadMilitar">
+              {{ unidadMilitar.nombreUnidadMilitar }} ({{ unidadMilitar.siglaoAcronimoUnidadMilitar }})
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-sicim btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="oficinasForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-sicim btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>

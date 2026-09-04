@@ -1,0 +1,109 @@
+<div class="vista-historial-integrante-documentos" *ngIf="historialIntegranteDocumentosData as historialIntegranteDocumentos">
+
+  <div class="perfil-cabecera">
+    <div class="avatar">
+      <img *ngIf="previewUrlFotoFirmaIntegranteDocumentos" [src]="previewUrlFotoFirmaIntegranteDocumentos" (error)="onErrorFirma()" alt="Firma del integrante">
+      <svg *ngIf="!previewUrlFotoFirmaIntegranteDocumentos" xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Firma no registrada">
+        <path d="M7 3.5h12l6 6V27a1.5 1.5 0 0 1-1.5 1.5h-16A1.5 1.5 0 0 1 6 27V5a1.5 1.5 0 0 1 1-1.5z"/>
+        <path d="M19 3.5V10h6"/>
+        <path d="M10 23.5c2.2-2.1 3.3-2.3 4.1-1.3.7.9 1.3 1.4 2.2.1.8-1.1 1.8-1 2.7-.2"/>
+        <path d="m11.5 18.8 9.8-9.8 2.2 2.2-9.8 9.8-3.1.9z"/>
+        <path d="m20.6 9.7 2.2 2.2"/>
+        <path d="M9.8 22.1c-1.2.2-2.1.8-2.8 1.8"/>
+      </svg>
+    </div>
+    <div>
+      <h3 class="perfil-nombre">{{ historialIntegranteDocumentos.nombresYApellidosIntegranteDocumentos }}</h3>
+      <p class="perfil-tipo">{{ historialIntegranteDocumentos.unidadMilitarDTO.nombreUnidadMilitar }} ({{ historialIntegranteDocumentos.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }})</p>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Identificación</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de registro</span>
+        <span class="dato-valor">{{ historialIntegranteDocumentos.numRegHistorialIntegranteDocumentos }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Grado</span>
+        <span class="dato-valor">{{ historialIntegranteDocumentos.gradoIntegranteDocumentos }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Tipo de documento</span>
+        <span class="dato-valor">{{ historialIntegranteDocumentos.tipoDocumentoIdentificacionDTO.nombreTipoDocumentoIdentificacion }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de documento</span>
+        <span class="dato-valor">{{ historialIntegranteDocumentos.numeroDocumentoIdentificacionIntegranteDocumentos }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Unidad militar</span>
+        <span class="dato-valor">{{ historialIntegranteDocumentos.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Cargo</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Cargo</span>
+        <span class="dato-valor">{{ historialIntegranteDocumentos.cargoIntegranteDocumentos }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Cargo (catálogo)</span>
+        <span class="dato-valor">{{ historialIntegranteDocumentos.cargoIntegranteDocumentosDTO.nombreCargoIntegranteDocumentos }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Archivo foto/firma</span>
+        <span class="dato-valor">{{ historialIntegranteDocumentos.nombreArchivoFotoFirmaIntegranteDocumentos || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Curso y escalafón</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">SI o NO</span>
+        <span class="dato-valor">{{ historialIntegranteDocumentos.siONoIntegranteDocumentos }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">SI o NO actual predeterminado</span>
+        <span class="dato-valor">{{ historialIntegranteDocumentos.siONoActualIntegranteDocumentosPredeterminado }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de curso</span>
+        <span class="dato-valor">{{ historialIntegranteDocumentos.numeroCursoIntegranteDocumentos }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Puesto en el curso</span>
+        <span class="dato-valor">{{ historialIntegranteDocumentos.puestoCursoIntegranteDocumentos }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Escalafón de antigüedad</span>
+        <span class="dato-valor">{{ historialIntegranteDocumentos.escalafonAntiguedadIntegranteDocumentos }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Datos de registro</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de ingreso</span>
+        <span class="dato-valor">{{ historialIntegranteDocumentos.fechaHMSIngresoIntegranteDocumentos || 'No registrada' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de modificación</span>
+        <span class="dato-valor">{{ historialIntegranteDocumentos.fechaHMSModificacionIntegranteDocumentos || 'Sin modificaciones' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-acciones">
+    <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cerrar</button>
+  </div>
+
+</div>

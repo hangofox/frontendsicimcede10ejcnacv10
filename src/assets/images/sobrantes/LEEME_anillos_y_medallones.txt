@@ -1,0 +1,14 @@
+Archivos retirados de src/assets/images. Conservan su nombre original.
+
+originales/   Los dibujos tal como estaban antes de corregirlos.
+              Dientes irregulares, abertura descentrada respecto al eje
+              de giro y circulos de los medallones fuera del centro
+              de su propia caja.
+
+intermedios/  imagen_anillo_pinon_externo_01.png
+              Version con los dientes ya regularizados pero con la
+              abertura interna todavia descentrada 3,48 px.
+
+Los que estan en uso viven en src/assets/images con estos mismos
+nombres. Esta carpeta queda fuera de src/assets a proposito: el build
+copia src/assets/**/* a dist, y asi no se empaquetan.

@@ -1,0 +1,29 @@
+<div class="vista-integrantes-solic-infraest" *ngIf="integranteDocumentosSolicInfraestData">
+
+  <div class="vista-seccion" *ngFor="let rol of roles">
+    <div class="seccion-titulo">{{ rol.etiqueta }}</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Grado</span>
+        <span class="dato-valor">{{ obtenerValorCampo(rol.clave, 'grado') || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Nombres y apellidos</span>
+        <span class="dato-valor">{{ obtenerNombresYApellidos(rol.clave) || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Cargo</span>
+        <span class="dato-valor">{{ obtenerValorCampo(rol.clave, 'cargo') || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Archivo foto/firma</span>
+        <span class="dato-valor">{{ obtenerValorCampo(rol.clave, 'nombreArchivoFotoFirma') || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-acciones">
+    <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cerrar</button>
+  </div>
+
+</div>

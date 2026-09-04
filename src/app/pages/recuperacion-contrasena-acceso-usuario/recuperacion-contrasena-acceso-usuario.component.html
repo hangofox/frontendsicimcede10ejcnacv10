@@ -1,0 +1,182 @@
+<div class="aplicacion-recuperacion">
+  <app-cabezote [mostrarUsuario]="false"></app-cabezote>
+
+  <main>
+    <section class="division-recuperacion">
+      <div class="consola">
+
+        <svg class="marco" viewBox="0 0 896 420" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="rec-grad-neon" x1="0" y1="0" x2="896" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#661019" />
+              <stop offset=".18" stop-color="#ff1738" />
+              <stop offset=".5" stop-color="#ff4962" />
+              <stop offset=".82" stop-color="#ff1738" />
+              <stop offset="1" stop-color="#661019" />
+            </linearGradient>
+            <linearGradient id="rec-grad-medio" x1="0" y1="0" x2="896" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#35080d" />
+              <stop offset=".3" stop-color="#c8172b" />
+              <stop offset=".7" stop-color="#c8172b" />
+              <stop offset="1" stop-color="#35080d" />
+            </linearGradient>
+          </defs>
+
+          <!-- riel exterior -->
+          <path class="riel riel-1"
+            d="M106 6 L790 6 Q806 6 816 16 L880 80 Q890 90 890 106 L890 314 Q890 330 880 340 L816 404 Q806 414 790 414 L106 414 Q90 414 80 404 L16 340 Q6 330 6 314 L6 106 Q6 90 16 80 L80 16 Q90 6 106 6 Z" />
+
+          <!-- riel vinotinto con hombros -->
+          <path class="riel riel-2"
+            d="M118 22 L300 22 L324 46 L572 46 L596 22 L778 22 Q790 22 798 30 L866 98 Q874 106 874 118 L874 302 Q874 314 866 322 L798 390 Q790 398 778 398 L596 398 L572 374 L324 374 L300 398 L118 398 Q106 398 98 390 L30 322 Q22 314 22 302 L22 118 Q22 106 30 98 L98 30 Q106 22 118 22 Z" />
+
+          <!-- riel medio -->
+          <path class="riel riel-3"
+            d="M132 38 L292 38 L318 64 L578 64 L604 38 L764 38 Q774 38 781 45 L851 115 Q858 122 858 132 L858 288 Q858 298 851 305 L781 375 Q774 382 764 382 L604 382 L578 356 L318 356 L292 382 L132 382 Q122 382 115 375 L45 305 Q38 298 38 288 L38 132 Q38 122 45 115 L115 45 Q122 38 132 38 Z" />
+
+          <!-- riel interno con alcoba para el encabezado -->
+          <path class="riel riel-4"
+            d="M366 100 L310 100 L282 72 L166 72 Q160 72 156 76 L76 156 Q72 160 72 166 L72 254 Q72 260 76 264 L156 344 Q160 348 166 348 L236 348 L254 334 L314 334" />
+          <path class="riel riel-4"
+            d="M530 100 L586 100 L614 72 L730 72 Q736 72 740 76 L820 156 Q824 160 824 166 L824 254 Q824 260 820 264 L740 344 Q736 348 730 348 L660 348 L642 334 L582 334" />
+
+          <!-- destellos sobre el riel interno -->
+          <g class="chispa-interna">
+            <path d="M190 72 L262 72" />
+            <path d="M614 72 L686 72" />
+            <path d="M148 84 L96 136" />
+            <path d="M748 84 L800 136" />
+            <path d="M180 348 L236 348" />
+            <path d="M660 348 L716 348" />
+            <path d="M236 348 L254 334" />
+            <path d="M660 348 L642 334" />
+          </g>
+
+          <!-- destellos de borde, simetricos arriba y abajo -->
+          <g class="chispa">
+            <path d="M324 46 L406 46" />
+            <path d="M490 46 L572 46" />
+            <path d="M40 88 L88 40" />
+            <path d="M856 88 L808 40" />
+            <path d="M324 374 L406 374" />
+            <path d="M490 374 L572 374" />
+            <path d="M40 332 L88 380" />
+            <path d="M856 332 L808 380" />
+            <path d="M22 150 L22 200" />
+            <path d="M874 150 L874 200" />
+            <path d="M22 225 L22 275" />
+            <path d="M874 225 L874 275" />
+          </g>
+
+          <!-- circuitos y marcas de esquina -->
+          <g class="circuito">
+            <path d="M6 142 L22 142 M874 142 L890 142 M6 278 L22 278 M874 278 L890 278" />
+            <path d="M38 96 L66 68 M858 96 L830 68 M38 324 L66 352 M858 324 L830 352" />
+            <path d="M366 82 L392 82 M504 82 L530 82" />
+          </g>
+
+          <g class="marca-esquina">
+            <path d="M72 166 L72 200 M72 166 L106 166" />
+            <path d="M824 166 L824 200 M824 166 L790 166" />
+            <path d="M72 254 L72 220 M72 254 L106 254" />
+            <path d="M824 254 L824 220 M824 254 L790 254" />
+          </g>
+
+          <!-- recorrido luminoso por el riel exterior -->
+          <path class="pulso-estela" pathLength="2000"
+            d="M118 22 L300 22 L324 46 L572 46 L596 22 L778 22 Q790 22 798 30 L866 98 Q874 106 874 118 L874 302 Q874 314 866 322 L798 390 Q790 398 778 398 L596 398 L572 374 L324 374 L300 398 L118 398 Q106 398 98 390 L30 322 Q22 314 22 302 L22 118 Q22 106 30 98 L98 30 Q106 22 118 22 Z" />
+          <path class="pulso-recorrido" pathLength="2000"
+            d="M118 22 L300 22 L324 46 L572 46 L596 22 L778 22 Q790 22 798 30 L866 98 Q874 106 874 118 L874 302 Q874 314 866 322 L798 390 Q790 398 778 398 L596 398 L572 374 L324 374 L300 398 L118 398 Q106 398 98 390 L30 322 Q22 314 22 302 L22 118 Q22 106 30 98 L98 30 Q106 22 118 22 Z" />
+
+          <!-- contorno del panel central (x 250..646, y 130..306) -->
+          <path class="borde-panel recto"
+            d="M266 130.5 L629.5 130.5 M645.5 146.5 L645.5 289.5 M629.5 305.5 L266 305.5 M250.5 289.5 L250.5 146.5" />
+          <path class="borde-panel diagonal"
+            d="M629.5 130.5 L645.5 146.5 M645.5 289.5 L629.5 305.5
+               M266 305.5 L250.5 289.5 M250.5 146.5 L266 130.5" />
+          <!-- barra inferior (x 330..566, y 318..350): cierra 6px por encima
+               del hombro inferior de riel-3 (y=356), que antes la cruzaba -->
+          <path class="riel-volver"
+            d="M346 318 L550 318 L566 334 L550 350 L346 350 L330 334 Z" />
+        </svg>
+
+        <header class="encabezado">
+          <span class="triangulo" aria-hidden="true"></span>
+          <span class="insignia" aria-hidden="true">
+            <svg viewBox="0 0 40 44" focusable="false">
+              <path class="insignia-borde" d="M20 2 L37 11 V33 L20 42 L3 33 V11 Z" />
+              <path class="insignia-interior" d="M20 6 L33.5 13 V31 L20 38 L6.5 31 V13 Z" />
+
+              <path class="insignia-halo3" pathLength="120"
+                d="M20 2 L37 11 L37 33 L20 42 L3 33 L3 11 Z" />
+              <path class="insignia-halo2" pathLength="120"
+                d="M20 2 L37 11 L37 33 L20 42 L3 33 L3 11 Z" />
+              <path class="insignia-halo" pathLength="120"
+                d="M20 2 L37 11 L37 33 L20 42 L3 33 L3 11 Z" />
+              <path class="insignia-estela" pathLength="120"
+                d="M20 2 L37 11 L37 33 L20 42 L3 33 L3 11 Z" />
+              <path class="insignia-recorrido" pathLength="120"
+                d="M20 2 L37 11 L37 33 L20 42 L3 33 L3 11 Z" />
+
+              <path class="insignia-arco" d="M16.1 20.6 V16.7 a3.9 3.9 0 0 1 7.8 0 V20.6" />
+              <path class="insignia-cuerpo" fill-rule="evenodd"
+                d="M13.6 20.1 H26.4 A1.9 1.9 0 0 1 28.3 22 V30.5 A1.9 1.9 0 0 1 26.4 32.4
+                   H13.6 A1.9 1.9 0 0 1 11.7 30.5 V22 A1.9 1.9 0 0 1 13.6 20.1 Z
+                   M20 23.1 A2.1 2.1 0 0 0 19.05 27.07 L18.4 30.1 H21.6 L20.95 27.07
+                   A2.1 2.1 0 0 0 20 23.1 Z" />
+            </svg>
+          </span>
+          <span class="titulos">
+            <strong>Recuperación</strong>
+            <small>Contraseña de acceso</small>
+          </span>
+        </header>
+
+        <form (ngSubmit)="buscarUsuario()" #formRecuperacion="ngForm" novalidate class="panel">
+          <p class="indicacion">Digite su número de documento de identificación.</p>
+
+          <label for="numeroDocumento">
+            <svg class="ico" viewBox="3.7 3.7 17.2 17.2" aria-hidden="true" focusable="false">
+              <rect x="4.2" y="6" width="15.6" height="12" rx="1.8" />
+              <circle cx="9.4" cy="11" r="1.9" />
+              <path d="M6.2 15.4c0-1.7 1.4-2.6 3.2-2.6s3.2.9 3.2 2.6M14.6 10.4h3.4M14.6 13.4h3.4" />
+            </svg>
+            <span>Número de documento</span>
+          </label>
+          <input id="numeroDocumento" name="numeroDocumento" [(ngModel)]="numeroDocumentoIdentificacion" required
+            inputmode="numeric" autocomplete="off" maxlength="20" placeholder="Ej. 1234567890">
+
+          <button type="submit" [disabled]="formRecuperacion.invalid || cargando">
+            <span class="continuar-texto">{{ cargando ? 'Buscando' : 'Continuar' }}</span>
+          </button>
+        </form>
+
+        @if (mensajeError) {
+          <p class="mensaje-error" role="alert">{{ mensajeError }}</p>
+        }
+
+        @if (usuarioEncontrado) {
+          <p class="confirmacion" role="status">
+            Usuario encontrado: {{ usuarioEncontrado.nombresUsuario }} {{ usuarioEncontrado.primerApellidoUsuario }}.
+            Continúe con el envío del código de activación.
+          </p>
+        }
+
+        <div class="volver">
+          <svg class="chevron" viewBox="0 0 30 26" aria-hidden="true" focusable="false">
+            <path d="M14 4 L6 13 L14 22 M25 4 L17 13 L25 22" />
+          </svg>
+          <a routerLink="/login">Volver al login</a>
+          <svg class="chevron" viewBox="0 0 30 26" aria-hidden="true" focusable="false">
+            <path d="M16 4 L24 13 L16 22 M5 4 L13 13 L5 22" />
+          </svg>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="division-pie-pagina">
+      <app-pie-pagina></app-pie-pagina>
+    </section>
+  </main>
+</div>

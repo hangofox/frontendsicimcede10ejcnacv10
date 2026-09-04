@@ -1,0 +1,1483 @@
+/* ==========================================================================
+   Cuadro de acceso futurista — lienzo base 896 x 477
+   Toda medida se expresa en cqw (1cqw = 1% del ancho del cuadro = 8.96px
+   en el lienzo de referencia), de modo que la composicion escala sin
+   deformarse respecto a la imagen de referencia.
+   ========================================================================== */
+
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100dvh;
+
+  --login-black: #020203;
+  --login-panel: #070405;
+  --login-red-deep: #35080d;
+  --login-burgundy: #661019;
+  --login-red: #c8172b;
+  --login-neon: #ff1738;
+  --login-hot-pink: #ff4962;
+  --login-highlight: #ffd7dc;
+  --login-metal: #766569;
+  --login-muted: #9d777c;
+  --login-white: #f4eeee;
+
+  --fuente-tec: 'Bahnschrift', 'DIN Alternate', 'Segoe UI Variable Display', 'Segoe UI', Arial, sans-serif;
+  --fuente-ui: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  --fuente-mono: 'Consolas', 'SF Mono', 'Menlo', monospace;
+}
+
+.aplicacion-login {
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  background: var(--login-black);
+}
+
+main {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow: hidden;
+  background: #000 url('../../../assets/images/imagen_fondo_cuerpo_index_01.png') center / 100% 100% no-repeat;
+}
+
+.division-login,
+.division-pie-pagina {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  min-height: 100%;
+  border: 0;
+}
+
+.division-login {
+  display: grid;
+  place-items: start center;
+  padding: clamp(6px, 1vw, 12px) clamp(6px, 1.2vw, 16px) clamp(10px, 2vw, 24px);
+}
+
+.division-pie-pagina {
+  display: flex;
+  align-items: flex-end;
+}
+
+.division-pie-pagina app-pie-pagina {
+  width: 100%;
+}
+
+/* ==========================================================================
+   Lienzo
+   ========================================================================== */
+
+.consola {
+  position: relative;
+  container-type: inline-size;
+  width: min(896px, 100%);
+  /* se ata al viewport real: otros bloques de la pagina pueden ensanchar
+     el contenedor padre, y la consola no debe desbordar por ello */
+  max-width: calc(100vw - 24px);
+  aspect-ratio: 896 / 477;
+  isolation: isolate;
+}
+
+/* ==========================================================================
+   Marco SVG multicapa
+   ========================================================================== */
+
+.marco {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  .riel,
+  .reflejo path,
+  .chispa path,
+  .circuito path,
+  .marca-esquina path,
+  .carcasa path,
+  .riel-recuperacion,
+  .pulso-estela,
+  .pulso-recorrido {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* --- interior transparente: deja ver la imagen de fondo del sitio --- */
+  .fondo {
+    fill: transparent;
+    stroke: none;
+  }
+
+  /* --- rieles concentricos, cada uno con tono y grosor propio --- */
+
+  .riel-5 {
+    stroke: var(--login-red-deep);
+    stroke-width: 2.4;
+  }
+
+  .escalon path {
+    fill: none;
+    stroke: var(--login-red);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    opacity: .8;
+  }
+
+  .hombro path {
+    fill: none;
+    stroke: var(--login-neon);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+    opacity: .62;
+  }
+
+  .riel-1 {
+    stroke: url(#grad-riel-neon);
+    stroke-width: 1.6;
+    opacity: .85;
+  }
+
+  .riel-2 {
+    stroke: var(--login-burgundy);
+    stroke-width: 3.4;
+  }
+
+  .riel-3 {
+    stroke: url(#grad-riel-medio);
+    stroke-width: 2;
+    opacity: .9;
+  }
+
+  .riel-4 {
+    stroke: var(--login-neon);
+    stroke-width: 1.7;
+    filter: drop-shadow(0 0 2px rgb(255 23 56 / 65%));
+    animation: respiro-riel 6.5s ease-in-out infinite;
+  }
+
+  /* --- reflejos metalicos: segmentos claros y frios --- */
+  .reflejo path {
+    stroke: var(--login-metal);
+    stroke-width: 1.4;
+    opacity: .55;
+  }
+
+  /* --- chispas: reflejos rosados muy cortos y localizados --- */
+  .chispa path {
+    stroke: var(--login-highlight);
+    stroke-width: 1.2;
+    opacity: .5;
+    filter: drop-shadow(0 0 2px rgb(255 73 98 / 70%));
+    animation: destello 4.8s ease-in-out infinite;
+
+    /* desfases distintos para que no parpadeen todas a la vez */
+    &:nth-child(1) { animation-delay: 0s; }
+    &:nth-child(2) { animation-delay: 1.6s; }
+    &:nth-child(3) { animation-delay: .8s; }
+    &:nth-child(4) { animation-delay: 2.7s; }
+    &:nth-child(5) { animation-delay: 3.4s; }
+    &:nth-child(6) { animation-delay: 2.1s; }
+    &:nth-child(7) { animation-delay: 4.1s; }
+    &:nth-child(8) { animation-delay: 1.2s; }
+    &:nth-child(9) { animation-delay: 2.9s; }
+    &:nth-child(10) { animation-delay: .4s; }
+    &:nth-child(11) { animation-delay: 3.8s; }
+    &:nth-child(12) { animation-delay: 1.9s; }
+  }
+
+  /* destellos sobre el riel interno: comparten su grosor (1.7) para que se
+     lean como un encendido de esa misma linea, no como un trazo aparte */
+  .chispa-interna path {
+    fill: none;
+    stroke: var(--login-highlight);
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+    filter: drop-shadow(0 0 3px rgb(255 73 98 / 80%));
+    animation: destello 4.8s ease-in-out infinite;
+
+    &:nth-child(1) { animation-delay: 2.4s; }
+    &:nth-child(2) { animation-delay: .6s; }
+    &:nth-child(3) { animation-delay: 3.6s; }
+    &:nth-child(4) { animation-delay: 1.4s; }
+    &:nth-child(5) { animation-delay: 4.4s; }
+    &:nth-child(6) { animation-delay: 2.0s; }
+    &:nth-child(7) { animation-delay: 1.0s; }
+    &:nth-child(8) { animation-delay: 3.2s; }
+    &:nth-child(9) { animation-delay: .2s; }
+    &:nth-child(10) { animation-delay: 2.6s; }
+  }
+
+  .circuito path {
+    stroke: var(--login-red-deep);
+    stroke-width: 1.6;
+  }
+
+  .marca-esquina path {
+    stroke: var(--login-hot-pink);
+    stroke-width: 1.5;
+    opacity: .75;
+  }
+
+  /* --- recorrido luminoso que viaja por el riel ---
+     Dos capas: una estela larga, ancha y muy tenue que va por detras, y un
+     nucleo corto y suave delante. El resultado se degrada hacia la cola en
+     vez de leerse como un trazo blanco de bordes duros. */
+  .pulso-estela {
+    stroke: rgb(255 73 98 / 26%);
+    stroke-width: 3.4;
+    stroke-dasharray: 150 2520;
+    stroke-linecap: round;
+    filter: blur(1.6px);
+    animation: recorrido-estela 9s linear infinite;
+  }
+
+  .pulso-recorrido {
+    stroke: rgb(255 150 168 / 62%);
+    stroke-width: 2;
+    stroke-dasharray: 44 2626;
+    stroke-linecap: round;
+    filter: blur(.7px) drop-shadow(0 0 4px rgb(255 73 98 / 55%));
+    animation: recorrido 9s linear infinite;
+  }
+
+  /* --- carcasa del nucleo LOGIN ---
+     Cada anillo usa un solo color en todo su recorrido; los biseles llevan
+     el ancho multiplicado por 1/cos45 = 1.41 para que su peso aparente
+     iguale al de los tramos rectos. */
+  .carcasa-1 {
+    stroke: #c8172b;
+  }
+
+  .carcasa-1.recto {
+    stroke-width: 1;
+  }
+
+  .carcasa-1.diagonal {
+    stroke-width: 1.62;
+  }
+
+  .carcasa-2 {
+    stroke: var(--login-neon);
+    filter: drop-shadow(0 0 3px rgb(255 23 56 / 70%));
+  }
+
+  .carcasa-2.recto {
+    stroke-width: 1.6;
+  }
+
+  .carcasa-2.diagonal {
+    stroke-width: 2.26;
+  }
+
+  .carcasa-3-resplandor {
+    fill: none;
+    stroke: #ff4962;
+    stroke-width: 4;
+    opacity: .34;
+    filter:
+      blur(1.4px)
+      drop-shadow(0 0 3px rgb(255 73 98 / 72%))
+      drop-shadow(0 0 7px rgb(255 23 56 / 60%));
+  }
+
+  .carcasa-3 {
+    stroke: #edb9bb;
+    stroke-width: 1.6;
+    opacity: 1;
+    filter:
+      drop-shadow(0 0 2px rgb(255 255 255 / 62%))
+      drop-shadow(0 0 4px rgb(255 73 98 / 68%));
+  }
+
+  .riel-recuperacion {
+    stroke: var(--login-red);
+    stroke-width: 1.5;
+    opacity: .8;
+  }
+
+  /* esquineros: mismo grosor Y mismo rojo que el borde de los paneles que
+     unen. Medido sobre el render: el borde del panel resuelve a rgb(115,13,25),
+     asi que se fija ese valor y se omite el glow, que el borde tampoco tiene. */
+  .esquineros path {
+    fill: none;
+    stroke: #c8172b;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* recto: 1px nitido, identico al borde del panel */
+  .esquineros .recto {
+    stroke-width: 1;
+  }
+
+  /* diagonal: 1.41px reales para que su peso visual iguale al de 1px recto
+     (a 45 grados el antialiasing reparte el ancho sobre 1/cos45 = 1.41 px) */
+  .esquineros .diagonal {
+    stroke-width: 1.41;
+  }
+
+
+  .halo-nucleo {
+    animation: respiro-halo 7s ease-in-out infinite;
+  }
+}
+
+/* ==========================================================================
+   Formulario: capa de controles reales
+   ========================================================================== */
+
+form {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  font-family: var(--fuente-ui);
+}
+
+/* --------------------------- Encabezado --------------------------------- */
+
+.encabezado {
+  position: absolute;
+  top: 23.2%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 1.9cqw;
+  transform: translateX(-50%);
+}
+
+.triangulo {
+  position: absolute;
+  top: -3.6cqw;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-top: 1.1cqw solid var(--login-neon);
+  border-right: .78cqw solid transparent;
+  border-left: .78cqw solid transparent;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 0 .4cqw rgb(255 23 56 / 75%));
+  animation: respiro-riel 6.5s ease-in-out infinite;
+}
+
+.insignia {
+  /* 5.4cqw deja la punta inferior del hexagono ~9px por encima del panel
+     externo del boton LOGIN (y=170.5), y sigue midiendo mas del doble que
+     el candado de la etiqueta Contraseña (2.55cqw) */
+  width: 5.4cqw;
+  flex: 0 0 auto;
+  display: block;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .insignia-borde {
+    fill: #0a0406;
+    stroke: var(--login-neon);
+    stroke-width: 1.6;
+    vector-effect: non-scaling-stroke;
+    filter: drop-shadow(0 0 2px rgb(255 23 56 / 50%));
+  }
+
+  .insignia-interior {
+    fill: none;
+    stroke: var(--login-burgundy);
+    stroke-width: 1.2;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Luz que recorre el hexagono en sentido horario. La estela va 24 unidades
+     por detras del nucleo y termina donde el nucleo, de modo que el brillo se
+     apaga hacia la cola en vez de cortar en seco. */
+  .insignia-halo3,
+  .insignia-halo2,
+  .insignia-halo,
+  .insignia-estela,
+  .insignia-recorrido {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Seis luces equidistantes: con pathLength=120, un patron de periodo 20
+     cabe exactamente 6 veces en la vuelta.
+     Cada luz lleva CINCO capas que terminan en el mismo punto y arrancan 12,
+     14, 16, 18 y 19 unidades atras. Al aumentar largo, ancho y desenfoque
+     mientras baja la opacidad, la intensidad decae de forma fina en vez de
+     cortar de golpe contra el trazo del hexagono. La ultima es casi continua
+     y hace de puente con ese trazo. */
+  .insignia-halo3 {
+    stroke: rgb(255 73 98 / 6%);
+    stroke-width: 4.6;
+    stroke-dasharray: 19.4 .6;
+    filter: blur(2.8px);
+    animation: recorrido-hex-halo3 11s linear infinite;
+  }
+
+  .insignia-halo2 {
+    stroke: rgb(255 73 98 / 10%);
+    stroke-width: 4;
+    stroke-dasharray: 18.6 1.4;
+    filter: blur(1.9px);
+    animation: recorrido-hex-halo2 11s linear infinite;
+  }
+
+  .insignia-halo {
+    stroke: rgb(255 85 108 / 17%);
+    stroke-width: 3.4;
+    stroke-dasharray: 17.6 2.4;
+    filter: blur(1.2px);
+    animation: recorrido-hex-halo 11s linear infinite;
+  }
+
+  .insignia-estela {
+    stroke: rgb(255 118 140 / 32%);
+    stroke-width: 2.7;
+    stroke-dasharray: 16.5 3.5;
+    filter: blur(.7px);
+    animation: recorrido-hex-estela 11s linear infinite;
+  }
+
+  .insignia-recorrido {
+    stroke: rgb(255 152 170 / 62%);
+    stroke-width: 2.1;
+    stroke-dasharray: 15 5;
+    filter: blur(.3px) drop-shadow(0 0 2px rgb(255 23 56 / 50%));
+    animation: recorrido-hex 11s linear infinite;
+  }
+
+  /* arco hueco arriba y cuerpo macizo abajo, como en la referencia */
+  .insignia-arco {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2.6;
+    stroke-linecap: butt;
+    stroke-linejoin: round;
+  }
+
+  .insignia-cuerpo {
+    fill: #fff;
+    stroke: none;
+  }
+}
+
+.titulos {
+  display: grid;
+  gap: 0;
+  justify-items: start;
+
+  strong {
+    font-family: var(--fuente-tec);
+    font-size: 2.8cqw;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--login-white);
+    text-shadow: 0 0 1cqw rgb(255 23 56 / 45%);
+  }
+
+  small {
+    font-size: 1.2cqw;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--login-white);
+    transform: translateY(.8mm);
+  }
+}
+
+/* --------------------------- Paneles ------------------------------------ */
+
+.panel {
+  position: absolute;
+  top: 37.7%;
+  height: 34.6%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.5cqw 1.7cqw;
+  /* octogono: bisel en las cuatro esquinas, para que los esquineros
+     diagonales empaten con la silueta del panel */
+  clip-path: polygon(
+    1.7cqw 0,
+    calc(100% - 1.7cqw) 0,
+    100% 1.7cqw,
+    100% calc(100% - 1.7cqw),
+    calc(100% - 1.7cqw) 100%,
+    1.7cqw 100%,
+    0 calc(100% - 1.7cqw),
+    0 1.7cqw
+  );
+  /* velo tenue: mantiene legibles etiquetas e iconos sin tapar el fondo.
+     El contorno NO se dibuja aqui: lo traza el SVG (.esquineros) para que
+     tramos rectos y biseles compartan exactamente color y grosor. */
+  background: linear-gradient(158deg, rgb(12 7 9 / 46%), rgb(3 2 4 / 52%) 60%);
+  box-shadow: inset 0 0 2.4cqw rgb(102 16 25 / 22%);
+}
+
+.panel-credenciales {
+  left: 10.6%;
+  width: 24.55%;
+  /* separacion ajustada para que los dos campos quepan a su altura completa
+     sin que el panel los comprima */
+  gap: .55cqw;
+
+  label[for='contrasena'] {
+    margin-top: .5cqw;
+  }
+}
+
+.panel-captcha {
+  left: 63.05%;
+  width: 25.1%;
+  gap: 1.15cqw;
+}
+
+/* --------------------------- Etiquetas ---------------------------------- */
+
+label,
+.rotulo {
+  display: flex;
+  align-items: center;
+  gap: .85cqw;
+  font-family: var(--fuente-ui);
+  font-size: 1.72cqw;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: .015em;
+  color: var(--login-white);
+}
+
+.rotulo {
+  justify-content: center;
+  margin-bottom: .3cqw;
+  font-size: 1.38cqw;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--login-white);
+}
+
+.oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Los viewBox estan recortados al contorno del trazo, asi que la tinta llena
+   la caja declarada. El stroke-width se reduce en la misma proporcion para
+   que el grosor aparente no cambie. */
+.ico {
+  width: 2.55cqw;
+  height: 2.55cqw;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: var(--login-white);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* --------------------------- Campos ------------------------------------- */
+
+input {
+  width: 100%;
+  /* flex: 0 0 auto evita que el panel lo comprima. Sin esto, "Usuario" (item
+     flex directo) se reducia a 28px mientras "Contraseña", envuelto en .campo,
+     conservaba los 34.5px, y ambos campos quedaban desiguales. */
+  flex: 0 0 auto;
+  height: 3.85cqw;
+  /* 1.54cqw es el maximo al que el placeholder mas largo ("Ingrese el codigo
+     mostrado") sigue cabiendo entero en el panel derecho */
+  padding: 0 .95cqw;
+  border: 1px solid rgb(118 101 105 / 45%);
+  border-radius: .4cqw;
+  background: #e9e7e7;
+  color: #171314;
+  font-family: var(--fuente-ui);
+  font-size: 1.54cqw;
+  line-height: 1;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+
+input::placeholder {
+  color: #6f696b;
+  opacity: 1;
+}
+
+input:hover {
+  border-color: rgb(200 23 43 / 55%);
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--login-neon);
+  box-shadow: 0 0 0 1px var(--login-neon), 0 0 1.4cqw rgb(255 23 56 / 40%);
+}
+
+input.ng-touched.ng-invalid {
+  border-color: var(--login-red);
+  box-shadow: 0 0 0 1px rgb(200 23 43 / 65%);
+}
+
+input:disabled {
+  background: #b6b2b3;
+  color: #4c4749;
+  cursor: not-allowed;
+}
+
+.campo {
+  position: relative;
+
+  /* reserva el hueco del ojo para que el texto no pase por debajo */
+  input {
+    padding-right: 3.7cqw;
+  }
+}
+
+.ojo {
+  position: absolute;
+  top: 50%;
+  right: .6cqw;
+  width: 2.75cqw;
+  height: 2.75cqw;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: .35cqw;
+  background: transparent;
+  transform: translateY(-50%);
+  cursor: pointer;
+
+  svg {
+    width: 2.2cqw;
+    height: 2.2cqw;
+    fill: none;
+    stroke: #171314;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+/* --------------------------- Nucleo LOGIN ------------------------------- */
+
+/* Boton centrado en el anillo interno (carcasa-3: y 190..309) e indicadores
+   en y 315..322 -- centro 318.5, la misma cota que en la referencia --,
+   por debajo de ese anillo pero dentro del segundo (carcasa-2: y 179..339). */
+.nucleo {
+  position: absolute;
+  top: 47.6%;
+  left: 38.95%;
+  width: 19.65%;
+  height: 19.9%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ingresar {
+  position: relative;
+  /* mas estrecho que el anillo interno: la carcasa debe rodear la cara del
+     boton con holgura visible por los cuatro lados */
+  width: 90%;
+  /* alto recortado por arriba: el borde superior baja para igualar la holgura
+     que hay del lado de los indicadores */
+  flex: 0 0 auto;
+  height: 7.25cqw;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  /* chaflan mas corto en las cuatro esquinas */
+  clip-path: polygon(
+    .9cqw 0,
+    calc(100% - .9cqw) 0,
+    100% .9cqw,
+    100% calc(100% - .9cqw),
+    calc(100% - .9cqw) 100%,
+    .9cqw 100%,
+    0 calc(100% - .9cqw),
+    0 .9cqw
+  );
+  /* Capa 1, filo: el neon del contorno. La referencia no es una mancha
+     roja sino una carcasa oscura con los cantos encendidos. */
+  background: linear-gradient(180deg, var(--login-hot-pink), var(--login-neon) 30%, #8d1526);
+  box-shadow: 0 0 1.8cqw rgb(255 23 56 / 52%);
+  cursor: pointer;
+  transition: transform .12s ease, filter .2s ease;
+  animation: latido-boton 5.5s ease-in-out infinite;
+
+  /* Capa 2, junta: separa el filo de la cara. */
+  &::before {
+    position: absolute;
+    inset: .3cqw;
+    content: '';
+    clip-path: inherit;
+    background: #0b0104;
+    pointer-events: none;
+  }
+
+  /* Capa 3, cara: interior oscuro con rescoldo central. */
+  &::after {
+    position: absolute;
+    inset: .62cqw;
+    content: '';
+    clip-path: inherit;
+    background:
+      linear-gradient(180deg, rgb(255 215 220 / 16%), transparent 26%),
+      radial-gradient(120% 150% at 50% 52%, #7d1220, #40080f 48%, #120004);
+    box-shadow: inset 0 0 0 .12cqw rgb(255 73 98 / 45%), inset 0 .3cqw .9cqw rgb(0 0 0 / 65%);
+    pointer-events: none;
+  }
+}
+
+.ingresar-texto {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fuente-tec);
+  font-size: 3.9cqw;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: .06em;
+  text-indent: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff;
+  text-shadow: 0 .2cqw .4cqw rgb(0 0 0 / 85%), 0 0 1.4cqw rgb(255 23 56 / 60%);
+}
+
+.ingresar.cargando .ingresar-texto {
+  font-size: 3.35cqw;
+  letter-spacing: .04em;
+  text-indent: .04em;
+}
+
+.ingresar:hover:not(:disabled) {
+  filter: brightness(1.16);
+}
+
+.ingresar:active:not(:disabled) {
+  transform: translateY(.18cqw) scale(.988);
+}
+
+/* Estado deshabilitado: mismo degradado horizontal pero muy apagado, sin
+   glow ni latido, y con el texto oscurecido. Es el aspecto por defecto al
+   cargar la pagina (formulario vacio); el color vivo aparece solo al
+   completarse el formulario. */
+/* Deshabilitado: el mismo montaje, apagado con un filtro en vez de
+   redefinir cada capa. */
+.ingresar:disabled {
+  cursor: not-allowed;
+  box-shadow: none;
+  animation: none;
+  filter: saturate(.5) brightness(.66);
+
+  .ingresar-texto {
+    color: #b09a9e;
+  }
+}
+
+/* La carcasa y el halo acompañan el estado del boton: apagados y sin brillo
+   mientras esta deshabilitado, a pleno color en cuanto se habilita.
+   Se resuelve con :has() para no tener que exponer el estado del formulario
+   al SVG desde el TypeScript. */
+.consola:has(.ingresar:disabled) {
+  .marco .carcasa-1 {
+    stroke: #8a1524;
+  }
+
+  .marco .carcasa-2 {
+    stroke: #ad1e33;
+    filter: none;
+  }
+
+  .marco .carcasa-3 {
+    stroke: #b09296;
+    filter: drop-shadow(0 0 2px rgb(255 73 98 / 28%));
+  }
+
+  .marco .carcasa-3-resplandor {
+    opacity: .14;
+  }
+
+  .marco .halo-nucleo {
+    opacity: .34;
+  }
+}
+
+/* --------------------------- Indicadores -------------------------------- */
+
+.puntos {
+  display: flex;
+  align-items: center;
+  gap: .72cqw;
+
+  i {
+    width: .72cqw;
+    height: .72cqw;
+    border-radius: 50%;
+    background: var(--login-red-deep);
+    box-shadow: inset 0 0 0 1px rgb(200 23 43 / 55%);
+  }
+
+  .on {
+    background: var(--login-white);
+    box-shadow: 0 0 .5cqw rgb(255 215 220 / 90%), 0 0 1cqw rgb(255 23 56 / 55%);
+  }
+
+  .alt {
+    background: var(--login-neon);
+    box-shadow: 0 0 .4cqw rgb(255 23 56 / 70%);
+  }
+
+  &.cargando i {
+    animation: carga-punto 3s ease-in-out infinite;
+  }
+
+  &.cargando i:nth-child(2) {
+    animation-delay: .2s;
+  }
+
+  &.cargando i:nth-child(3) {
+    animation-delay: .4s;
+  }
+
+  &.cargando i:nth-child(4) {
+    animation-delay: .6s;
+  }
+
+  &.cargando i:nth-child(5) {
+    animation-delay: .8s;
+  }
+}
+
+@keyframes carga-punto {
+  0%, 20%, 100% {
+    background: var(--login-red-deep);
+    box-shadow: inset 0 0 0 1px rgb(200 23 43 / 55%);
+    transform: scale(.82);
+  }
+
+  30%, 85% {
+    background: var(--login-white);
+    box-shadow:
+      0 0 .55cqw rgb(255 215 220 / 95%),
+      0 0 1.15cqw rgb(255 23 56 / 75%);
+    transform: scale(1.18);
+  }
+}
+
+.puntos-captcha {
+  justify-content: flex-start;
+  margin-top: .2cqw;
+}
+
+/* --------------------------- CAPTCHA ------------------------------------ */
+
+/* Tres celdas independientes a la misma altura (escudo, codigo, actualizar).
+   La fila ya no lleva marco propio: cada celda tiene el suyo. */
+.fila-captcha {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .55cqw;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+
+/* Marco del escudo: mismo cuadro de esquinas redondeadas que el boton de
+   actualizar, para que ambos extremos de la fila del captcha se lean igual.
+   Caja 3.2 / icono 1.85 / radio .74 mantiene las mismas proporciones que
+   tenia con 2.7 / 1.55 / .62. */
+.marco-icono {
+  width: 3.2cqw;
+  height: 3.2cqw;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgb(197 191 192 / 55%);
+  border-radius: .74cqw;
+  background: #0a0507;
+}
+
+/* el ojo de la cerradura va relleno, no de trazo como el resto del icono */
+.ico-cerradura {
+  fill: var(--login-white);
+  stroke: none;
+}
+
+.ico-escudo {
+  width: 2.12cqw;
+  height: 2.12cqw;
+  stroke-width: 1.5;
+}
+
+/* El codigo va en su propia caja redondeada, con el mismo borde y altura
+   que las celdas del escudo y del boton de actualizar. */
+output {
+  display: grid;
+  place-items: center;
+  height: 3.2cqw;
+  padding: 0 .6cqw;
+  border: 1px solid rgb(197 191 192 / 55%);
+  border-radius: .74cqw;
+  background: #0a0507;
+  font-family: var(--fuente-tec);
+  font-size: 2.3cqw;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: .1em;
+  text-align: center;
+  color: var(--login-white);
+  text-shadow: 0 0 .9cqw rgb(255 23 56 / 55%);
+  user-select: none;
+}
+
+/* Cuadrado de esquinas redondeadas con borde claro fino, como en la
+   referencia (no un circulo rojo). */
+.recargar {
+  width: 3.2cqw;
+  height: 3.2cqw;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgb(197 191 192 / 55%);
+  border-radius: .74cqw;
+  background: #0a0507;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease;
+
+  svg {
+    width: 1.95cqw;
+    height: 1.95cqw;
+    fill: none;
+    stroke: var(--login-white);
+    stroke-width: 1.45;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+.recargar:hover {
+  border-color: var(--login-white);
+  background: #150a0d;
+}
+
+/* --------------------------- Recuperacion ------------------------------- */
+
+/* y 357..406: se acorta por abajo para no chocar con el hombro inferior de
+   riel-3 (y=413). El contenido sigue centrado por el flex, asi que texto,
+   boton y chevrones se recolocan solos. */
+.recuperacion {
+  position: absolute;
+  top: 74.8%;
+  /* x 265..609: centrado en 437, el mismo eje que el boton LOGIN */
+  left: 29.58%;
+  width: 38.4%;
+  height: 10.3%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.4cqw;
+  background: linear-gradient(90deg, rgb(53 8 13 / 55%), rgb(2 2 3 / 30%) 50%, rgb(53 8 13 / 55%));
+  clip-path: polygon(
+    1.8cqw 0,
+    calc(100% - 1.8cqw) 0,
+    100% 50%,
+    calc(100% - 1.8cqw) 100%,
+    1.8cqw 100%,
+    0 50%
+  );
+}
+
+.chevron {
+  width: 2.6cqw;
+  height: 2.3cqw;
+  flex: 0 0 auto;
+  fill: none;
+  /* nucleo blanco con halo rojo: se leen blancos sin perder el tono del marco */
+  stroke: #fff;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  filter:
+    drop-shadow(0 0 .18cqw rgb(255 255 255 / 70%))
+    drop-shadow(0 0 .4cqw rgb(255 23 56 / 60%));
+  animation: destello-suave 4.8s ease-in-out infinite;
+}
+
+.recuperacion-centro {
+  display: grid;
+  justify-items: center;
+  gap: .8cqw;
+}
+
+.recuperacion-texto {
+  font-size: 1.55cqw;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--login-white);
+}
+
+.recuperacion a {
+  display: inline-flex;
+  align-items: center;
+  gap: .4cqw;
+  padding: .42cqw 1.15cqw;
+  border-radius: .3cqw;
+  background: rgb(10 5 7 / 85%);
+  box-shadow: inset 0 0 0 1px rgb(200 23 43 / 60%);
+  color: var(--login-muted);
+  font-size: 1.38cqw;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color .18s ease, box-shadow .18s ease;
+
+  /* los chevrones toman el mismo color que el texto (incluida su version
+     apagada del estado deshabilitado), no el rojo neon */
+  i {
+    font-style: normal;
+    color: inherit;
+  }
+
+  &:hover {
+    color: var(--login-white);
+    box-shadow: inset 0 0 0 1px var(--login-neon), 0 0 1cqw rgb(255 23 56 / 40%);
+  }
+}
+
+/* --------------------------- Error -------------------------------------- */
+
+.error {
+  position: absolute;
+  top: 89.5%;
+  left: 50%;
+  width: 60%;
+  margin: 0;
+  transform: translateX(-50%);
+  font-size: 1.3cqw;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  color: #ff8296;
+  text-shadow: 0 0 .6cqw rgb(255 23 56 / 45%);
+}
+
+/* --------------------------- Foco visible ------------------------------- */
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--login-hot-pink);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Animaciones
+   ========================================================================== */
+
+@keyframes respiro-riel {
+  0%, 100% { opacity: .82; }
+  50% { opacity: 1; }
+}
+
+@keyframes destello {
+  0%, 72%, 100% { opacity: .38; }
+  84% { opacity: .95; }
+}
+
+/* Recorrido horario por el hexagono del candado. El path declara
+   pathLength="120", asi que el guion y el desplazamiento van en esas unidades
+   y una vuelta completa equivale a 120. Mismo principio que el pulso del
+   borde exterior del cuadro. */
+@keyframes recorrido-hex {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -120; }
+}
+
+/* Cada capa se desplaza la MITAD de lo que excede al nucleo ((largo-15)/2),
+   de modo que todas quedan centradas en el mismo punto y sobresalen por igual
+   por delante y por detras. Asi las dos puntas de la luz se abren en abanico
+   y se degradan, en vez de cortarse en seco por el frente. */
+@keyframes recorrido-hex-estela {
+  from { stroke-dashoffset: .75; }
+  to { stroke-dashoffset: -119.25; }
+}
+
+@keyframes recorrido-hex-halo {
+  from { stroke-dashoffset: 1.3; }
+  to { stroke-dashoffset: -118.7; }
+}
+
+@keyframes recorrido-hex-halo2 {
+  from { stroke-dashoffset: 1.8; }
+  to { stroke-dashoffset: -118.2; }
+}
+
+@keyframes recorrido-hex-halo3 {
+  from { stroke-dashoffset: 2.2; }
+  to { stroke-dashoffset: -117.8; }
+}
+
+/* variante de recorrido corto: mantiene el parpadeo pero mucho mas leve,
+   sin que los chevrones lleguen a apagarse */
+@keyframes destello-suave {
+  0%, 70%, 100% { opacity: .82; }
+  85% { opacity: 1; }
+}
+
+@keyframes recorrido {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -2670; }
+}
+
+/* misma velocidad que el nucleo pero adelantada 106 unidades, de modo que la
+   estela quede siempre por detras y el brillo se apague hacia la cola */
+@keyframes recorrido-estela {
+  from { stroke-dashoffset: 106; }
+  to { stroke-dashoffset: -2564; }
+}
+
+@keyframes respiro-halo {
+  0%, 100% { opacity: .75; }
+  50% { opacity: 1; }
+}
+
+/* solo respira el halo EXTERIOR; nada de resplandor interior, que aclararia
+   los bordes y romperia el degradado horizontal */
+@keyframes latido-boton {
+  0%, 100% {
+    box-shadow:
+      inset 0 .25cqw .8cqw rgb(0 0 0 / 40%),
+      0 0 1.6cqw rgb(255 23 56 / 45%);
+  }
+  50% {
+    box-shadow:
+      inset 0 .25cqw .8cqw rgb(0 0 0 / 40%),
+      0 0 2.6cqw rgb(255 23 56 / 68%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marco .riel-4,
+  .marco .chispa path,
+  .marco .chispa-interna path,
+  .insignia-halo3,
+  .insignia-halo2,
+  .insignia-halo,
+  .insignia-estela,
+  .insignia-recorrido,
+  .marco .pulso-estela,
+  .marco .pulso-recorrido,
+  .marco .halo-nucleo,
+  .triangulo,
+  .chevron,
+  .ingresar {
+    animation: none;
+  }
+
+  .recargar:hover {
+    transform: none;
+  }
+
+  .puntos.cargando i {
+    animation: none;
+    background: var(--login-white);
+    box-shadow: 0 0 .5cqw rgb(255 215 220 / 90%), 0 0 1cqw rgb(255 23 56 / 55%);
+    transform: none;
+  }
+
+  input,
+  .ingresar,
+  .recargar,
+  .recuperacion a {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+/* --- La consola conserva su proporcion y se reduce con el viewport hasta
+       que los controles dejan de ser usables; a partir de ahi se reorganiza. */
+
+@media (max-width: 900px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  .division-login,
+  .division-pie-pagina {
+    min-height: auto;
+  }
+
+  .division-login {
+    padding: 16px 12px;
+  }
+}
+
+@media (max-width: 720px) {
+  .division-login {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .consola {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: auto;
+    min-height: 0;
+    padding: 22px 14px 18px;
+    background: linear-gradient(158deg, rgb(12 6 8 / 96%), rgb(2 2 3 / 98%));
+    clip-path: polygon(
+      18px 0, calc(100% - 18px) 0, 100% 18px, 100% calc(100% - 18px),
+      calc(100% - 18px) 100%, 18px 100%, 0 calc(100% - 18px), 0 18px
+    );
+    box-shadow: inset 0 0 0 1px rgb(255 23 56 / 45%), inset 0 0 30px rgb(102 16 25 / 22%);
+  }
+
+  /* el marco decorativo se retira: sus trazos no encajan en vertical */
+  .marco {
+    display: none;
+  }
+
+  form {
+    position: static;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .panel,
+  .nucleo,
+  .recuperacion,
+  .encabezado,
+  .campo,
+  .fila-captcha,
+  input {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .encabezado,
+  .panel,
+  .nucleo,
+  .recuperacion,
+  .error {
+    position: static;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: auto;
+    transform: none;
+  }
+
+  .encabezado {
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 2px;
+  }
+
+  .triangulo {
+    display: none;
+  }
+
+  .insignia {
+    width: 48px;
+  }
+
+  .titulos strong {
+    font-size: 22px;
+    letter-spacing: .22em;
+  }
+
+  .titulos small {
+    font-size: 10px;
+  }
+
+  .panel {
+    gap: 8px;
+    padding: 14px 14px;
+    /* el SVG esta oculto en movil, asi que aqui el contorno vuelve al CSS */
+    box-shadow:
+      inset 0 0 0 1px rgb(115 13 25),
+      inset 0 0 24px rgb(102 16 25 / 22%);
+    clip-path: polygon(
+      14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px),
+      calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px
+    );
+  }
+
+  label,
+  .rotulo {
+    gap: 8px;
+    font-size: 15px;
+  }
+
+  .rotulo {
+    font-size: 13px;
+  }
+
+  .ico {
+    width: 19px;
+    height: 19px;
+  }
+
+  .marco-icono {
+    width: 40px;
+    height: 40px;
+    border-radius: 9px;
+  }
+
+  .ico-escudo {
+    width: 23px;
+    height: 23px;
+  }
+
+  input {
+    height: 48px;
+    padding: 0 13px;
+    border-radius: 5px;
+    font-size: 17px;
+  }
+
+  .campo input {
+    padding-right: 42px;
+  }
+
+  .ojo {
+    right: 6px;
+    width: 38px;
+    height: 38px;
+
+    svg {
+      width: 23px;
+      height: 23px;
+    }
+  }
+
+  .nucleo {
+    gap: 12px;
+  }
+
+  .ingresar {
+    width: 100%;
+    height: auto;
+    min-height: 60px;
+    clip-path: polygon(
+      12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px),
+      calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px
+    );
+  }
+
+  .ingresar-texto {
+    font-size: 26px;
+  }
+
+  .ingresar.cargando .ingresar-texto {
+    font-size: 23px;
+  }
+
+  .puntos {
+    gap: 7px;
+
+    i {
+      width: 7px;
+      height: 7px;
+    }
+  }
+
+  .fila-captcha {
+    gap: 6px;
+    padding: 0;
+  }
+
+  output {
+    height: 40px;
+    padding: 0 8px;
+    border-radius: 9px;
+    font-size: 23px;
+  }
+
+  .recargar {
+    width: 40px;
+    height: 40px;
+    border-radius: 9px;
+
+    svg {
+      width: 23px;
+      height: 23px;
+    }
+  }
+
+  .recuperacion {
+    gap: 12px;
+    padding: 12px 16px;
+    clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 16px 100%, 0 50%);
+  }
+
+  .chevron {
+    width: 22px;
+    height: 20px;
+  }
+
+  .recuperacion-texto {
+    font-size: 14px;
+  }
+
+  .recuperacion a {
+    padding: 6px 11px;
+    font-size: 13px;
+  }
+
+  .error {
+    font-size: 13px;
+  }
+}

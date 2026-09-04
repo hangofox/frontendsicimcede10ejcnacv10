@@ -1,0 +1,12 @@
+<section class="seguimiento">
+  <div class="tarjeta">
+    <h1>Seguimiento de recuperación</h1>
+    <form (ngSubmit)="consultar()">
+      <label for="radicado">Número de radicado</label>
+      <input id="radicado" name="radicado" [(ngModel)]="radicado" required>
+      <button type="submit">Consultar</button>
+    </form>
+    @if (consultado) { <p>Solicitud en validación administrativa.</p> }
+    <a routerLink="/login">Volver al login</a>
+  </div>
+</section>

@@ -1,0 +1,32 @@
+<div class="vista-sociedad-unidad-centralizadora" *ngIf="sociedadUnidadCentralizadoraData as sociedadUnidadCentralizadora">
+
+  <div class="perfil-cabecera">
+    <div class="avatar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+    </div>
+    <div>
+      <h3 class="perfil-nombre">{{ sociedadUnidadCentralizadora.codigoSociedadUnidadCentralizadora }}</h3>
+      <p class="perfil-tipo">{{ sociedadUnidadCentralizadora.unidadMilitarDTO.nombreUnidadMilitar }} ({{ sociedadUnidadCentralizadora.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }})</p>
+    </div>
+  </div>
+
+  <div class="datos-grid">
+    <div class="dato-grupo">
+      <span class="dato-label">Código</span>
+      <span class="dato-valor">{{ sociedadUnidadCentralizadora.codigoSociedadUnidadCentralizadora }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Unidad militar</span>
+      <span class="dato-valor">{{ sociedadUnidadCentralizadora.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span>
+    </div>
+    <div class="dato-grupo">
+      <span class="dato-label">Nivel de la unidad militar</span>
+      <span class="dato-valor">{{ sociedadUnidadCentralizadora.unidadMilitarDTO.nivelUnidadMilitar }}</span>
+    </div>
+  </div>
+
+  <div class="vista-acciones">
+    <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cerrar</button>
+  </div>
+
+</div>

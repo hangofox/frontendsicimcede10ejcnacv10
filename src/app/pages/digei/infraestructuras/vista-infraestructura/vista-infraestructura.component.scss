@@ -1,0 +1,97 @@
+.perfil-cabecera {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--sicim-soft);
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--sicim-soft);
+  color: var(--sicim-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.perfil-nombre {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--sicim-black);
+}
+
+.perfil-tipo {
+  margin: 0;
+  font-size: 12px;
+  color: var(--sicim-gray);
+}
+
+.vista-seccion {
+  margin-bottom: 18px;
+
+  &:last-of-type { margin-bottom: 0; }
+}
+
+.seccion-titulo {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  color: var(--sicim-gray);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--sicim-soft);
+}
+
+.datos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px 20px;
+}
+
+.dato-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.dato-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  color: var(--sicim-gray);
+}
+.dato-valor {
+  font-size: 13px;
+  color: var(--sicim-black);
+}
+
+.vista-acciones {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--sicim-soft);
+}
+
+.btn-sicim {
+  padding: 9px 18px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+
+  &.btn-secundario {
+    background: var(--sicim-soft);
+    color: var(--sicim-black);
+    border-color: var(--sicim-border);
+    &:hover { border-color: var(--sicim-focus); }
+  }
+}

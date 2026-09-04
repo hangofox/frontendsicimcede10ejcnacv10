@@ -1,0 +1,104 @@
+.alerta-eliminar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  background: #fef2f2;
+  border: 1px solid rgba(220, 38, 38, .4);
+  color: #b91c1c;
+  font-size: 13px;
+}
+
+.form-seccion {
+  margin-bottom: 18px;
+
+  &:last-of-type { margin-bottom: 0; }
+}
+
+.seccion-titulo {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  color: var(--sicim-gray);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--sicim-soft);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px 16px;
+}
+
+.form-group-ancho {
+  grid-column: 1 / -1;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--sicim-black);
+  }
+
+  input,
+  select {
+    padding: 8px 10px;
+    border: 1px solid var(--sicim-border);
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--sicim-black);
+    background: var(--sicim-white);
+
+    &:focus {
+      outline: none;
+      border-color: var(--sicim-focus);
+    }
+
+    &:disabled { background: var(--sicim-soft); color: var(--sicim-gray); }
+  }
+}
+
+.form-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--sicim-soft);
+}
+
+.btn-sicim {
+  padding: 9px 18px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+
+  &.btn-secundario {
+    background: var(--sicim-soft);
+    color: var(--sicim-black);
+    border-color: var(--sicim-border);
+    &:hover { border-color: var(--sicim-focus); }
+  }
+  &.btn-primario {
+    background: var(--sicim-black);
+    color: var(--sicim-white);
+    &:hover:not(:disabled) { background: var(--sicim-dark); }
+    &:disabled { opacity: .5; cursor: not-allowed; }
+  }
+  &.btn-peligro {
+    background: #b3261e;
+    color: var(--sicim-white);
+    &:hover { background: #8c1d17; }
+  }
+}

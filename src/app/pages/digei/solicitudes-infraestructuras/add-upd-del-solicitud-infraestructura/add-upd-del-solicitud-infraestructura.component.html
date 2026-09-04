@@ -1,0 +1,122 @@
+<div class="modal-formulario" *ngIf="solicitudesInfraestructurasForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará el registro de la solicitud de infraestructura de la lista. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="solicitudesInfraestructurasForm" (ngSubmit)="guardarModificar()">
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Identificación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Código radicado (*)</label>
+          <input type="text" formControlName="codigoRadicadoSolicitudInfraestructura" placeholder="Ej. RAD-2026-0001">
+        </div>
+        <div class="form-group">
+          <label>Unidad militar (*)</label>
+          <select formControlName="unidadMilitarSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let unidadMilitar of unidadesMilitares" [value]="unidadMilitar.idUnidadMilitar">
+              {{ unidadMilitar.nombreUnidadMilitar }} ({{ unidadMilitar.siglaoAcronimoUnidadMilitar }})
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tipo de solicitud (*)</label>
+          <select formControlName="tipoSolicitudInfraestructuraSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let tipoSolicitudInfraestructura of tiposSolicitudesInfraestructuras" [value]="tipoSolicitudInfraestructura.idTipoSolicitudInfraestructura">
+              {{ tipoSolicitudInfraestructura.nombreTipoSolicitudInfraestructura }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Infraestructura asociada (*)</label>
+          <select formControlName="infraestructuraSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let infraestructura of infraestructuras" [value]="infraestructura.idInfraestructura">
+              {{ infraestructura.denominacionInfraestructura }} ({{ infraestructura.numeroInventarioInfraestructura }})
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nombre de la solicitud (*)</label>
+          <input type="text" formControlName="nombreSolicitudInfraestructura" placeholder="Ej. AMPLIACIÓN DE OFICINAS">
+        </div>
+        <div class="form-group">
+          <label>Fecha de solicitud (*)</label>
+          <input type="datetime-local" formControlName="fechaHMSSolicitudInfraestructura">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Dependencia</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre de la dependencia (*)</label>
+          <input type="text" formControlName="nombreDependenciaSolicitudInfraestructura" placeholder="Ej. SECCIÓN LOGÍSTICA">
+        </div>
+        <div class="form-group">
+          <label>N.° de funcionarios (*)</label>
+          <input type="number" formControlName="numeroFuncionariosSolicitudInfraestructura" placeholder="Ej. 12">
+        </div>
+        <div class="form-group">
+          <label>N.° de usuarios (*)</label>
+          <input type="number" formControlName="numeroUsuariosSolicitudInfraestructura" placeholder="Ej. 30">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Observaciones y justificación</div>
+      <div class="form-grid">
+        <div class="form-group form-group-ancho">
+          <label>Observaciones jurídicas del estado del predio</label>
+          <textarea formControlName="observacionesJuridicasEstadoPredioInfraestructura" rows="3" placeholder="Ej. El predio cuenta con escritura pública vigente..."></textarea>
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Observaciones del estado ambiental</label>
+          <textarea formControlName="observacionesEstadoAmbientalInfraestructura" rows="3" placeholder="Ej. No se identifican afectaciones ambientales..."></textarea>
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Justificación de la necesidad</label>
+          <textarea formControlName="justificacionNecesidadInfraestructura" rows="3" placeholder="Ej. Se requiere ampliar la capacidad instalada..."></textarea>
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Descripción general de la necesidad</label>
+          <textarea formControlName="descripcionGeneralNecesidadInfraestructura" rows="3" placeholder="Ej. Descripción detallada de la necesidad..."></textarea>
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Descripción del impacto esperado</label>
+          <textarea formControlName="descripcionImpactoEsperadoInfraestructura" rows="3" placeholder="Ej. Mejora en la capacidad operativa..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos de registro</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Fecha de ingreso</label>
+          <input type="datetime-local" formControlName="fechaHMSIngresoSolicitudInfraestructura">
+        </div>
+        <div class="form-group">
+          <label>Fecha de modificación</label>
+          <input type="datetime-local" formControlName="fechaHMSModificacionSolicitudInfraestructura">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-sicim btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="solicitudesInfraestructurasForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-sicim btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>

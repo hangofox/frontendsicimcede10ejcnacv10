@@ -1,0 +1,78 @@
+<div class="modal-formulario" *ngIf="sociedadesUnidadesCentralizadorasForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará el registro de la unidad centralizadora de la lista simulada. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="sociedadesUnidadesCentralizadorasForm" (ngSubmit)="guardarModificar()">
+
+    <!-- BÚSQUEDA DE UNIDAD MILITAR (SOLO EN MODO GUARDAR) -->
+    <div class="form-seccion" *ngIf="banderaCrudGuardar">
+      <div class="seccion-titulo">Búsqueda de unidad militar</div>
+      <div class="form-fila-busqueda">
+        <div class="form-group campo-autocompletar">
+          <label>Nombre de la unidad militar</label>
+          <div class="autocompletar-caja">
+            <input
+              type="text"
+              [(ngModel)]="terminoBusquedaUnidadMilitar"
+              [ngModelOptions]="{standalone: true}"
+              placeholder="Escriba el nombre de la unidad militar..."
+              (input)="onEscribirBusquedaUnidadMilitar()"
+              (focus)="mostrarSugerenciasUnidadMilitar = true"
+              (blur)="ocultarSugerenciasUnidadMilitarConRetraso()">
+            <button
+              type="button"
+              class="btn-limpiar-autocompletar"
+              *ngIf="terminoBusquedaUnidadMilitar"
+              (mousedown)="limpiarBusquedaUnidadMilitar()"
+              title="Limpiar">×</button>
+
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasUnidadMilitar && unidadesMilitaresFiltradas.length > 0">
+              <li *ngFor="let unidadMilitar of unidadesMilitaresFiltradas" (mousedown)="seleccionarUnidadMilitar(unidadMilitar)">
+                {{ unidadMilitar.nombreUnidadMilitar }} <span class="autocompletar-sigla">({{ unidadMilitar.siglaoAcronimoUnidadMilitar }})</span>
+              </li>
+            </ul>
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasUnidadMilitar && unidadesMilitaresFiltradas.length === 0">
+              <li class="autocompletar-sin-resultados">Sin coincidencias.</li>
+            </ul>
+          </div>
+        </div>
+        <button type="button" class="btn-sicim btn-secundario" [disabled]="!unidadMilitarBusquedaSeleccionada" (click)="cargarInformacionUnidadMilitar()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Cargar información de la unidad militar
+        </button>
+      </div>
+      <div class="ayuda-texto" *ngIf="mensajeBusquedaUnidadMilitar">{{ mensajeBusquedaUnidadMilitar }}</div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos de la Unidad Centralizadora</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Código (*)</label>
+          <input type="text" formControlName="codigoSociedadUnidadCentralizadora" placeholder="Ej. SUC-001">
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Unidad militar (*)</label>
+          <select formControlName="unidadMilitarSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let unidadMilitar of unidadesMilitares" [value]="unidadMilitar.idUnidadMilitar">
+              {{ unidadMilitar.nombreUnidadMilitar }} ({{ unidadMilitar.siglaoAcronimoUnidadMilitar }})
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-sicim btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="sociedadesUnidadesCentralizadorasForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-sicim btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>

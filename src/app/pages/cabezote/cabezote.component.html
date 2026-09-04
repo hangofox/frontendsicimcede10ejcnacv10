@@ -1,0 +1,171 @@
+<header class="cabezote cabezote-futurista">
+  <span class="destellos-marco" aria-hidden="true"></span>
+  <svg class="resplandor-continuo-laterales" viewBox="0 0 2000 198" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="degradado-resplandor-izquierdo" x1="43" y1="0" x2="290" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+        <stop offset="28%" stop-color="#fddbea" stop-opacity=".88" />
+        <stop offset="58%" stop-color="#f20d23" stop-opacity=".48" />
+        <stop offset="100%" stop-color="#f20d23" stop-opacity="0" />
+      </linearGradient>
+      <linearGradient id="degradado-resplandor-derecho" x1="1957" y1="0" x2="1710" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+        <stop offset="28%" stop-color="#fddbea" stop-opacity=".88" />
+        <stop offset="58%" stop-color="#f20d23" stop-opacity=".48" />
+        <stop offset="100%" stop-color="#f20d23" stop-opacity="0" />
+      </linearGradient>
+      <linearGradient id="degradado-resplandor-inferior-izquierdo" x1="43" y1="0" x2="840" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+        <stop offset="20%" stop-color="#fddbea" stop-opacity=".90" />
+        <stop offset="48%" stop-color="#f20d23" stop-opacity=".74" />
+        <stop offset="76%" stop-color="#f20d23" stop-opacity=".58" />
+        <stop offset="86%" stop-color="#f7697f" stop-opacity=".74" />
+        <stop offset="94%" stop-color="#fbb9cd" stop-opacity=".78" />
+        <stop offset="100%" stop-color="#fddbea" stop-opacity=".72" />
+      </linearGradient>
+      <linearGradient id="degradado-resplandor-inferior-derecho" x1="1957" y1="0" x2="1160" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+        <stop offset="20%" stop-color="#fddbea" stop-opacity=".90" />
+        <stop offset="48%" stop-color="#f20d23" stop-opacity=".74" />
+        <stop offset="76%" stop-color="#f20d23" stop-opacity=".58" />
+        <stop offset="100%" stop-color="#f20d23" stop-opacity=".42" />
+      </linearGradient>
+    </defs>
+
+    <path d="M43 22 L25 40 V174 L43 192" />
+    <path class="resplandor-horizontal-izquierdo" d="M43 22 H290" />
+    <path class="resplandor-inferior-izquierdo" d="M43 192 H840" />
+    <path d="M1957 22 L1975 40 V174 L1957 192" />
+    <path class="resplandor-horizontal-derecho" d="M1957 22 H1710" />
+    <path class="resplandor-inferior-derecho" d="M1957 192 H1160" />
+  </svg>
+
+  <div class="adorno-superior" aria-hidden="true">
+    <svg viewBox="0 0 600 40" preserveAspectRatio="none">
+      <defs>
+        <radialGradient id="degradado-punto-barra-central">
+          <stop offset="0%" stop-color="#fddbea" stop-opacity=".6" />
+          <stop offset="18%" stop-color="#fab2c2" stop-opacity=".52" />
+          <stop offset="36%" stop-color="#f7697f" stop-opacity=".44" />
+          <stop offset="54%" stop-color="#f20d23" stop-opacity=".34" />
+          <stop offset="70%" stop-color="#f20d23" stop-opacity=".22" />
+          <stop offset="84%" stop-color="#f20d23" stop-opacity=".09" />
+          <stop offset="100%" stop-color="#f20d23" stop-opacity="0" />
+        </radialGradient>
+
+        <!-- El cierre vertical se apaga hacia arriba: en la referencia pasa de
+             un rosa oscuro junto a la barra superior a casi blanco sobre la
+             inferior, donde esta el destello. -->
+        <linearGradient id="degradado-cierre-central" x1="0" y1="17" x2="0" y2="31" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#f20d23" stop-opacity=".14" />
+          <stop offset="30%" stop-color="#f20d23" stop-opacity=".24" />
+          <stop offset="60%" stop-color="#f20d23" stop-opacity=".42" />
+          <stop offset="82%" stop-color="#f7697f" stop-opacity=".72" />
+          <stop offset="100%" stop-color="#fddbea" stop-opacity="1" />
+        </linearGradient>
+
+        <!-- Empalme cromatico con la barra principal del marco en los dos
+             extremos exteriores del adorno. -->
+        <linearGradient id="degradado-barra-exterior-izquierda" x1="0" y1="0" x2="71" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#d37a7c" />
+          <stop offset="38%" stop-color="#df929d" />
+          <stop offset="72%" stop-color="#edabb9" />
+          <stop offset="100%" stop-color="#f3b6c3" />
+        </linearGradient>
+        <linearGradient id="degradado-barra-exterior-derecha" x1="600" y1="0" x2="529" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#d37a7c" />
+          <stop offset="38%" stop-color="#df929d" />
+          <stop offset="72%" stop-color="#edabb9" />
+          <stop offset="100%" stop-color="#f3b6c3" />
+        </linearGradient>
+
+      </defs>
+
+      <!-- Las barras se solapan 2 unidades bajo el primer galon. Ese pequeno
+           solapamiento elimina la ranura que produce el antialias del SVG. -->
+      <path class="linea-adorno linea-exterior-adorno linea-exterior-izquierda" d="M0 6 H71" />
+      <path class="linea-adorno linea-exterior-adorno linea-exterior-derecha" d="M529 6 H600" />
+
+      <!-- galones: 7 de ancho, paso 11.2 y desplazamiento 9 en los 12 de alto
+           (inclinacion 0.78). Van antes que las barras para que su halo rojo
+           no apague el arranque de estas. -->
+      <g class="trazos-oblicuos">
+        <polygon points="69,6 76,6 85,18 78,18" />
+        <polygon points="80.2,6 87.2,6 96.2,18 89.2,18" />
+        <polygon points="91.4,6 98.4,6 107.4,18 100.4,18" />
+        <polygon points="102.6,6 109.6,6 118.6,18 111.6,18" />
+        <polygon points="113.8,6 120.8,6 129.8,18 122.8,18" />
+      </g>
+
+      <!-- espejo exacto de los anteriores: al bajar, su x disminuye -->
+      <g class="trazos-oblicuos">
+        <polygon points="531,6 524,6 515,18 522,18" />
+        <polygon points="519.8,6 512.8,6 503.8,18 510.8,18" />
+        <polygon points="508.6,6 501.6,6 492.6,18 499.6,18" />
+        <polygon points="497.4,6 490.4,6 481.4,18 488.4,18" />
+        <polygon points="486.2,6 479.2,6 470.2,18 477.2,18" />
+      </g>
+
+      <!-- Rectangulo central. La barra superior va a y=17, que es donde queda
+           la base del galon una vez aplicado su translateY(-0.25mm): a esa
+           altura empalma con la punta y el trazo se ve continuo. Cierres y
+           destellos van en el mismo grupo para que suban solidariamente. -->
+      <g class="rectangulo-central">
+        <!-- La barra superior tambien entra bajo el ultimo galon en ambos
+             extremos para conservar una unica linea visual continua. -->
+        <path class="linea-adorno linea-conexion-oblicuos" d="M128 17 H472" />
+        <path class="linea-adorno" d="M130 31 H470" />
+        <path class="linea-adorno cierre-central" d="M130 17 V31" />
+        <path class="linea-adorno cierre-central" d="M470 17 V31" />
+        <!-- el destello va sobre la barra inferior, no entre las dos: en la
+             referencia el pico de brillo cae en el centro de esa barra -->
+        <ellipse class="halo-punto-central" cx="130" cy="31" rx="6" ry="7" />
+        <ellipse class="halo-punto-central" cx="470" cy="31" rx="6" ry="7" />
+        <circle class="nucleo-punto-central" cx="130" cy="31" r="1.6" />
+        <circle class="nucleo-punto-central" cx="470" cy="31" r="1.6" />
+      </g>
+    </svg>
+  </div>
+
+  <span class="oblicuas-logo" aria-hidden="true">
+    <svg viewBox="0 0 47 8" preserveAspectRatio="none">
+      <g>
+        <polygon points="0,8 3,8 10,0 7,0" />
+        <polygon points="6,8 9,8 16,0 13,0" />
+        <polygon points="12,8 15,8 22,0 19,0" />
+        <polygon points="18,8 21,8 28,0 25,0" />
+        <polygon points="24,8 27,8 34,0 31,0" />
+        <polygon points="30,8 33,8 40,0 37,0" />
+        <polygon points="36,8 39,8 46,0 43,0" />
+      </g>
+    </svg>
+  </span>
+  <span class="marco-interno" aria-hidden="true"></span>
+  <span class="horizontales-internas horizontales-internas-izquierda" aria-hidden="true">
+    <i class="punto-superior-adicional punto-superior-adicional-uno"></i>
+    <i class="punto-superior-adicional punto-superior-adicional-dos"></i>
+  </span>
+  <span class="horizontales-internas horizontales-internas-derecha" aria-hidden="true"></span>
+
+  <div class="informacion-cabezote">
+    <time class="fecha-login">{{ ahora | date:"EEEE, d 'de' MMMM 'de' y HH:mm":"":"es-CO" }}</time>
+
+    @if (mostrarUsuario) {
+      <app-datos-usuario-conectado></app-datos-usuario-conectado>
+    }
+  </div>
+
+  <div class="marca">
+    <h1>SICIM</h1>
+    <p>Sistema Integrado para el Control de Ingenieros Militares</p>
+  </div>
+
+  <span class="contenedor-logo">
+    <img
+      class="logo-sicim"
+      src="assets/images/logo/logo_sicim_01.png"
+      alt="Logo del Sistema Integrado para el Control de Ingenieros Militares"
+    >
+  </span>
+
+</header>

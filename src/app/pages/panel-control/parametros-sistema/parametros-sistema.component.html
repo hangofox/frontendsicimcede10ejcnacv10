@@ -1,0 +1,98 @@
+<h2 class="page-title">Parámetros del sistema</h2>
+
+<section class="page-card panel-parametros-sistema" aria-labelledby="titulo-parametros-sistema">
+  <p class="panel-subtitulo" id="titulo-parametros-sistema">Consulta y actualización de los parámetros generales que controlan el funcionamiento de SICIM.</p>
+
+  <div class="alerta-error" *ngIf="mensajeError">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    {{ mensajeError }}
+  </div>
+  <div class="alerta-cargando" *ngIf="cargandoDatos">Cargando parámetros del sistema...</div>
+
+  <form [formGroup]="parametrosSistemaForm" (ngSubmit)="accionModificarRegistro()" *ngIf="!cargandoDatos">
+    <input type="hidden" formControlName="idParametrosSistema">
+
+    <div class="form-card">
+      <div class="form-card-header"><h3>Configuración General</h3></div>
+      <div class="form-card-body"><div class="form-grid">
+        <div class="form-group"><label>Tiempo de sesión inactiva (minutos) (*)</label><input type="number" min="1" formControlName="tiempoMinutosSesionInactivaSistema"></div>
+        <div class="form-group"><label>Validez del código de activación de contraseña (minutos) (*)</label><input type="number" min="1" formControlName="tiempoMinutosValidezCodigoActivacionContrasena"></div>
+      </div></div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-header"><h3>Rutas de Almacenamiento</h3></div>
+      <div class="form-card-body"><div class="form-grid">
+        <div class="form-group campo-ancho"><label>Carpeta principal del servidor de aplicaciones (*)</label><input type="text" formControlName="rutaDestinoCarpetaPrincipalServidorAplicaciones"></div>
+        <div class="form-group campo-ancho"><label>Carpeta de cargue temporal de archivos (*)</label><input type="text" formControlName="rutaDestinoCarpetaCargueTemporalArchivos"></div>
+        <div class="form-group"><label>Archivos de usuarios (*)</label><input type="text" formControlName="rutaDestinoArchivosUsuarios"></div>
+        <div class="form-group"><label>Archivos de unidades militares (*)</label><input type="text" formControlName="rutaDestinoArchivosUnidadesMilitares"></div>
+        <div class="form-group"><label>Historial de documentos de integrantes (*)</label><input type="text" formControlName="rutaDestinoArchivosHistorialIntegrantesDocumentos"></div>
+        <div class="form-group"><label>Archivos de responsables (*)</label><input type="text" formControlName="rutaDestinoArchivosResponsables"></div>
+        <div class="form-group"><label>Archivos de altas de equipos de ingenieros (*)</label><input type="text" formControlName="rutaDestinoArchivosAltasEquiposIngenieros"></div>
+        <div class="form-group"><label>Archivos de bajas de equipos de ingenieros (*)</label><input type="text" formControlName="rutaDestinoArchivosBajasEquiposIngenieros"></div>
+      </div></div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-header"><h3>Servidor de Correo Electrónico</h3></div>
+      <div class="form-card-body"><div class="form-grid">
+        <div class="form-group"><label>Autenticación habilitada</label><select formControlName="authEnable"><option value="">-- Seleccione --</option><option value="1">ACTIVO</option><option value="0">INACTIVO</option></select></div>
+        <div class="form-group"><label>STARTTLS habilitado</label><select formControlName="startTTLSEnable"><option value="">-- Seleccione --</option><option value="1">ACTIVO</option><option value="0">INACTIVO</option></select></div>
+        <div class="form-group"><label>Servidor SMTP</label><input type="text" formControlName="smtpHost"></div>
+        <div class="form-group"><label>Puerto SMTP</label><input type="number" min="1" max="65535" formControlName="smtpPort"></div>
+        <div class="form-group campo-ancho"><label>Protocolos SMTP</label><input type="text" formControlName="smtpProtocols"></div>
+        <div class="form-group"><label>Correo electrónico remitente</label><input type="email" formControlName="correoElectronicoRemitente"></div>
+        <div class="form-group"><label>Usuario remitente</label><input type="text" formControlName="usuarioRemitente"></div>
+        <div class="form-group campo-ancho"><label>Contraseña del remitente</label><input type="password" formControlName="passwordRemitente" placeholder="••••••••"></div>
+      </div></div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-header"><h3>Recuperación de Contraseña</h3></div>
+      <div class="form-card-body"><div class="form-grid">
+        <div class="form-group campo-ancho"><label>Asunto del mensaje</label><input type="text" formControlName="asuntoDestinatarioRecuperacionContrasena"></div>
+        <div class="form-group campo-ancho">
+          <label>Cuerpo HTML del mensaje</label>
+          <div class="editor-tabs">
+            <button type="button" class="editor-tab" [class.active]="editorPestanaActiva === 'editor'" (click)="cambiarPestana('editor')">Editor</button>
+            <button type="button" class="editor-tab" [class.active]="editorPestanaActiva === 'codigo'" (click)="cambiarPestana('codigo')" title="Ver código fuente HTML">&lt;/&gt;</button>
+            <button type="button" class="editor-tab" [class.active]="editorPestanaActiva === 'preview'" (click)="cambiarPestana('preview')">Vista previa</button>
+          </div>
+          <div *ngIf="editorPestanaActiva === 'editor'" class="editor-bloque">
+            <div class="editor-toolbar">
+              <button type="button" class="tb" title="Negrita" (click)="formatear('bold')"><b>B</b></button>
+              <button type="button" class="tb" title="Cursiva" (click)="formatear('italic')"><i>I</i></button>
+              <button type="button" class="tb" title="Subrayado" (click)="formatear('underline')"><u>U</u></button><span class="tb-sep"></span>
+              <button type="button" class="tb" title="Alinear a la izquierda" (click)="formatear('justifyLeft')">☰</button>
+              <button type="button" class="tb" title="Centrar" (click)="formatear('justifyCenter')">≡</button>
+              <button type="button" class="tb" title="Alinear a la derecha" (click)="formatear('justifyRight')">☰</button><span class="tb-sep"></span>
+              <button type="button" class="tb" (click)="formatear('insertUnorderedList')">• Lista</button>
+              <button type="button" class="tb" (click)="formatear('insertOrderedList')">1. Lista</button>
+              <button type="button" class="tb" (click)="insertarEnlace()">Enlace</button><span class="tb-sep"></span>
+              <select class="tb-select" title="Tamaño de letra" (change)="formatearConValor('fontSize', $any($event.target).value)"><option value="">Tamaño</option><option value="1">Pequeño</option><option value="3">Normal</option><option value="5">Grande</option><option value="7">Muy grande</option></select>
+              <input type="color" class="tb-color" title="Color de texto" value="#334155" (change)="formatearConValor('foreColor', $any($event.target).value)">
+            </div>
+            <div #editorHtml class="editor-contenido" contenteditable="true" (input)="sincronizarEditor()" (blur)="sincronizarEditor()" [innerHTML]="editorContenidoHtml"></div>
+          </div>
+          <div *ngIf="editorPestanaActiva === 'codigo'" class="editor-bloque"><textarea class="editor-codigo-fuente" [value]="codigoFuenteHtml" (input)="sincronizarCodigoFuente($any($event.target).value)" spellcheck="false"></textarea></div>
+          <div *ngIf="editorPestanaActiva === 'preview'" class="editor-preview" [innerHTML]="editorContenidoHtml"></div>
+          <input type="hidden" formControlName="cuerpoMensajeHtmlRecuperacionContrasena">
+        </div>
+      </div></div>
+    </div>
+
+    <div class="form-acciones"><button type="submit" class="btn-sicim btn-primario" [disabled]="parametrosSistemaForm.invalid || guardandoDatos"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>{{ guardandoDatos ? 'Guardando...' : 'Modificar parámetros' }}</button></div>
+  </form>
+</section>
+
+<div class="confirmacion-overlay" *ngIf="banderaConfirmacionModificacion">
+  <div class="confirmacion-caja" role="dialog" aria-modal="true" aria-labelledby="titulo-confirmacion">
+    <div class="confirmacion-icono"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+    <h4 class="confirmacion-titulo" id="titulo-confirmacion">Confirmación de modificación</h4>
+    <p class="confirmacion-mensaje">¿Está seguro de que desea modificar los parámetros del sistema?</p>
+    <div class="confirmacion-botones"><button type="button" class="btn-confirmacion btn-si" (click)="siModificarParametros()">Sí, modificar</button><button type="button" class="btn-confirmacion btn-no" (click)="noModificarParametros()">No, cancelar</button></div>
+  </div>
+</div>
+
+<div class="toast-global" *ngIf="toastMensaje" [class.toast-exito]="toastTipo === 'exito'" [class.toast-error]="toastTipo === 'error'"><span>{{ toastMensaje }}</span></div>

@@ -1,0 +1,101 @@
+<div class="vista-solicitud-infraestructura" *ngIf="solicitudInfraestructuraData as solicitudInfraestructura">
+
+  <div class="perfil-cabecera">
+    <div class="avatar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+    </div>
+    <div>
+      <h3 class="perfil-nombre">{{ solicitudInfraestructura.nombreSolicitudInfraestructura }}</h3>
+      <p class="perfil-tipo">{{ solicitudInfraestructura.unidadMilitarDTO.nombreUnidadMilitar }} ({{ solicitudInfraestructura.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }})</p>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Identificación</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Código radicado</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.codigoRadicadoSolicitudInfraestructura }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Unidad militar</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Tipo de solicitud</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.tipoSolicitudInfraestructuraDTO.nombreTipoSolicitudInfraestructura }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Infraestructura asociada</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.infraestructuraDTO.denominacionInfraestructura }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de solicitud</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.fechaHMSSolicitudInfraestructura || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Dependencia</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Nombre de la dependencia</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.nombreDependenciaSolicitudInfraestructura }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de funcionarios</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.numeroFuncionariosSolicitudInfraestructura }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de usuarios</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.numeroUsuariosSolicitudInfraestructura }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Observaciones y justificación</div>
+    <div class="datos-grid">
+      <div class="dato-grupo dato-grupo-ancho">
+        <span class="dato-label">Observaciones jurídicas del estado del predio</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.observacionesJuridicasEstadoPredioInfraestructura || '-' }}</span>
+      </div>
+      <div class="dato-grupo dato-grupo-ancho">
+        <span class="dato-label">Observaciones del estado ambiental</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.observacionesEstadoAmbientalInfraestructura || '-' }}</span>
+      </div>
+      <div class="dato-grupo dato-grupo-ancho">
+        <span class="dato-label">Justificación de la necesidad</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.justificacionNecesidadInfraestructura || '-' }}</span>
+      </div>
+      <div class="dato-grupo dato-grupo-ancho">
+        <span class="dato-label">Descripción general de la necesidad</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.descripcionGeneralNecesidadInfraestructura || '-' }}</span>
+      </div>
+      <div class="dato-grupo dato-grupo-ancho">
+        <span class="dato-label">Descripción del impacto esperado</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.descripcionImpactoEsperadoInfraestructura || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Datos de registro</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de ingreso</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.fechaHMSIngresoSolicitudInfraestructura || 'No registrada' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de modificación</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.fechaHMSModificacionSolicitudInfraestructura || 'Sin modificaciones' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-acciones">
+    <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cerrar</button>
+  </div>
+
+</div>
