@@ -8,7 +8,7 @@ import { SociedadesUnidadesCentralizadorasI } from '../../../../../interfaces/pa
 import { TiposEstructurasInfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.interface';
 import { FuncionalidadesInfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/funcionalidades-infraestructuras/funcionalidades-infraestructuras.interface';
 import { SegurosI } from '../../../../../interfaces/seguros/seguros.interface';
-import { TerrenosI } from '../../../../../interfaces/terrenos/terrenos.interface';
+import { TerrenosI } from '../../../../../interfaces/digei/finca-raiz/terrenos/terrenos.interface';
 
 import { InfraestructurasService } from '../../../../../services/digei/finca-raiz/infraestructuras/infraestructuras.service';
 import { UnidadesMilitaresService } from '../../../../../services/panel-control/unidades-militares/unidades-militares.service';
@@ -16,7 +16,7 @@ import { SociedadesUnidadesCentralizadorasService } from '../../../../../service
 import { TiposEstructurasInfraestructurasService } from '../../../../../services/digei/finca-raiz/tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.service';
 import { FuncionalidadesInfraestructurasService } from '../../../../../services/digei/finca-raiz/funcionalidades-infraestructuras/funcionalidades-infraestructuras.service';
 import { SegurosService } from '../../../../../services/seguros/seguros.service';
-import { TerrenosService } from '../../../../../services/terrenos/terrenos.service';
+import { TerrenosService } from '../../../../../services/digei/finca-raiz/terrenos/terrenos.service';
 import { SpinnerService } from '../../../../../services/spinner/spinner.service';
 
 import { AddUpdDelInfraestructuraComponent } from '../add-upd-del-infraestructura/add-upd-del-infraestructura.component';

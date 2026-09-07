@@ -1,0 +1,43 @@
+@if (terrenoData; as terreno) {
+  <div class="vista-terreno">
+    <div class="perfil-cabecera">
+      <div class="avatar" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg>
+      </div>
+      <div><h3 class="perfil-nombre">{{ terreno.denominacionTerreno }}</h3><p class="perfil-tipo">{{ terreno.unidadMilitarDTO.nombreUnidadMilitar }} ({{ terreno.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }})</p></div>
+    </div>
+
+    <div class="vista-seccion"><div class="seccion-titulo">Identificación</div><div class="datos-grid">
+      <div class="dato-grupo"><span class="dato-label">ID</span><span class="dato-valor">{{ terreno.idTerreno }}</span></div>
+      <div class="dato-grupo"><span class="dato-label">N.º Inventario</span><span class="dato-valor">{{ terreno.numeroInventarioTerreno }}</span></div>
+      <div class="dato-grupo"><span class="dato-label">N.º Activo fijo</span><span class="dato-valor">{{ terreno.numeroActivoFijoTerreno }}</span></div>
+      <div class="dato-grupo"><span class="dato-label">Estado</span><span class="dato-valor">{{ terreno.estadoTerrenoDTO.nombreEstadoTerreno }}</span></div>
+      <div class="dato-grupo"><span class="dato-label">Sociedad centralizadora</span><span class="dato-valor">{{ terreno.sociedadUnidadCentralizadoraDTO.codigoSociedadUnidadCentralizadora }}</span></div>
+    </div></div>
+
+    <div class="vista-seccion"><div class="seccion-titulo">Información jurídica</div><div class="datos-grid">
+      <div class="dato-grupo"><span class="dato-label">Número catastral</span><span class="dato-valor">{{ terreno.numeroCatastralTerreno || '-' }}</span></div>
+      <div class="dato-grupo"><span class="dato-label">Escritura</span><span class="dato-valor">{{ terreno.numeroEscrituraTerreno || '-' }}</span></div>
+      <div class="dato-grupo"><span class="dato-label">Notaría</span><span class="dato-valor">{{ terreno.numeroNotariaTerreno || '-' }}</span></div>
+      <div class="dato-grupo"><span class="dato-label">Lugar de notaría</span><span class="dato-valor">{{ terreno.lugarUbicacionNotariaTerreno || '-' }}</span></div>
+      <div class="dato-grupo"><span class="dato-label">Fecha de matrícula</span><span class="dato-valor">{{ terreno.fechaHMSMatriculaTerreno || '-' }}</span></div>
+    </div></div>
+
+    <div class="vista-seccion"><div class="seccion-titulo">Ubicación y dimensiones</div><div class="datos-grid">
+      <div class="dato-grupo"><span class="dato-label">País</span><span class="dato-valor">{{ terreno.paisOrigenTerreno || '-' }}</span></div>
+      <div class="dato-grupo"><span class="dato-label">Departamento o estado</span><span class="dato-valor">{{ terreno.departamentoOEstadoOrigenTerreno || '-' }}</span></div>
+      <div class="dato-grupo"><span class="dato-label">Ciudad</span><span class="dato-valor">{{ terreno.ciudadOrigenTerreno || '-' }}</span></div>
+      <div class="dato-grupo"><span class="dato-label">Dirección</span><span class="dato-valor">{{ terreno.direccionTerreno || '-' }}</span></div>
+      <div class="dato-grupo"><span class="dato-label">Coordenadas</span><span class="dato-valor">{{ terreno.latitudTerreno || '-' }}, {{ terreno.longitudTerreno || '-' }}</span></div>
+      <div class="dato-grupo"><span class="dato-label">Área</span><span class="dato-valor">{{ terreno.numeroAreaTerreno || '-' }} {{ terreno.nombreUnidadMedidaTerreno }}</span></div>
+    </div></div>
+
+    <div class="vista-seccion"><div class="seccion-titulo">Impuesto y observaciones</div><div class="datos-grid">
+      <div class="dato-grupo"><span class="dato-label">Exonerado</span><span class="dato-valor">{{ terreno.siONoExoneradoImpuestoPredialTerreno }}</span></div>
+      <div class="dato-grupo"><span class="dato-label">Años de exoneración</span><span class="dato-valor">{{ terreno.numeroAnosExoneracionImpuestoPredialTerreno }}</span></div>
+      <div class="dato-grupo"><span class="dato-label">Observaciones</span><span class="dato-valor">{{ terreno.observacionesTerreno || 'Sin observaciones' }}</span></div>
+    </div></div>
+
+    <div class="vista-acciones"><button type="button" class="btn-sicim btn-secundario" (click)="cerrarModal.emit()">Cerrar</button></div>
+  </div>
+}

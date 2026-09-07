@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { ResponseTerrenoDTO } from '../../interfaces/terrenos/responseTerrenoDTO.interface';
-import { TerrenosI, TerrenosMsj } from '../../interfaces/terrenos/terrenos.interface';
+import { ResponseTerrenoDTO } from '../../../../interfaces/digei/finca-raiz/terrenos/responseTerrenoDTO.interface';
+import { TerrenosI, TerrenosMsj } from '../../../../interfaces/digei/finca-raiz/terrenos/terrenos.interface';
 
 @Injectable({
   providedIn: 'root'

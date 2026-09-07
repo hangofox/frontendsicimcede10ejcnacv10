@@ -26,22 +26,30 @@
       </div>
     </div>
 
+    <!-- Los PNG traen el nombre incorporado, asi que la pieza es la imagen
+         entera y el rotulo queda en aria-label. Infraestructura y Terrenos
+         navegan; las otras dos siguen sin ruta. -->
     <div class="fr-panal">
       <article class="fr-ranura fr-ranura--infraestructura">
-        <a class="fr-ranura__nombre fr-ranura__enlace"
-           routerLink="/digei/finca-raiz/infraestructuras/listado-infraestructuras">Infraestructura</a>
+        <a class="fr-ranura__pieza fr-ranura__pieza--enlace"
+           routerLink="/digei/finca-raiz/infraestructuras/listado-infraestructuras"
+           aria-label="Infraestructura"></a>
       </article>
 
       <article class="fr-ranura fr-ranura--terrenos">
-        <p class="fr-ranura__nombre">Terrenos</p>
+        <a class="fr-ranura__pieza fr-ranura__pieza--enlace"
+           routerLink="/digei/finca-raiz/terrenos/listado-terrenos"
+           aria-label="Terrenos"></a>
       </article>
 
       <article class="fr-ranura fr-ranura--estadisticas-infraestructura">
-        <p class="fr-ranura__nombre">Estadísticas de Infraestructura</p>
+        <span class="fr-ranura__pieza" role="img"
+              aria-label="Estadísticas de Infraestructura"></span>
       </article>
 
       <article class="fr-ranura fr-ranura--estadisticas-terrenos">
-        <p class="fr-ranura__nombre">Estadísticas de Terrenos</p>
+        <span class="fr-ranura__pieza" role="img"
+              aria-label="Estadísticas de Terrenos"></span>
       </article>
     </div>
   </div>

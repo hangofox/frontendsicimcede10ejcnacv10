@@ -3,6 +3,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { DigeiComponent } from './pages/digei/digei.component';
 import { FincaRaizComponent } from './pages/digei/finca-raiz/finca-raiz.component';
 import { ListadoInfraestructurasComponent } from './pages/digei/finca-raiz/infraestructuras/listado-infraestructuras/listado-infraestructuras.component';
+import { ListadoTerrenosComponent } from './pages/digei/finca-raiz/terrenos/listado-terrenos/listado-terrenos.component';
 import { ListadoSolicitudesInfraestructurasComponent } from './pages/digei/solicitudes-infraestructuras/listado-solicitudes-infraestructuras/listado-solicitudes-infraestructuras.component';
 import { DincoComponent } from './pages/dinco/dinco.component';
 import { DiespComponent } from './pages/diesp/diesp.component';
@@ -53,7 +54,9 @@ export const routes: Routes = [
             children: [
               { path: '', component: FincaRaizComponent, title: 'Finca Raíz | SICIM' },
               { path: 'infraestructuras/listado-infraestructuras', component: ListadoInfraestructurasComponent, title: 'Infraestructuras | SICIM' },
-              { path: 'infraestructuras', redirectTo: 'infraestructuras/listado-infraestructuras', pathMatch: 'full' }
+              { path: 'terrenos/listado-terrenos', component: ListadoTerrenosComponent, title: 'Terrenos | SICIM' },
+              { path: 'infraestructuras', redirectTo: 'infraestructuras/listado-infraestructuras', pathMatch: 'full' },
+              { path: 'terrenos', redirectTo: 'terrenos/listado-terrenos', pathMatch: 'full' }
             ]
           },
           //SOLICITUDES DE INFRAESTRUCTURAS CUELGA DIRECTAMENTE DE DIGEI, COMO SU CARPETA.

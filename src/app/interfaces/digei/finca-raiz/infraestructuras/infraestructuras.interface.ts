@@ -3,7 +3,7 @@ import { SociedadesUnidadesCentralizadorasI } from "../../../panel-control/socie
 import { TiposEstructurasInfraestructurasI } from "../tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.interface";
 import { FuncionalidadesInfraestructurasI } from "../funcionalidades-infraestructuras/funcionalidades-infraestructuras.interface";
 import { SegurosI } from "../../../seguros/seguros.interface";
-import { TerrenosI } from "../../../terrenos/terrenos.interface";
+import { TerrenosI } from "../terrenos/terrenos.interface";
 
 export interface InfraestructurasI {
     idInfraestructura?: number;

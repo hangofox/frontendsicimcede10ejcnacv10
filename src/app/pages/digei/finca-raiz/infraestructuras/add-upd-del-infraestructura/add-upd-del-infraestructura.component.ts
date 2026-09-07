@@ -8,7 +8,7 @@ import { SociedadesUnidadesCentralizadorasI } from '../../../../../interfaces/pa
 import { TiposEstructurasInfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.interface';
 import { FuncionalidadesInfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/funcionalidades-infraestructuras/funcionalidades-infraestructuras.interface';
 import { SegurosI } from '../../../../../interfaces/seguros/seguros.interface';
-import { TerrenosI } from '../../../../../interfaces/terrenos/terrenos.interface';
+import { TerrenosI } from '../../../../../interfaces/digei/finca-raiz/terrenos/terrenos.interface';
 
 @Component({
   selector: 'app-add-upd-del-infraestructura',

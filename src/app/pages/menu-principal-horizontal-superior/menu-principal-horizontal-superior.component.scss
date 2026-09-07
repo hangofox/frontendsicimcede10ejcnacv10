@@ -371,13 +371,47 @@
   -webkit-mask-size: calc(var(--icono) * 1.34) auto;
 }
 
-.opcion:hover,
 .opcion.activo {
   filter: brightness(1.14) saturate(1.08);
   box-shadow:
     inset 0 2px 4px rgb(255 245 177 / 25%),
     inset 0 -5px 7px rgb(0 0 0 / 42%),
     0 0 7px rgb(255 190 25 / 48%);
+}
+
+.opcion:hover {
+  filter: none;
+  box-shadow:
+    inset 0 0 0 100vmax rgb(255 248 210 / 12%),
+    inset 0 0 16px 5px rgb(255 235 145 / 24%),
+    inset 0 -4px 7px rgb(0 0 0 / 32%),
+    0 0 10px rgb(255 190 25 / 60%);
+}
+
+/* El plateado necesita un cambio propio de gradiente para que el hover
+   conserve contraste y sea tan visible como en las piezas moradas. */
+.opcion:nth-child(even of :not(.activo)):hover,
+.menu__interior--completo > .opcion:nth-child(even):hover {
+  background:
+    radial-gradient(ellipse at 50% 32%, #fff 0%, #f5f5f5 34%, #cdcdcd 68%, #747474 100%);
+  box-shadow:
+    inset 0 0 0 999px rgb(255 255 255 / 8%),
+    inset 0 3px 7px rgb(255 255 255 / 82%),
+    inset 0 -5px 8px rgb(35 35 35 / 28%),
+    0 0 10px rgb(255 190 25 / 62%);
+}
+
+/* El morado también cambia de material durante el hover; aclarar solamente
+   con un velo no producía el mismo relieve perceptible que el plateado. */
+.opcion:nth-child(odd of :not(.activo)):hover,
+.menu__interior--completo > .opcion:nth-child(odd):hover {
+  background:
+    radial-gradient(ellipse at 50% 32%, #a315ad 0%, #750480 36%, #4a0058 68%, #23002c 100%);
+  box-shadow:
+    inset 0 0 0 999px rgb(255 231 255 / 7%),
+    inset 0 3px 7px rgb(255 190 255 / 34%),
+    inset 0 -5px 8px rgb(15 0 22 / 32%),
+    0 0 10px rgb(255 190 25 / 62%);
 }
 
 .opcion:focus-visible {

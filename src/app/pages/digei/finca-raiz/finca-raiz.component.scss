@@ -264,10 +264,17 @@
    ===================================================================== */
 
 .fr-panal {
-  --fr-ranura: clamp(112px, 18.9vw, 215px);
-  /* Las filas se solapan un 24 % para que las piezas encajen como un
-     panal en lugar de quedar en cuadrícula. */
-  --fr-solape: calc(var(--fr-ranura) * -.24);
+  --fr-ranura: clamp(124px, 21vw, 240px);
+  /* Los hexagonos miden 272x300, asi que su alto no es igual al ancho. */
+  --fr-alto: calc(var(--fr-ranura) * 300 / 272);
+  /* El hexagono dibujado es de punta arriba: diagonales de 72 px y lados
+     rectos de 149 px dentro de la caja de 300.
+     Cada solape se controla por separado para poder mover la fila del
+     medio sin arrastrar la de abajo. Bajar --fr-solape-1 hace descender
+     la fila central; subir --fr-solape-2 en la misma cantidad deja la
+     pieza inferior donde estaba y el panal conserva su alto. */
+  --fr-solape-1: calc(var(--fr-alto) * -.225);
+  --fr-solape-2: calc(var(--fr-alto) * -.249);
 
   box-sizing: border-box;
   flex: 0 0 auto;
@@ -276,20 +283,53 @@
   display: grid;
   grid-template-columns: repeat(2, var(--fr-ranura));
   justify-content: center;
-  column-gap: clamp(4px, .6vw, 12px);
+  /* Sin separacion de columna: en un panal el desplazamiento entre filas
+     es exactamente medio hexagono. Cualquier hueco aqui lo ensancha y
+     deja la fila del medio mas abierta que las diagonales, que es lo que
+     descuadraba la pieza inferior. La separacion visible la dan los
+     margenes transparentes de los propios PNG. */
+  column-gap: 0;
 }
 
 .fr-ranura {
   box-sizing: border-box;
   width: var(--fr-ranura);
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  padding: 8px;
+  /* Proporcion nativa del PNG: no se deforma. */
+  aspect-ratio: 272 / 300;
+  /* Sin 'stretch': como celda de rejilla se estiraria al alto de su fila
+     y el alto dejaria de venir del aspect-ratio, con lo que 'contain'
+     empezaria a dejar franjas distintas en cada fila. */
+  align-self: start;
+  display: block;
   margin: 0;
-  /* Transparente: solo reserva el sitio del marco definitivo. */
   background: none;
-  text-align: center;
+}
+
+/* La pieza ocupa toda la ranura, asi que en las dos que navegan el area
+   sensible es el hexagono completo. */
+.fr-ranura__pieza {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: center / contain no-repeat;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.fr-ranura--infraestructura .fr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_infraestructuras_01.png');
+}
+
+.fr-ranura--terrenos .fr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_terrenos_01.png');
+}
+
+.fr-ranura--estadisticas-infraestructura .fr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_estadisticas_infraestructuras_01.png');
+}
+
+.fr-ranura--estadisticas-terrenos .fr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_estadisticas_terrenos_01.png');
 }
 
 .fr-ranura--infraestructura {
@@ -299,43 +339,50 @@
 
 .fr-ranura--terrenos {
   grid-column: 1;
-  margin-top: var(--fr-solape);
+  margin-top: var(--fr-solape-1);
 }
 
 .fr-ranura--estadisticas-infraestructura {
   grid-column: 2;
-  margin-top: var(--fr-solape);
+  margin-top: var(--fr-solape-1);
 }
 
 .fr-ranura--estadisticas-terrenos {
   grid-column: 1 / -1;
   justify-self: center;
-  margin-top: var(--fr-solape);
+  margin-top: var(--fr-solape-2);
+  /* Ajuste fino solo de esta pieza: 0,2 mm a la derecha y un descenso
+     proporcional al tamano, para que no se pierda al reducir la ventana.
+     Va en 'translate', propiedad independiente, y no en 'transform', que
+     asi no puede chocar con la escala del hover de la pieza interior. */
+  translate: 0.1mm calc(var(--fr-alto) * .016 - 0.2mm);
 }
 
-/* Rótulo provisional, solo para identificar la ranura durante el
-   desarrollo. Desaparecerá con el marco definitivo. */
-.fr-ranura__nombre {
-  margin: 0;
-  color: #fff;
-  text-shadow: 0 1px 3px rgb(0 0 0 / 85%);
-  font-size: clamp(.62rem, .82vw, .78rem);
-  letter-spacing: .04em;
-  text-transform: uppercase;
+/* Las dos que navegan se realzan al apuntarlas; las otras dos no
+   reaccionan, porque todavia no llevan a ningun sitio. */
+/* El zoom lo llevan las cuatro piezas. La escala va aqui, en la imagen,
+   y no en .fr-ranura, que ya usa 'translate' para su ajuste fino: son
+   propiedades distintas y no se pisan. */
+.fr-ranura__pieza {
+  transition: transform .24s cubic-bezier(.2, .75, .25, 1), filter .24s ease;
 }
 
-/* Infraestructura ya navega; las otras tres siguen siendo rótulos
-   inertes hasta que lleguen sus marcos y rutas. */
-.fr-ranura__enlace {
+.fr-ranura__pieza:hover,
+.fr-ranura__pieza--enlace:focus-visible {
+  transform: scale(1.06);
+  filter: brightness(1.08) drop-shadow(0 0 10px rgb(255 190 25 / 45%));
+}
+
+/* El cursor de mano y el foco de teclado siguen siendo solo de las dos
+   que navegan: las otras dos se realzan, pero no llevan a ningun sitio y
+   no deben aparentar que si. */
+.fr-ranura__pieza--enlace {
   cursor: pointer;
-  text-decoration: none;
-  transition: color .2s ease, text-shadow .2s ease;
 }
 
-.fr-ranura__enlace:hover,
-.fr-ranura__enlace:focus-visible {
-  color: var(--fr-oro-claro, #ffd85a);
-  text-shadow: 0 1px 3px rgb(0 0 0 / 85%), 0 0 8px rgb(255 190 25 / 55%);
+.fr-ranura__pieza--enlace:focus-visible {
+  outline: 2px solid #fff3a8;
+  outline-offset: 2px;
 }
 
 .fr-ranura__enlace:focus-visible {
@@ -370,8 +417,14 @@
     transform: rotate(var(--fr-fase, 0deg));
   }
 
-  .fr-pinon__medallon--enlace .fr-pinon__medallon-img {
+  .fr-pinon__medallon--enlace .fr-pinon__medallon-img,
+  .fr-ranura__pieza {
     transition: none;
+  }
+
+  .fr-ranura__pieza:hover,
+  .fr-ranura__pieza--enlace:focus-visible {
+    transform: none;
   }
 }
 

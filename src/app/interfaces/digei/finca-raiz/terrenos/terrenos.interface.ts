@@ -1,16 +1,12 @@
-import { UnidadesMilitaresI } from "../panel-control/unidades-militares/unidades-militares.interface";
-import { SociedadesUnidadesCentralizadorasI } from "../panel-control/sociedades-unidades-centralizadoras/sociedades-unidades-centralizadoras.interface";
-
-export interface EstadosTerrenoI {
-    idEstadoTerreno?: number;
-    nombreEstadoTerreno: String;
-}
+import { UnidadesMilitaresI } from "../../../panel-control/unidades-militares/unidades-militares.interface";
+import { SociedadesUnidadesCentralizadorasI } from "../../../panel-control/sociedades-unidades-centralizadoras/sociedades-unidades-centralizadoras.interface";
+import { EstadosTerrenosI } from "../estados-terrenos/estados-terrenos.interface";
 
 export interface TerrenosI {
     idTerreno?: number;
     unidadMilitarDTO: UnidadesMilitaresI;
     sociedadUnidadCentralizadoraDTO: SociedadesUnidadesCentralizadorasI;
-    estadoTerrenoDTO: EstadosTerrenoI;
+    estadoTerrenoDTO: EstadosTerrenosI;
     denominacionTerreno: String;
     numeroInventarioTerreno: String;
     numeroActivoFijoTerreno: String;
