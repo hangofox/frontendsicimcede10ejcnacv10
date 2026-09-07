@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { InfraestructurasI } from '../../../../interfaces/digei/infraestructuras/infraestructuras.interface';
+import { InfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
 
 @Component({
   selector: 'app-vista-infraestructura',

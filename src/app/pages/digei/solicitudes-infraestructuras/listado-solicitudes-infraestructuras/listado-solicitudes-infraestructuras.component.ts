@@ -5,13 +5,13 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angul
 import { SolicitudesInfraestructurasI } from '../../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
 import { UnidadesMilitaresI } from '../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
 import { TiposSolicitudesInfraestructurasI } from '../../../../interfaces/digei/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.interface';
-import { InfraestructurasI } from '../../../../interfaces/digei/infraestructuras/infraestructuras.interface';
+import { InfraestructurasI } from '../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
 import { GRUPOS_NIVEL_INTEGRANTES_DOCUMENTOS_SOLIC_INFRAEST, IntegrantesDocumentosSolicInfraestI, NIVELES_JERARQUIA_UNIDAD_MILITAR } from '../../../../interfaces/digei/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.interface';
 
 import { SolicitudesInfraestructurasService } from '../../../../services/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.service';
 import { UnidadesMilitaresService } from '../../../../services/panel-control/unidades-militares/unidades-militares.service';
 import { TiposSolicitudesInfraestructurasService } from '../../../../services/digei/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.service';
-import { InfraestructurasService } from '../../../../services/digei/infraestructuras/infraestructuras.service';
+import { InfraestructurasService } from '../../../../services/digei/finca-raiz/infraestructuras/infraestructuras.service';
 import { IntegrantesDocumentosSolicInfraestService } from '../../../../services/digei/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.service';
 import { SpinnerService } from '../../../../services/spinner/spinner.service';
 

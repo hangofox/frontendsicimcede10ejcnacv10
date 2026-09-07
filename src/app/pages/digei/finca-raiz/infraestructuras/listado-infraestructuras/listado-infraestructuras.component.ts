@@ -2,22 +2,22 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
-import { InfraestructurasI } from '../../../../interfaces/digei/infraestructuras/infraestructuras.interface';
-import { UnidadesMilitaresI } from '../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
-import { SociedadesUnidadesCentralizadorasI } from '../../../../interfaces/panel-control/sociedades-unidades-centralizadoras/sociedades-unidades-centralizadoras.interface';
-import { TiposEstructurasInfraestructurasI } from '../../../../interfaces/digei/tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.interface';
-import { FuncionalidadesInfraestructurasI } from '../../../../interfaces/digei/funcionalidades-infraestructuras/funcionalidades-infraestructuras.interface';
-import { SegurosI } from '../../../../interfaces/seguros/seguros.interface';
-import { TerrenosI } from '../../../../interfaces/terrenos/terrenos.interface';
+import { InfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
+import { UnidadesMilitaresI } from '../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
+import { SociedadesUnidadesCentralizadorasI } from '../../../../../interfaces/panel-control/sociedades-unidades-centralizadoras/sociedades-unidades-centralizadoras.interface';
+import { TiposEstructurasInfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.interface';
+import { FuncionalidadesInfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/funcionalidades-infraestructuras/funcionalidades-infraestructuras.interface';
+import { SegurosI } from '../../../../../interfaces/seguros/seguros.interface';
+import { TerrenosI } from '../../../../../interfaces/terrenos/terrenos.interface';
 
-import { InfraestructurasService } from '../../../../services/digei/infraestructuras/infraestructuras.service';
-import { UnidadesMilitaresService } from '../../../../services/panel-control/unidades-militares/unidades-militares.service';
-import { SociedadesUnidadesCentralizadorasService } from '../../../../services/panel-control/sociedades-unidades-centralizadoras/sociedades-unidades-centralizadoras.service';
-import { TiposEstructurasInfraestructurasService } from '../../../../services/digei/tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.service';
-import { FuncionalidadesInfraestructurasService } from '../../../../services/digei/funcionalidades-infraestructuras/funcionalidades-infraestructuras.service';
-import { SegurosService } from '../../../../services/seguros/seguros.service';
-import { TerrenosService } from '../../../../services/terrenos/terrenos.service';
-import { SpinnerService } from '../../../../services/spinner/spinner.service';
+import { InfraestructurasService } from '../../../../../services/digei/finca-raiz/infraestructuras/infraestructuras.service';
+import { UnidadesMilitaresService } from '../../../../../services/panel-control/unidades-militares/unidades-militares.service';
+import { SociedadesUnidadesCentralizadorasService } from '../../../../../services/panel-control/sociedades-unidades-centralizadoras/sociedades-unidades-centralizadoras.service';
+import { TiposEstructurasInfraestructurasService } from '../../../../../services/digei/finca-raiz/tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.service';
+import { FuncionalidadesInfraestructurasService } from '../../../../../services/digei/finca-raiz/funcionalidades-infraestructuras/funcionalidades-infraestructuras.service';
+import { SegurosService } from '../../../../../services/seguros/seguros.service';
+import { TerrenosService } from '../../../../../services/terrenos/terrenos.service';
+import { SpinnerService } from '../../../../../services/spinner/spinner.service';
 
 import { AddUpdDelInfraestructuraComponent } from '../add-upd-del-infraestructura/add-upd-del-infraestructura.component';
 import { VistaInfraestructuraComponent } from '../vista-infraestructura/vista-infraestructura.component';

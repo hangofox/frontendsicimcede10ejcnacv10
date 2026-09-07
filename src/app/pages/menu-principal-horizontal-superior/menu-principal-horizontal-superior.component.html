@@ -23,7 +23,7 @@
 
 <nav class="menu" aria-label="Menú principal">
   <div class="menu__marco">
-    <div class="menu__interior">
+    <div class="menu__interior" [class.menu__interior--completo]="mostrarTodasOpciones">
       @for (opcion of opciones; track opcion.id; let ultimo = $last) {
         @if (opcion.ruta) {
           <a class="opcion" [routerLink]="opcion.ruta" routerLinkActive="activo">

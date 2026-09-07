@@ -10,26 +10,25 @@
     <div class="digei-engranajes">
       <div class="digei-pinon digei-pinon--central">
         <div class="digei-pinon__rotor" aria-hidden="true">
-          <img class="digei-pinon__anillo"
-               src="assets/images/imagen_anillo_pinon_central_01.png"
-               alt="" width="482" height="482">
+          <span class="digei-pinon__anillo"></span>
         </div>
-        <img class="digei-pinon__contenido"
-             src="assets/images/imagen_circulo_proceso_digei_01.png"
-             alt="Proceso DIGEI" width="400" height="400">
+        <span class="digei-pinon__contenido" role="img" aria-label="Proceso DIGEI"></span>
       </div>
 
       <ul class="digei-areas">
         @for (area of areas; track area.id) {
           <li class="digei-pinon digei-pinon--satelite" [attr.data-posicion]="area.posicion">
             <div class="digei-pinon__rotor" aria-hidden="true">
-              <img class="digei-pinon__anillo"
-                   [src]="anilloSatelite"
-                   alt="" width="350" height="350">
+              <span class="digei-pinon__anillo"></span>
             </div>
-            <img class="digei-pinon__contenido"
-                 [src]="area.imagen" [alt]="area.nombre"
-                 width="482" height="482">
+            @if (area.ruta) {
+              <a class="digei-pinon__enlace" [routerLink]="area.ruta"
+                 [attr.aria-label]="'Ir a ' + area.nombre">
+                <span class="digei-pinon__contenido" aria-hidden="true"></span>
+              </a>
+            } @else {
+              <span class="digei-pinon__contenido" role="img" [attr.aria-label]="area.nombre"></span>
+            }
           </li>
         }
       </ul>

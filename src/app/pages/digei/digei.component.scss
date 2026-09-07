@@ -5,19 +5,19 @@ $chaflan: 14px;
 :host {
   display: flex;
   width: 100%;
-  min-height: 0;
+  min-height: 100%;
   flex: 1 1 auto;
+  align-self: stretch;
+  background: #020203 url('../../../assets/images/imagen_fondo_cuerpo_digei_01.png') center / 100% 100% no-repeat;
 }
 
-/* El fondo del cuerpo lo pone el contenedor de la aplicacion
-   (.contenido:has(> app-digei) en index.component.scss), igual que en Inicio,
-   de modo que la imagen ocupa todo el cuerpo que va despues del cabezote. */
+/* El componente administra su propio fondo, igual que Login. */
 .digei-futurista {
   position: relative;
   isolation: isolate;
   box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  flex: 1 1 auto;
   min-height: 0;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
@@ -228,7 +228,7 @@ $chaflan: 14px;
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  background: center / contain no-repeat;
 }
 
 .digei-pinon__contenido {
@@ -241,7 +241,8 @@ $chaflan: 14px;
   height: var(--digei-contenido);
   margin-left: calc(var(--digei-contenido) / -2);
   margin-top: calc(var(--digei-contenido) / -2);
-  object-fit: contain;
+  display: block;
+  background: center / contain no-repeat;
   image-rendering: auto;
   backface-visibility: hidden;
 }
@@ -272,6 +273,14 @@ $chaflan: 14px;
   animation: digei-giro-horario var(--digei-giro-central) linear infinite;
 }
 
+.digei-pinon--central .digei-pinon__anillo {
+  background-image: url('../../../assets/images/imagen_anillo_pinon_central_01.png');
+}
+
+.digei-pinon--central .digei-pinon__contenido {
+  background-image: url('../../../assets/images/imagen_circulo_proceso_digei_01.png');
+}
+
 /* ---- Pinones perifericos ------------------------------------------ */
 
 .digei-pinon--satelite {
@@ -300,6 +309,59 @@ $chaflan: 14px;
 
 .digei-pinon--satelite .digei-pinon__rotor {
   animation: digei-giro-antihorario var(--digei-giro-satelite) linear infinite;
+}
+
+.digei-pinon--satelite .digei-pinon__anillo {
+  background-image: url('../../../assets/images/imagen_anillo_pinon_externo_01.png');
+}
+
+.digei-pinon[data-posicion="superior-izquierda"] .digei-pinon__contenido {
+  background-image: url('../../../assets/images/imagen_circulo_gestion_riesgo_01.png');
+}
+
+.digei-pinon[data-posicion="superior-derecha"] .digei-pinon__contenido {
+  background-image: url('../../../assets/images/imagen_circulo_construcciones_y_mantenimientos_01.png');
+}
+
+.digei-pinon[data-posicion="izquierda"] .digei-pinon__contenido {
+  background-image: url('../../../assets/images/imagen_circulo_gestion_ambiental_01.png');
+}
+
+.digei-pinon[data-posicion="derecha"] .digei-pinon__contenido {
+  background-image: url('../../../assets/images/imagen_circulo_geomatica_y_topografia_01.png');
+}
+
+.digei-pinon[data-posicion="inferior-izquierda"] .digei-pinon__contenido {
+  background-image: url('../../../assets/images/imagen_circulo_consolidacion_01.png');
+}
+
+.digei-pinon[data-posicion="inferior-derecha"] .digei-pinon__contenido {
+  background-image: url('../../../assets/images/imagen_circulo_finca_raiz_01.png');
+}
+
+.digei-pinon__enlace {
+  position: absolute;
+  top: calc(50% + var(--digei-u) * var(--digei-contenido-y, 0)
+    + var(--digei-contenido-ajuste-y, 0px));
+  left: calc(50% + var(--digei-u) * var(--digei-contenido-x, 0)
+    + var(--digei-contenido-ajuste-x, 0px));
+  width: var(--digei-contenido);
+  height: var(--digei-contenido);
+  margin-left: calc(var(--digei-contenido) / -2);
+  margin-top: calc(var(--digei-contenido) / -2);
+  border-radius: 50%;
+}
+
+.digei-pinon__enlace .digei-pinon__contenido {
+  position: static;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.digei-pinon__enlace:focus-visible {
+  outline: 2px solid #fff2a6;
+  outline-offset: 3px;
 }
 
 /* ---- Zoom del medallon al pasar el cursor -------------------------- */

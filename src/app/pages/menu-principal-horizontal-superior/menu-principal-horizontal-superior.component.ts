@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -20,6 +20,8 @@ interface OpcionMenu {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuPrincipalHorizontalSuperiorComponent {
+  @Input() mostrarTodasOpciones = false;
+
   //ORDEN SEGUN LA REFERENCIA: DIPLI VA ANTES QUE DIESP. CADA OPCION CONSERVA SU RUTA E ICONO.
   readonly opciones: readonly OpcionMenu[] = [
     { id: 'inicio', etiqueta: 'Inicio', ruta: '/inicio', habilitada: true, icono: 'inicio' },

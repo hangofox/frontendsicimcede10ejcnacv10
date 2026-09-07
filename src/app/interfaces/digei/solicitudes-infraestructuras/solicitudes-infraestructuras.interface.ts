@@ -1,6 +1,6 @@
 import { UnidadesMilitaresI } from "../../panel-control/unidades-militares/unidades-militares.interface";
 import { TiposSolicitudesInfraestructurasI } from "../tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.interface";
-import { InfraestructurasI } from "../infraestructuras/infraestructuras.interface";
+import { InfraestructurasI } from "../finca-raiz/infraestructuras/infraestructuras.interface";
 
 export interface SolicitudesInfraestructurasI {
     idSolicitudInfraestructura?: number;

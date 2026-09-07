@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { ResponseTipoEstructuraInfraestructuraDTO } from '../../../interfaces/digei/tipos-estructuras-infraestructuras/responseTipoEstructuraInfraestructuraDTO.interface';
-import { TiposEstructurasInfraestructurasI, TiposEstructurasInfraestructurasMsj } from '../../../interfaces/digei/tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.interface';
+import { ResponseTipoEstructuraInfraestructuraDTO } from '../../../../interfaces/digei/finca-raiz/tipos-estructuras-infraestructuras/responseTipoEstructuraInfraestructuraDTO.interface';
+import { TiposEstructurasInfraestructurasI, TiposEstructurasInfraestructurasMsj } from '../../../../interfaces/digei/finca-raiz/tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.interface';
 
 @Injectable({
   providedIn: 'root'

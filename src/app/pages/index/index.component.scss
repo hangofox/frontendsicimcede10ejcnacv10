@@ -27,14 +27,11 @@
   flex: 1 1 auto;
 }
 
-.contenido:has(> app-inicio) {
+.contenido:has(> app-inicio),
+.contenido:has(> app-digei),
+.contenido:has(> app-finca-raiz) {
   padding: 0;
-  background: #020203 url('../../../assets/images/imagen_fondo_cuerpo_inicio_01.png') center / 100% 100% no-repeat;
-}
-
-.contenido:has(> app-digei) {
-  padding: 0;
-  background: #020203 url('../../../assets/images/imagen_fondo_cuerpo_digei_01.png') center / 100% 100% no-repeat;
+  background: #020203;
 }
 
 @media (max-width: 600px) {

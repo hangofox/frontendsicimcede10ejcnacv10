@@ -1,9 +1,9 @@
-import { UnidadesMilitaresI } from "../../panel-control/unidades-militares/unidades-militares.interface";
-import { SociedadesUnidadesCentralizadorasI } from "../../panel-control/sociedades-unidades-centralizadoras/sociedades-unidades-centralizadoras.interface";
+import { UnidadesMilitaresI } from "../../../panel-control/unidades-militares/unidades-militares.interface";
+import { SociedadesUnidadesCentralizadorasI } from "../../../panel-control/sociedades-unidades-centralizadoras/sociedades-unidades-centralizadoras.interface";
 import { TiposEstructurasInfraestructurasI } from "../tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.interface";
 import { FuncionalidadesInfraestructurasI } from "../funcionalidades-infraestructuras/funcionalidades-infraestructuras.interface";
-import { SegurosI } from "../../seguros/seguros.interface";
-import { TerrenosI } from "../../terrenos/terrenos.interface";
+import { SegurosI } from "../../../seguros/seguros.interface";
+import { TerrenosI } from "../../../terrenos/terrenos.interface";
 
 export interface InfraestructurasI {
     idInfraestructura?: number;

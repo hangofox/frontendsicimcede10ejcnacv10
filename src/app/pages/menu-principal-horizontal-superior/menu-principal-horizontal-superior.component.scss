@@ -94,6 +94,16 @@
   display: none;
 }
 
+/* Finca Raíz solicita el menú íntegro: se restaura la rejilla de siete
+   piezas y la opción DIGEI permanece visible aunque esté activa. */
+.menu__interior.menu__interior--completo:has(> .opcion.activo) {
+  grid-template-columns: .92fr .92fr 1fr .92fr .92fr 1.08fr 1.34fr;
+}
+
+.menu__interior--completo > .opcion.activo {
+  display: flex;
+}
+
 /* Si PANEL DE CONTROL se oculta, PROYECTOS pasa a ser el extremo derecho:
    se retira su pestaña y el marco exterior le da el remate recto. */
 .opcion:nth-last-child(2):has(+ .opcion:last-child.activo) .separador {
@@ -152,6 +162,28 @@
     inset 0 -6px 8px rgb(30 30 30 / 35%);
 }
 
+.menu__interior--completo > .opcion:nth-child(even) {
+  color: #2a1700;
+  background:
+    radial-gradient(ellipse at 50% 32%, #fff 0%, #dedede 32%, #a5a5a5 66%, #555 100%);
+  text-shadow: 0 1px 0 #fff5b7, 0 0 2px rgb(77 40 0 / 22%);
+  box-shadow:
+    inset 0 3px 5px rgb(255 255 255 / 72%),
+    inset 0 -6px 8px rgb(30 30 30 / 35%);
+}
+
+.menu__interior--completo > .opcion:nth-child(odd) {
+  color: var(--oro-claro);
+  background:
+    radial-gradient(ellipse at 50% 34%, #790082 0%, #52005f 38%, #31003d 68%, #17001e 100%);
+  text-shadow:
+    0 1px 0 #2b1100,
+    0 0 2px rgb(255 216 90 / 40%);
+  box-shadow:
+    inset 0 3px 4px rgb(255 203 255 / 12%),
+    inset 0 -5px 7px rgb(0 0 0 / 48%);
+}
+
 /* El vecino deja sitio al saliente sin dibujar un segundo separador. */
 .opcion + .opcion {
   padding-left: calc(12px + var(--conector-profundo));
@@ -181,6 +213,14 @@
 
 .opcion:nth-child(even of :not(.activo)) .separador__relleno {
   fill: #aaa;
+}
+
+.menu__interior--completo > .opcion:nth-child(even) .separador__relleno {
+  fill: #aaa;
+}
+
+.menu__interior--completo > .opcion:nth-child(odd) .separador__relleno {
+  fill: #450051;
 }
 
 .separador__sombra,
@@ -392,11 +432,17 @@
 @media (max-width: 900px) {
   .menu__marco { height: auto; }
 
-  .menu__interior {
+  .menu__interior,
+  .menu__interior:has(> .opcion.activo),
+  .menu__interior.menu__interior--completo:has(> .opcion.activo) {
     height: auto;
+    display: flex;
+    flex-wrap: wrap;
     grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
     gap: 3px;
   }
+
+  .opcion { flex: 1 1 158px; }
 
   /* El conector de encaje une piezas contiguas dentro de una fila. Al
      repartirse en varias, la última de cada fila apuntaría al vacío, así
@@ -409,11 +455,14 @@
 /* Columnas estrechas: el rótulo ya no cabe al lado del icono, así que se
    coloca debajo y la pieza crece en alto lo que necesite. */
 @media (max-width: 520px) {
-  .menu__interior {
+  .menu__interior,
+  .menu__interior:has(> .opcion.activo),
+  .menu__interior.menu__interior--completo:has(> .opcion.activo) {
     grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
   }
 
   .opcion {
+    flex-basis: 108px;
     height: auto;
     min-height: var(--pieza-alto);
     flex-direction: column;

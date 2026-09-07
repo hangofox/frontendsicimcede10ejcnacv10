@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { InfraestructurasI } from '../../../../interfaces/digei/infraestructuras/infraestructuras.interface';
-import { UnidadesMilitaresI } from '../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
-import { SociedadesUnidadesCentralizadorasI } from '../../../../interfaces/panel-control/sociedades-unidades-centralizadoras/sociedades-unidades-centralizadoras.interface';
-import { TiposEstructurasInfraestructurasI } from '../../../../interfaces/digei/tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.interface';
-import { FuncionalidadesInfraestructurasI } from '../../../../interfaces/digei/funcionalidades-infraestructuras/funcionalidades-infraestructuras.interface';
-import { SegurosI } from '../../../../interfaces/seguros/seguros.interface';
-import { TerrenosI } from '../../../../interfaces/terrenos/terrenos.interface';
+import { InfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
+import { UnidadesMilitaresI } from '../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
+import { SociedadesUnidadesCentralizadorasI } from '../../../../../interfaces/panel-control/sociedades-unidades-centralizadoras/sociedades-unidades-centralizadoras.interface';
+import { TiposEstructurasInfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.interface';
+import { FuncionalidadesInfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/funcionalidades-infraestructuras/funcionalidades-infraestructuras.interface';
+import { SegurosI } from '../../../../../interfaces/seguros/seguros.interface';
+import { TerrenosI } from '../../../../../interfaces/terrenos/terrenos.interface';
 
 @Component({
   selector: 'app-add-upd-del-infraestructura',

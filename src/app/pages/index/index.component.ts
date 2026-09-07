@@ -33,4 +33,20 @@ export class IndexComponent {
     const camino = this.ruta().split(/[?#]/)[0];
     return camino !== '/inicio' && !camino.startsWith('/inicio/');
   });
+
+  /** Decide si el menú se muestra íntegro, con sus siete opciones.
+
+      Por defecto el menú oculta la opción de la sección en la que estás y
+      reparte el ancho entre las otras seis. Eso tiene sentido en la
+      página de entrada de una sección, donde su propia opción no lleva a
+      ningún sitio nuevo. En una subpágina sí lleva: es a donde se vuelve.
+      Y al faltar una pieza se rompe además la alternancia de colores,
+      porque sale de :nth-child, que no reindexa al ocultar un elemento.
+
+      El criterio es por tanto la profundidad de la ruta, no una lista de
+      rutas concretas: dos segmentos o más es una subpágina. */
+  readonly menuCompleto = computed(() => {
+    const camino = this.ruta().split(/[?#]/)[0];
+    return camino.split('/').filter(Boolean).length >= 2;
+  });
 }

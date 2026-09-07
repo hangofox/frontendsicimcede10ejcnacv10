@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { DigeiComponent } from './pages/digei/digei.component';
-import { ListadoInfraestructurasComponent } from './pages/digei/infraestructuras/listado-infraestructuras/listado-infraestructuras.component';
+import { FincaRaizComponent } from './pages/digei/finca-raiz/finca-raiz.component';
+import { ListadoInfraestructurasComponent } from './pages/digei/finca-raiz/infraestructuras/listado-infraestructuras/listado-infraestructuras.component';
 import { ListadoSolicitudesInfraestructurasComponent } from './pages/digei/solicitudes-infraestructuras/listado-solicitudes-infraestructuras/listado-solicitudes-infraestructuras.component';
 import { DincoComponent } from './pages/dinco/dinco.component';
 import { DiespComponent } from './pages/diesp/diesp.component';
@@ -46,8 +47,18 @@ export const routes: Routes = [
         path: 'digei',
         children: [
           { path: '', component: DigeiComponent, title: 'DIGEI | SICIM' },
-          { path: 'infraestructuras', component: ListadoInfraestructurasComponent, title: 'Infraestructuras | SICIM' },
-          { path: 'solicitudes-infraestructuras', component: ListadoSolicitudesInfraestructurasComponent, title: 'Solicitudes de infraestructuras | SICIM' }
+          {
+            //INFRAESTRUCTURAS ES UN SUBMODULO DE FINCA RAIZ, TANTO EN CARPETAS COMO EN NAVEGACION.
+            path: 'finca-raiz',
+            children: [
+              { path: '', component: FincaRaizComponent, title: 'Finca Raíz | SICIM' },
+              { path: 'infraestructuras/listado-infraestructuras', component: ListadoInfraestructurasComponent, title: 'Infraestructuras | SICIM' },
+              { path: 'infraestructuras', redirectTo: 'infraestructuras/listado-infraestructuras', pathMatch: 'full' }
+            ]
+          },
+          //SOLICITUDES DE INFRAESTRUCTURAS CUELGA DIRECTAMENTE DE DIGEI, COMO SU CARPETA.
+          { path: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', component: ListadoSolicitudesInfraestructurasComponent, title: 'Solicitudes de infraestructuras | SICIM' },
+          { path: 'solicitudes-infraestructuras', redirectTo: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', pathMatch: 'full' }
         ]
       },
       { path: 'dinco', component: DincoComponent, title: 'DINCO | SICIM' },
@@ -57,15 +68,22 @@ export const routes: Routes = [
         path: 'panel-control',
         children: [
           { path: '', component: PanelControlComponent, title: 'Panel de control | SICIM' },
-          { path: 'unidades-militares', component: ListadoUnidadesMilitaresComponent, title: 'Unidades militares | SICIM' },
-          { path: 'sociedades-unidades-centralizadoras', component: ListadoSociedadesUnidadesCentralizadorasComponent, title: 'Sociedades de unidades centralizadoras | SICIM' },
-          { path: 'unidades-militares-realiz-mttos', component: ListadoUnidadesMilitaresRealizMttosComponent, title: 'Unidad militares realizadoras de mantenimientos | SICIM' },
-          { path: 'oficinas', component: ListadoOficinasComponent, title: 'Oficinas | SICIM' },
-          { path: 'responsables', component: ListadoResponsablesComponent, title: 'Responsables | SICIM' },
+          { path: 'unidades-militares/listado-unidades-militares', component: ListadoUnidadesMilitaresComponent, title: 'Unidades militares | SICIM' },
+          { path: 'sociedades-unidades-centralizadoras/listado-sociedades-unidades-centralizadoras', component: ListadoSociedadesUnidadesCentralizadorasComponent, title: 'Sociedades de unidades centralizadoras | SICIM' },
+          { path: 'unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos', component: ListadoUnidadesMilitaresRealizMttosComponent, title: 'Unidad militares realizadoras de mantenimientos | SICIM' },
+          { path: 'oficinas/listado-oficinas', component: ListadoOficinasComponent, title: 'Oficinas | SICIM' },
+          { path: 'responsables/listado-responsables', component: ListadoResponsablesComponent, title: 'Responsables | SICIM' },
           { path: 'parametros-sistema', component: ParametrosSistemaComponent, title: 'Parámetros del sistema | SICIM' },
-          { path: 'historial-integrantes-documentos', component: ListadoHistorialIntegrantesDocumentosComponent, title: 'Historial de integrantes de documentos | SICIM' },
+          { path: 'historial-integrantes-documentos/listado-historial-integrantes-documentos', component: ListadoHistorialIntegrantesDocumentosComponent, title: 'Historial de integrantes de documentos | SICIM' },
           { path: 'mi-perfil', component: MiPerfilComponent, title: 'Mi perfil | SICIM' },
-          { path: 'usuarios', component: ListadoUsuariosComponent, title: 'Usuarios | SICIM' }
+          { path: 'usuarios/listado-usuarios', component: ListadoUsuariosComponent, title: 'Usuarios | SICIM' },
+          { path: 'unidades-militares', redirectTo: 'unidades-militares/listado-unidades-militares', pathMatch: 'full' },
+          { path: 'sociedades-unidades-centralizadoras', redirectTo: 'sociedades-unidades-centralizadoras/listado-sociedades-unidades-centralizadoras', pathMatch: 'full' },
+          { path: 'unidades-militares-realiz-mttos', redirectTo: 'unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos', pathMatch: 'full' },
+          { path: 'oficinas', redirectTo: 'oficinas/listado-oficinas', pathMatch: 'full' },
+          { path: 'responsables', redirectTo: 'responsables/listado-responsables', pathMatch: 'full' },
+          { path: 'historial-integrantes-documentos', redirectTo: 'historial-integrantes-documentos/listado-historial-integrantes-documentos', pathMatch: 'full' },
+          { path: 'usuarios', redirectTo: 'usuarios/listado-usuarios', pathMatch: 'full' }
         ]
       }
     ]
