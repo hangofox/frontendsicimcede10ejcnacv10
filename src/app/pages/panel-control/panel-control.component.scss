@@ -7,7 +7,11 @@
 .accesos {
   min-height: clamp(340px, 52vh, 680px);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  /* 190px y no 170: la palabra mas larga de los rotulos es
+     CENTRALIZADORAS, que mide 160px en Arial Bold 16 y es indivisible.
+     Con 170px la columna solo dejaba 149px de texto y la palabra se salia
+     del recuadro resaltado. 190 deja 166px, con holgura. */
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   align-content: center;
   align-items: stretch;
   gap: clamp(16px, 3vw, 34px);
@@ -37,6 +41,10 @@
 
 .acceso span {
   align-self: start;
+  /* Red de seguridad por si algun rotulo futuro trae una palabra aun mas
+     larga: antes de desbordar el recuadro, que parta. */
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .acceso:hover {
