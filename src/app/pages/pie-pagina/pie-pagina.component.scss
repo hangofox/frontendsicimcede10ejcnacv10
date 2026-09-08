@@ -84,8 +84,9 @@
   }
 }
 
-/* cada escudo se enmascara con su propia imagen, y arranca desfasado para que
-   la luz no pase por los cuatro a la vez */
+/* Las fases representan un unico barrido espacial de izquierda a derecha.
+   El brillo alcanza primero el texto izquierdo, luego CAOCC (x=33 %), los dos
+   escudos centrales (x=50 %), BAICC (x=66 %) y finalmente el texto derecho. */
 .escudo-ejercito {
   --escudo-mascara: url('../../../assets/images/imagen_footer_escudo_ejercito_nacional_01.png');
 
@@ -95,19 +96,19 @@
 .escudo-caocc {
   --escudo-mascara: url('../../../assets/images/imagen_footer_escudo_caocc_01.png');
 
-  &::after { animation-delay: 1.25s; }
+  &::after { animation-delay: -.87s; }
 }
 
 .escudo-baicc {
   --escudo-mascara: url('../../../assets/images/imagen_footer_escudo_baicc_01.png');
 
-  &::after { animation-delay: 2.5s; }
+  &::after { animation-delay: -4.13s; }
 }
 
 .escudo-jempp {
   --escudo-mascara: url('../../../assets/images/imagen_footer_escudo_jempp_cede10_01.png');
 
-  &::after { animation-delay: 3.75s; }
+  &::after { animation-delay: 0s; }
 }
 
 /* al pasar el cursor crece levemente y se ilumina; sube de capa para quedar
@@ -201,4 +202,13 @@
       0 1px 1px #000,
       0 0 3px rgb(184 184 184 / 20%);
   }
+
+  .legal-texto-brillo {
+    fill: url('#brillo-legal-pie');
+    filter: drop-shadow(0 0 2px rgb(255 255 255 / 70%));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .legal-texto-brillo { display: none; }
 }
