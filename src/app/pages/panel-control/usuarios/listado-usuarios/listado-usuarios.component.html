@@ -1,4 +1,8 @@
 <h2 class="page-title">Usuarios</h2>
+<app-semaforo-contadores
+  [total]="totalRegistros"
+  [activos]="totalRegistrosActivos"
+  [inactivos]="totalRegistrosInactivos" />
 
 <section class="page-card panel-usuarios" [formGroup]="usuariosForm" aria-labelledby="titulo-usuarios">
 

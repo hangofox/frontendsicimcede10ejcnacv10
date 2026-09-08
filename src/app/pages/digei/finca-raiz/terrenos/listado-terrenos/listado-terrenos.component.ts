@@ -12,11 +12,12 @@ import { SpinnerService } from '../../../../../services/spinner/spinner.service'
 import { EstadosTerrenosI } from '../../../../../interfaces/digei/finca-raiz/estados-terrenos/estados-terrenos.interface';
 import { AddUpdDelTerrenoComponent } from '../add-upd-del-terreno/add-upd-del-terreno.component';
 import { VistaTerrenoComponent } from '../vista-terreno/vista-terreno.component';
+import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 
 @Component({
   selector: 'app-listado-terrenos',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelTerrenoComponent, VistaTerrenoComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelTerrenoComponent, VistaTerrenoComponent, SemaforoContadoresComponent],
   templateUrl: './listado-terrenos.component.html',
   styleUrl: './listado-terrenos.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -28,6 +29,13 @@ export class ListadoTerrenosComponent implements OnInit {
   sociedades: SociedadesUnidadesCentralizadorasI[] = [];
   estados: EstadosTerrenosI[] = [];
   totalRegistros = 0;
+  readonly estadosTerreno = [
+    { etiqueta: 'ARRENDADO', tono: 'arrendado' },
+    { etiqueta: 'EN INVASION', tono: 'invasion' },
+    { etiqueta: 'PATRIMONIAL', tono: 'patrimonial' },
+    { etiqueta: 'RESERVA NATURAL', tono: 'reserva' }
+  ];
+  estadosContadores = this.estadosTerreno.map(estado => ({ ...estado, valor: 0 }));
   paginaActual = 0;
   cantidad = 10;
   modalEdicion = false;
@@ -72,6 +80,32 @@ export class ListadoTerrenosComponent implements OnInit {
       error: error => { console.error('Error al listar terrenos', error); this.toast('error', 'No fue posible listar los terrenos.'); }
     });
     this.terrenosService.findCountTotalRegisters(undefined, keyword, unidad).subscribe(total => { this.totalRegistros = total; this.cdr.markForCheck(); });
+    this.terrenosService.findAllTerrenos(undefined, keyword, unidad, 'idTerreno', 'ASC').subscribe({
+      next: terrenosFiltrados => {
+        this.estadosContadores = this.estadosTerreno.map(estado => ({
+          ...estado,
+          valor: terrenosFiltrados.filter(terreno =>
+            this.normalizarEstado(terreno.estadoTerrenoDTO?.nombreEstadoTerreno) === estado.etiqueta
+          ).length
+        }));
+        this.cdr.markForCheck();
+      },
+      error: error => console.error('Error al contar estados de terrenos', error)
+    });
+  }
+
+  private normalizarEstado(estado: unknown): string {
+    return String(estado ?? '').trim().toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  claseEstadoTerreno(estado: unknown): string {
+    const clases: Record<string, string> = {
+      ARRENDADO: 'badge-arrendado',
+      'EN INVASION': 'badge-invasion',
+      PATRIMONIAL: 'badge-patrimonial',
+      'RESERVA NATURAL': 'badge-reserva'
+    };
+    return clases[this.normalizarEstado(estado)] ?? 'badge-neutral';
   }
 
   totalPaginas(): number { return Math.max(1, Math.ceil(this.totalRegistros / this.cantidad)); }

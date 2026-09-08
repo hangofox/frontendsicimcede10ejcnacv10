@@ -20,11 +20,12 @@ import { GestionArchivosService } from '../../../../services/gestion-archivos/ge
 
 import { AddUpdDelHistorialIntegranteDocumentosComponent, GuardadoHistorialIntegranteDocumentosEvent, OperacionFirmaHistorial } from '../add-upd-del-historial-integrante-documentos/add-upd-del-historial-integrante-documentos.component';
 import { VistaHistorialIntegranteDocumentosComponent } from '../vista-historial-integrante-documentos/vista-historial-integrante-documentos.component';
+import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 
 @Component({
   selector: 'app-listado-historial-integrantes-documentos',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelHistorialIntegranteDocumentosComponent, VistaHistorialIntegranteDocumentosComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelHistorialIntegranteDocumentosComponent, VistaHistorialIntegranteDocumentosComponent, SemaforoContadoresComponent],
   templateUrl: './listado-historial-integrantes-documentos.component.html',
   styleUrl: './listado-historial-integrantes-documentos.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

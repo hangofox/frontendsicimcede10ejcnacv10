@@ -1,9 +1,16 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { DigeiComponent } from './pages/digei/digei.component';
+import { ConsolidacionesComponent } from './pages/digei/consolidaciones/consolidaciones.component';
+import { ConstruccionesMantenimientosComponent } from './pages/digei/construcciones-mantenimientos/construcciones-mantenimientos.component';
+import { GestionRiesgoComponent } from './pages/digei/gestion-riesgo/gestion-riesgo.component';
+import { GestionAmbientalComponent } from './pages/digei/gestion-ambiental/gestion-ambiental.component';
+import { GeomaticaTopografiaComponent } from './pages/digei/geomatica-topografia/geomatica-topografia.component';
 import { FincaRaizComponent } from './pages/digei/finca-raiz/finca-raiz.component';
 import { ListadoInfraestructurasComponent } from './pages/digei/finca-raiz/infraestructuras/listado-infraestructuras/listado-infraestructuras.component';
 import { ListadoTerrenosComponent } from './pages/digei/finca-raiz/terrenos/listado-terrenos/listado-terrenos.component';
+import { EstadisticasInfraestructurasComponent } from './pages/digei/finca-raiz/infraestructuras/estadisticas-infraestructuras/estadisticas-infraestructuras.component';
+import { EstadisticasTerrenosComponent } from './pages/digei/finca-raiz/terrenos/estadisticas-terrenos/estadisticas-terrenos.component';
 import { ListadoSolicitudesInfraestructurasComponent } from './pages/digei/solicitudes-infraestructuras/listado-solicitudes-infraestructuras/listado-solicitudes-infraestructuras.component';
 import { DincoComponent } from './pages/dinco/dinco.component';
 import { DiespComponent } from './pages/diesp/diesp.component';
@@ -48,6 +55,11 @@ export const routes: Routes = [
         path: 'digei',
         children: [
           { path: '', component: DigeiComponent, title: 'DIGEI | SICIM' },
+          { path: 'consolidaciones', component: ConsolidacionesComponent, title: 'Consolidaciones | SICIM' },
+          { path: 'construcciones-mantenimientos', component: ConstruccionesMantenimientosComponent, title: 'Construcciones y mantenimientos | SICIM' },
+          { path: 'gestion-riesgo', component: GestionRiesgoComponent, title: 'Gestión del riesgo | SICIM' },
+          { path: 'gestion-ambiental', component: GestionAmbientalComponent, title: 'Gestión ambiental | SICIM' },
+          { path: 'geomatica-topografia', component: GeomaticaTopografiaComponent, title: 'Geomática y topografía | SICIM' },
           {
             //INFRAESTRUCTURAS ES UN SUBMODULO DE FINCA RAIZ, TANTO EN CARPETAS COMO EN NAVEGACION.
             path: 'finca-raiz',
@@ -55,6 +67,8 @@ export const routes: Routes = [
               { path: '', component: FincaRaizComponent, title: 'Finca Raíz | SICIM' },
               { path: 'infraestructuras/listado-infraestructuras', component: ListadoInfraestructurasComponent, title: 'Infraestructuras | SICIM' },
               { path: 'terrenos/listado-terrenos', component: ListadoTerrenosComponent, title: 'Terrenos | SICIM' },
+              { path: 'infraestructuras/estadisticas-infraestructuras', component: EstadisticasInfraestructurasComponent, title: 'Estadísticas de infraestructuras | SICIM' },
+              { path: 'terrenos/estadisticas-terrenos', component: EstadisticasTerrenosComponent, title: 'Estadísticas de terrenos | SICIM' },
               { path: 'infraestructuras', redirectTo: 'infraestructuras/listado-infraestructuras', pathMatch: 'full' },
               { path: 'terrenos', redirectTo: 'terrenos/listado-terrenos', pathMatch: 'full' }
             ]

@@ -1,0 +1,31 @@
+<div class="semaforo" role="status" aria-live="polite" aria-label="Resumen de registros">
+  <div class="semaforo-item semaforo-total">
+    <span class="semaforo-luz" aria-hidden="true"></span>
+    <span class="semaforo-numero">{{ total }}</span>
+    <span class="semaforo-etiqueta">TOTAL DE REGISTROS</span>
+  </div>
+
+  @if (activos !== null) {
+    <div class="semaforo-item semaforo-activos">
+      <span class="semaforo-luz" aria-hidden="true"></span>
+      <span class="semaforo-numero">{{ activos }}</span>
+      <span class="semaforo-etiqueta">ACTIVOS</span>
+    </div>
+  }
+
+  @if (inactivos !== null) {
+    <div class="semaforo-item semaforo-inactivos">
+      <span class="semaforo-luz" aria-hidden="true"></span>
+      <span class="semaforo-numero">{{ inactivos }}</span>
+      <span class="semaforo-etiqueta">INACTIVOS</span>
+    </div>
+  }
+
+  @for (estado of estados; track estado.etiqueta) {
+    <div [class]="'semaforo-item semaforo-estado semaforo-' + (estado.tono || 'neutral')">
+      <span class="semaforo-luz" aria-hidden="true"></span>
+      <span class="semaforo-numero">{{ estado.valor }}</span>
+      <span class="semaforo-etiqueta">{{ estado.etiqueta }}</span>
+    </div>
+  }
+</div>

@@ -12,11 +12,12 @@ import { GestionArchivosService } from '../../../../services/gestion-archivos/ge
 
 import { AddUpdDelUnidadMilitarComponent, GuardadoUnidadMilitarEvent } from '../add-upd-del-unidad-militar/add-upd-del-unidad-militar.component';
 import { VistaUnidadMilitarComponent } from '../vista-unidad-militar/vista-unidad-militar.component';
+import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 
 @Component({
   selector: 'app-listado-unidades-militares',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelUnidadMilitarComponent, VistaUnidadMilitarComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelUnidadMilitarComponent, VistaUnidadMilitarComponent, SemaforoContadoresComponent],
   templateUrl: './listado-unidades-militares.component.html',
   styleUrl: './listado-unidades-militares.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

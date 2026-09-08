@@ -11,11 +11,12 @@ import { SpinnerService } from '../../../../services/spinner/spinner.service';
 
 import { AddUpdDelUnidadMilitarRealizMttoComponent } from '../add-upd-del-unidad-militar-realiz-mtto/add-upd-del-unidad-militar-realiz-mtto.component';
 import { VistaUnidadMilitarRealizMttoComponent } from '../vista-unidad-militar-realiz-mtto/vista-unidad-militar-realiz-mtto.component';
+import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 
 @Component({
   selector: 'app-listado-unidades-militares-realiz-mttos',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelUnidadMilitarRealizMttoComponent, VistaUnidadMilitarRealizMttoComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelUnidadMilitarRealizMttoComponent, VistaUnidadMilitarRealizMttoComponent, SemaforoContadoresComponent],
   templateUrl: './listado-unidades-militares-realiz-mttos.component.html',
   styleUrl: './listado-unidades-militares-realiz-mttos.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

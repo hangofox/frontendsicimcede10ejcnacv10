@@ -1,0 +1,25 @@
+<h2 class="page-title">Estadísticas de Terrenos</h2>
+
+<section class="estadisticas-card" [formGroup]="filtrosForm" aria-label="Estadísticas de terrenos">
+  <div class="filtros">
+    <input formControlName="keyword" type="search" placeholder="Buscar terreno" (keyup.enter)="cargarEstadisticas()">
+    <select formControlName="unidad" (change)="cargarEstadisticas()">
+      <option value="">TODAS LAS UNIDADES MILITARES</option>
+      @for (unidad of unidadesMilitares; track unidad.idUnidadMilitar) {
+        <option [value]="unidad.siglaoAcronimoUnidadMilitar">{{ unidad.siglaoAcronimoUnidadMilitar }} - {{ unidad.nombreUnidadMilitar }}</option>
+      }
+    </select>
+    <button type="button" class="btn-filtrar" (click)="cargarEstadisticas()">Actualizar</button>
+    <button type="button" class="btn-limpiar" (click)="limpiarFiltros()">Limpiar</button>
+  </div>
+
+  <app-semaforo-contadores [total]="totalRegistros" [estados]="estadosContadores" />
+
+  @if (mensajeError) { <p class="mensaje-error" role="alert">{{ mensajeError }}</p> }
+  @if (cargando) { <p class="mensaje-carga">Actualizando estadísticas...</p> }
+
+  <div class="graficas" [class.graficas--cargando]="cargando">
+    <article class="grafica-card"><div class="grafica-contenedor"><canvas #graficaTorta></canvas></div></article>
+    <article class="grafica-card"><div class="grafica-contenedor"><canvas #graficaBarras></canvas></div></article>
+  </div>
+</section>

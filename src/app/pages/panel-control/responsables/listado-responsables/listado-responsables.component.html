@@ -1,4 +1,8 @@
 <h2 class="page-title">Responsables</h2>
+<app-semaforo-contadores
+  [total]="totalRegistros"
+  [activos]="totalRegistrosActivos"
+  [inactivos]="totalRegistrosInactivos" />
 
 <section class="page-card panel-responsables" [formGroup]="responsablesForm" aria-labelledby="titulo-responsables">
 

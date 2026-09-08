@@ -1,4 +1,5 @@
 <h2 class="page-title">Terrenos</h2>
+<app-semaforo-contadores [total]="totalRegistros" [estados]="estadosContadores" />
 <section class="page-card panel-terrenos" [formGroup]="terrenosForm" aria-label="Listado de terrenos">
   <div class="barra-acciones">
     <input type="text" formControlName="keyword" placeholder="Buscar terreno" (keyup.enter)="buscar()">
@@ -19,7 +20,12 @@
         @for (terreno of terrenos; track terreno.idTerreno) {
           <tr>
             <td>{{ terreno.idTerreno }}</td><td>{{ terreno.denominacionTerreno }}</td><td>{{ terreno.numeroInventarioTerreno }}</td>
-            <td>{{ terreno.numeroActivoFijoTerreno }}</td><td>{{ terreno.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</td><td>{{ terreno.estadoTerrenoDTO.nombreEstadoTerreno }}</td>
+            <td>{{ terreno.numeroActivoFijoTerreno }}</td><td>{{ terreno.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</td>
+            <td>
+              <span [class]="'badge-estado ' + claseEstadoTerreno(terreno.estadoTerrenoDTO.nombreEstadoTerreno)">
+                {{ terreno.estadoTerrenoDTO.nombreEstadoTerreno }}
+              </span>
+            </td>
             <td><div class="acciones-celda">
               <button type="button" class="btn-accion btn-ver" title="Ver" aria-label="Ver terreno" (click)="abrirVista(terreno)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>

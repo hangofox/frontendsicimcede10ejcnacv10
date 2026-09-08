@@ -1,4 +1,5 @@
 <h2 class="page-title">Infraestructuras</h2>
+<app-semaforo-contadores [total]="totalRegistros" [estados]="estadosUsoContadores" />
 
 <section class="page-card panel-infraestructuras" [formGroup]="infraestructurasForm" aria-labelledby="titulo-infraestructuras">
 
@@ -50,7 +51,11 @@
             <td>{{ infraestructura.numeroInventarioInfraestructura }}</td>
             <td>{{ infraestructura.numeroActivoFijoInfraestructura }}</td>
             <td>{{ infraestructura.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</td>
-            <td>{{ infraestructura.estadoUsoInfraestructura }}</td>
+            <td>
+              <span [class]="'badge-estado ' + claseEstadoUso(infraestructura.estadoUsoInfraestructura)">
+                {{ infraestructura.estadoUsoInfraestructura }}
+              </span>
+            </td>
             <td>
               <div class="acciones-celda">
                 <button type="button" class="btn-accion btn-ver" title="Ver" (click)="abrirModalVista(infraestructura)">

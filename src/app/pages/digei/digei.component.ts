@@ -11,14 +11,13 @@ type PosicionPinon =
 
 /**
  * Área del mapa de procesos de DIGEI.
- * `ruta` queda en null mientras no existan destinos definidos para las áreas;
- * al definirlos basta con rellenar este campo y enlazar desde la plantilla.
+ * Cada área dispone de una ruta propia y su medallón se renderiza como enlace.
  */
 interface AreaDigei {
   readonly id: string;
   readonly nombre: string;
   readonly posicion: PosicionPinon;
-  readonly ruta: string | null;
+  readonly ruta: string;
 }
 
 @Component({
@@ -36,31 +35,31 @@ export class DigeiComponent {
       id: 'gestion-riesgo',
       nombre: 'Gestión del Riesgo',
       posicion: 'superior-izquierda',
-      ruta: null
+      ruta: '/digei/gestion-riesgo'
     },
     {
       id: 'construcciones-mantenimientos',
       nombre: 'Construcciones y Mantenimientos',
       posicion: 'superior-derecha',
-      ruta: null
+      ruta: '/digei/construcciones-mantenimientos'
     },
     {
       id: 'gestion-ambiental',
       nombre: 'Gestión Ambiental',
       posicion: 'izquierda',
-      ruta: null
+      ruta: '/digei/gestion-ambiental'
     },
     {
       id: 'geomatica-topografia',
       nombre: 'Geomática y Topografía',
       posicion: 'derecha',
-      ruta: null
+      ruta: '/digei/geomatica-topografia'
     },
     {
       id: 'consolidacion',
       nombre: 'Consolidación',
       posicion: 'inferior-izquierda',
-      ruta: null
+      ruta: '/digei/consolidaciones'
     },
     {
       id: 'finca-raiz',

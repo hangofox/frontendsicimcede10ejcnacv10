@@ -20,11 +20,12 @@ import { GestionArchivosService } from '../../../../services/gestion-archivos/ge
 
 import { AddUpdDelResponsableComponent, GuardadoResponsableEvent, OperacionFotoResponsable } from '../add-upd-del-responsable/add-upd-del-responsable.component';
 import { VistaResponsableComponent } from '../vista-responsable/vista-responsable.component';
+import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 
 @Component({
   selector: 'app-listado-responsables',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelResponsableComponent, VistaResponsableComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelResponsableComponent, VistaResponsableComponent, SemaforoContadoresComponent],
   templateUrl: './listado-responsables.component.html',
   styleUrl: './listado-responsables.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -40,6 +41,8 @@ export class ListadoResponsablesComponent implements OnInit, OnDestroy {
   //PÁGINA ACTUAL DE RESPONSABLES TRAÍDA DEL BACKEND (YA PAGINADA POR EL SERVIDOR, NO SE RECORTA EN EL CLIENTE):
   responsables: ResponsablesI[] = [];
   totalRegistros = 0;
+  totalRegistrosActivos = 0;
+  totalRegistrosInactivos = 0;
 
   responsablesForm: FormGroup;
 
@@ -175,8 +178,26 @@ export class ListadoResponsablesComponent implements OnInit, OnDestroy {
           this.changeDetectorRef.markForCheck();
         },
         error: (err) => console.error('ERROR AL CONTAR TOTAL DE RESPONSABLES: ', err)
+        });
+
+    this.responsablesService.findCountTotalRegisters(undefined, siglaoAcronimoUnidadMilitar, 'ACTIVO', keyword)
+      .subscribe({
+        next: (total) => {
+          this.totalRegistrosActivos = total;
+          this.changeDetectorRef.markForCheck();
+        },
+        error: (err) => console.error('ERROR AL CONTAR RESPONSABLES ACTIVOS: ', err)
       });
-  }
+
+    this.responsablesService.findCountTotalRegisters(undefined, siglaoAcronimoUnidadMilitar, 'INACTIVO', keyword)
+      .subscribe({
+        next: (total) => {
+          this.totalRegistrosInactivos = total;
+          this.changeDetectorRef.markForCheck();
+        },
+        error: (err) => console.error('ERROR AL CONTAR RESPONSABLES INACTIVOS: ', err)
+      });
+    }
 
   private cargarMiniaturasFotos(responsables: ResponsablesI[]): void {
     const solicitud = ++this.solicitudMiniaturasActual;

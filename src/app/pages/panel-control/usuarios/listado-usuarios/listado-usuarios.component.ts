@@ -23,11 +23,12 @@ import { GestionArchivosService } from '../../../../services/gestion-archivos/ge
 import { AddUpdDelUsuarioComponent, GuardadoUsuarioEvent, OperacionFotoUsuario } from '../add-upd-del-usuario/add-upd-del-usuario.component';
 import { VistaUsuarioComponent } from '../vista-usuario/vista-usuario.component';
 import { PrivilegiosRestriccionesUsuariosComponent } from '../privilegios-restricciones-usuarios/privilegios-restricciones-usuarios.component';
+import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 
 @Component({
   selector: 'app-listado-usuarios',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelUsuarioComponent, VistaUsuarioComponent, PrivilegiosRestriccionesUsuariosComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelUsuarioComponent, VistaUsuarioComponent, PrivilegiosRestriccionesUsuariosComponent, SemaforoContadoresComponent],
   templateUrl: './listado-usuarios.component.html',
   styleUrl: './listado-usuarios.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -44,6 +45,8 @@ export class ListadoUsuariosComponent implements OnInit, OnDestroy {
   //PÁGINA ACTUAL DE USUARIOS TRAÍDA DEL BACKEND (YA PAGINADA POR EL SERVIDOR, NO SE RECORTA EN EL CLIENTE):
   usuarios: UsuariosI[] = [];
   totalRegistros = 0;
+  totalRegistrosActivos = 0;
+  totalRegistrosInactivos = 0;
 
   usuariosForm: FormGroup;
 
@@ -190,15 +193,31 @@ export class ListadoUsuariosComponent implements OnInit, OnDestroy {
       error: (err) => console.error('ERROR AL LISTAR USUARIOS: ', err)
     });
 
-    this.usuariosService.findCountTotalRegisters(undefined, nombreTipoUsuario, keyword)
-      .subscribe({
+      this.usuariosService.findCountTotalRegisters(undefined, nombreTipoUsuario, keyword)
+        .subscribe({
         next: (total) => {
           this.totalRegistros = total;
           this.changeDetectorRef.markForCheck();
         },
-        error: (err) => console.error('ERROR AL CONTAR TOTAL DE USUARIOS: ', err)
-      });
-  }
+          error: (err) => console.error('ERROR AL CONTAR TOTAL DE USUARIOS: ', err)
+        });
+
+      //EL ENDPOINT DE CONTEO DE USUARIOS NO RECIBE EL ESTADO. SE CONSULTA LA COLECCION COMPLETA CON LOS MISMOS
+      //FILTROS ACTIVOS PARA OBTENER LOS SEMAFOROS SIN LIMITAR EL CALCULO A LA PAGINA QUE SE ESTA VISUALIZANDO:
+      this.usuariosService.findAllUsers(undefined, nombreTipoUsuario, keyword, 'idUsuario', 'ASC')
+        .subscribe({
+          next: (usuariosFiltrados) => {
+            this.totalRegistrosActivos = usuariosFiltrados.filter(usuario =>
+              String(usuario.estadoUsuario).trim().toUpperCase() === 'ACTIVO'
+            ).length;
+            this.totalRegistrosInactivos = usuariosFiltrados.filter(usuario =>
+              String(usuario.estadoUsuario).trim().toUpperCase() === 'INACTIVO'
+            ).length;
+            this.changeDetectorRef.markForCheck();
+          },
+          error: (err) => console.error('ERROR AL CONTAR USUARIOS POR ESTADO: ', err)
+        });
+    }
 
   private cargarMiniaturasFotos(usuarios: UsuariosI[]): void {
     const solicitud = ++this.solicitudMiniaturasActual;

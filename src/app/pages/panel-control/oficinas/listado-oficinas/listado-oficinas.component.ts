@@ -11,11 +11,12 @@ import { SpinnerService } from '../../../../services/spinner/spinner.service';
 
 import { AddUpdDelOficinaComponent } from '../add-upd-del-oficina/add-upd-del-oficina.component';
 import { VistaOficinaComponent } from '../vista-oficina/vista-oficina.component';
+import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 
 @Component({
   selector: 'app-listado-oficinas',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelOficinaComponent, VistaOficinaComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelOficinaComponent, VistaOficinaComponent, SemaforoContadoresComponent],
   templateUrl: './listado-oficinas.component.html',
   styleUrl: './listado-oficinas.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

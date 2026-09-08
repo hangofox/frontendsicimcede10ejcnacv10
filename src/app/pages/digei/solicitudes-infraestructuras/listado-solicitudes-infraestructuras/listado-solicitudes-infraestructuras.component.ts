@@ -18,11 +18,12 @@ import { SpinnerService } from '../../../../services/spinner/spinner.service';
 import { AddUpdDelSolicitudInfraestructuraComponent } from '../add-upd-del-solicitud-infraestructura/add-upd-del-solicitud-infraestructura.component';
 import { VistaSolicitudInfraestructuraComponent } from '../vista-solicitud-infraestructura/vista-solicitud-infraestructura.component';
 import { ListadoIntegrantesDocumentosSolicInfraestComponent } from '../integrantes-documentos-solic-infraest/listado-integrantes-documentos-solic-infraest/listado-integrantes-documentos-solic-infraest.component';
+import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 
 @Component({
   selector: 'app-listado-solicitudes-infraestructuras',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelSolicitudInfraestructuraComponent, VistaSolicitudInfraestructuraComponent, ListadoIntegrantesDocumentosSolicInfraestComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelSolicitudInfraestructuraComponent, VistaSolicitudInfraestructuraComponent, ListadoIntegrantesDocumentosSolicInfraestComponent, SemaforoContadoresComponent],
   templateUrl: './listado-solicitudes-infraestructuras.component.html',
   styleUrl: './listado-solicitudes-infraestructuras.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

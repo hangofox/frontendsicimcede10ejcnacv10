@@ -21,11 +21,12 @@ import { SpinnerService } from '../../../../../services/spinner/spinner.service'
 
 import { AddUpdDelInfraestructuraComponent } from '../add-upd-del-infraestructura/add-upd-del-infraestructura.component';
 import { VistaInfraestructuraComponent } from '../vista-infraestructura/vista-infraestructura.component';
+import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 
 @Component({
   selector: 'app-listado-infraestructuras',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelInfraestructuraComponent, VistaInfraestructuraComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelInfraestructuraComponent, VistaInfraestructuraComponent, SemaforoContadoresComponent],
   templateUrl: './listado-infraestructuras.component.html',
   styleUrl: './listado-infraestructuras.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -43,6 +44,15 @@ export class ListadoInfraestructurasComponent implements OnInit {
   //PÁGINA ACTUAL DE INFRAESTRUCTURAS TRAÍDA DEL BACKEND (YA PAGINADA POR EL SERVIDOR, NO SE RECORTA EN EL CLIENTE):
   infraestructuras: InfraestructurasI[] = [];
   totalRegistros = 0;
+  readonly estadosUso = [
+    { etiqueta: 'BUENO', tono: 'bueno' },
+    { etiqueta: 'REGULAR', tono: 'regular' },
+    { etiqueta: 'MALO', tono: 'malo' },
+    { etiqueta: 'MANTENIMIENTO', tono: 'mantenimiento' },
+    { etiqueta: 'FUERA DE SERVICIO', tono: 'fuera-servicio' },
+    { etiqueta: 'DADA DE BAJA', tono: 'baja' }
+  ];
+  estadosUsoContadores = this.estadosUso.map(estado => ({ ...estado, valor: 0 }));
 
   infraestructurasForm: FormGroup;
 
@@ -199,6 +209,41 @@ export class ListadoInfraestructurasComponent implements OnInit {
         },
         error: (err) => console.error('ERROR AL CONTAR TOTAL DE INFRAESTRUCTURAS: ', err)
       });
+
+    this.infraestructurasService.findAllInfraestructuras(
+      undefined,
+      keyword,
+      siglaoAcronimoUnidadMilitar,
+      'idInfraestructura',
+      'ASC'
+    ).subscribe({
+      next: (infraestructurasFiltradas) => {
+        this.estadosUsoContadores = this.estadosUso.map(estado => ({
+          ...estado,
+          valor: infraestructurasFiltradas.filter(infraestructura =>
+            this.normalizarEstado(infraestructura.estadoUsoInfraestructura) === estado.etiqueta
+          ).length
+        }));
+        this.changeDetectorRef.markForCheck();
+      },
+      error: (err) => console.error('ERROR AL CONTAR ESTADOS DE USO DE INFRAESTRUCTURAS: ', err)
+    });
+  }
+
+  private normalizarEstado(estado: unknown): string {
+    return String(estado ?? '').trim().toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  claseEstadoUso(estado: unknown): string {
+    const clases: Record<string, string> = {
+      BUENO: 'badge-bueno',
+      REGULAR: 'badge-regular',
+      MALO: 'badge-malo',
+      MANTENIMIENTO: 'badge-mantenimiento',
+      'FUERA DE SERVICIO': 'badge-fuera-servicio',
+      'DADA DE BAJA': 'badge-baja'
+    };
+    return clases[this.normalizarEstado(estado)] ?? 'badge-neutral';
   }
 
   calcularTotalPaginas(): number {

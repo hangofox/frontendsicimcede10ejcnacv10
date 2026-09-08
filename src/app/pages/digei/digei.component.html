@@ -21,14 +21,10 @@
             <div class="digei-pinon__rotor" aria-hidden="true">
               <span class="digei-pinon__anillo"></span>
             </div>
-            @if (area.ruta) {
-              <a class="digei-pinon__enlace" [routerLink]="area.ruta"
-                 [attr.aria-label]="'Ir a ' + area.nombre">
-                <span class="digei-pinon__contenido" aria-hidden="true"></span>
-              </a>
-            } @else {
-              <span class="digei-pinon__contenido" role="img" [attr.aria-label]="area.nombre"></span>
-            }
+            <a class="digei-pinon__enlace" [routerLink]="area.ruta"
+               [attr.aria-label]="'Ir a ' + area.nombre">
+              <span class="digei-pinon__contenido" aria-hidden="true"></span>
+            </a>
           </li>
         }
       </ul>
