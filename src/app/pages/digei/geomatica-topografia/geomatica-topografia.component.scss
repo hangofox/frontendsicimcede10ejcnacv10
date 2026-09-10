@@ -1,1 +1,413 @@
-@use '../consolidaciones/consolidaciones.component';
+/* El componente administra su propio fondo desde :host, igual que
+   finca-raiz, digei e inicio. Ya no se hereda el SCSS de consolidaciones,
+   que era el que pintaba el cuerpo en blanco. */
+:host {
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  flex: 1 1 auto;
+  align-self: stretch;
+  background: #020203 url('../../../../assets/images/imagen_fondo_cuerpo_geomatica_topografia_01.png') center / 100% 100% no-repeat;
+}
+
+.geomatica-topografia {
+  box-sizing: border-box;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  padding: clamp(18px, 2vw, 30px);
+  color: #fff;
+  background: none;
+}
+
+/* Contenedor transparente del cuerpo. Dos zonas: piñones a la izquierda y
+   panal a la derecha. Con flex-wrap el panal baja en pantallas estrechas
+   en lugar de provocar desplazamiento horizontal. */
+.geomatica-topografia__cuerpo {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(10px, 2.4vw, 54px);
+  background: none;
+}
+
+/* =====================================================================
+   Piñones. Todos los valores vienen de finca-raiz sin recalibrar nada:
+     anillo DIGEI     230 ud, horario, 60 s
+     anillo Geomática 181,13 ud, antihorario, 48 s
+     distancia entre centros 196 ud, fase de engrane 7 grados
+   La relación 181,13/230 = 78,75 % es la que hace engranar 30 y 24
+   dientes del mismo paso, y prevalece sobre el 85-92 % orientativo tal y
+   como ya se resolvió en finca-raiz.
+   ===================================================================== */
+
+.gt-escena {
+  /* A 1024 px la unidad vale 1 px: DIGEI mide 230 px y Geomática 181 px. */
+  --gt-u: clamp(.55px, .0977vw, 1.18px);
+
+  --gt-d-digei: 230;
+  --gt-d-geomatica: 181.13;
+  --gt-radio: 196;
+  --gt-contenido-digei: 110;
+  /* Geomática tiene su propia calibración en digei, distinta de la de
+     Finca Raíz: círculo visible de 116,75 ud dentro de 124,27. */
+  --gt-contenido-geomatica: 124.27;
+  --gt-giro-digei: 60s;
+  --gt-giro-geomatica: 48s;
+
+  /* Dirección del piñón secundario: 60 grados abajo-derecha, la misma
+     que usa finca-raiz. Son 5 dientes enteros del anillo de 30 y 4 del
+     de 24, así que la fase de 7 grados sigue valiendo sin recalcular. */
+  --gt-fx: .5;
+  --gt-fy: .8660254;
+
+  position: relative;
+  flex: 0 0 auto;
+  /* El centro del piñón DIGEI se alinea con el centro de la opción DIGEI
+     del menú superior, que cae en el 19,437 % del ancho de la ventana.
+     Misma fórmula que finca-raiz. */
+  margin-left: max(0px, calc(19.437vw - clamp(18px, 2vw, 30px) - var(--gt-u) * 115));
+  /* Caja justa del par: 303,6 x 375,3 ud. */
+  width: calc(var(--gt-u) * 303.6);
+  height: calc(var(--gt-u) * 375.3);
+}
+
+.gt-engranajes {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---- Piñón: tres capas -------------------------------------------
+   1. .gt-pinon           contenedor de posición, NO gira
+   2. .gt-pinon__rotor    anillo dentado, gira
+   3. .gt-pinon__medallon ilustración, hermana del rotor, fija
+   ------------------------------------------------------------------ */
+
+.gt-pinon {
+  position: absolute;
+  /* La posición usa left/top y márgenes negativos, nunca transform, para
+     que el giro del rotor no pueda sobrescribirla. */
+  width: var(--gt-d);
+  height: var(--gt-d);
+  margin-left: calc(var(--gt-d) / -2);
+  margin-top: calc(var(--gt-d) / -2);
+}
+
+.gt-pinon__rotor {
+  position: absolute;
+  inset: 0;
+  /* El dibujo no está centrado en su PNG: se corrige el eje de giro para
+     que el anillo no bascule al rotar. */
+  transform-origin:
+    calc(50% + var(--gt-u) * var(--gt-rotor-x, 0))
+    calc(50% + var(--gt-u) * var(--gt-rotor-y, 0));
+  will-change: transform;
+}
+
+.gt-pinon__anillo,
+.gt-pinon__medallon-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  background: center / contain no-repeat;
+  transform-origin: 50% 50%;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Centrado con left/top al 50 % y márgenes negativos de media caja,
+   NUNCA con transform: así esta capa no lleva transform propio y el scale
+   del zoom, que va en la imagen interior, no puede desplazar el centro.
+   backface-visibility promueve el medallón a su propia capa; sin eso el
+   navegador lo rerasteriza en cada fotograma del anillo vecino y aparece
+   un temblor de subpíxel. */
+.gt-pinon__medallon {
+  position: absolute;
+  top: calc(50% + var(--gt-u) * var(--gt-contenido-y, 0)
+    + var(--gt-contenido-ajuste-y, 0px));
+  left: calc(50% + var(--gt-u) * var(--gt-contenido-x, 0)
+    + var(--gt-contenido-ajuste-x, 0px));
+  z-index: 2;
+  display: block;
+  width: var(--gt-contenido);
+  height: var(--gt-contenido);
+  margin-left: calc(var(--gt-contenido) / -2);
+  margin-top: calc(var(--gt-contenido) / -2);
+  line-height: 0;
+  image-rendering: auto;
+  backface-visibility: hidden;
+}
+
+/* ---- Piñón DIGEI --------------------------------------------------- */
+
+.gt-pinon--digei {
+  --gt-d: calc(var(--gt-u) * var(--gt-d-digei));
+  --gt-contenido: calc(var(--gt-u) * var(--gt-contenido-digei));
+  /* En este PNG el dibujo interior no es concéntrico con el contorno
+     dentado: están a 0,638 ud. El eje se lleva al centro del dibujo
+     interior, que es lo que el ojo compara con el medallón; el desajuste
+     pasa a los dientes, donde no se aprecia. Medido en finca-raiz. */
+  --gt-rotor-x: -.463;
+  --gt-rotor-y: -.430;
+  --gt-ajuste-x: .463;
+  --gt-ajuste-y: .430;
+  --gt-contenido-x: -.316;
+  --gt-contenido-y: -.571;
+
+  left: calc(var(--gt-u) * (115 + var(--gt-ajuste-x)));
+  top: calc(var(--gt-u) * (115 + var(--gt-ajuste-y)));
+  z-index: 1;
+}
+
+.gt-pinon--digei .gt-pinon__rotor {
+  animation: gt-giro-horario var(--gt-giro-digei) linear infinite;
+}
+
+.gt-pinon--digei .gt-pinon__anillo {
+  background-image: url('../../../../assets/images/imagen_anillo_pinon_central_01.png');
+}
+
+.gt-pinon--digei .gt-pinon__medallon-img {
+  background-image: url('../../../../assets/images/imagen_circulo_proceso_digei_01.png');
+}
+
+/* ---- Piñón Geomática y Topografía ---------------------------------- */
+
+.gt-pinon--geomatica {
+  --gt-d: calc(var(--gt-u) * var(--gt-d-geomatica));
+  /* Mismo aumento del medallón que en digei (allí 1,6 mm), en ud para que
+     escale con el resto en vez de quedarse fijo. */
+  --gt-contenido: calc(var(--gt-u) * (var(--gt-contenido-geomatica) + 5));
+  /* Correcciones del PNG del anillo externo, comunes a los satélites. */
+  --gt-rotor-x: -.070;
+  --gt-rotor-y: .528;
+  --gt-ajuste-x: .070;
+  --gt-ajuste-y: -.528;
+  /* Estas dos son propias de este medallón: centran su círculo visible
+     sobre el eje real de giro del anillo, que es lo que iguala el borde
+     interior. Tomadas de .digei-pinon[data-posicion="derecha"]. */
+  --gt-contenido-x: -.045;
+  --gt-contenido-y: .401;
+  /* Fase de engrane: la misma de los satélites de digei. */
+  --gt-fase: 7deg;
+
+  left: calc(var(--gt-u) * (115 + var(--gt-radio) * var(--gt-fx) + var(--gt-ajuste-x)));
+  top: calc(var(--gt-u) * (115 + var(--gt-radio) * var(--gt-fy) + var(--gt-ajuste-y)));
+  z-index: 2;
+}
+
+.gt-pinon--geomatica .gt-pinon__rotor {
+  animation: gt-giro-antihorario var(--gt-giro-geomatica) linear infinite;
+}
+
+.gt-pinon--geomatica .gt-pinon__anillo {
+  background-image: url('../../../../assets/images/imagen_anillo_pinon_externo_01.png');
+}
+
+.gt-pinon--geomatica .gt-pinon__medallon-img {
+  background-image: url('../../../../assets/images/imagen_circulo_geomatica_y_topografia_01.png');
+}
+
+/* ---- Enlace y zoom del medallón DIGEI ------------------------------ */
+
+.gt-pinon__medallon--enlace {
+  cursor: pointer;
+  border-radius: 50%;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gt-pinon__medallon--enlace .gt-pinon__medallon-img {
+  transform: scale(1);
+  transition: transform .26s cubic-bezier(.2, .75, .25, 1);
+}
+
+.gt-pinon__medallon--enlace:hover .gt-pinon__medallon-img,
+.gt-pinon__medallon--enlace:focus-visible .gt-pinon__medallon-img {
+  /* 1,46 es el valor calibrado en finca-raiz: lleva el borde del medallón
+     hasta r=160,6 px del PNG del anillo, que supera el radio máximo de la
+     circunferencia dorada y la cubre por igual en todo el contorno. */
+  transform: scale(1.46);
+}
+
+.gt-pinon__medallon--enlace:focus-visible {
+  outline: 2px solid #fff3a8;
+  outline-offset: 3px;
+}
+
+/* =====================================================================
+   Panal de cinco ranuras reservadas, en patrón 2-1-2
+   ===================================================================== */
+
+.options-cluster {
+  --gt-ranura: clamp(124px, 21vw, 240px);
+  /* Proporción de los marcos hexagonales del proyecto (272 x 300). */
+  --gt-alto: calc(var(--gt-ranura) * 300 / 272);
+  /* 23,7 % del alto: con las columnas pegadas es el solape que deja los
+     huecos de las diagonales iguales entre sí y al hueco central. */
+  --gt-solape: calc(var(--gt-alto) * -.237);
+
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  /* Se centra en el espacio libre a la derecha de los piñones. */
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: repeat(2, var(--gt-ranura));
+  justify-content: center;
+  /* Sin separación de columna: en un panal el desplazamiento entre filas
+     es exactamente medio hexágono. Cualquier hueco aquí lo ensancha y
+     deja la fila del medio más abierta que las diagonales. */
+  column-gap: 0;
+}
+
+.option-slot {
+  box-sizing: border-box;
+  position: relative;
+  width: var(--gt-ranura);
+  aspect-ratio: 272 / 300;
+  /* Sin 'stretch': como celda de rejilla se estiraría al alto de su fila
+     y el alto dejaría de venir del aspect-ratio. */
+  align-self: start;
+  display: block;
+  margin: 0;
+  /* Transparente: solo reserva el sitio del marco definitivo. */
+  background: none;
+  /* Para que el zoom de una etapa posterior no quede recortado. */
+  overflow: visible;
+}
+
+/* Capa interior con el PNG del panel. El zoom va aqui, en la imagen, y no
+   en .option-slot, para que el escalado no altere la rejilla del panal.
+   Ninguna navega todavia: no llevan cursor de mano ni foco de teclado. */
+.option-slot__pieza {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: center / contain no-repeat;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: transform .24s cubic-bezier(.2, .75, .25, 1), filter .24s ease;
+}
+
+.option-slot__pieza:hover {
+  transform: scale(1.06);
+  filter: brightness(1.08) drop-shadow(0 0 10px rgb(255 190 25 / 45%));
+}
+
+/* El marco de cada una de las cinco ranuras. Todos los PNG miden 272x300,
+   la misma proporcion que ya declara .option-slot, asi que ninguno se
+   deforma y las cinco comparten medida y zoom. */
+.option-slot--topografos .option-slot__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_topografos_01.png');
+}
+
+.option-slot--instrumentos .option-slot__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_instrumentos_topografias_01.png');
+}
+
+.option-slot--geomatica .option-slot__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_geomaticas_01.png');
+}
+
+.option-slot--estadisticas-topografia .option-slot__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_estadisticas_topografias_01.png');
+}
+
+.option-slot--estadisticas-geomatica .option-slot__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_estadisticas_geomaticas_01.png');
+}
+
+/* Fila 1: dos piezas. Fila 2: una centrada. Fila 3: dos piezas. */
+.option-slot--topografos {
+  grid-column: 1;
+}
+
+.option-slot--instrumentos {
+  grid-column: 2;
+}
+
+.option-slot--geomatica {
+  grid-column: 1 / -1;
+  justify-self: center;
+  margin-top: var(--gt-solape);
+}
+
+.option-slot--estadisticas-topografia {
+  grid-column: 1;
+  margin-top: var(--gt-solape);
+}
+
+.option-slot--estadisticas-geomatica {
+  grid-column: 2;
+  margin-top: var(--gt-solape);
+}
+
+/* =====================================================================
+   Animación. Mismas curvas, duraciones y sentidos que finca-raiz; los
+   nombres son propios porque los @keyframes de aquel componente no se
+   cargan en esta página.
+   ===================================================================== */
+
+@keyframes gt-giro-horario {
+  from { transform: rotate(var(--gt-fase, 0deg)); }
+  to { transform: rotate(calc(var(--gt-fase, 0deg) + 360deg)); }
+}
+
+@keyframes gt-giro-antihorario {
+  from { transform: rotate(var(--gt-fase, 0deg)); }
+  to { transform: rotate(calc(var(--gt-fase, 0deg) - 360deg)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gt-pinon__rotor {
+    animation: none;
+    transform: rotate(var(--gt-fase, 0deg));
+  }
+
+  /* Se conserva el realce de color, que no es movimiento, y se retira la
+     escala. */
+  .gt-pinon__medallon--enlace .gt-pinon__medallon-img,
+  .option-slot__pieza {
+    transition: none;
+  }
+
+  .option-slot__pieza:hover {
+    transform: none;
+  }
+}
+
+/* =====================================================================
+   Responsive
+   ===================================================================== */
+
+/* Por debajo de este ancho el panal ya no cabe al lado de los piñones:
+   baja completo y conserva su composición. */
+@media (max-width: 900px) {
+  .geomatica-topografia__cuerpo {
+    align-content: center;
+    justify-content: center;
+    padding-block: clamp(8px, 1.5vw, 20px);
+  }
+
+  .gt-escena {
+    margin-left: 0;
+  }
+
+  .options-cluster {
+    --gt-ranura: clamp(104px, 22vw, 176px);
+  }
+}
+
+@media (max-width: 600px) {
+  .geomatica-topografia {
+    padding: 14px 12px;
+  }
+}

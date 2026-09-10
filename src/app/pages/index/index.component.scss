@@ -29,7 +29,8 @@
 
 .contenido:has(> app-inicio),
 .contenido:has(> app-digei),
-.contenido:has(> app-finca-raiz) {
+.contenido:has(> app-finca-raiz),
+.contenido:has(> app-geomatica-topografia) {
   padding: 0;
   background: #020203;
 }

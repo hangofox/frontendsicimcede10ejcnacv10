@@ -1,3 +1,70 @@
-<section class="cuerpo-modulo" aria-labelledby="titulo-geomatica-topografia">
-  <h1 id="titulo-geomatica-topografia">GEOMÁTICA Y TOPOGRAFÍA</h1>
+<section class="geomatica-topografia" aria-label="Geomática y Topografía">
+  <div class="geomatica-topografia__cuerpo">
+
+    <!-- ---- Grupo de piñones --------------------------------------- -->
+    <!-- Misma construcción y medidas que finca-raiz, que a su vez las   -->
+    <!-- toma de digei: anillo central de 30 dientes engranando con el   -->
+    <!-- externo de 24 a 196 ud de distancia y fase de 7 grados.         -->
+    <div class="gt-escena">
+      <div class="gt-engranajes">
+
+        <!-- Piñón DIGEI: anillo y medallón son hermanos, así que el
+             medallón no hereda el giro y permanece derecho. -->
+        <div class="gt-pinon gt-pinon--digei">
+          <div class="gt-pinon__rotor" aria-hidden="true">
+            <span class="gt-pinon__anillo"></span>
+          </div>
+          <a
+            class="gt-pinon__medallon gt-pinon__medallon--enlace"
+            routerLink="/digei"
+            aria-label="Ir al módulo DIGEI"
+          >
+            <span class="gt-pinon__medallon-img" aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <!-- Piñón Geomática y Topografía: es el módulo actual, no navega. -->
+        <div class="gt-pinon gt-pinon--geomatica">
+          <div class="gt-pinon__rotor" aria-hidden="true">
+            <span class="gt-pinon__anillo"></span>
+          </div>
+          <span class="gt-pinon__medallon" role="img" aria-label="Geomática y Topografía">
+            <span class="gt-pinon__medallon-img" aria-hidden="true"></span>
+          </span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ---- Cinco ranuras en panal 2-1-2 ---------------------------- -->
+    <!-- Tres ya tienen su PNG, que trae el nombre incorporado, asi que    -->
+    <!-- el rotulo queda en aria-label. Las otras dos conservan su hueco   -->
+    <!-- reservado con un rotulo provisional hasta que llegue su imagen.   -->
+    <!-- Ninguna navega: se realzan al pasar el cursor y nada mas.         -->
+    <div class="options-cluster">
+      <article class="option-slot option-slot--topografos">
+        <span class="option-slot__pieza" role="img" aria-label="Topógrafos"></span>
+      </article>
+
+      <article class="option-slot option-slot--instrumentos">
+        <span class="option-slot__pieza" role="img"
+              aria-label="Instrumentos de Topografía"></span>
+      </article>
+
+      <article class="option-slot option-slot--geomatica">
+        <span class="option-slot__pieza" role="img" aria-label="Geomática"></span>
+      </article>
+
+      <article class="option-slot option-slot--estadisticas-topografia">
+        <span class="option-slot__pieza" role="img"
+              aria-label="Estadísticas de Topografía"></span>
+      </article>
+
+      <article class="option-slot option-slot--estadisticas-geomatica">
+        <span class="option-slot__pieza" role="img"
+              aria-label="Estadísticas de Geomática"></span>
+      </article>
+    </div>
+
+  </div>
 </section>
