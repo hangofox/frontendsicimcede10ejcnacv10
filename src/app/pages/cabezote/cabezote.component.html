@@ -176,6 +176,23 @@
     <!-- Anillos superpuestos al PNG. No giran la imagen: desplazan
          segmentos luminosos sobre tres de sus circulos. -->
     <svg class="logo-anillos" viewBox="0 0 1856 959" aria-hidden="true" focusable="false">
+      <!-- Diez segmentos fijos sobre los paneles de la plataforma. Sus
+           trayectorias salen de medir las marcas de base_logo_02.png: se
+           agruparon los pixeles amarillos, se saco el eje principal de cada
+           grupo y se curvo con la flecha del arco correspondiente. No se
+           mueven; se encienden uno tras otro con --i como turno. -->
+      <g class="segmentos">
+        <path class="seg" d="M1344 540 Q1424 468 1394 387" style="--i:0" />
+        <path class="seg" d="M1256 581 Q1284 567 1306 552" style="--i:1" />
+        <path class="seg" d="M1051 653 Q1132 637 1198 607" style="--i:2" />
+        <path class="seg" d="M427 566 Q562 658 809 671" style="--i:3" />
+        <path class="seg" d="M339 423 Q339 468 374 511" style="--i:4" />
+        <path class="seg" d="M380 334 Q439 247 589 197" style="--i:5" />
+        <path class="seg" d="M739 182 Q774 176 809 173" style="--i:6" />
+        <path class="seg" d="M842 163 Q959 162 1069 183" style="--i:7" />
+        <path class="seg" d="M1127 194 Q1190 213 1241 240" style="--i:8" />
+        <path class="seg" d="M1336 306 Q1353 325 1364 346" style="--i:9" />
+      </g>
       <ellipse class="anillo anillo--exterior" cx="883" cy="443" rx="805" ry="382" />
       <ellipse class="anillo anillo--medio" cx="883" cy="443" rx="610" ry="289" />
       <ellipse class="anillo anillo--interior" cx="883" cy="443" rx="405" ry="192" />

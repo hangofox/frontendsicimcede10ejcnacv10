@@ -144,6 +144,38 @@ $marco-inferior: 3.03%;
   transform: translateX(-50%);
 }
 
+/* El grupo se contrae hacia el centro de la plataforma. Las trayectorias
+   medidas caian sobre el filo exterior de los paneles; con esta escala se
+   cierran hacia dentro sin perder su forma ni su reparto angular.
+   En SVG transform-origin va en unidades del viewBox. */
+.segmentos {
+  --acercar: .96;
+  /* Vuelta completa del recorrido. El retardo de cada turno se calcula a
+     partir de el, asi que basta cambiar este numero para ir mas rapido o
+     mas lento sin que se solapen los encendidos. */
+  --ciclo: 3.8s;
+  /* Centro ajustado a los diez segmentos: con el, sus radios quedan entre
+     498 y 511, o sea 0,8 % de dispersion. El (886, 430) que usaba antes
+     dejaba el lado derecho mas afuera. */
+  transform-origin: 882px 414px;
+  transform: scale(var(--acercar));
+}
+
+/* Los diez segmentos. El grosor va en unidades del viewBox, no en pixeles
+   fijos, para que engorde y adelgace con el logo. */
+.seg {
+  fill: none;
+  stroke: var(--logo-reflejo);
+  stroke-width: 34;
+  stroke-linecap: round;
+  opacity: .16;
+  /* El turno lo marca --i: cada uno arranca un decimo de ciclo despues que
+     el anterior, asi que solo hay uno encendido en cada momento. */
+  animation: logo-segmento var(--ciclo) linear infinite;
+  animation-delay: calc(var(--i) * var(--ciclo) / 10);
+  will-change: opacity;
+}
+
 .anillo {
   fill: none;
   stroke-linecap: round;
@@ -365,6 +397,15 @@ $marco-inferior: 3.03%;
   70% { opacity: .55; }
 }
 
+/* Pulso corto: ocupa el 9 % del ciclo, de modo que con diez turnos
+   escalonados se enciende uno por vez y el recorrido da la vuelta. */
+@keyframes logo-segmento {
+  0% { opacity: .16; }
+  2% { opacity: 1; }
+  9% { opacity: .16; }
+  100% { opacity: .16; }
+}
+
 @keyframes logo-anillo-horario {
   from { stroke-dashoffset: 0; }
   to { stroke-dashoffset: -3848; }
@@ -400,6 +441,7 @@ $marco-inferior: 3.03%;
   .logo-base,
   .logo-union,
   .anillo,
+  .seg,
   .linea--energia,
   .linea--estela,
   .logo-chispa {
