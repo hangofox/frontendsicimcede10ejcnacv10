@@ -31,7 +31,11 @@ $marco-inferior: 3.03%;
   right: var(--escudo-derecha);
   width: var(--escudo-ancho);
   aspect-ratio: 208 / 152;
-  transform: translateY(-50%);
+  /* Desplazamiento lateral del conjunto. Va en transform y no en
+     --escudo-derecha porque esa variable ancla tambien el titulo SICIM,
+     y moverla lo arrastraria con el logo. */
+  --logo-desplaz-x: calc(var(--escudo-ancho) * .30);
+  transform: translate(var(--logo-desplaz-x), -50%);
 
   /* ---- Medidas de la composicion ---------------------------------
      El limite real del logo no es el contenedor sino la banda entre las
@@ -460,7 +464,13 @@ $marco-inferior: 3.03%;
   position: absolute;
   z-index: 2;
   top: 52.8%;
-  right: calc(var(--escudo-derecha) + var(--escudo-ancho) + clamp(16px, 1.6vw, 32px));
+  /* El texto se alinea con el arranque del brillo inferior derecho del
+     marco, que en el lienzo de referencia de 2000 unidades empieza a
+     encenderse en x=1160: eso es el 42 % del ancho contado desde el
+     borde derecho. */
+    /* --marca-ajuste corre el texto a la derecha en medida absoluta, para
+     poder pedirlo en milimetros sin depender del ancho de la ventana. */
+  right: calc(var(--marca-derecha, 15%) - var(--marca-ajuste, 1mm));
   transform: translateY(-50%);
   color: #fff;
   text-align: right;
