@@ -128,7 +128,7 @@ $chaflan: 14px;
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  background: url('../../../assets/images/imagen_marco_escudo_general_procesos_cede10.png') center / contain no-repeat;
   transform: translateY(6.5307%);
   pointer-events: none;
   user-select: none;
@@ -144,21 +144,15 @@ $chaflan: 14px;
   transform-origin: center;
   transition: transform .28s cubic-bezier(.2, .75, .25, 1), filter .28s ease;
   will-change: transform, filter;
-}
-
-.pieza img,
-.titulo-procesos-imagen {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  pointer-events: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
   user-select: none;
 }
 
-.pieza img {
-  opacity: 1;
-  transition: opacity .16s ease;
+.pieza:hover{
+  transition: all 0.6s ease-in-out;
+  z-index: 1000 !important;
 }
 
 .pieza-torres {
@@ -168,6 +162,8 @@ $chaflan: 14px;
   width: 57.7188%;
   height: 25.1246%;
   transform-origin: center bottom;
+  background-image: url('../../../assets/images/imagen_torres_cede10_01.png');
+  
 }
 
 .pieza-digei {
@@ -176,6 +172,7 @@ $chaflan: 14px;
   width: 45.4018%;
   height: 31.3167%;
   transform-origin: right bottom;
+  background-image: url('../../../assets/images/imagen_parte1_proceso_digei_cede10_01.png');
 }
 
 .pieza-dinco {
@@ -184,6 +181,7 @@ $chaflan: 14px;
   width: 41.333%;
   height: 31.7432%;
   transform-origin: left bottom;
+  background-image: url('../../../assets/images/imagen_parte2_proceso_dinco_cede10_01.png');
 }
 
 .pieza-diesp {
@@ -192,6 +190,7 @@ $chaflan: 14px;
   width: 42.2417%;
   height: 35.0178%;
   transform-origin: right top;
+  background-image: url('../../../assets/images/imagen_parte3_proceso_diesp_cede10_01.png');
 }
 
 .pieza-dipli {
@@ -200,6 +199,7 @@ $chaflan: 14px;
   width: 45.6854%;
   height: 35.089%;
   transform-origin: left top;
+  background-image: url('../../../assets/images/imagen_parte4_proceso_dipli_cede10_01.png');
 }
 
 .titulo-procesos {
@@ -209,11 +209,7 @@ $chaflan: 14px;
   width: 59.1893%;
   height: 17.9706%;
   transform-origin: center;
-}
-
-.titulo-procesos-imagen {
-  object-fit: contain;
-  opacity: 1;
+  background-image: url('../../../assets/images/imagen_titulo_procesos_cede10_01.png');
 }
 
 .pieza:hover,
@@ -231,11 +227,6 @@ $chaflan: 14px;
 .titulo-procesos:hover,
 .titulo-procesos:focus-visible {
   z-index: 13;
-}
-
-.pieza:hover img,
-.pieza:focus-visible img {
-  opacity: 1;
 }
 
 .pieza:focus-visible {

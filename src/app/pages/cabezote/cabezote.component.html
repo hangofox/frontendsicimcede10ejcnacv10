@@ -160,12 +160,65 @@
     <p>Sistema Integrado para el Control de Ingenieros Militares</p>
   </div>
 
+  <!-- Logo compuesto por capas independientes sobre los tres PNG originales.
+       Orden de profundidad: resplandor ambiental, base, anillos de la base,
+       union, rombo, emblema, lineas del rombo y destellos. -->
   <span class="contenedor-logo">
+    <span class="logo-ambiente" aria-hidden="true"></span>
+
     <img
-      class="logo-sicim"
-      src="assets/images/logo/logo_sicim_01.png"
-      alt="Logo del Sistema Integrado para el Control de Ingenieros Militares"
+      class="logo-base"
+      src="assets/images/logo/base_logo_01.png"
+      alt=""
+      aria-hidden="true"
     >
+
+    <!-- Anillos superpuestos al PNG. No giran la imagen: desplazan
+         segmentos luminosos sobre tres de sus circulos. -->
+    <svg class="logo-anillos" viewBox="0 0 1856 959" aria-hidden="true" focusable="false">
+      <ellipse class="anillo anillo--exterior" cx="883" cy="443" rx="805" ry="382" />
+      <ellipse class="anillo anillo--medio" cx="883" cy="443" rx="610" ry="289" />
+      <ellipse class="anillo anillo--interior" cx="883" cy="443" rx="405" ry="192" />
+    </svg>
+
+    <span class="logo-union" aria-hidden="true"></span>
+
+    <span class="logo-rombo">
+      <img
+        class="logo-rombo__png"
+        src="assets/images/logo/hexagono_logo_01.png"
+        alt=""
+        aria-hidden="true"
+      >
+
+      <img
+        class="logo-sicim"
+        src="assets/images/logo/logo_sicim_01.png"
+        alt="Logo del Sistema Integrado para el Control de Ingenieros Militares"
+      >
+
+      <!-- Coordenadas del lienzo 1318 x 1177. La linea luminosa interior se
+           midio en x=146 y x=1146 de la fila central y=554. -->
+      <svg class="logo-lineas" viewBox="0 0 1318 1177" aria-hidden="true" focusable="false">
+        <polygon class="linea linea--profundidad"
+          points="387,149 908,149 1149,554.5 909,951 386,951 146,554.5" />
+        <polygon class="linea linea--roja"
+          points="387,149 908,149 1149,554.5 909,951 386,951 146,554.5" />
+        <polygon class="linea linea--energia"
+          points="387,149 908,149 1149,554.5 909,951 386,951 146,554.5" />
+        <polygon class="linea linea--estela"
+          points="387,149 908,149 1149,554.5 909,951 386,951 146,554.5" />
+      </svg>
+
+      <!-- Uno por cada vertice del hexagono. Faltaban el superior derecho
+           y el inferior izquierdo. -->
+      <span class="logo-chispa logo-chispa--sup-izq"></span>
+      <span class="logo-chispa logo-chispa--sup-der"></span>
+      <span class="logo-chispa logo-chispa--derecha"></span>
+      <span class="logo-chispa logo-chispa--inf-der"></span>
+      <span class="logo-chispa logo-chispa--inf-izq"></span>
+      <span class="logo-chispa logo-chispa--izquierda"></span>
+    </span>
   </span>
 
 </header>
