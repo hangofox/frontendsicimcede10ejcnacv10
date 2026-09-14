@@ -1,0 +1,1 @@
+import{TestBed}from'@angular/core/testing';import{VistaComodatoComponent}from'./vista-comodato.component';describe('VistaComodatoComponent',()=>{it('debe crearse',async()=>{await TestBed.configureTestingModule({imports:[VistaComodatoComponent]}).compileComponents();expect(TestBed.createComponent(VistaComodatoComponent).componentInstance).toBeTruthy();});});

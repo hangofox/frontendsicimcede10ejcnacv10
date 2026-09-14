@@ -2,7 +2,11 @@
 <section class="page-card accesos" aria-label="Opciones del panel de control">
   @for (acceso of accesos; track acceso.ruta) {
     <a [routerLink]="acceso.ruta" class="acceso">
-      <img [src]="'assets/images/' + acceso.icono" alt="" width="80" height="80">
+      @if (acceso.icono) {
+        <img [src]="'assets/images/' + acceso.icono" alt="" width="80" height="80">
+      } @else {
+        <span class="acceso__icono-pendiente" aria-hidden="true"></span>
+      }
       <span>{{ acceso.titulo }}</span>
     </a>
   }

@@ -22,6 +22,20 @@
     </div>
   </div>
 
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Datos de registro de la solicitud</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de ingreso</span>
+        <span class="dato-valor">{{ integranteDocumentosSolicInfraestData.solicitudInfraestructuraDTO.fechaHMSIngresoSolicitudInfraestructura || 'No registrada' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de modificación</span>
+        <span class="dato-valor">{{ integranteDocumentosSolicInfraestData.solicitudInfraestructuraDTO.fechaHMSModificacionSolicitudInfraestructura || 'Sin modificaciones' }}</span>
+      </div>
+    </div>
+  </div>
+
   <div class="vista-acciones">
     <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cerrar</button>
   </div>

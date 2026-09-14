@@ -1,0 +1,19 @@
+<form [formGroup]="form" (ngSubmit)="enviar()">
+  @if (modo === 'eliminar') { <p class="alerta-eliminar">Esta acción eliminará definitivamente el registro.</p> }
+  <section class="form-seccion"><h4 class="seccion-titulo">Identificación</h4><div class="form-grid">
+    <label class="form-group">Denominación<input formControlName="denominacion"></label>
+    <label class="form-group">Unidad militar<select formControlName="unidad"><option value="">Seleccione</option>@for (unidad of unidades; track unidad.idUnidadMilitar) { <option [value]="unidad.idUnidadMilitar">{{ unidad.siglaoAcronimoUnidadMilitar }} - {{ unidad.nombreUnidadMilitar }}</option> }</select></label>
+    <label class="form-group">Arrendador<select formControlName="proveedor"><option value="">Seleccione</option>@for (proveedor of proveedores; track proveedor.idHistorialProveedorProductoOServicio) { <option [value]="proveedor.idHistorialProveedorProductoOServicio">{{ proveedor.nombresProvProdOServ }} {{ proveedor.primerApellidoProvProdOServ }}</option> }</select></label>
+    <label class="form-group">Tipo de estructura<select formControlName="tipo"><option value="">Seleccione</option>@for (tipo of tipos; track tipo.idTipoEstructuraInfraestructuraArrendada) { <option [value]="tipo.idTipoEstructuraInfraestructuraArrendada">{{ tipo.nombreTipoEstructuraInfraestructuraArrendada }}</option> }</select></label>
+    <label class="form-group">Estado de uso<select formControlName="estado"><option value="">-- Seleccione --</option><option value="BUENO">BUENO</option><option value="REGULAR">REGULAR</option><option value="MALO">MALO</option><option value="MANTENIMIENTO">MANTENIMIENTO</option><option value="FUERA DE SERVICIO">FUERA DE SERVICIO</option><option value="DADA DE BAJA">DADA DE BAJA</option></select></label>
+    <label class="form-group">Estrato<input formControlName="estrato"></label>
+  </div></section>
+  <section class="form-seccion"><h4 class="seccion-titulo">Ubicación y dimensiones</h4><div class="form-grid">
+    <label class="form-group">País<input formControlName="pais"></label><label class="form-group">Departamento/Estado<input formControlName="departamento"></label><label class="form-group">Ciudad<input formControlName="ciudad"></label><label class="form-group">Dirección<input formControlName="direccion"></label><label class="form-group">Latitud<input formControlName="latitud"></label><label class="form-group">Longitud<input formControlName="longitud"></label><label class="form-group">Largo<input formControlName="largo"></label><label class="form-group">Unidad largo<input formControlName="uLargo"></label><label class="form-group">Ancho<input formControlName="ancho"></label><label class="form-group">Unidad ancho<input formControlName="uAncho"></label><label class="form-group">Profundidad<input formControlName="profundidad"></label><label class="form-group">Unidad profundidad<input formControlName="uProfundidad"></label><label class="form-group">Pisos<input type="number" min="0" formControlName="pisos"></label>
+  </div></section>
+  <section class="form-seccion"><h4 class="seccion-titulo">Fechas del registro</h4><div class="form-grid">
+    <label class="form-group">Fecha de ingreso<input type="datetime-local" formControlName="fechaHMSIngresoInfraestructuraArrendada" readonly></label>
+    <label class="form-group">Fecha de modificación<input type="datetime-local" formControlName="fechaHMSModificacionInfraestructuraArrendada" readonly></label>
+  </div></section>
+  <div class="form-acciones"><button type="button" class="btn-sicim btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>@if (modo === 'eliminar') { <button type="button" class="btn-sicim btn-peligro" (click)="confirmar()">Eliminar</button> } @else { <button type="submit" class="btn-sicim btn-primario" [disabled]="form.invalid">{{ modo === 'modificar' ? 'Modificar' : 'Guardar' }}</button> }</div>
+</form>

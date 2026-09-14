@@ -1,0 +1,55 @@
+<h2 class="page-title">Comodatos</h2>
+<app-semaforo-contadores
+  [total]="totalRegistros"
+  [activos]="totalRegistrosActivos"
+  [inactivos]="totalRegistrosInactivos" />
+
+<section class="page-card panel-terrenos" [formGroup]="form" aria-label="Listado de comodatos">
+  <div class="barra-acciones">
+    <input type="text" formControlName="keyword" placeholder="Buscar comodato" (keyup.enter)="buscar()">
+    <select formControlName="terreno">
+      <option value="">TODOS LOS TERRENOS</option>
+      @for (terreno of terrenos; track terreno.idTerreno) {
+        <option [value]="terreno.idTerreno">{{ terreno.denominacionTerreno }}</option>
+      }
+    </select>
+    <button type="button" class="btn-sicim btn-buscar" (click)="buscar()">Buscar</button>
+    <button type="button" class="btn-sicim btn-nuevo" (click)="abrir('guardar')">Nuevo Comodato</button>
+  </div>
+
+  <div class="tabla-contenedor">
+    <table>
+      <thead><tr><th>ID</th><th>Terreno</th><th>Comodatario</th><th>Inicio</th><th>Finalización</th><th>Estado</th><th>Acciones</th></tr></thead>
+      <tbody>
+        @for (comodato of registros; track comodato.idComodatoTerreno) {
+          <tr>
+            <td>{{ comodato.idComodatoTerreno }}</td><td>{{ comodato.terrenoDTO.denominacionTerreno }}</td>
+            <td>{{ nombreProveedor(comodato.historialProveedorProductoOServicioDTO) }}</td>
+            <td>{{ comodato.fechaHMSIniciacionComodatoTerreno | date:'dd/MM/yyyy' }}</td><td>{{ comodato.fechaHMSFinalizacionComodatoTerreno | date:'dd/MM/yyyy' }}</td>
+            <td>
+              <span
+                class="badge-estado"
+                [class.badge-activo]="comodato.estadoTerreno === 'ACTIVO'"
+                [class.badge-inactivo]="comodato.estadoTerreno !== 'ACTIVO'">
+                {{ comodato.estadoTerreno }}
+              </span>
+            </td>
+            <td><div class="acciones-celda">
+              <button type="button" class="btn-accion btn-ver" title="Ver" aria-label="Ver comodato" (click)="ver(comodato)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+              <button type="button" class="btn-accion btn-editar" title="Modificar" (click)="abrir('modificar', comodato)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></button>
+              <button type="button" class="btn-accion btn-eliminar" title="Eliminar" (click)="abrir('eliminar', comodato)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6l-1 14H6L5 6M9 6V4h6v2"/></svg></button>
+            </div></td>
+          </tr>
+        } @empty { <tr><td colspan="7" class="tabla-vacia">No se encontraron comodatos.</td></tr> }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="paginacion"><div class="paginacion-info"><span>Registros por página:</span><select formControlName="cantidad" (change)="cambiarCantidad()"><option>5</option><option>10</option><option>25</option><option>50</option></select><span>{{ totalRegistros }} comodatos en total</span></div><div class="paginacion-controles"><button type="button" class="btn-pag" [disabled]="paginaActual === 0" (click)="cambiarPagina(paginaActual - 1)">‹</button><span>{{ paginaActual + 1 }} / {{ totalPaginas() }}</span><button type="button" class="btn-pag" [disabled]="paginaActual >= totalPaginas() - 1" (click)="cambiarPagina(paginaActual + 1)">›</button></div></div>
+</section>
+
+@if (modalEdicion) { <div class="modal-overlay" (click)="cerrar()"><div class="modal-caja" (click)="$event.stopPropagation()"><div class="modal-header"><h3>{{ modo === 'guardar' ? 'Nuevo comodato' : modo === 'modificar' ? 'Modificar comodato' : 'Eliminar comodato' }}</h3><button type="button" class="modal-cerrar" (click)="cerrar()">×</button></div><div class="modal-cuerpo"><app-add-upd-del-comodato [modo]="modo" [comodatoData]="seleccionado" [terrenos]="terrenos" [proveedores]="proveedores" (cerrarModal)="cerrar()" (guardar)="guardar($event)" (eliminar)="eliminar($event)" /></div></div></div> }
+@if (modalVista) { <div class="modal-overlay" (click)="cerrar()"><div class="modal-caja" (click)="$event.stopPropagation()"><div class="modal-header"><h3>Detalle del comodato</h3><button type="button" class="modal-cerrar" (click)="cerrar()">×</button></div><div class="modal-cuerpo"><app-vista-comodato [comodatoData]="seleccionado" (cerrarModal)="cerrar()" /></div></div></div> }
+@if (mensaje) { <div class="toast-global toast-exito">{{ mensaje }}</div> }

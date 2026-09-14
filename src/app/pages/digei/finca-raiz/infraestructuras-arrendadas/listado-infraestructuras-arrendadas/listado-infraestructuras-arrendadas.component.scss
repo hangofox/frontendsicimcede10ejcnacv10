@@ -1,0 +1,29 @@
+@use '../../infraestructuras/listado-infraestructuras/listado-infraestructuras.component';
+
+:host { display: block; width: 100%; }
+.panel-terrenos { display: flex; flex-direction: column; gap: 18px; }
+
+/* El campo heredado no puede depender de que la plantilla declare type=text. */
+.barra-acciones input {
+  flex: 1;
+  min-width: 220px;
+  padding: 9px 12px;
+  border: 1px solid var(--sicim-border);
+  border-radius: 4px;
+  background: var(--sicim-white);
+  color: var(--sicim-black);
+  font-size: 14px;
+
+  &:focus { outline: none; border-color: var(--sicim-focus); }
+}
+
+.acciones-celda { min-width: 100px; }
+.btn-accion { flex: 0 0 30px; min-width: 30px; padding: 0; overflow: visible; }
+.btn-accion svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+  overflow: visible;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

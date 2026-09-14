@@ -38,7 +38,7 @@ export class AddUpdDelIntegranteDocumentosSolicInfraestComponent implements OnCh
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['modo'] || changes['integranteDocumentosSolicInfraestData']) {
+    if (changes['modo'] || changes['integranteDocumentosSolicInfraestData'] || changes['solicitudInfraestructura']) {
       this.initForm();
     }
   }
@@ -55,8 +55,17 @@ export class AddUpdDelIntegranteDocumentosSolicInfraestComponent implements OnCh
   }
 
   private initForm(): void {
+    const solicitud = this.integranteDocumentosSolicInfraestData?.solicitudInfraestructuraDTO ?? this.solicitudInfraestructura;
     const controles: { [nombreControl: string]: any } = {
-      idIntegrantesSolicitudesInfraestructura: [this.integranteDocumentosSolicInfraestData?.idIntegrantesSolicitudesInfraestructura ?? null]
+      idIntegrantesSolicitudesInfraestructura: [this.integranteDocumentosSolicInfraestData?.idIntegrantesSolicitudesInfraestructura ?? null],
+      fechaHMSIngresoSolicitudInfraestructura: [{
+        value: this.formatearFechaParaInput(solicitud?.fechaHMSIngresoSolicitudInfraestructura),
+        disabled: true
+      }],
+      fechaHMSModificacionSolicitudInfraestructura: [{
+        value: this.formatearFechaParaInput(solicitud?.fechaHMSModificacionSolicitudInfraestructura),
+        disabled: true
+      }]
     };
     this.roles.forEach(rol => {
       controles[this.obtenerNombreControl(rol.clave, 'grado')] = [this.obtenerValorCampo(rol.clave, 'grado')];
@@ -70,6 +79,10 @@ export class AddUpdDelIntegranteDocumentosSolicInfraestComponent implements OnCh
     if (this.banderaCrudEliminar) {
       this.integrantesDocumentosSolicInfraestForm.disable();
     }
+  }
+
+  private formatearFechaParaInput(fecha: String | undefined): string {
+    return fecha ? String(fecha).replace(' ', 'T').slice(0, 16) : '';
   }
 
   guardarModificar(): void {

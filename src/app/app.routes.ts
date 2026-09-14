@@ -36,10 +36,15 @@ export const routes: Routes = [
               { path: '', loadComponent: () => import('./pages/digei/finca-raiz/finca-raiz.component').then(m => m.FincaRaizComponent), title: 'Finca Raíz | SICIM' },
               { path: 'infraestructuras/listado-infraestructuras', loadComponent: () => import('./pages/digei/finca-raiz/infraestructuras/listado-infraestructuras/listado-infraestructuras.component').then(m => m.ListadoInfraestructurasComponent), title: 'Infraestructuras | SICIM' },
               { path: 'terrenos/listado-terrenos', loadComponent: () => import('./pages/digei/finca-raiz/terrenos/listado-terrenos/listado-terrenos.component').then(m => m.ListadoTerrenosComponent), title: 'Terrenos | SICIM' },
-              { path: 'infraestructuras/estadisticas-infraestructuras', loadComponent: () => import('./pages/digei/finca-raiz/infraestructuras/estadisticas-infraestructuras/estadisticas-infraestructuras.component').then(m => m.EstadisticasInfraestructurasComponent), title: 'Estadísticas de infraestructuras | SICIM' },
-              { path: 'terrenos/estadisticas-terrenos', loadComponent: () => import('./pages/digei/finca-raiz/terrenos/estadisticas-terrenos/estadisticas-terrenos.component').then(m => m.EstadisticasTerrenosComponent), title: 'Estadísticas de terrenos | SICIM' },
+              { path: 'comodatos/listado-comodatos', loadComponent: () => import('./pages/digei/finca-raiz/comodatos/listado-comodatos/listado-comodatos.component').then(m => m.ListadoComodatosComponent), title: 'Comodatos | SICIM' },
+              { path: 'infraestructuras-arrendadas/listado-infraestructuras-arrendadas', loadComponent: () => import('./pages/digei/finca-raiz/infraestructuras-arrendadas/listado-infraestructuras-arrendadas/listado-infraestructuras-arrendadas.component').then(m => m.ListadoInfraestructurasArrendadasComponent), title: 'Infraestructuras arrendadas | SICIM' },
+              { path: 'deshboards-estadisticas', loadComponent: () => import('./pages/digei/finca-raiz/deshboards-estadisticas/deshboards-estadisticas.component').then(m => m.DeshboardsEstadisticasComponent), title: 'Dashboards y estadísticas | SICIM' },
+              { path: 'infraestructuras/estadisticas-infraestructuras', redirectTo: 'deshboards-estadisticas', pathMatch: 'full' },
+              { path: 'terrenos/estadisticas-terrenos', redirectTo: 'deshboards-estadisticas', pathMatch: 'full' },
               { path: 'infraestructuras', redirectTo: 'infraestructuras/listado-infraestructuras', pathMatch: 'full' },
-              { path: 'terrenos', redirectTo: 'terrenos/listado-terrenos', pathMatch: 'full' }
+              { path: 'terrenos', redirectTo: 'terrenos/listado-terrenos', pathMatch: 'full' },
+              { path: 'comodatos', redirectTo: 'comodatos/listado-comodatos', pathMatch: 'full' },
+              { path: 'infraestructuras-arrendadas', redirectTo: 'infraestructuras-arrendadas/listado-infraestructuras-arrendadas', pathMatch: 'full' }
             ]
           },
           //SOLICITUDES DE INFRAESTRUCTURAS CUELGA DIRECTAMENTE DE DIGEI, COMO SU CARPETA.
@@ -59,6 +64,8 @@ export const routes: Routes = [
           { path: 'unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos', loadComponent: () => import('./pages/panel-control/unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos.component').then(m => m.ListadoUnidadesMilitaresRealizMttosComponent), title: 'Unidad militares realizadoras de mantenimientos | SICIM' },
           { path: 'oficinas/listado-oficinas', loadComponent: () => import('./pages/panel-control/oficinas/listado-oficinas/listado-oficinas.component').then(m => m.ListadoOficinasComponent), title: 'Oficinas | SICIM' },
           { path: 'responsables/listado-responsables', loadComponent: () => import('./pages/panel-control/responsables/listado-responsables/listado-responsables.component').then(m => m.ListadoResponsablesComponent), title: 'Responsables | SICIM' },
+          { path: 'proveedores-productos-servicios/listado-proveedores-productos-servicios', loadComponent: () => import('./pages/panel-control/proveedores-productos-servicios/listado-proveedores-productos-servicios/listado-proveedores-productos-servicios.component').then(m => m.ListadoProveedoresProductosServiciosComponent), title: 'Proveedores de productos y/o servicios | SICIM' },
+          { path: 'historial-proveedores-productos-servicios/listado-historial-proveedores-productos-servicios', loadComponent: () => import('./pages/panel-control/historial-proveedores-productos-servicios/listado-historial-proveedores-productos-servicios/listado-historial-proveedores-productos-servicios.component').then(m => m.ListadoHistorialProveedoresProductosServiciosComponent), title: 'Historial de proveedores de productos y/o servicios | SICIM' },
           { path: 'parametros-sistema', loadComponent: () => import('./pages/panel-control/parametros-sistema/parametros-sistema.component').then(m => m.ParametrosSistemaComponent), title: 'Parámetros del sistema | SICIM' },
           { path: 'historial-integrantes-documentos/listado-historial-integrantes-documentos', loadComponent: () => import('./pages/panel-control/historial-integrantes-documentos/listado-historial-integrantes-documentos/listado-historial-integrantes-documentos.component').then(m => m.ListadoHistorialIntegrantesDocumentosComponent), title: 'Historial de integrantes de documentos | SICIM' },
           { path: 'mi-perfil', loadComponent: () => import('./pages/panel-control/mi-perfil/mi-perfil.component').then(m => m.MiPerfilComponent), title: 'Mi perfil | SICIM' },
@@ -68,6 +75,8 @@ export const routes: Routes = [
           { path: 'unidades-militares-realiz-mttos', redirectTo: 'unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos', pathMatch: 'full' },
           { path: 'oficinas', redirectTo: 'oficinas/listado-oficinas', pathMatch: 'full' },
           { path: 'responsables', redirectTo: 'responsables/listado-responsables', pathMatch: 'full' },
+          { path: 'proveedores-productos-servicios', redirectTo: 'proveedores-productos-servicios/listado-proveedores-productos-servicios', pathMatch: 'full' },
+          { path: 'historial-proveedores-productos-servicios', redirectTo: 'historial-proveedores-productos-servicios/listado-historial-proveedores-productos-servicios', pathMatch: 'full' },
           { path: 'historial-integrantes-documentos', redirectTo: 'historial-integrantes-documentos/listado-historial-integrantes-documentos', pathMatch: 'full' },
           { path: 'usuarios', redirectTo: 'usuarios/listado-usuarios', pathMatch: 'full' }
         ]

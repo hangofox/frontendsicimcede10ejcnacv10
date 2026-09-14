@@ -1,0 +1,2 @@
+import { provideHttpClient } from '@angular/common/http'; import { provideHttpClientTesting } from '@angular/common/http/testing'; import { TestBed } from '@angular/core/testing'; import { CatalogosArrendamientosService } from './catalogos-arrendamientos.service';
+describe('CatalogosArrendamientosService', () => { it('debe crearse', () => { TestBed.configureTestingModule({providers:[provideHttpClient(), provideHttpClientTesting()]}); expect(TestBed.inject(CatalogosArrendamientosService)).toBeTruthy(); }); });

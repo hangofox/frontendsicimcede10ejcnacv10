@@ -120,10 +120,11 @@ export class ListadoTerrenosComponent implements OnInit {
   cerrarVista(): void { this.modalVista = false; this.seleccionado = null; }
 
   guardar(terreno: TerrenosI): void {
-    const operacion = terreno.idTerreno ? this.terrenosService.updateTerreno(terreno) : this.terrenosService.addTerreno(terreno);
+    const modificando = !!terreno.idTerreno;
+    const operacion = modificando ? this.terrenosService.updateTerreno(terreno) : this.terrenosService.addTerreno(terreno);
     operacion.subscribe({
-      next: respuesta => { this.toast('exito', respuesta.mensaje || 'Terreno guardado correctamente.'); this.cerrarEdicion(); this.listar(); },
-      error: error => this.toast('error', error.error?.mensaje || 'No fue posible guardar el terreno.')
+      next: respuesta => { this.toast('exito', respuesta.mensaje || (modificando ? 'Terreno modificado correctamente.' : 'Terreno creado correctamente.')); this.cerrarEdicion(); this.listar(); },
+      error: error => this.toast('error', error.error?.mensaje || (modificando ? 'No fue posible modificar el terreno.' : 'No fue posible crear el terreno.'))
     });
   }
 

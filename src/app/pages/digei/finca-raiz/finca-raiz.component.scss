@@ -260,21 +260,16 @@
 }
 
 /* =====================================================================
-   Panal de cuatro ranuras reservadas
+   Panal de cinco ranuras en patron simetrico 2-1-2
    ===================================================================== */
 
 .fr-panal {
   --fr-ranura: clamp(124px, 21vw, 240px);
   /* Los hexagonos miden 272x300, asi que su alto no es igual al ancho. */
   --fr-alto: calc(var(--fr-ranura) * 300 / 272);
-  /* El hexagono dibujado es de punta arriba: diagonales de 72 px y lados
-     rectos de 149 px dentro de la caja de 300.
-     Cada solape se controla por separado para poder mover la fila del
-     medio sin arrastrar la de abajo. Bajar --fr-solape-1 hace descender
-     la fila central; subir --fr-solape-2 en la misma cantidad deja la
-     pieza inferior donde estaba y el panal conserva su alto. */
-  --fr-solape-1: calc(var(--fr-alto) * -.225);
-  --fr-solape-2: calc(var(--fr-alto) * -.249);
+  /* Mismo solape proporcional de geomatica-topografia: conserva iguales
+     los huecos de las diagonales y del centro en las tres filas. */
+  --fr-solape: calc(var(--fr-alto) * -.237);
 
   box-sizing: border-box;
   flex: 0 0 auto;
@@ -322,45 +317,50 @@
 
 .fr-ranura--terrenos .fr-ranura__pieza {
   background-image: url('../../../../assets/images/imagen_hexagono_terrenos_01.png');
+  height: calc(100% + 1.2mm);
+  margin-top: -0.2mm;
 }
 
-.fr-ranura--estadisticas-infraestructura .fr-ranura__pieza {
-  background-image: url('../../../../assets/images/imagen_hexagono_estadisticas_infraestructuras_01.png');
+.fr-ranura--arrendadas .fr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_infraestructuras_arrendadas_01.png');
+  background-position: calc(50% + 0.1mm) calc(50% - 0.1mm);
 }
 
-.fr-ranura--estadisticas-terrenos .fr-ranura__pieza {
-  background-image: url('../../../../assets/images/imagen_hexagono_estadisticas_terrenos_01.png');
+.fr-ranura--comodatos .fr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_comodatos_01.png');
 }
 
-.fr-ranura--infraestructura {
-  grid-column: 1 / -1;
-  justify-self: center;
+.fr-ranura--dashboards .fr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_dashboards_estadisticas_terrenos_e_infraestructuras_01.png');
+  background-position: calc(50% + 0.4mm) calc(50% - 0.2mm);
 }
 
 .fr-ranura--terrenos {
   grid-column: 1;
-  margin-top: var(--fr-solape-1);
 }
 
-.fr-ranura--estadisticas-infraestructura {
+.fr-ranura--infraestructura {
   grid-column: 2;
-  margin-top: var(--fr-solape-1);
+  transform: translateX(0.2mm);
 }
 
-.fr-ranura--estadisticas-terrenos {
+.fr-ranura--arrendadas {
   grid-column: 1 / -1;
   justify-self: center;
-  margin-top: var(--fr-solape-2);
-  /* Ajuste fino solo de esta pieza: 0,2 mm a la derecha y un descenso
-     proporcional al tamano, para que no se pierda al reducir la ventana.
-     Va en 'translate', propiedad independiente, y no en 'transform', que
-     asi no puede chocar con la escala del hover de la pieza interior. */
-  translate: 0.1mm calc(var(--fr-alto) * .016 - 0.2mm);
+  margin-top: calc(var(--fr-solape) - 0.2mm);
 }
 
-/* Las dos que navegan se realzan al apuntarlas; las otras dos no
-   reaccionan, porque todavia no llevan a ningun sitio. */
-/* El zoom lo llevan las cuatro piezas. La escala va aqui, en la imagen,
+.fr-ranura--comodatos {
+  grid-column: 1;
+  margin-top: var(--fr-solape);
+}
+
+.fr-ranura--dashboards {
+  grid-column: 2;
+  margin-top: var(--fr-solape);
+}
+
+/* El zoom lo llevan las cinco piezas. La escala va aqui, en la imagen,
    y no en .fr-ranura, que ya usa 'translate' para su ajuste fino: son
    propiedades distintas y no se pisan. */
 .fr-ranura__pieza {

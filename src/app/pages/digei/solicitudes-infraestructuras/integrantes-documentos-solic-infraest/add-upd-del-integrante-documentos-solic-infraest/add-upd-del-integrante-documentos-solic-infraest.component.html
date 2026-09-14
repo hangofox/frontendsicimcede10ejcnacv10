@@ -37,9 +37,23 @@
       </div>
     </div>
 
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos de registro de la solicitud</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Fecha de ingreso</label>
+          <input type="datetime-local" formControlName="fechaHMSIngresoSolicitudInfraestructura">
+        </div>
+        <div class="form-group">
+          <label>Fecha de modificación</label>
+          <input type="datetime-local" formControlName="fechaHMSModificacionSolicitudInfraestructura">
+        </div>
+      </div>
+    </div>
+
     <div class="form-acciones">
       <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cancelar</button>
-      <button type="submit" class="btn-sicim btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar">
+      <button type="submit" class="btn-sicim btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="integrantesDocumentosSolicInfraestForm.invalid || !solicitudInfraestructura">
         {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
       </button>
       <button type="button" class="btn-sicim btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>

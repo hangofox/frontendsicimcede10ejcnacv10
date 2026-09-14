@@ -1,0 +1,1 @@
+import{TestBed}from'@angular/core/testing';import{AddUpdDelComodatoComponent}from'./add-upd-del-comodato.component';describe('AddUpdDelComodatoComponent',()=>{it('debe crearse',async()=>{await TestBed.configureTestingModule({imports:[AddUpdDelComodatoComponent]}).compileComponents();expect(TestBed.createComponent(AddUpdDelComodatoComponent).componentInstance).toBeTruthy();});});

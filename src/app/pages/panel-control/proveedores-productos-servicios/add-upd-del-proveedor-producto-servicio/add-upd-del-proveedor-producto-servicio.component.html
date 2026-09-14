@@ -1,0 +1,113 @@
+<div class="modal-formulario" *ngIf="proveedoresProductosServiciosForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará el proveedor de productos o servicios de la lista. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="proveedoresProductosServiciosForm" (ngSubmit)="guardarModificar()">
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Identificación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Tipo de documento de identificación (*)</label>
+          <select formControlName="tipoDocumentoIdentificacionSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let tipoDocumentoIdentificacion of tiposDocumentosIdentificacion" [value]="tipoDocumentoIdentificacion.idTipoDocumentoIdentificacion">
+              {{ tipoDocumentoIdentificacion.nombreTipoDocumentoIdentificacion }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>N.° de documento de identificación (*)</label>
+          <input type="text" formControlName="numeroDocumentoIdentificacionProvProdOServ" placeholder="Ej. 1020304050">
+        </div>
+        <div class="form-group">
+          <label>Lugar de expedición del documento</label>
+          <input type="text" formControlName="lugarExpedicionDocumentoIdentificacionProvProdOServ" placeholder="Ej. Bogotá D.C.">
+        </div>
+        <div class="form-group">
+          <label>Nombres (*)</label>
+          <input type="text" formControlName="nombresProvProdOServ" placeholder="Ej. Juan Carlos">
+        </div>
+        <div class="form-group">
+          <label>Primer apellido (*)</label>
+          <input type="text" formControlName="primerApellidoProvProdOServ" placeholder="Ej. Rodríguez">
+        </div>
+        <div class="form-group">
+          <label>Segundo apellido</label>
+          <input type="text" formControlName="segundoApellidoProvProdOServ" placeholder="Ej. Gómez">
+        </div>
+        <div class="form-group">
+          <label>Estado (*)</label>
+          <select formControlName="estadoProvProdOServ">
+            <option value="ACTIVO">ACTIVO</option>
+            <option value="INACTIVO">INACTIVO</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Contacto y ubicación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Dirección</label>
+          <input type="text" formControlName="direccionProvProdOServ" placeholder="Ej. Calle 100 # 10-20">
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text" formControlName="telefonoProvProdOServ" placeholder="Ej. 6012345678">
+        </div>
+        <div class="form-group">
+          <label>Móvil</label>
+          <input type="text" formControlName="movilProvProdOServ" placeholder="Ej. 3101234567">
+        </div>
+        <div class="form-group">
+          <label>Correo electrónico personal</label>
+          <input type="email" formControlName="correoElectronicoPersonalProvProdOServ" placeholder="Ej. nombre@correo.com">
+        </div>
+        <div class="form-group">
+          <label>Correo electrónico institucional</label>
+          <input type="email" formControlName="correoElectronicoInstitucionalProvProdOServ" placeholder="Ej. nombre@entidad.gov.co">
+        </div>
+        <div class="form-group">
+          <label>País de origen</label>
+          <input type="text" formControlName="paisOrigenProvProdOServ" placeholder="Ej. Colombia">
+        </div>
+        <div class="form-group">
+          <label>Departamento o estado de origen</label>
+          <input type="text" formControlName="departamentoOEstadoOrigenProvProdOServ" placeholder="Ej. Cundinamarca">
+        </div>
+        <div class="form-group">
+          <label>Ciudad de origen</label>
+          <input type="text" formControlName="ciudadOrigenProvProdOServ" placeholder="Ej. Bogotá D.C.">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos de registro</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Fecha de ingreso</label>
+          <input type="datetime-local" formControlName="fechaHMSIngresoProvProdOServ">
+        </div>
+        <div class="form-group">
+          <label>Fecha de modificación</label>
+          <input type="datetime-local" formControlName="fechaHMSModificacionProvProdOServ">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-sicim btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="proveedoresProductosServiciosForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-sicim btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>

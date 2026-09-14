@@ -1,0 +1,56 @@
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, inject, Input, OnChanges, Output } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HistorialProveedoresProductosServiciosI } from '../../../../../interfaces/panel-control/historial-proveedores-productos-servicios/historial-proveedores-productos-servicios.interface';
+import { InfraestructurasArrendadasI, TipoEstructuraInfraestructuraArrendadaI } from '../../../../../interfaces/digei/finca-raiz/infraestructuras-arrendadas/infraestructuras-arrendadas.interface';
+import { UnidadesMilitaresI } from '../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
+
+@Component({ selector: 'app-add-upd-del-infraestructura-arrendada', standalone: true, imports: [CommonModule, ReactiveFormsModule], templateUrl: './add-upd-del-infraestructura-arrendada.component.html', styleUrl: './add-upd-del-infraestructura-arrendada.component.scss' })
+export class AddUpdDelInfraestructuraArrendadaComponent implements OnChanges {
+  @Input() modo: 'guardar'|'modificar'|'eliminar' = 'guardar';
+  @Input() data: InfraestructurasArrendadasI|null = null;
+  @Input() unidades: UnidadesMilitaresI[] = [];
+  @Input() proveedores: HistorialProveedoresProductosServiciosI[] = [];
+  @Input() tipos: TipoEstructuraInfraestructuraArrendadaI[] = [];
+  @Output() cerrarModal = new EventEmitter<void>();
+  @Output() guardar = new EventEmitter<InfraestructurasArrendadasI>();
+  @Output() eliminar = new EventEmitter<number>();
+  private readonly fb = inject(FormBuilder);
+  form = this.crear();
+
+  ngOnChanges(): void { this.form = this.crear(); if (this.modo === 'eliminar') this.form.disable(); }
+
+  private crear() {
+    const x = this.data;
+    return this.fb.group({
+      id: [x?.idInfraestructuraArrendada ?? null], denominacion: [x?.denominacionInfraestructuraArrendada ?? '', Validators.required],
+      unidad: [x?.unidadMilitarDTO?.idUnidadMilitar ?? '', Validators.required], proveedor: [x?.historialProveedorProductoOServicioDTO?.idHistorialProveedorProductoOServicio ?? '', Validators.required], tipo: [x?.tipoEstructuraInfraestructuraArrendadaDTO?.idTipoEstructuraInfraestructuraArrendada ?? '', Validators.required],
+      pais: [x?.paisOrigenInfraestructuraArrendada ?? ''], departamento: [x?.departamentoOEstadoOrigenInfraestructuraArrendada ?? ''], ciudad: [x?.ciudadOrigenInfraestructuraArrendada ?? ''], direccion: [x?.direccionInfraestructuraArrendada ?? ''],
+      largo: [x?.numeroLargoInfraestructuraArrendada ?? ''], uLargo: [x?.nombreUnidadMedidaLargoInfraestructuraArrendada ?? 'METROS'], ancho: [x?.numeroAnchuraInfraestructuraArrendada ?? ''], uAncho: [x?.nombreUnidadMedidaAnchuraInfraestructuraArrendada ?? 'METROS'], profundidad: [x?.numeroProfundidadInfraestructuraArrendada ?? ''], uProfundidad: [x?.nombreUnidadMedidaProfundidadInfraestructuraArrendada ?? 'METROS'],
+      pisos: [x?.numeroPisosInfraestructuraArrendada ?? 0], estado: [x?.estadoUsoInfraestructuraArrendada ?? '', Validators.required], latitud: [x?.latitudInfraestructuraArrendada ?? ''], longitud: [x?.longitudInfraestructuraArrendada ?? ''], estrato: [x?.estratoInfraestructuraArrendada ?? ''],
+      fechaHMSIngresoInfraestructuraArrendada: [{ value: this.fecha(x?.fechaHMSIngresoInfraestructuraArrendada) || this.ahora(), disabled: true }],
+      fechaHMSModificacionInfraestructuraArrendada: [{ value: x ? this.ahora() : '', disabled: true }]
+    });
+  }
+
+  enviar(): void {
+    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
+    const v = this.form.getRawValue();
+    const unidad = this.unidades.find(x => x.idUnidadMilitar === Number(v.unidad));
+    const proveedor = this.proveedores.find(x => x.idHistorialProveedorProductoOServicio === Number(v.proveedor));
+    const tipo = this.tipos.find(x => x.idTipoEstructuraInfraestructuraArrendada === Number(v.tipo));
+    if (!unidad || !proveedor || !tipo) return;
+    this.guardar.emit({
+      idInfraestructuraArrendada: v.id ?? undefined, denominacionInfraestructuraArrendada: v.denominacion!, unidadMilitarDTO: unidad, historialProveedorProductoOServicioDTO: proveedor, tipoEstructuraInfraestructuraArrendadaDTO: tipo,
+      paisOrigenInfraestructuraArrendada: v.pais!, departamentoOEstadoOrigenInfraestructuraArrendada: v.departamento!, ciudadOrigenInfraestructuraArrendada: v.ciudad!, direccionInfraestructuraArrendada: v.direccion!,
+      numeroLargoInfraestructuraArrendada: v.largo!, nombreUnidadMedidaLargoInfraestructuraArrendada: v.uLargo!, numeroAnchuraInfraestructuraArrendada: v.ancho!, nombreUnidadMedidaAnchuraInfraestructuraArrendada: v.uAncho!, numeroProfundidadInfraestructuraArrendada: v.profundidad!, nombreUnidadMedidaProfundidadInfraestructuraArrendada: v.uProfundidad!,
+      numeroPisosInfraestructuraArrendada: Number(v.pisos), estadoUsoInfraestructuraArrendada: v.estado!, latitudInfraestructuraArrendada: v.latitud!, longitudInfraestructuraArrendada: v.longitud!, estratoInfraestructuraArrendada: v.estrato!,
+      fechaHMSIngresoInfraestructuraArrendada: this.backend(v.fechaHMSIngresoInfraestructuraArrendada!), fechaHMSModificacionInfraestructuraArrendada: this.backend(v.fechaHMSModificacionInfraestructuraArrendada!)
+    });
+  }
+
+  confirmar(): void { const id = this.form.getRawValue().id; if (id) this.eliminar.emit(id); }
+  private fecha(value?: string): string { return value ? String(value).replace(' ', 'T').slice(0, 16) : ''; }
+  private backend(value: string): string { return value?.length === 16 ? `${value}:00` : value; }
+  private ahora(): string { const d=new Date(), z=(n:number)=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`; }
+}
