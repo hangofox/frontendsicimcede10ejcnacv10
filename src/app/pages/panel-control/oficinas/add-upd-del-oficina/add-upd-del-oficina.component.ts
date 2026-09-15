@@ -44,7 +44,6 @@ export class AddUpdDelOficinaComponent implements OnChanges {
     this.oficinasForm = this.formBuilder.group({
       idOficina: [oficina?.idOficina ?? null],
       nombreOficina: [oficina?.nombreOficina ?? '', Validators.required],
-      centroCostoOficina: [oficina?.centroCostoOficina ?? '', Validators.required],
       unidadMilitarSeleccionada: [oficina?.unidadMilitarDTO?.idUnidadMilitar ?? '', Validators.required]
     });
     if (this.banderaCrudEliminar) {
@@ -63,7 +62,9 @@ export class AddUpdDelOficinaComponent implements OnChanges {
     const oficina: OficinasI = {
       idOficina: valoresFormulario.idOficina ?? undefined,
       nombreOficina: valoresFormulario.nombreOficina,
-      centroCostoOficina: valoresFormulario.centroCostoOficina,
+      //EL CENTRO DE COSTO SE ADMINISTRA EN SU CATÁLOGO RELACIONAL. AL MODIFICAR UNA OFICINA SE CONSERVA
+      //EL VALOR HISTÓRICO PARA EVITAR QUE EL PUT LO REEMPLACE ACCIDENTALMENTE POR NULL.
+      centroCostoOficina: this.oficinaData?.centroCostoOficina ?? '',
       unidadMilitarDTO: unidadMilitar ?? this.unidadesMilitares[0]
     };
     this.guardar.emit(oficina);

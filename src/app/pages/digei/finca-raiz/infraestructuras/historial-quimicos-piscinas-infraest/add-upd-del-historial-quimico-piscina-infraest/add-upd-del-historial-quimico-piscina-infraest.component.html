@@ -1,0 +1,12 @@
+<form [formGroup]="form" (ngSubmit)="enviar()">
+  @if (modo === 'eliminar') { <div class="alerta-eliminar">Esta acción eliminará el registro. ¿Desea continuar?</div> }
+  <div class="form-seccion"><div class="seccion-titulo">Datos del historial</div><div class="form-grid">
+    <div class="form-group"><label>Número de registro</label><input formControlName="numero" placeholder="Asignado automáticamente"></div>
+    <div class="form-group"><label>Infraestructura</label><input [value]="infraestructura.denominacionInfraestructura" disabled></div>
+    <div class="form-group form-group-ancho"><label>Químico de piscina (*)</label><select formControlName="quimicoPiscina"><option value="">-- Seleccione --</option>@for (quimicoPiscina of quimicosPiscinas; track quimicoPiscina.idQuimicoPiscina) { <option [value]="quimicoPiscina.idQuimicoPiscina">{{ quimicoPiscina.nombreQuimicoPiscina }}</option> }</select></div>
+    <div class="form-group"><label>Oficina (*)</label><select formControlName="oficina" (change)="seleccionarOficina($event)"><option value="">-- Seleccione --</option>@for (oficina of oficinas; track oficina.idOficina) { <option [value]="oficina.idOficina">{{ oficina.nombreOficina }} - {{ oficina.centroCostoOficina }}</option> }</select></div>
+    <div class="form-group"><label>Centro de costo (*)</label><select formControlName="centroCosto"><option value="">-- Seleccione --</option>@for (centroCosto of centrosCostosOficina; track centroCosto.idCentroCostoOficina) { <option [value]="centroCosto.idCentroCostoOficina">{{ centroCosto.centroCostoOficina }}</option> }</select></div>
+    <div class="form-group"><label>Fecha de ingreso</label><input type="datetime-local" formControlName="ingreso"></div><div class="form-group"><label>Fecha de modificación</label><input type="datetime-local" formControlName="modificacion"></div>
+  </div></div>
+  <div class="form-acciones"><button type="button" class="btn-sicim btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>@if (modo !== 'eliminar') { <button type="submit" class="btn-sicim btn-primario" [disabled]="form.invalid">{{ modo === 'guardar' ? 'Guardar' : 'Modificar' }}</button> } @else { <button type="button" class="btn-sicim btn-peligro" (click)="confirmarEliminar()">Eliminar</button> }</div>
+</form>

@@ -24,6 +24,7 @@ export class PanelControlComponent {
     { titulo: 'Responsables', ruta: '/panel-control/responsables/listado-responsables', icono: 'imagen_responsables_01.png' },
     { titulo: 'Proveedores de productos y/o servicios', ruta: '/panel-control/proveedores-productos-servicios/listado-proveedores-productos-servicios', icono: 'imagen_proveedores_productos_yo_servicios_01.png' },
     { titulo: 'Historial de proveedores de productos y/o servicios', ruta: '/panel-control/historial-proveedores-productos-servicios/listado-historial-proveedores-productos-servicios', icono: 'imagen_historial_proveedores_productos_yo_servicios_01.png' },
+    { titulo: 'Químicos de piscinas', ruta: '/panel-control/quimicos-piscinas/listado-quimicos-piscinas', icono: 'imagen_quimicos_piscinas_01.png' },
     { titulo: 'Parámetros del sistema', ruta: '/panel-control/parametros-sistema', icono: 'imagen_parametros_sistema_01.png' },
     { titulo: 'Historial de integrantes de documentos', ruta: '/panel-control/historial-integrantes-documentos/listado-historial-integrantes-documentos', icono: 'imagen_historial_integrantes_documentos_01.png' },
     { titulo: 'Mi perfil', ruta: '/panel-control/mi-perfil', icono: 'imagen_mi_perfil_01.png' },

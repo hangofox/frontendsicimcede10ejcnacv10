@@ -1,1 +1,43 @@
-@use '../../infraestructuras/add-upd-del-infraestructura/add-upd-del-infraestructura.component';:host{display:block;width:100%}
+@use '../../infraestructuras/add-upd-del-infraestructura/add-upd-del-infraestructura.component';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.form-grid {
+  align-items: stretch;
+}
+
+.form-group {
+  display: grid;
+  grid-template-rows: 38px minmax(36px, auto);
+  align-content: start;
+  gap: 5px;
+}
+
+.campo-etiqueta {
+  display: flex;
+  align-items: flex-end;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--sicim-black);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 560px) {
+  .form-group {
+    grid-template-rows: auto minmax(36px, auto);
+  }
+
+  .campo-etiqueta {
+    min-height: 20px;
+  }
+}

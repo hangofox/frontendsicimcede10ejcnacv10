@@ -68,6 +68,7 @@ export const routes: Routes = [
           { path: 'historial-proveedores-productos-servicios/listado-historial-proveedores-productos-servicios', loadComponent: () => import('./pages/panel-control/historial-proveedores-productos-servicios/listado-historial-proveedores-productos-servicios/listado-historial-proveedores-productos-servicios.component').then(m => m.ListadoHistorialProveedoresProductosServiciosComponent), title: 'Historial de proveedores de productos y/o servicios | SICIM' },
           { path: 'parametros-sistema', loadComponent: () => import('./pages/panel-control/parametros-sistema/parametros-sistema.component').then(m => m.ParametrosSistemaComponent), title: 'Parámetros del sistema | SICIM' },
           { path: 'historial-integrantes-documentos/listado-historial-integrantes-documentos', loadComponent: () => import('./pages/panel-control/historial-integrantes-documentos/listado-historial-integrantes-documentos/listado-historial-integrantes-documentos.component').then(m => m.ListadoHistorialIntegrantesDocumentosComponent), title: 'Historial de integrantes de documentos | SICIM' },
+          { path: 'quimicos-piscinas/listado-quimicos-piscinas', loadComponent: () => import('./pages/panel-control/quimicos-piscinas/listado-quimicos-piscinas/listado-quimicos-piscinas.component').then(m => m.ListadoQuimicosPiscinasComponent), title: 'Químicos de piscinas | SICIM' },
           { path: 'mi-perfil', loadComponent: () => import('./pages/panel-control/mi-perfil/mi-perfil.component').then(m => m.MiPerfilComponent), title: 'Mi perfil | SICIM' },
           { path: 'usuarios/listado-usuarios', loadComponent: () => import('./pages/panel-control/usuarios/listado-usuarios/listado-usuarios.component').then(m => m.ListadoUsuariosComponent), title: 'Usuarios | SICIM' },
           { path: 'unidades-militares', redirectTo: 'unidades-militares/listado-unidades-militares', pathMatch: 'full' },
@@ -78,6 +79,7 @@ export const routes: Routes = [
           { path: 'proveedores-productos-servicios', redirectTo: 'proveedores-productos-servicios/listado-proveedores-productos-servicios', pathMatch: 'full' },
           { path: 'historial-proveedores-productos-servicios', redirectTo: 'historial-proveedores-productos-servicios/listado-historial-proveedores-productos-servicios', pathMatch: 'full' },
           { path: 'historial-integrantes-documentos', redirectTo: 'historial-integrantes-documentos/listado-historial-integrantes-documentos', pathMatch: 'full' },
+          { path: 'quimicos-piscinas', redirectTo: 'quimicos-piscinas/listado-quimicos-piscinas', pathMatch: 'full' },
           { path: 'usuarios', redirectTo: 'usuarios/listado-usuarios', pathMatch: 'full' }
         ]
       }

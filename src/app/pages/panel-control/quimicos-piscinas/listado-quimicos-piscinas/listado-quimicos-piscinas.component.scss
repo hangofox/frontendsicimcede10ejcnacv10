@@ -1,0 +1,7 @@
+@use '../../oficinas/listado-oficinas/listado-oficinas.component';
+
+.panel-quimicos-piscinas {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}

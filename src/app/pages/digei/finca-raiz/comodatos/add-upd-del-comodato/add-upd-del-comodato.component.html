@@ -1,11 +1,11 @@
 <form [formGroup]="form" (ngSubmit)="enviar()">
   @if (modo === 'eliminar') { <p class="alerta-eliminar">Esta acción eliminará definitivamente el comodato.</p> }
   <section class="form-seccion"><h4 class="seccion-titulo">Información del comodato</h4><div class="form-grid">
-    <label class="form-group">Terreno<select formControlName="terreno"><option value="">Seleccione</option>@for (terreno of terrenos; track terreno.idTerreno) { <option [value]="terreno.idTerreno">{{ terreno.denominacionTerreno }}</option> }</select></label>
-    <label class="form-group">Comodatario<select formControlName="proveedor"><option value="">Seleccione</option>@for (proveedor of proveedores; track proveedor.idHistorialProveedorProductoOServicio) { <option [value]="proveedor.idHistorialProveedorProductoOServicio">{{ proveedor.nombresProvProdOServ }} {{ proveedor.primerApellidoProvProdOServ }}</option> }</select></label>
-    <label class="form-group">Fecha de iniciación<input type="datetime-local" formControlName="fechaHMSIniciacionComodatoTerreno" readonly></label>
-    <label class="form-group">Fecha de finalización<input type="datetime-local" formControlName="fechaHMSFinalizacionComodatoTerreno" readonly></label>
-    <label class="form-group">Estado<select formControlName="estado"><option>ACTIVO</option><option>INACTIVO</option></select></label>
+    <label class="form-group"><span class="campo-etiqueta">Terreno (*)</span><select formControlName="terreno" required><option value="">Seleccione</option>@for (terreno of terrenos; track terreno.idTerreno) { <option [value]="terreno.idTerreno">{{ terreno.denominacionTerreno }}</option> }</select></label>
+    <label class="form-group"><span class="campo-etiqueta">Proveedor de producto y/o servicio (*)</span><select formControlName="proveedor" required><option value="">Seleccione</option>@for (proveedor of proveedores; track proveedor.idHistorialProveedorProductoOServicio) { <option [value]="proveedor.idHistorialProveedorProductoOServicio">{{ proveedor.nombresProvProdOServ }} {{ proveedor.primerApellidoProvProdOServ }} {{ proveedor.segundoApellidoProvProdOServ }}</option> }</select></label>
+    <label class="form-group"><span class="campo-etiqueta">Fecha de iniciación</span><input type="datetime-local" formControlName="fechaHMSIniciacionComodatoTerreno" readonly></label>
+    <label class="form-group"><span class="campo-etiqueta">Fecha de finalización</span><input type="datetime-local" formControlName="fechaHMSFinalizacionComodatoTerreno" readonly></label>
+    <label class="form-group"><span class="campo-etiqueta">Estado (*)</span><select formControlName="estado" required><option>ACTIVO</option><option>INACTIVO</option></select></label>
   </div></section>
   <div class="form-acciones">
     <button type="button" class="btn-sicim btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>

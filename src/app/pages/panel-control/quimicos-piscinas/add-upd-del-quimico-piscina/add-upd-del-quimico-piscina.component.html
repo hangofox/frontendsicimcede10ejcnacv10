@@ -1,0 +1,25 @@
+<div class="modal-formulario" *ngIf="quimicosPiscinasForm">
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará el químico de piscina. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="quimicosPiscinasForm" (ngSubmit)="guardarModificar()">
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos del Químico de Piscina</div>
+      <div class="form-grid">
+        <div class="form-group form-group-ancho">
+          <label for="nombreQuimicoPiscina">Nombre (*)</label>
+          <input id="nombreQuimicoPiscina" type="text" formControlName="nombreQuimicoPiscina" placeholder="Ej. CLORO">
+          <small class="mensaje-error" *ngIf="quimicosPiscinasForm.get('nombreQuimicoPiscina')?.touched && quimicosPiscinasForm.get('nombreQuimicoPiscina')?.invalid">El nombre es obligatorio.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-sicim btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="quimicosPiscinasForm.invalid">{{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}</button>
+      <button type="button" class="btn-sicim btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+  </form>
+</div>

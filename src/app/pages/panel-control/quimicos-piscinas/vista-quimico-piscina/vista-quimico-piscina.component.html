@@ -1,0 +1,11 @@
+<div class="vista-quimico-piscina" *ngIf="quimicoPiscinaData as quimicoPiscina">
+  <div class="perfil-cabecera">
+    <div class="avatar"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3h6"/><path d="M10 3v5l-5 9a3 3 0 0 0 2.6 4.5h8.8A3 3 0 0 0 19 17l-5-9V3"/><path d="M7.5 15h9"/></svg></div>
+    <div><h3 class="perfil-nombre">{{ quimicoPiscina.nombreQuimicoPiscina }}</h3><p class="perfil-tipo">Químico de piscina</p></div>
+  </div>
+  <div class="datos-grid">
+    <div class="dato-grupo"><span class="dato-label">Número de registro</span><span class="dato-valor">{{ quimicoPiscina.idQuimicoPiscina }}</span></div>
+    <div class="dato-grupo"><span class="dato-label">Nombre</span><span class="dato-valor">{{ quimicoPiscina.nombreQuimicoPiscina }}</span></div>
+  </div>
+  <div class="vista-acciones"><button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cerrar</button></div>
+</div>

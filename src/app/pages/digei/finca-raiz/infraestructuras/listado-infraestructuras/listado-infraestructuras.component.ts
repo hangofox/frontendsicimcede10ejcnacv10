@@ -22,11 +22,12 @@ import { SpinnerService } from '../../../../../services/spinner/spinner.service'
 import { AddUpdDelInfraestructuraComponent } from '../add-upd-del-infraestructura/add-upd-del-infraestructura.component';
 import { VistaInfraestructuraComponent } from '../vista-infraestructura/vista-infraestructura.component';
 import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { ListadoHistorialQuimicosPiscinasInfraestComponent } from '../historial-quimicos-piscinas-infraest/listado-historial-quimicos-piscinas-infraest/listado-historial-quimicos-piscinas-infraest.component';
 
 @Component({
   selector: 'app-listado-infraestructuras',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelInfraestructuraComponent, VistaInfraestructuraComponent, SemaforoContadoresComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelInfraestructuraComponent, VistaInfraestructuraComponent, SemaforoContadoresComponent, ListadoHistorialQuimicosPiscinasInfraestComponent],
   templateUrl: './listado-infraestructuras.component.html',
   styleUrl: './listado-infraestructuras.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -63,6 +64,7 @@ export class ListadoInfraestructurasComponent implements OnInit {
   //ESTADO DE MODALES:
   modalAddUpdDelVisible = false;
   modalVistaVisible = false;
+  modalHistorialQuimicosVisible = false;
   modalModo: 'guardar' | 'modificar' | 'eliminar' = 'guardar';
   infraestructuraSeleccionada: InfraestructurasI | null = null;
 
@@ -288,6 +290,20 @@ export class ListadoInfraestructurasComponent implements OnInit {
 
   cerrarModalVista(): void {
     this.modalVistaVisible = false;
+    this.infraestructuraSeleccionada = null;
+  }
+
+  //ABRE EL HISTORIAL DE QUÍMICOS DE PISCINAS PARA LA INFRAESTRUCTURA SELECCIONADA:
+  abrirModalHistorialQuimicos(infraestructura: InfraestructurasI): void {
+    this.spinnerService.mostrarAntesDeAbrir(() => {
+      this.infraestructuraSeleccionada = infraestructura;
+      this.modalHistorialQuimicosVisible = true;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
+  cerrarModalHistorialQuimicos(): void {
+    this.modalHistorialQuimicosVisible = false;
     this.infraestructuraSeleccionada = null;
   }
 

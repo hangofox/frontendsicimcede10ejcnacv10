@@ -197,8 +197,29 @@
   &.btn-ver:hover { background: #0ea5e9; color: #fff; border-color: #0ea5e9; }
   &.btn-editar:hover { background: #ca8a04; color: #fff; border-color: #ca8a04; }
   &.btn-eliminar:hover:not(:disabled) { background: #b91c1c; color: #fff; border-color: #b91c1c; }
+  &.btn-centros-costos:hover { background: #15803d; color: #fff; border-color: #15803d; }
   &:disabled { opacity: .35; cursor: not-allowed; }
 }
+
+.contador-centros-costos {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 25px;
+  padding: 0 10px;
+  border-radius: 20px;
+  background: rgba(22, 131, 58, .14);
+  color: #15803d;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.contador-centros-costos.contador-vacio {
+  background: rgba(107, 114, 128, .14);
+  color: #5b6472;
+}
+.modal-caja-centros-costos { max-width: 980px; }
 
 /* Modales */
 .modal-overlay {

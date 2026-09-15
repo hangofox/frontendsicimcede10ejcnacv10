@@ -197,7 +197,12 @@
   &.btn-ver:hover { background: #0ea5e9; color: #fff; border-color: #0ea5e9; }
   &.btn-editar:hover { background: #ca8a04; color: #fff; border-color: #ca8a04; }
   &.btn-eliminar:hover:not(:disabled) { background: #b91c1c; color: #fff; border-color: #b91c1c; }
+  &.btn-historial-quimicos:hover { background: #0f766e; color: #fff; border-color: #0f766e; }
   &:disabled { opacity: .35; cursor: not-allowed; }
+}
+
+.modal-caja-historial {
+  max-width: 1180px;
 }
 
 /* Modales */

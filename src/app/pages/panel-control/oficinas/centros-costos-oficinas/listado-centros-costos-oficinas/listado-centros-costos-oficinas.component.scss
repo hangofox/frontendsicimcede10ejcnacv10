@@ -1,0 +1,4 @@
+@use '../../listado-oficinas/listado-oficinas.component';
+.panel-centros-costos { display: flex; flex-direction: column; gap: 16px; }
+.contexto { display: flex; justify-content: space-between; gap: 12px; padding: 10px 12px; background: var(--sicim-soft); font-size: 13px; }
+.modal-interno { position: fixed; inset: 0; z-index: 1100; display: flex; align-items: flex-start; justify-content: center; padding: 60px 16px; overflow-y: auto; background: rgba(22,22,22,.58); }

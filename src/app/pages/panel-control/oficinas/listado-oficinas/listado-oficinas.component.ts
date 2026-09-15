@@ -12,11 +12,13 @@ import { SpinnerService } from '../../../../services/spinner/spinner.service';
 import { AddUpdDelOficinaComponent } from '../add-upd-del-oficina/add-upd-del-oficina.component';
 import { VistaOficinaComponent } from '../vista-oficina/vista-oficina.component';
 import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { CentrosCostosOficinasService } from '../../../../services/panel-control/oficinas/centros-costos-oficinas/centros-costos-oficinas.service';
+import { ListadoCentrosCostosOficinasComponent } from '../centros-costos-oficinas/listado-centros-costos-oficinas/listado-centros-costos-oficinas.component';
 
 @Component({
   selector: 'app-listado-oficinas',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelOficinaComponent, VistaOficinaComponent, SemaforoContadoresComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelOficinaComponent, VistaOficinaComponent, SemaforoContadoresComponent, ListadoCentrosCostosOficinasComponent],
   templateUrl: './listado-oficinas.component.html',
   styleUrl: './listado-oficinas.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -29,6 +31,7 @@ export class ListadoOficinasComponent implements OnInit {
   //PÁGINA ACTUAL DE OFICINAS TRAÍDA DEL BACKEND (YA PAGINADA POR EL SERVIDOR, NO SE RECORTA EN EL CLIENTE):
   oficinas: OficinasI[] = [];
   totalRegistros = 0;
+  cantidadCentrosCostosPorOficina = new Map<number, number>();
 
   oficinasForm: FormGroup;
 
@@ -39,6 +42,7 @@ export class ListadoOficinasComponent implements OnInit {
   //ESTADO DE MODALES:
   modalAddUpdDelVisible = false;
   modalVistaVisible = false;
+  modalCentrosCostosVisible = false;
   modalModo: 'guardar' | 'modificar' | 'eliminar' = 'guardar';
   oficinaSeleccionada: OficinasI | null = null;
 
@@ -51,6 +55,7 @@ export class ListadoOficinasComponent implements OnInit {
     private formBuilder: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     private oficinasService: OficinasService,
+    private centrosCostosOficinasService: CentrosCostosOficinasService,
     private unidadesMilitaresService: UnidadesMilitaresService,
     private spinnerService: SpinnerService
   ) {
@@ -64,6 +69,26 @@ export class ListadoOficinasComponent implements OnInit {
   ngOnInit(): void {
     this.cargarUnidadesMilitares();
     this.accionListar();
+    this.cargarIndicadoresCentrosCostos();
+  }
+
+  //CONSULTA LOS CENTROS DE COSTO REALES PARA MOSTRAR SI CADA OFICINA TIENE REGISTROS ASOCIADOS:
+  private cargarIndicadoresCentrosCostos(): void {
+    this.centrosCostosOficinasService.findAllCentrosCostosOficinas(undefined, undefined, undefined, undefined, 'idCentroCostoOficina', 'ASC').subscribe({
+      next: centrosCostos => {
+        this.cantidadCentrosCostosPorOficina = centrosCostos.reduce((cantidades, centroCosto) => {
+          const idOficina = Number(centroCosto.oficinaDTO?.idOficina);
+          if (idOficina > 0) cantidades.set(idOficina, (cantidades.get(idOficina) ?? 0) + 1);
+          return cantidades;
+        }, new Map<number, number>());
+        this.changeDetectorRef.markForCheck();
+      },
+      error: error => console.error('ERROR AL CARGAR INDICADORES DE CENTROS DE COSTO: ', error)
+    });
+  }
+
+  cantidadCentrosCostos(oficina: OficinasI): number {
+    return this.cantidadCentrosCostosPorOficina.get(Number(oficina.idOficina)) ?? 0;
   }
 
   //CARGA EL CATÁLOGO DE UNIDADES MILITARES DESDE EL BACKEND (COMBO DE FILTRO Y COMBO DEL FORMULARIO):
@@ -160,6 +185,20 @@ export class ListadoOficinasComponent implements OnInit {
   cerrarModalVista(): void {
     this.modalVistaVisible = false;
     this.oficinaSeleccionada = null;
+  }
+
+  abrirModalCentrosCostos(oficina: OficinasI): void {
+    this.spinnerService.mostrarAntesDeAbrir(() => {
+      this.oficinaSeleccionada = oficina;
+      this.modalCentrosCostosVisible = true;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
+  cerrarModalCentrosCostos(): void {
+    this.modalCentrosCostosVisible = false;
+    this.oficinaSeleccionada = null;
+    this.cargarIndicadoresCentrosCostos();
   }
 
   //RECIBE LA OFICINA NUEVA O MODIFICADA DESDE EL MODAL Y LA ENVÍA AL BACKEND (POST SI ES NUEVA, PUT SI YA TIENE ID):
