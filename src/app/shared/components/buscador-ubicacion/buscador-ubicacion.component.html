@@ -1,0 +1,43 @@
+<ng-container [formGroup]="formGroup">
+  <div class="form-group campo-autocompletar">
+    <label>País de origen{{ camposRequeridos ? ' (*)' : '' }}</label>
+    <div class="autocompletar-caja">
+      <input type="text" [formControlName]="controlPais" [readonly]="!!paisSeleccionado" [value]="terminoPais" placeholder="Buscar país..." autocomplete="off" (input)="escribirPais($event)" (focus)="mostrarPaises = true" (blur)="ocultarSugerencias()">
+      @if (terminoPais && formGroup.get(controlPais)?.enabled) { <button type="button" class="btn-limpiar-autocompletar" (click)="limpiarPais()" aria-label="Limpiar país">×</button> }
+    </div>
+    @if (mostrarPaises && !paisSeleccionado) {
+      <ul class="autocompletar-sugerencias">
+        @for (pais of paisesFiltrados; track pais.idPaisMundo) { <li (mousedown)="seleccionarPais(pais)">{{ pais.nombrePaisMundo }}</li> }
+        @empty { <li class="autocompletar-sin-resultados">Sin resultados</li> }
+      </ul>
+    }
+  </div>
+
+  <div class="form-group campo-autocompletar">
+    <label>Departamento o estado{{ camposRequeridos ? ' (*)' : '' }}</label>
+    <div class="autocompletar-caja">
+      <input type="text" [formControlName]="controlDepartamento" [readonly]="!!departamentoSeleccionado" [value]="terminoDepartamento" [placeholder]="paisSeleccionado ? 'Buscar departamento o estado...' : 'Seleccione primero un país'" autocomplete="off" (input)="escribirDepartamento($event)" (focus)="mostrarDepartamentos = true" (blur)="ocultarSugerencias()">
+      @if (terminoDepartamento && formGroup.get(controlDepartamento)?.enabled) { <button type="button" class="btn-limpiar-autocompletar" (click)="limpiarDepartamento()" aria-label="Limpiar departamento o estado">×</button> }
+    </div>
+    @if (mostrarDepartamentos && paisSeleccionado && !departamentoSeleccionado) {
+      <ul class="autocompletar-sugerencias">
+        @for (departamento of departamentosFiltrados; track departamento.idDepartamentooEstadoMundo) { <li (mousedown)="seleccionarDepartamento(departamento)">{{ departamento.nombreDepartamentooEstadoMundo }}</li> }
+        @empty { <li class="autocompletar-sin-resultados">Sin resultados</li> }
+      </ul>
+    }
+  </div>
+
+  <div class="form-group campo-autocompletar">
+    <label>Ciudad de origen{{ camposRequeridos ? ' (*)' : '' }}</label>
+    <div class="autocompletar-caja">
+      <input type="text" [formControlName]="controlCiudad" [readonly]="!!ciudadSeleccionada" [value]="terminoCiudad" [placeholder]="departamentoSeleccionado ? 'Buscar ciudad...' : 'Seleccione primero un departamento'" autocomplete="off" (input)="escribirCiudad($event)" (focus)="mostrarCiudades = true" (blur)="ocultarSugerencias()">
+      @if (terminoCiudad && formGroup.get(controlCiudad)?.enabled) { <button type="button" class="btn-limpiar-autocompletar" (click)="limpiarCiudad()" aria-label="Limpiar ciudad">×</button> }
+    </div>
+    @if (mostrarCiudades && departamentoSeleccionado && !ciudadSeleccionada) {
+      <ul class="autocompletar-sugerencias">
+        @for (ciudad of ciudadesFiltradas; track ciudad.idCiudadMundo) { <li (mousedown)="seleccionarCiudad(ciudad)">{{ ciudad.nombreCiudadMundo }}</li> }
+        @empty { <li class="autocompletar-sin-resultados">Sin resultados</li> }
+      </ul>
+    }
+  </div>
+</ng-container>

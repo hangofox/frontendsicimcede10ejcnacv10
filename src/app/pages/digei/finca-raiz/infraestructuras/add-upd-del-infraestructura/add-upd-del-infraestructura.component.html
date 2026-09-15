@@ -98,18 +98,12 @@
     <div class="form-seccion">
       <div class="seccion-titulo">Ubicación</div>
       <div class="form-grid">
-        <div class="form-group">
-          <label>País de origen (*)</label>
-          <input type="text" formControlName="paisOrigenInfraestructura" placeholder="Ej. COLOMBIA">
-        </div>
-        <div class="form-group">
-          <label>Departamento o estado (*)</label>
-          <input type="text" formControlName="departamentoOEstadoOrigenInfraestructura" placeholder="Ej. CUNDINAMARCA">
-        </div>
-        <div class="form-group">
-          <label>Ciudad de origen (*)</label>
-          <input type="text" formControlName="ciudadOrigenInfraestructura" placeholder="Ej. BOGOTÁ D.C.">
-        </div>
+        <app-buscador-ubicacion
+          [formGroup]="infraestructurasForm"
+          controlPais="paisOrigenInfraestructura"
+          controlDepartamento="departamentoOEstadoOrigenInfraestructura"
+          controlCiudad="ciudadOrigenInfraestructura"
+          [camposRequeridos]="true" />
         <div class="form-group form-group-ancho">
           <label>Dirección (*)</label>
           <input type="text" formControlName="direccionInfraestructura" placeholder="Ej. Cra 10 # 20-30">

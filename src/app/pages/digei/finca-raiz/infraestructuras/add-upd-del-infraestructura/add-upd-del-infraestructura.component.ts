@@ -9,11 +9,12 @@ import { TiposEstructurasInfraestructurasI } from '../../../../../interfaces/dig
 import { FuncionalidadesInfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/funcionalidades-infraestructuras/funcionalidades-infraestructuras.interface';
 import { SegurosI } from '../../../../../interfaces/seguros/seguros.interface';
 import { TerrenosI } from '../../../../../interfaces/digei/finca-raiz/terrenos/terrenos.interface';
+import { BuscadorUbicacionComponent } from '../../../../../shared/components/buscador-ubicacion/buscador-ubicacion.component';
 
 @Component({
   selector: 'app-add-upd-del-infraestructura',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, BuscadorUbicacionComponent],
   templateUrl: './add-upd-del-infraestructura.component.html',
   styleUrl: './add-upd-del-infraestructura.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -4,11 +4,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 
 import { ProveedoresProductosServiciosI } from '../../../../interfaces/panel-control/proveedores-productos-servicios/proveedores-productos-servicios.interface';
 import { TiposDocumentosIdentificacionI } from '../../../../interfaces/tipos-documentos-identificacion/tipos-documentos-identificacion.interface';
+import { BuscadorUbicacionComponent } from '../../../../shared/components/buscador-ubicacion/buscador-ubicacion.component';
 
 @Component({
   selector: 'app-add-upd-del-proveedor-producto-servicio',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, BuscadorUbicacionComponent],
   templateUrl: './add-upd-del-proveedor-producto-servicio.component.html',
   styleUrl: './add-upd-del-proveedor-producto-servicio.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -47,18 +48,18 @@ export class AddUpdDelProveedorProductoServicioComponent implements OnChanges {
       idProveedorProductoOServicio: [proveedorProductoOServicio?.idProveedorProductoOServicio ?? null],
       tipoDocumentoIdentificacionSeleccionada: [proveedorProductoOServicio?.tipoDocumentoIdentificacionDTO?.idTipoDocumentoIdentificacion ?? '', Validators.required],
       numeroDocumentoIdentificacionProvProdOServ: [proveedorProductoOServicio?.numeroDocumentoIdentificacionProvProdOServ ?? '', Validators.required],
-      lugarExpedicionDocumentoIdentificacionProvProdOServ: [proveedorProductoOServicio?.lugarExpedicionDocumentoIdentificacionProvProdOServ ?? ''],
+      lugarExpedicionDocumentoIdentificacionProvProdOServ: [proveedorProductoOServicio?.lugarExpedicionDocumentoIdentificacionProvProdOServ ?? '', Validators.required],
       nombresProvProdOServ: [proveedorProductoOServicio?.nombresProvProdOServ ?? '', Validators.required],
       primerApellidoProvProdOServ: [proveedorProductoOServicio?.primerApellidoProvProdOServ ?? '', Validators.required],
       segundoApellidoProvProdOServ: [proveedorProductoOServicio?.segundoApellidoProvProdOServ ?? ''],
-      direccionProvProdOServ: [proveedorProductoOServicio?.direccionProvProdOServ ?? ''],
+      direccionProvProdOServ: [proveedorProductoOServicio?.direccionProvProdOServ ?? '', Validators.required],
       telefonoProvProdOServ: [proveedorProductoOServicio?.telefonoProvProdOServ ?? ''],
-      movilProvProdOServ: [proveedorProductoOServicio?.movilProvProdOServ ?? ''],
-      correoElectronicoPersonalProvProdOServ: [proveedorProductoOServicio?.correoElectronicoPersonalProvProdOServ ?? ''],
-      correoElectronicoInstitucionalProvProdOServ: [proveedorProductoOServicio?.correoElectronicoInstitucionalProvProdOServ ?? ''],
-      paisOrigenProvProdOServ: [proveedorProductoOServicio?.paisOrigenProvProdOServ ?? ''],
-      departamentoOEstadoOrigenProvProdOServ: [proveedorProductoOServicio?.departamentoOEstadoOrigenProvProdOServ ?? ''],
-      ciudadOrigenProvProdOServ: [proveedorProductoOServicio?.ciudadOrigenProvProdOServ ?? ''],
+      movilProvProdOServ: [proveedorProductoOServicio?.movilProvProdOServ ?? '', Validators.required],
+      correoElectronicoPersonalProvProdOServ: [proveedorProductoOServicio?.correoElectronicoPersonalProvProdOServ ?? '', [Validators.required, Validators.email]],
+      correoElectronicoInstitucionalProvProdOServ: [proveedorProductoOServicio?.correoElectronicoInstitucionalProvProdOServ ?? '', Validators.email],
+      paisOrigenProvProdOServ: [proveedorProductoOServicio?.paisOrigenProvProdOServ ?? '', Validators.required],
+      departamentoOEstadoOrigenProvProdOServ: [proveedorProductoOServicio?.departamentoOEstadoOrigenProvProdOServ ?? '', Validators.required],
+      ciudadOrigenProvProdOServ: [proveedorProductoOServicio?.ciudadOrigenProvProdOServ ?? '', Validators.required],
       estadoProvProdOServ: [proveedorProductoOServicio?.estadoProvProdOServ ?? 'ACTIVO', Validators.required],
       fechaHMSIngresoProvProdOServ: [{ value: this.formatearFechaParaInput(proveedorProductoOServicio?.fechaHMSIngresoProvProdOServ) || this.obtenerFechaHoraActual(), disabled: true }],
       //LA FECHA DE MODIFICACIÓN SE MUESTRA COMO INFORMATIVA (LA QUE QUEDARÁ REGISTRADA AL GUARDAR). SI LA COLUMNA

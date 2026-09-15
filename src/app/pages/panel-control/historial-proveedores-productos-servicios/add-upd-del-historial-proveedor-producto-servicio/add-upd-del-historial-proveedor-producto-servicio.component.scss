@@ -1,1 +1,4 @@
-@use '../../historial-integrantes-documentos/add-upd-del-historial-integrante-documentos/add-upd-del-historial-integrante-documentos.component';
+@use '../../responsables/add-upd-del-responsable/add-upd-del-responsable.component';
+
+.resultado-proveedor { margin-top: 12px; }
+.mensaje-busqueda { margin: 8px 0 0; font-size: 12px; color: var(--sicim-gray); }

@@ -33,11 +33,11 @@
   <form [formGroup]="historialesIntegrantesDocumentosForm" (ngSubmit)="guardarModificar()">
 
     <div class="form-seccion">
-      <div class="seccion-titulo">Identificación</div>
+      <div class="seccion-titulo">Datos del historial</div>
       <div class="form-grid">
         <div class="form-group">
-          <label>N.° de registro (*)</label>
-          <input type="text" formControlName="numRegHistorialIntegranteDocumentos" placeholder="Ej. REG-2026-0001">
+          <label>N.° de registro</label>
+          <input type="text" formControlName="numRegHistorialIntegranteDocumentos" placeholder="Asignado automáticamente">
         </div>
         <div class="form-group">
           <label>Unidad militar (*)</label>

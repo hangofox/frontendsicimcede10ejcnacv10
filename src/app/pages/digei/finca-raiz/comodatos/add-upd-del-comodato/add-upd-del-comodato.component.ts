@@ -24,7 +24,9 @@ export class AddUpdDelComodatoComponent implements OnChanges {
       id: [x?.idComodatoTerreno ?? null], terreno: [x?.terrenoDTO?.idTerreno ?? '', Validators.required],
       proveedor: [x?.historialProveedorProductoOServicioDTO?.idHistorialProveedorProductoOServicio ?? '', Validators.required],
       fechaHMSIniciacionComodatoTerreno: [{ value: this.fecha(x?.fechaHMSIniciacionComodatoTerreno) || this.ahora(), disabled: true }],
-      fechaHMSFinalizacionComodatoTerreno: [{ value: x ? this.ahora() : '', disabled: true }], estado: [x?.estadoTerreno ?? 'ACTIVO', Validators.required]
+      //ORACLE EXIGE LA FECHA DE FINALIZACION (NOT NULL), INCLUSO AL CREAR. SE PRECARGA LA HORA LOCAL ACTUAL
+      //COMO CAMPO INFORMATIVO DE SOLO LECTURA, IGUAL QUE LAS FECHAS DE AUDITORIA DE RESPONSABLES.
+      fechaHMSFinalizacionComodatoTerreno: [{ value: this.ahora(), disabled: true }], estado: [x?.estadoTerreno ?? 'ACTIVO', Validators.required]
     });
   }
   enviar(): void {

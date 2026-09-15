@@ -24,7 +24,7 @@
           <input type="text" formControlName="numeroDocumentoIdentificacionProvProdOServ" placeholder="Ej. 1020304050">
         </div>
         <div class="form-group">
-          <label>Lugar de expedición del documento</label>
+          <label>Lugar de expedición del documento (*)</label>
           <input type="text" formControlName="lugarExpedicionDocumentoIdentificacionProvProdOServ" placeholder="Ej. Bogotá D.C.">
         </div>
         <div class="form-group">
@@ -53,7 +53,7 @@
       <div class="seccion-titulo">Contacto y ubicación</div>
       <div class="form-grid">
         <div class="form-group">
-          <label>Dirección</label>
+          <label>Dirección (*)</label>
           <input type="text" formControlName="direccionProvProdOServ" placeholder="Ej. Calle 100 # 10-20">
         </div>
         <div class="form-group">
@@ -61,29 +61,23 @@
           <input type="text" formControlName="telefonoProvProdOServ" placeholder="Ej. 6012345678">
         </div>
         <div class="form-group">
-          <label>Móvil</label>
+          <label>Móvil (*)</label>
           <input type="text" formControlName="movilProvProdOServ" placeholder="Ej. 3101234567">
         </div>
         <div class="form-group">
-          <label>Correo electrónico personal</label>
+          <label>Correo electrónico personal (*)</label>
           <input type="email" formControlName="correoElectronicoPersonalProvProdOServ" placeholder="Ej. nombre@correo.com">
         </div>
         <div class="form-group">
           <label>Correo electrónico institucional</label>
           <input type="email" formControlName="correoElectronicoInstitucionalProvProdOServ" placeholder="Ej. nombre@entidad.gov.co">
         </div>
-        <div class="form-group">
-          <label>País de origen</label>
-          <input type="text" formControlName="paisOrigenProvProdOServ" placeholder="Ej. Colombia">
-        </div>
-        <div class="form-group">
-          <label>Departamento o estado de origen</label>
-          <input type="text" formControlName="departamentoOEstadoOrigenProvProdOServ" placeholder="Ej. Cundinamarca">
-        </div>
-        <div class="form-group">
-          <label>Ciudad de origen</label>
-          <input type="text" formControlName="ciudadOrigenProvProdOServ" placeholder="Ej. Bogotá D.C.">
-        </div>
+        <app-buscador-ubicacion
+          [formGroup]="proveedoresProductosServiciosForm"
+          controlPais="paisOrigenProvProdOServ"
+          controlDepartamento="departamentoOEstadoOrigenProvProdOServ"
+          controlCiudad="ciudadOrigenProvProdOServ"
+          [camposRequeridos]="true" />
       </div>
     </div>
 

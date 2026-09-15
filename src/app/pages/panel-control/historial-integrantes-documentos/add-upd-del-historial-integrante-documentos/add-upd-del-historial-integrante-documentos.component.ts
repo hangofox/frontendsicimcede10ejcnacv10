@@ -279,7 +279,8 @@ export class AddUpdDelHistorialIntegranteDocumentosComponent implements OnChange
     const historialIntegranteDocumentos = this.historialIntegranteDocumentosData;
     this.historialesIntegrantesDocumentosForm = this.formBuilder.group({
       idHistorialIntegranteDocumentos: [historialIntegranteDocumentos?.idHistorialIntegranteDocumentos ?? null],
-      numRegHistorialIntegranteDocumentos: [historialIntegranteDocumentos?.numRegHistorialIntegranteDocumentos ?? '', Validators.required],
+      //EL NUMERO DE REGISTRO LO GENERA EL BACKEND. SOLO SE VISUALIZA, EN GRIS, CUANDO YA EXISTE EL REGISTRO.
+      numRegHistorialIntegranteDocumentos: [{ value: historialIntegranteDocumentos?.numRegHistorialIntegranteDocumentos ?? '', disabled: true }],
       unidadMilitarSeleccionada: [historialIntegranteDocumentos?.unidadMilitarDTO?.idUnidadMilitar ?? '', Validators.required],
       gradoIntegranteDocumentos: [historialIntegranteDocumentos?.gradoIntegranteDocumentos ?? '', Validators.required],
       nombresYApellidosIntegranteDocumentos: [historialIntegranteDocumentos?.nombresYApellidosIntegranteDocumentos ?? '', Validators.required],

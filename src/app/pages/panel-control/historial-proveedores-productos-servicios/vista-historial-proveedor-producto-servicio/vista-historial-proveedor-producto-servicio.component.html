@@ -1,1 +1,17 @@
-@if(data;as x){<div class="vista-historial"><h3>{{x.nombresProvProdOServ}} {{x.primerApellidoProvProdOServ}}</h3><div class="vista-seccion"><div class="datos-grid"><div class="dato-grupo"><span class="dato-label">Número de registro</span><span>{{x.numRegHistorialProveedorProductoOServicio}}</span></div><div class="dato-grupo"><span class="dato-label">Unidad</span><span>{{x.siglaOAcronimoUnidadMilitar}}</span></div><div class="dato-grupo"><span class="dato-label">Documento</span><span>{{x.nombreTipoDocumentoIdentificacion}} {{x.numeroDocumentoIdentificacionProvProdOServ}}</span></div><div class="dato-grupo"><span class="dato-label">Ubicación</span><span>{{x.ciudadOrigenProvProdOServ}}, {{x.paisOrigenProvProdOServ}}</span></div><div class="dato-grupo"><span class="dato-label">Correo</span><span>{{x.correoElectronicoPersonalProvProdOServ}}</span></div></div></div><div class="vista-acciones"><button (click)="cerrarModal.emit()">Cerrar</button></div></div>}
+@if (data; as x) {
+  <div class="vista-historial">
+    <h3>{{ x.nombresProvProdOServ }} {{ x.primerApellidoProvProdOServ }}</h3>
+    <div class="vista-seccion">
+      <div class="datos-grid">
+        <div class="dato-grupo"><span class="dato-label">Número de registro</span><span>{{ x.numRegHistorialProveedorProductoOServicio }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Unidad</span><span>{{ x.siglaOAcronimoUnidadMilitar }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Documento</span><span>{{ x.nombreTipoDocumentoIdentificacion }} {{ x.numeroDocumentoIdentificacionProvProdOServ }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Ubicación</span><span>{{ x.ciudadOrigenProvProdOServ }}, {{ x.paisOrigenProvProdOServ }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Correo</span><span>{{ x.correoElectronicoPersonalProvProdOServ }}</span></div>
+      </div>
+    </div>
+    <div class="vista-acciones">
+      <button type="button" class="btn-sicim btn-secundario" (click)="cerrarModal.emit()">Cerrar</button>
+    </div>
+  </div>
+}

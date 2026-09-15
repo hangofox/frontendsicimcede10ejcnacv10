@@ -1,1 +1,104 @@
-<form [formGroup]="form" (ngSubmit)="enviar()"><div class="form-seccion"><div class="seccion-titulo">Datos del historial</div><div class="form-grid"><label class="form-group">Número de registro<input formControlName="registro"></label><label class="form-group">Unidad militar<input formControlName="unidad"></label><label class="form-group">Tipo de documento<input formControlName="tipo"></label><label class="form-group">Documento<input formControlName="documento"></label><label class="form-group">Lugar expedición<input formControlName="expedicion"></label><label class="form-group">Nombres<input formControlName="nombres"></label><label class="form-group">Primer apellido<input formControlName="apellido1"></label><label class="form-group">Segundo apellido<input formControlName="apellido2"></label><label class="form-group">Dirección<input formControlName="direccion"></label><label class="form-group">Teléfono<input formControlName="telefono"></label><label class="form-group">Móvil<input formControlName="movil"></label><label class="form-group">Correo personal<input formControlName="correo1"></label><label class="form-group">Correo institucional<input formControlName="correo2"></label><label class="form-group">País<input formControlName="pais"></label><label class="form-group">Departamento<input formControlName="departamento"></label><label class="form-group">Ciudad<input formControlName="ciudad"></label></div></div><div class="form-acciones"><button type="button" (click)="cerrarModal.emit()">Cancelar</button>@if(modo==='eliminar'){<button type="button" (click)="confirmar()">Eliminar</button>}@else{<button [disabled]="form.invalid">{{modo==='modificar'?'Modificar':'Guardar'}}</button>}</div></form>
+<div class="modal-formulario">
+  @if (modo === 'eliminar') {
+    <div class="alerta-eliminar">Esta acción eliminará el registro del historial de proveedores. ¿Desea continuar?</div>
+  }
+
+  @if (modo === 'guardar') {
+    <div class="form-seccion form-seccion-busqueda" [formGroup]="busquedaForm">
+      <div class="seccion-titulo">Cargar datos desde un proveedor de productos y/o servicios</div>
+      <div class="form-fila-busqueda">
+        <div class="form-group">
+          <label>NIT, número de documento o nombre</label>
+          <input type="text" formControlName="termino" placeholder="Ingrese NIT, documento o nombre..." (keyup.enter)="buscarProveedores()">
+        </div>
+        <button type="button" class="btn-sicim btn-primario" [disabled]="buscando" (click)="buscarProveedores()">
+          {{ buscando ? 'Buscando...' : 'Buscar' }}
+        </button>
+      </div>
+      @if (proveedoresEncontrados.length) {
+        <div class="form-group resultado-proveedor">
+          <label>Proveedor encontrado</label>
+          <select formControlName="proveedorSeleccionado" (change)="cargarProveedorSeleccionado()">
+            <option value="">-- Seleccione --</option>
+            @for (proveedor of proveedoresEncontrados; track proveedor.idProveedorProductoOServicio) {
+              <option [value]="proveedor.idProveedorProductoOServicio">
+                {{ proveedor.numeroDocumentoIdentificacionProvProdOServ }} — {{ proveedor.nombresProvProdOServ }} {{ proveedor.primerApellidoProvProdOServ }} {{ proveedor.segundoApellidoProvProdOServ }}
+              </option>
+            }
+          </select>
+        </div>
+      }
+      @if (mensajeBusqueda) { <p class="mensaje-busqueda">{{ mensajeBusqueda }}</p> }
+    </div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="enviar()">
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos del historial</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Número de registro</label><input formControlName="registro" placeholder="Asignado automáticamente"></div>
+        <div class="form-group">
+          <label>Unidad militar (*)</label>
+          <select formControlName="unidad">
+            <option value="">-- Seleccione --</option>
+            @for (unidadMilitar of unidadesMilitares; track unidadMilitar.idUnidadMilitar) {
+              <option [value]="unidadMilitar.siglaoAcronimoUnidadMilitar">
+                {{ unidadMilitar.nombreUnidadMilitar }} ({{ unidadMilitar.siglaoAcronimoUnidadMilitar }})
+              </option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tipo de documento (*)</label>
+          <select formControlName="tipo">
+            <option value="">-- Seleccione --</option>
+            @for (tipoDocumentoIdentificacion of tiposDocumentosIdentificacion; track tipoDocumentoIdentificacion.idTipoDocumentoIdentificacion) {
+              <option [value]="tipoDocumentoIdentificacion.nombreTipoDocumentoIdentificacion">
+                {{ tipoDocumentoIdentificacion.nombreTipoDocumentoIdentificacion }}
+              </option>
+            }
+          </select>
+        </div>
+        <div class="form-group"><label>Número de documento - NIT (*)</label><input formControlName="documento"></div>
+        <div class="form-group"><label>Lugar de expedición (*)</label><input formControlName="expedicion"></div>
+        <div class="form-group"><label>Nombres (*)</label><input formControlName="nombres"></div>
+        <div class="form-group"><label>Primer apellido (*)</label><input formControlName="apellido1"></div>
+        <div class="form-group"><label>Segundo apellido</label><input formControlName="apellido2"></div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Contacto y ubicación</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Dirección (*)</label><input formControlName="direccion"></div>
+        <div class="form-group"><label>Teléfono</label><input formControlName="telefono"></div>
+        <div class="form-group"><label>Móvil (*)</label><input formControlName="movil"></div>
+        <div class="form-group"><label>Correo personal (*)</label><input type="email" formControlName="correo1"></div>
+        <div class="form-group"><label>Correo institucional</label><input type="email" formControlName="correo2"></div>
+        <app-buscador-ubicacion
+          [formGroup]="form"
+          controlPais="pais"
+          controlDepartamento="departamento"
+          controlCiudad="ciudad"
+          [camposRequeridos]="true" />
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos de registro</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Fecha de ingreso</label><input type="datetime-local" formControlName="ingreso"></div>
+        <div class="form-group"><label>Fecha de modificación</label><input type="datetime-local" formControlName="modificacion"></div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-sicim btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>
+      @if (modo === 'eliminar') {
+        <button type="button" class="btn-sicim btn-peligro" (click)="confirmar()">Eliminar</button>
+      } @else {
+        <button type="submit" class="btn-sicim btn-primario" [disabled]="form.invalid">{{ modo === 'modificar' ? 'Modificar' : 'Guardar' }}</button>
+      }
+    </div>
+  </form>
+</div>

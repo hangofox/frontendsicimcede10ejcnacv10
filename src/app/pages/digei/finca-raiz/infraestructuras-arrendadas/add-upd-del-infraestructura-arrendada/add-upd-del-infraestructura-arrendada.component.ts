@@ -4,8 +4,9 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HistorialProveedoresProductosServiciosI } from '../../../../../interfaces/panel-control/historial-proveedores-productos-servicios/historial-proveedores-productos-servicios.interface';
 import { InfraestructurasArrendadasI, TipoEstructuraInfraestructuraArrendadaI } from '../../../../../interfaces/digei/finca-raiz/infraestructuras-arrendadas/infraestructuras-arrendadas.interface';
 import { UnidadesMilitaresI } from '../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
+import { BuscadorUbicacionComponent } from '../../../../../shared/components/buscador-ubicacion/buscador-ubicacion.component';
 
-@Component({ selector: 'app-add-upd-del-infraestructura-arrendada', standalone: true, imports: [CommonModule, ReactiveFormsModule], templateUrl: './add-upd-del-infraestructura-arrendada.component.html', styleUrl: './add-upd-del-infraestructura-arrendada.component.scss' })
+@Component({ selector: 'app-add-upd-del-infraestructura-arrendada', standalone: true, imports: [CommonModule, ReactiveFormsModule, BuscadorUbicacionComponent], templateUrl: './add-upd-del-infraestructura-arrendada.component.html', styleUrl: './add-upd-del-infraestructura-arrendada.component.scss' })
 export class AddUpdDelInfraestructuraArrendadaComponent implements OnChanges {
   @Input() modo: 'guardar'|'modificar'|'eliminar' = 'guardar';
   @Input() data: InfraestructurasArrendadasI|null = null;
@@ -29,7 +30,9 @@ export class AddUpdDelInfraestructuraArrendadaComponent implements OnChanges {
       largo: [x?.numeroLargoInfraestructuraArrendada ?? ''], uLargo: [x?.nombreUnidadMedidaLargoInfraestructuraArrendada ?? 'METROS'], ancho: [x?.numeroAnchuraInfraestructuraArrendada ?? ''], uAncho: [x?.nombreUnidadMedidaAnchuraInfraestructuraArrendada ?? 'METROS'], profundidad: [x?.numeroProfundidadInfraestructuraArrendada ?? ''], uProfundidad: [x?.nombreUnidadMedidaProfundidadInfraestructuraArrendada ?? 'METROS'],
       pisos: [x?.numeroPisosInfraestructuraArrendada ?? 0], estado: [x?.estadoUsoInfraestructuraArrendada ?? '', Validators.required], latitud: [x?.latitudInfraestructuraArrendada ?? ''], longitud: [x?.longitudInfraestructuraArrendada ?? ''], estrato: [x?.estratoInfraestructuraArrendada ?? ''],
       fechaHMSIngresoInfraestructuraArrendada: [{ value: this.fecha(x?.fechaHMSIngresoInfraestructuraArrendada) || this.ahora(), disabled: true }],
-      fechaHMSModificacionInfraestructuraArrendada: [{ value: x ? this.ahora() : '', disabled: true }]
+      //LA COLUMNA DE MODIFICACION ES NOT NULL EN ORACLE. COMO EN EL FORMULARIO DE INFRAESTRUCTURA,
+      //SE ENVIA LA HORA LOCAL ACTUAL TAMBIEN AL CREAR Y EL CAMPO PERMANECE INFORMATIVO/NO EDITABLE.
+      fechaHMSModificacionInfraestructuraArrendada: [{ value: this.ahora(), disabled: true }]
     });
   }
 
