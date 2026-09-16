@@ -51,6 +51,15 @@ export class ListadoOficinasComponent implements OnInit {
   toastTipo: 'exito' | 'error' = 'exito';
   private toastTimer: any = null;
 
+  //REGISTROS ESPECIALES/ADMINISTRATIVOS QUE NO SON OFICINAS REALES (SE USAN COMO VALORES COMODÍN EN OTROS COMBOS
+  //DEL SISTEMA) — NO SE OCULTAN DE LA TABLA, PERO SUS ACCIONES DE VER/MODIFICAR/ELIMINAR Y LA DE CENTROS DE COSTO
+  //QUEDAN DESHABILITADAS, MISMO PATRÓN QUE ListadoUnidadesMilitaresComponent:
+  private readonly nombresOficinasProtegidas = ['TODAS LAS OFICINAS'];
+
+  esOficinaProtegida(oficina: OficinasI): boolean {
+    return this.nombresOficinasProtegidas.includes(String(oficina.nombreOficina));
+  }
+
   constructor(
     private formBuilder: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,

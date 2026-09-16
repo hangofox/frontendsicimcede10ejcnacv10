@@ -194,10 +194,10 @@
   color: var(--sicim-dark);
   transition: background-color .15s ease, color .15s ease;
 
-  &.btn-ver:hover { background: #0ea5e9; color: #fff; border-color: #0ea5e9; }
-  &.btn-editar:hover { background: #ca8a04; color: #fff; border-color: #ca8a04; }
+  &.btn-ver:hover:not(:disabled) { background: #0ea5e9; color: #fff; border-color: #0ea5e9; }
+  &.btn-editar:hover:not(:disabled) { background: #ca8a04; color: #fff; border-color: #ca8a04; }
   &.btn-eliminar:hover:not(:disabled) { background: #b91c1c; color: #fff; border-color: #b91c1c; }
-  &.btn-centros-costos:hover { background: #15803d; color: #fff; border-color: #15803d; }
+  &.btn-centros-costos:hover:not(:disabled) { background: #15803d; color: #fff; border-color: #15803d; }
   &:disabled { opacity: .35; cursor: not-allowed; }
 }
 
