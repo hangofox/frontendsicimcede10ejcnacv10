@@ -35,7 +35,8 @@ export class AddUpdDelHistorialQuimicoPiscinaInfraestComponent implements OnChan
       oficina: [h?.oficinaDTO?.idOficina ?? '', Validators.required],
       centroCosto: ['', Validators.required],
       ingreso: [{ value: this.formatearFechaParaInput(h?.fechaHMSIngresoQuimicoPiscinaInfraest) || this.obtenerFechaHoraActual(), disabled: true }],
-      modificacion: [{ value: h ? this.obtenerFechaHoraActual() : '', disabled: true }]
+      //ORACLE EXIGE LA FECHA DE MODIFICACIÓN (NOT NULL), INCLUSO AL CREAR EL REGISTRO.
+      modificacion: [{ value: this.obtenerFechaHoraActual(), disabled: true }]
     });
     if (this.modo === 'eliminar') this.form.disable();
     this.centrosCostosOficina = [];
@@ -57,13 +58,14 @@ export class AddUpdDelHistorialQuimicoPiscinaInfraestComponent implements OnChan
   private formatearFechaParaInput(fecha: unknown): string {
     if (!fecha) return '';
     const texto = String(fecha).replace(' ', 'T');
+    if (/^\d{4}-\d{2}-\d{2}$/.test(texto)) return `${texto}T00:00`;
     return texto.length > 16 ? texto.slice(0, 16) : texto;
   }
 
-  //AGREGA LOS SEGUNDOS QUE REQUIERE EL BACKEND SIN CAMBIAR EL VALOR MOSTRADO AL USUARIO:
-  private agregarSegundosParaBackend(fecha: string): string {
+  //EL DTO DEL BACKEND USA java.sql.Date, POR LO QUE JACKSON ESPERA yyyy-MM-dd Y NO UN datetime-local.
+  private fechaParaBackend(fecha: string): string {
     if (!fecha) return fecha;
-    return fecha.length === 16 ? `${fecha}:00` : fecha;
+    return fecha.slice(0, 10);
   }
 
   //BUSCA EL ID DEL CATÁLOGO A PARTIR DEL NOMBRE GUARDADO EN EL HISTORIAL:
@@ -88,7 +90,7 @@ export class AddUpdDelHistorialQuimicoPiscinaInfraestComponent implements OnChan
     const siglaUnidadMilitar = String(this.infraestructura?.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar || '');
     if (!nombreOficina || !siglaUnidadMilitar) return;
 
-    this.centrosCostosOficinasService.findAllCentrosCostosOficinas(
+    this.centrosCostosOficinasService.findAllOfficeCostCenters(
       undefined,
       undefined,
       siglaUnidadMilitar,
@@ -124,7 +126,8 @@ export class AddUpdDelHistorialQuimicoPiscinaInfraestComponent implements OnChan
       this.form.get('centroCosto')?.setErrors({ required: true });
       return;
     }
-    this.guardar.emit({ idHistorialQuimicoPiscinaInfraest: v.id ?? undefined, numRegHistorialQuimicoPiscinaInfraest: this.historialData?.numRegHistorialQuimicoPiscinaInfraest, nombreHistorialQuimicoPiscinaInfraest: quimicoPiscina.nombreQuimicoPiscina, centroCostoOficinaQuimicoPiscinaInfraest: centroCosto, fechaHMSIngresoQuimicoPiscinaInfraest: this.agregarSegundosParaBackend(v.ingreso), fechaHMSModificacionQuimicoPiscinaInfraest: this.agregarSegundosParaBackend(v.modificacion), oficinaDTO: oficina, infraestructuraDTO: this.infraestructura });
+    const fechaActual = this.obtenerFechaHoraActual();
+    this.guardar.emit({ idHistorialQuimicoPiscinaInfraest: v.id ?? undefined, numRegHistorialQuimicoPiscinaInfraest: this.historialData?.numRegHistorialQuimicoPiscinaInfraest, nombreHistorialQuimicoPiscinaInfraest: quimicoPiscina.nombreQuimicoPiscina, centroCostoOficinaQuimicoPiscinaInfraest: centroCosto, fechaHMSIngresoQuimicoPiscinaInfraest: this.fechaParaBackend(v.ingreso || fechaActual), fechaHMSModificacionQuimicoPiscinaInfraest: this.fechaParaBackend(v.modificacion || fechaActual), oficinaDTO: oficina, infraestructuraDTO: this.infraestructura });
   }
   confirmarEliminar(): void { const id = this.form.getRawValue().id; if (id) this.eliminar.emit(Number(id)); }
 }

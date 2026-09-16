@@ -25,7 +25,7 @@ export class QuimicosPiscinasService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllQuimicosPiscinas(idQuimicoPiscina?: number, keyword?: String, orderBy?: String, orderMode: String = 'ASC'): Observable<QuimicosPiscinasI[]> {
+  findAllPoolChemicals(idQuimicoPiscina?: number, keyword?: String, orderBy?: String, orderMode: String = 'ASC'): Observable<QuimicosPiscinasI[]> {
     let params = new HttpParams().set('orderMode', orderMode.toString());
     if (idQuimicoPiscina !== undefined) params = params.set('idQuimicoPiscina', idQuimicoPiscina.toString());
     if (keyword) params = params.set('keyword', keyword.toString());
@@ -34,7 +34,7 @@ export class QuimicosPiscinasService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllQuimicosPiscinasPag(page: number = 0, size: number = 10, idQuimicoPiscina?: number, keyword?: String, orderBy?: String, orderMode: String = 'ASC'): Observable<QuimicosPiscinasI[]> {
+  findAllPoolChemicalsPag(page: number = 0, size: number = 10, idQuimicoPiscina?: number, keyword?: String, orderBy?: String, orderMode: String = 'ASC'): Observable<QuimicosPiscinasI[]> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('orderMode', orderMode.toString());
     if (idQuimicoPiscina !== undefined) params = params.set('idQuimicoPiscina', idQuimicoPiscina.toString());
     if (keyword) params = params.set('keyword', keyword.toString());
@@ -45,27 +45,27 @@ export class QuimicosPiscinasService {
   }
 
   //CREAR REGISTRO.
-  addQuimicoPiscina(quimicoPiscina: QuimicosPiscinasI): Observable<QuimicosPiscinasMsj> {
+  addPoolChemical(quimicoPiscina: QuimicosPiscinasI): Observable<QuimicosPiscinasMsj> {
     return this.http.post<QuimicosPiscinasMsj>(`${this.baseUrl}/quimicosPiscinas`, quimicoPiscina);
   }
 
   //CONSULTAR REGISTRO POR ID.
-  getQuimicoPiscinabyId(idQuimicoPiscina: number): Observable<ResponseQuimicoPiscinaDTO> {
+  getPoolChemicalbyId(idQuimicoPiscina: number): Observable<ResponseQuimicoPiscinaDTO> {
     return this.http.get<ResponseQuimicoPiscinaDTO>(`${this.baseUrl}/quimicosPiscinas/${idQuimicoPiscina}`);
   }
 
   //CONSULTAR REGISTRO POR NOMBRE.
-  getQuimicoPiscinabyNombre(nombreQuimicoPiscina: String): Observable<ResponseQuimicoPiscinaDTO> {
+  getPoolChemicalbyNombre(nombreQuimicoPiscina: String): Observable<ResponseQuimicoPiscinaDTO> {
     return this.http.get<ResponseQuimicoPiscinaDTO>(`${this.baseUrl}/quimicosPiscinas/nombre/${nombreQuimicoPiscina}`);
   }
 
   //MODIFICAR REGISTRO.
-  updateQuimicoPiscina(quimicoPiscina: QuimicosPiscinasI): Observable<QuimicosPiscinasMsj> {
+  updatePoolChemical(quimicoPiscina: QuimicosPiscinasI): Observable<QuimicosPiscinasMsj> {
     return this.http.put<QuimicosPiscinasMsj>(`${this.baseUrl}/quimicosPiscinas`, quimicoPiscina);
   }
 
   //ELIMINAR REGISTRO.
-  deleteQuimicoPiscina(idQuimicoPiscina: number): Observable<QuimicosPiscinasMsj> {
+  deletePoolChemical(idQuimicoPiscina: number): Observable<QuimicosPiscinasMsj> {
     return this.http.delete<QuimicosPiscinasMsj>(`${this.baseUrl}/quimicosPiscinas/${idQuimicoPiscina}`);
   }
 

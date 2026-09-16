@@ -23,6 +23,13 @@
       }
     </select>
 
+    <select formControlName="cboxTipoEstructuraInfraestructuraSeleccionado" (change)="buscar()">
+      <option value="">TODOS LOS TIPOS DE ESTRUCTURA</option>
+      @for (tipoEstructura of tiposEstructurasInfraestructuras; track tipoEstructura.idTipoEstructuraInfraestructura) {
+        <option [value]="tipoEstructura.idTipoEstructuraInfraestructura">{{ tipoEstructura.nombreTipoEstructuraInfraestructura }}</option>
+      }
+    </select>
+
     <button type="button" class="btn-sicim btn-nuevo" (click)="abrirModalAddUpdDel('guardar')">
       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       Nueva Infraestructura
@@ -39,6 +46,7 @@
           <th>N.° Inventario</th>
           <th>N.° Activo fijo</th>
           <th>Unidad militar</th>
+          <th>TIPO DE ESTRUCTURA</th>
           <th>Estado de uso</th>
           <th>Acciones</th>
         </tr>
@@ -51,6 +59,7 @@
             <td>{{ infraestructura.numeroInventarioInfraestructura }}</td>
             <td>{{ infraestructura.numeroActivoFijoInfraestructura }}</td>
             <td>{{ infraestructura.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</td>
+            <td>{{ infraestructura.tipoEstructuraInfraestructuraDTO?.nombreTipoEstructuraInfraestructura }}</td>
             <td>
               <span [class]="'badge-estado ' + claseEstadoUso(infraestructura.estadoUsoInfraestructura)">
                 {{ infraestructura.estadoUsoInfraestructura }}
@@ -70,15 +79,17 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
                 </button>
 
-                <button type="button" class="btn-accion btn-historial-quimicos" title="Historial de químicos de piscinas" (click)="abrirModalHistorialQuimicos(infraestructura)">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v5l-5 9a3 3 0 0 0 2.6 4.5h8.8A3 3 0 0 0 19 17l-5-9V3"/><path d="M7.5 15h9"/></svg>
-                </button>
+                @if (esInfraestructuraPiscina(infraestructura)) {
+                  <button type="button" class="btn-accion btn-historial-quimicos" title="Historial de químicos de piscinas" (click)="abrirModalHistorialQuimicos(infraestructura)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v5l-5 9a3 3 0 0 0 2.6 4.5h8.8A3 3 0 0 0 19 17l-5-9V3"/><path d="M7.5 15h9"/></svg>
+                  </button>
+                }
               </div>
             </td>
           </tr>
         } @empty {
           <tr>
-            <td colspan="7" class="tabla-vacia">No se encontraron infraestructuras con los filtros aplicados.</td>
+            <td colspan="8" class="tabla-vacia">No se encontraron infraestructuras con los filtros aplicados.</td>
           </tr>
         }
       </tbody>

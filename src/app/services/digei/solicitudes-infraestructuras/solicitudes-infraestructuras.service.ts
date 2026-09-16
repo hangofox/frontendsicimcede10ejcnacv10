@@ -25,7 +25,7 @@ export class SolicitudesInfraestructurasService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllSolicitudesInfraestructuras(idSolicitudInfraestructura?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<SolicitudesInfraestructurasI[]> {
+  findAllInfrastructureRequests(idSolicitudInfraestructura?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<SolicitudesInfraestructurasI[]> {
     let params = new HttpParams().set('orderMode', orderMode);
     if (idSolicitudInfraestructura !== undefined) params = params.set('idSolicitudInfraestructura', idSolicitudInfraestructura.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -35,7 +35,7 @@ export class SolicitudesInfraestructurasService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllSolicitudesInfraestructurasPag(page: number = 0, size: number = 10, idSolicitudInfraestructura?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<SolicitudesInfraestructurasI[]> {
+  findAllInfrastructureRequestsPag(page: number = 0, size: number = 10, idSolicitudInfraestructura?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<SolicitudesInfraestructurasI[]> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('orderMode', orderMode);
     if (idSolicitudInfraestructura !== undefined) params = params.set('idSolicitudInfraestructura', idSolicitudInfraestructura.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -47,27 +47,27 @@ export class SolicitudesInfraestructurasService {
   }
 
   //CREAR REGISTRO.
-  addSolicitudInfraestructura(solicitudInfraestructura: SolicitudesInfraestructurasI): Observable<SolicitudesInfraestructurasMsj> {
+  addInfrastructureRequest(solicitudInfraestructura: SolicitudesInfraestructurasI): Observable<SolicitudesInfraestructurasMsj> {
     return this.http.post<SolicitudesInfraestructurasMsj>(`${this.baseUrl}/solicitudesInfraestructuras`, solicitudInfraestructura);
   }
 
   //CONSULTAR REGISTRO POR ID.
-  getSolicitudInfraestructurabyId(idSolicitudInfraestructura: number): Observable<ResponseSolicitudInfraestructuraDTO> {
+  getInfrastructureRequestbyId(idSolicitudInfraestructura: number): Observable<ResponseSolicitudInfraestructuraDTO> {
     return this.http.get<ResponseSolicitudInfraestructuraDTO>(`${this.baseUrl}/solicitudesInfraestructuras/${idSolicitudInfraestructura}`);
   }
 
   //CONSULTAR REGISTRO POR CÓDIGO RADICADO.
-  getSolicitudInfraestructurabyCodigoRadicado(codigoRadicadoSolicitudInfraestructura: string): Observable<ResponseSolicitudInfraestructuraDTO> {
+  getInfrastructureRequestbyCodigoRadicado(codigoRadicadoSolicitudInfraestructura: string): Observable<ResponseSolicitudInfraestructuraDTO> {
     return this.http.get<ResponseSolicitudInfraestructuraDTO>(`${this.baseUrl}/solicitudesInfraestructuras/codigoRadicado/${codigoRadicadoSolicitudInfraestructura}`);
   }
 
   //MODIFICAR REGISTRO.
-  updateSolicitudInfraestructura(solicitudInfraestructura: SolicitudesInfraestructurasI): Observable<SolicitudesInfraestructurasMsj> {
+  updateInfrastructureRequest(solicitudInfraestructura: SolicitudesInfraestructurasI): Observable<SolicitudesInfraestructurasMsj> {
     return this.http.put<SolicitudesInfraestructurasMsj>(`${this.baseUrl}/solicitudesInfraestructuras`, solicitudInfraestructura);
   }
 
   //ELIMINAR REGISTRO.
-  deleteSolicitudInfraestructura(idSolicitudInfraestructura: number): Observable<SolicitudesInfraestructurasMsj> {
+  deleteInfrastructureRequest(idSolicitudInfraestructura: number): Observable<SolicitudesInfraestructurasMsj> {
     return this.http.delete<SolicitudesInfraestructurasMsj>(`${this.baseUrl}/solicitudesInfraestructuras/${idSolicitudInfraestructura}`);
   }
 

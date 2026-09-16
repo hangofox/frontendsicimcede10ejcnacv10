@@ -5,6 +5,8 @@ import { HistorialProveedoresProductosServiciosI } from '../../../../../interfac
 import { InfraestructurasArrendadasI, TipoEstructuraInfraestructuraArrendadaI } from '../../../../../interfaces/digei/finca-raiz/infraestructuras-arrendadas/infraestructuras-arrendadas.interface';
 import { UnidadesMilitaresI } from '../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
 import { BuscadorUbicacionComponent } from '../../../../../shared/components/buscador-ubicacion/buscador-ubicacion.component';
+import { UnidadesMedidasI } from '../../../../../interfaces/unidades-medidas/unidades-medidas.interface';
+import { UnidadesMedidasService } from '../../../../../services/unidades-medidas/unidades-medidas.service';
 
 @Component({ selector: 'app-add-upd-del-infraestructura-arrendada', standalone: true, imports: [CommonModule, ReactiveFormsModule, BuscadorUbicacionComponent], templateUrl: './add-upd-del-infraestructura-arrendada.component.html', styleUrl: './add-upd-del-infraestructura-arrendada.component.scss' })
 export class AddUpdDelInfraestructuraArrendadaComponent implements OnChanges {
@@ -17,7 +19,28 @@ export class AddUpdDelInfraestructuraArrendadaComponent implements OnChanges {
   @Output() guardar = new EventEmitter<InfraestructurasArrendadasI>();
   @Output() eliminar = new EventEmitter<number>();
   private readonly fb = inject(FormBuilder);
+  private readonly unidadesMedidasService = inject(UnidadesMedidasService);
   form = this.crear();
+  unidadesMedidasLongitud: UnidadesMedidasI[] = [];
+
+  constructor() {
+    this.cargarUnidadesMedidasLongitud();
+  }
+
+  private cargarUnidadesMedidasLongitud(): void {
+    this.unidadesMedidasService.findAllUnitsOfMeasurement(undefined, 'nombreUnidadMedida', 'ASC').subscribe({
+      next: unidadesMedidas => {
+        this.unidadesMedidasLongitud = unidadesMedidas.filter(unidadMedida =>
+          this.normalizarTexto(unidadMedida.nombreCategoriaUnidadMedida) === 'LONGITUD SISTEMA METRICO'
+        );
+      },
+      error: error => console.error('ERROR AL CARGAR UNIDADES DE MEDIDA DE LONGITUD: ', error)
+    });
+  }
+
+  private normalizarTexto(valor: unknown): string {
+    return String(valor ?? '').trim().toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
 
   ngOnChanges(): void { this.form = this.crear(); if (this.modo === 'eliminar') this.form.disable(); }
 
@@ -27,7 +50,7 @@ export class AddUpdDelInfraestructuraArrendadaComponent implements OnChanges {
       id: [x?.idInfraestructuraArrendada ?? null], denominacion: [x?.denominacionInfraestructuraArrendada ?? '', Validators.required],
       unidad: [x?.unidadMilitarDTO?.idUnidadMilitar ?? '', Validators.required], proveedor: [x?.historialProveedorProductoOServicioDTO?.idHistorialProveedorProductoOServicio ?? '', Validators.required], tipo: [x?.tipoEstructuraInfraestructuraArrendadaDTO?.idTipoEstructuraInfraestructuraArrendada ?? '', Validators.required],
       pais: [x?.paisOrigenInfraestructuraArrendada ?? ''], departamento: [x?.departamentoOEstadoOrigenInfraestructuraArrendada ?? ''], ciudad: [x?.ciudadOrigenInfraestructuraArrendada ?? ''], direccion: [x?.direccionInfraestructuraArrendada ?? ''],
-      largo: [x?.numeroLargoInfraestructuraArrendada ?? ''], uLargo: [x?.nombreUnidadMedidaLargoInfraestructuraArrendada ?? 'METROS'], ancho: [x?.numeroAnchuraInfraestructuraArrendada ?? ''], uAncho: [x?.nombreUnidadMedidaAnchuraInfraestructuraArrendada ?? 'METROS'], profundidad: [x?.numeroProfundidadInfraestructuraArrendada ?? ''], uProfundidad: [x?.nombreUnidadMedidaProfundidadInfraestructuraArrendada ?? 'METROS'],
+      largo: [x?.numeroLargoInfraestructuraArrendada ?? ''], uLargo: [x?.nombreUnidadMedidaLargoInfraestructuraArrendada ?? ''], ancho: [x?.numeroAnchuraInfraestructuraArrendada ?? ''], uAncho: [x?.nombreUnidadMedidaAnchuraInfraestructuraArrendada ?? ''], profundidad: [x?.numeroProfundidadInfraestructuraArrendada ?? ''], uProfundidad: [x?.nombreUnidadMedidaProfundidadInfraestructuraArrendada ?? ''],
       pisos: [x?.numeroPisosInfraestructuraArrendada ?? 0], estado: [x?.estadoUsoInfraestructuraArrendada ?? '', Validators.required], latitud: [x?.latitudInfraestructuraArrendada ?? ''], longitud: [x?.longitudInfraestructuraArrendada ?? ''], estrato: [x?.estratoInfraestructuraArrendada ?? ''],
       fechaHMSIngresoInfraestructuraArrendada: [{ value: this.fecha(x?.fechaHMSIngresoInfraestructuraArrendada) || this.ahora(), disabled: true }],
       //LA COLUMNA DE MODIFICACION ES NOT NULL EN ORACLE. COMO EN EL FORMULARIO DE INFRAESTRUCTURA,

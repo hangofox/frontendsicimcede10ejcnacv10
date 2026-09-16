@@ -1,0 +1,15 @@
+<form [formGroup]="form" (ngSubmit)="enviar()">
+  @if (modo === 'eliminar') { <div class="alerta-eliminar">Esta acción eliminará el centro de costo. ¿Desea continuar?</div> }
+  <div class="form-seccion">
+    <div class="seccion-titulo">Datos del centro de costo</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Unidad militar</label><input [value]="unidadMilitar.nombreUnidadMilitar" disabled></div>
+      <div class="form-group"><label>Centro de costo (*)</label><input formControlName="centroCosto" placeholder="Ej. CC-001"></div>
+    </div>
+  </div>
+  <div class="form-acciones">
+    <button type="button" class="btn-sicim btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>
+    @if (modo !== 'eliminar') { <button type="submit" class="btn-sicim btn-primario" [disabled]="form.invalid">{{ modo === 'guardar' ? 'Guardar' : 'Modificar' }}</button> }
+    @else { <button type="button" class="btn-sicim btn-peligro" (click)="confirmarEliminar()">Eliminar</button> }
+  </div>
+</form>

@@ -24,7 +24,7 @@ export class TiposSolicitudesInfraestructurasService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllTiposSolicitudesInfraestructuras(idTipoSolicitudInfraestructura?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<TiposSolicitudesInfraestructurasI[]> {
+  findAllTypesOfInfrastructureRequests(idTipoSolicitudInfraestructura?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<TiposSolicitudesInfraestructurasI[]> {
     let params = new HttpParams().set('orderMode', orderMode);
     if (idTipoSolicitudInfraestructura !== undefined) params = params.set('idTipoSolicitudInfraestructura', idTipoSolicitudInfraestructura.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -33,7 +33,7 @@ export class TiposSolicitudesInfraestructurasService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllTiposSolicitudesInfraestructurasPag(page: number = 0, size: number = 10, idTipoSolicitudInfraestructura?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<TiposSolicitudesInfraestructurasI[]> {
+  findAllTypesOfInfrastructureRequestsPag(page: number = 0, size: number = 10, idTipoSolicitudInfraestructura?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<TiposSolicitudesInfraestructurasI[]> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('orderMode', orderMode);
     if (idTipoSolicitudInfraestructura !== undefined) params = params.set('idTipoSolicitudInfraestructura', idTipoSolicitudInfraestructura.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -44,27 +44,27 @@ export class TiposSolicitudesInfraestructurasService {
   }
 
   //CREAR REGISTRO.
-  addTipoSolicitudInfraestructura(tipoSolicitudInfraestructura: TiposSolicitudesInfraestructurasI): Observable<TiposSolicitudesInfraestructurasMsj> {
+  addTypeOfInfrastructureRequest(tipoSolicitudInfraestructura: TiposSolicitudesInfraestructurasI): Observable<TiposSolicitudesInfraestructurasMsj> {
     return this.http.post<TiposSolicitudesInfraestructurasMsj>(`${this.baseUrl}/tiposSolicitudesInfraestructuras`, tipoSolicitudInfraestructura);
   }
 
   //CONSULTAR REGISTRO POR ID.
-  getTipoSolicitudInfraestructurabyId(idTipoSolicitudInfraestructura: number): Observable<ResponseTipoSolicitudInfraestructuraDTO> {
+  getTypeOfInfrastructureRequestbyId(idTipoSolicitudInfraestructura: number): Observable<ResponseTipoSolicitudInfraestructuraDTO> {
     return this.http.get<ResponseTipoSolicitudInfraestructuraDTO>(`${this.baseUrl}/tiposSolicitudesInfraestructuras/${idTipoSolicitudInfraestructura}`);
   }
 
   //CONSULTAR REGISTRO POR NOMBRE.
-  getTipoSolicitudInfraestructurabyNombre(nombreTipoSolicitudInfraestructura: string): Observable<ResponseTipoSolicitudInfraestructuraDTO> {
+  getTypeOfInfrastructureRequestbyNombre(nombreTipoSolicitudInfraestructura: string): Observable<ResponseTipoSolicitudInfraestructuraDTO> {
     return this.http.get<ResponseTipoSolicitudInfraestructuraDTO>(`${this.baseUrl}/tiposSolicitudesInfraestructuras/nombre/${nombreTipoSolicitudInfraestructura}`);
   }
 
   //MODIFICAR REGISTRO.
-  updateTipoSolicitudInfraestructura(tipoSolicitudInfraestructura: TiposSolicitudesInfraestructurasI): Observable<TiposSolicitudesInfraestructurasMsj> {
+  updateTypeOfInfrastructureRequest(tipoSolicitudInfraestructura: TiposSolicitudesInfraestructurasI): Observable<TiposSolicitudesInfraestructurasMsj> {
     return this.http.put<TiposSolicitudesInfraestructurasMsj>(`${this.baseUrl}/tiposSolicitudesInfraestructuras`, tipoSolicitudInfraestructura);
   }
 
   //ELIMINAR REGISTRO.
-  deleteTipoSolicitudInfraestructura(idTipoSolicitudInfraestructura: number): Observable<TiposSolicitudesInfraestructurasMsj> {
+  deleteTypeOfInfrastructureRequest(idTipoSolicitudInfraestructura: number): Observable<TiposSolicitudesInfraestructurasMsj> {
     return this.http.delete<TiposSolicitudesInfraestructurasMsj>(`${this.baseUrl}/tiposSolicitudesInfraestructuras/${idTipoSolicitudInfraestructura}`);
   }
 

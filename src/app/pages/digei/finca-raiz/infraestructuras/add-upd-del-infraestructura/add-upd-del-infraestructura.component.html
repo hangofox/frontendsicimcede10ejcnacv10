@@ -128,7 +128,12 @@
         </div>
         <div class="form-group">
           <label>Unidad de medida (largo)</label>
-          <input type="text" formControlName="nombreUnidadMedidaLargoInfraestructura" placeholder="Ej. METROS">
+          <select formControlName="nombreUnidadMedidaLargoInfraestructura">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let unidadMedida of unidadesMedidasLongitud" [value]="unidadMedida.nombreUnidadMedida">
+              {{ unidadMedida.nombreUnidadMedida }} ({{ unidadMedida.siglaoAcronimoUnidadMedida }})
+            </option>
+          </select>
         </div>
         <div class="form-group">
           <label>Anchura</label>
@@ -136,7 +141,12 @@
         </div>
         <div class="form-group">
           <label>Unidad de medida (anchura)</label>
-          <input type="text" formControlName="nombreUnidadMedidaAnchuraInfraestructura" placeholder="Ej. METROS">
+          <select formControlName="nombreUnidadMedidaAnchuraInfraestructura">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let unidadMedida of unidadesMedidasLongitud" [value]="unidadMedida.nombreUnidadMedida">
+              {{ unidadMedida.nombreUnidadMedida }} ({{ unidadMedida.siglaoAcronimoUnidadMedida }})
+            </option>
+          </select>
         </div>
         <div class="form-group">
           <label>Profundidad</label>
@@ -144,7 +154,12 @@
         </div>
         <div class="form-group">
           <label>Unidad de medida (profundidad)</label>
-          <input type="text" formControlName="nombreUnidadMedidaProfundidadInfraestructura" placeholder="Ej. METROS">
+          <select formControlName="nombreUnidadMedidaProfundidadInfraestructura">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let unidadMedida of unidadesMedidasLongitud" [value]="unidadMedida.nombreUnidadMedida">
+              {{ unidadMedida.nombreUnidadMedida }} ({{ unidadMedida.siglaoAcronimoUnidadMedida }})
+            </option>
+          </select>
         </div>
         <div class="form-group">
           <label>N.° de pisos</label>

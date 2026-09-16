@@ -8,6 +8,6 @@ import { TipoEstructuraInfraestructuraArrendadaI } from '../../../../interfaces/
 export class CatalogosArrendamientosService {
   private readonly baseUrl = environment.baseUrl;
   constructor(private readonly http: HttpClient) {}
-  proveedores(): Observable<HistorialProveedoresProductosServiciosI[]> { return this.http.get<HistorialProveedoresProductosServiciosI[]>(`${this.baseUrl}/historialesProveedoresProductosOServicios/lista`, { params: new HttpParams().set('orderBy', 'nombresProvProdOServ').set('orderMode', 'ASC') }); }
-  tiposEstructura(): Observable<TipoEstructuraInfraestructuraArrendadaI[]> { return this.http.get<TipoEstructuraInfraestructuraArrendadaI[]>(`${this.baseUrl}/tiposEstructurasInfraestructurasArrendadas/lista`, { params: new HttpParams().set('orderBy', 'nombreTipoEstructuraInfraestructuraArrendada').set('orderMode', 'ASC') }); }
+  getProviders(): Observable<HistorialProveedoresProductosServiciosI[]> { return this.http.get<HistorialProveedoresProductosServiciosI[]>(`${this.baseUrl}/historialesProveedoresProductosOServicios/lista`, { params: new HttpParams().set('orderBy', 'nombresProvProdOServ').set('orderMode', 'ASC') }); }
+  getStructureTypes(): Observable<TipoEstructuraInfraestructuraArrendadaI[]> { return this.http.get<TipoEstructuraInfraestructuraArrendadaI[]>(`${this.baseUrl}/tiposEstructurasInfraestructurasArrendadas/lista`, { params: new HttpParams().set('orderBy', 'nombreTipoEstructuraInfraestructuraArrendada').set('orderMode', 'ASC') }); }
 }

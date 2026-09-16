@@ -25,7 +25,7 @@ export class HistorialIntegrantesDocumentosService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllHistorialesIntegrantesDocumentos(idHistorialIntegranteDocumentos?: number, siglaoAcronimoUnidadMilitar?: string, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<HistorialIntegrantesDocumentosI[]> {
+  findAllDocumentMemberHistories(idHistorialIntegranteDocumentos?: number, siglaoAcronimoUnidadMilitar?: string, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<HistorialIntegrantesDocumentosI[]> {
     let params = new HttpParams().set('orderMode', orderMode);
     if (idHistorialIntegranteDocumentos !== undefined) params = params.set('idHistorialIntegranteDocumentos', idHistorialIntegranteDocumentos.toString());
     if (siglaoAcronimoUnidadMilitar) params = params.set('siglaoAcronimoUnidadMilitar', siglaoAcronimoUnidadMilitar);
@@ -35,7 +35,7 @@ export class HistorialIntegrantesDocumentosService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllHistorialesIntegrantesDocumentosPag(page: number = 0, size: number = 10, idHistorialIntegranteDocumentos?: number, siglaoAcronimoUnidadMilitar?: string, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<HistorialIntegrantesDocumentosI[]> {
+  findAllDocumentMemberHistoriesPag(page: number = 0, size: number = 10, idHistorialIntegranteDocumentos?: number, siglaoAcronimoUnidadMilitar?: string, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<HistorialIntegrantesDocumentosI[]> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('orderMode', orderMode);
     if (idHistorialIntegranteDocumentos !== undefined) params = params.set('idHistorialIntegranteDocumentos', idHistorialIntegranteDocumentos.toString());
     if (siglaoAcronimoUnidadMilitar) params = params.set('siglaoAcronimoUnidadMilitar', siglaoAcronimoUnidadMilitar);
@@ -47,27 +47,27 @@ export class HistorialIntegrantesDocumentosService {
   }
 
   //CREAR REGISTRO.
-  addHistorialIntegranteDocumentos(historialIntegranteDocumentos: HistorialIntegrantesDocumentosI): Observable<HistorialIntegrantesDocumentosMsj> {
+  addDocumentMemberHistory(historialIntegranteDocumentos: HistorialIntegrantesDocumentosI): Observable<HistorialIntegrantesDocumentosMsj> {
     return this.http.post<HistorialIntegrantesDocumentosMsj>(`${this.baseUrl}/historialesIntegrantesDocumentos`, historialIntegranteDocumentos);
   }
 
   //CONSULTAR REGISTRO POR ID.
-  getHistorialIntegranteDocumentosbyId(idHistorialIntegranteDocumentos: number): Observable<ResponseHistorialIntegranteDocumentosDTO> {
+  getDocumentMemberHistorybyId(idHistorialIntegranteDocumentos: number): Observable<ResponseHistorialIntegranteDocumentosDTO> {
     return this.http.get<ResponseHistorialIntegranteDocumentosDTO>(`${this.baseUrl}/historialesIntegrantesDocumentos/${idHistorialIntegranteDocumentos}`);
   }
 
   //CONSULTAR REGISTRO POR NÚMERO DE REGISTRO.
-  getHistorialIntegranteDocumentosbyNumReg(numRegHistorialIntegranteDocumentos: string): Observable<ResponseHistorialIntegranteDocumentosDTO> {
+  getDocumentMemberHistorybyNumReg(numRegHistorialIntegranteDocumentos: string): Observable<ResponseHistorialIntegranteDocumentosDTO> {
     return this.http.get<ResponseHistorialIntegranteDocumentosDTO>(`${this.baseUrl}/historialesIntegrantesDocumentos/numeroRegistro/${numRegHistorialIntegranteDocumentos}`);
   }
 
   //MODIFICAR REGISTRO.
-  updateHistorialIntegranteDocumentos(historialIntegranteDocumentos: HistorialIntegrantesDocumentosI): Observable<HistorialIntegrantesDocumentosMsj> {
+  updateDocumentMemberHistory(historialIntegranteDocumentos: HistorialIntegrantesDocumentosI): Observable<HistorialIntegrantesDocumentosMsj> {
     return this.http.put<HistorialIntegrantesDocumentosMsj>(`${this.baseUrl}/historialesIntegrantesDocumentos`, historialIntegranteDocumentos);
   }
 
   //ELIMINAR REGISTRO.
-  deleteHistorialIntegranteDocumentos(idHistorialIntegranteDocumentos: number): Observable<HistorialIntegrantesDocumentosMsj> {
+  deleteDocumentMemberHistory(idHistorialIntegranteDocumentos: number): Observable<HistorialIntegrantesDocumentosMsj> {
     return this.http.delete<HistorialIntegrantesDocumentosMsj>(`${this.baseUrl}/historialesIntegrantesDocumentos/${idHistorialIntegranteDocumentos}`);
   }
 

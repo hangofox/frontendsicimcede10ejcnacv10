@@ -25,7 +25,7 @@ export class SociedadesUnidadesCentralizadorasService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllSociedadesUnidadesCentralizadoras(idSociedadUnidadCentralizadora?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<SociedadesUnidadesCentralizadorasI[]> {
+  findAllCentralizingUnitCompanies(idSociedadUnidadCentralizadora?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<SociedadesUnidadesCentralizadorasI[]> {
     let params = new HttpParams().set('orderMode', orderMode);
     if (idSociedadUnidadCentralizadora !== undefined) params = params.set('idSociedadUnidadCentralizadora', idSociedadUnidadCentralizadora.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -35,7 +35,7 @@ export class SociedadesUnidadesCentralizadorasService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllSociedadesUnidadesCentralizadorasPag(page: number = 0, size: number = 10, idSociedadUnidadCentralizadora?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<SociedadesUnidadesCentralizadorasI[]> {
+  findAllCentralizingUnitCompaniesPag(page: number = 0, size: number = 10, idSociedadUnidadCentralizadora?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<SociedadesUnidadesCentralizadorasI[]> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('orderMode', orderMode);
     if (idSociedadUnidadCentralizadora !== undefined) params = params.set('idSociedadUnidadCentralizadora', idSociedadUnidadCentralizadora.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -47,28 +47,28 @@ export class SociedadesUnidadesCentralizadorasService {
   }
 
   //CREAR REGISTRO.
-  addSociedadUnidadCentralizadora(sociedadUnidadCentralizadora: SociedadesUnidadesCentralizadorasI): Observable<SociedadesUnidadesCentralizadorasMsj> {
+  addCentralizingUnitCompany(sociedadUnidadCentralizadora: SociedadesUnidadesCentralizadorasI): Observable<SociedadesUnidadesCentralizadorasMsj> {
     return this.http.post<SociedadesUnidadesCentralizadorasMsj>(`${this.baseUrl}/sociedadesUnidadesCentralizadoras`, sociedadUnidadCentralizadora);
   }
 
   //CONSULTAR REGISTRO POR ID.
-  getSociedadUnidadCentralizadorabyId(idSociedadUnidadCentralizadora: number): Observable<ResponseSociedadUnidadCentralizadoraDTO> {
+  getCentralizingUnitCompanybyId(idSociedadUnidadCentralizadora: number): Observable<ResponseSociedadUnidadCentralizadoraDTO> {
     return this.http.get<ResponseSociedadUnidadCentralizadoraDTO>(`${this.baseUrl}/sociedadesUnidadesCentralizadoras/${idSociedadUnidadCentralizadora}`);
   }
 
   //CONSULTAR REGISTRO POR CÓDIGO.
-  getSociedadUnidadCentralizadorabyCodigo(codigoSociedadUnidadCentralizadora: string): Observable<ResponseSociedadUnidadCentralizadoraDTO> {
+  getCentralizingUnitCompanybyCodigo(codigoSociedadUnidadCentralizadora: string): Observable<ResponseSociedadUnidadCentralizadoraDTO> {
     const params = new HttpParams().set('codigoSociedadUnidadCentralizadora', codigoSociedadUnidadCentralizadora);
     return this.http.get<ResponseSociedadUnidadCentralizadoraDTO>(`${this.baseUrl}/sociedadesUnidadesCentralizadoras/codigo`, { params });
   }
 
   //MODIFICAR REGISTRO.
-  updateSociedadUnidadCentralizadora(sociedadUnidadCentralizadora: SociedadesUnidadesCentralizadorasI): Observable<SociedadesUnidadesCentralizadorasMsj> {
+  updateCentralizingUnitCompany(sociedadUnidadCentralizadora: SociedadesUnidadesCentralizadorasI): Observable<SociedadesUnidadesCentralizadorasMsj> {
     return this.http.put<SociedadesUnidadesCentralizadorasMsj>(`${this.baseUrl}/sociedadesUnidadesCentralizadoras`, sociedadUnidadCentralizadora);
   }
 
   //ELIMINAR REGISTRO.
-  deleteSociedadUnidadCentralizadora(idSociedadUnidadCentralizadora: number): Observable<SociedadesUnidadesCentralizadorasMsj> {
+  deleteCentralizingUnitCompany(idSociedadUnidadCentralizadora: number): Observable<SociedadesUnidadesCentralizadorasMsj> {
     return this.http.delete<SociedadesUnidadesCentralizadorasMsj>(`${this.baseUrl}/sociedadesUnidadesCentralizadoras/${idSociedadUnidadCentralizadora}`);
   }
 

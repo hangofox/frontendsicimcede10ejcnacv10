@@ -15,11 +15,7 @@ export class AuditoriasSistemaService {
 
   private baseUrl = environment.baseUrl;
 
-  constructor(
-    private http: HttpClient,
-    private sessionService: SessionService,
-    private usuariosService: UsuariosService
-  ) {}
+  constructor(private http: HttpClient, private sessionService: SessionService, private usuariosService: UsuariosService) {}
 
   //CONTADORES DE REGISTROS FILTRADOS.
   findCountTotalRegisters(idAuditoriaSistema?: number, keyword?: string): Observable<number> {
@@ -80,8 +76,8 @@ export class AuditoriasSistemaService {
   //USUARIO, YA QUE LA ACCIÓN PRINCIPAL (GUARDAR/MODIFICAR/ELIMINAR EL REGISTRO REAL) YA SE COMPLETÓ CON ÉXITO
   //ANTES DE LLAMAR A ESTE MÉTODO:
   registerSystemAudit(accionUsuarioSistema: string, descripcionAuditoriaSistema: string): void {
-    const idUsuario = this.sessionService.getIdUsuario();
-    const fechaHMSAuditoriaSistema = this.obtenerFechaHoraLocalActual();
+    const idUsuario = this.sessionService.getUserId();
+    const fechaHMSAuditoriaSistema = this.getCurrentLocalDateTime();
 
     this.usuariosService.getUserbyId(idUsuario).subscribe({
       next: (respuestaUsuario) => {
@@ -106,7 +102,7 @@ export class AuditoriasSistemaService {
   //403 (EL REENVÍO INTERNO DE SPRING A "/error" PIERDE LA AUTENTICACIÓN Y Http403ForbiddenEntryPoint LO RECHAZA).
   //A PROPÓSITO NO SE USA Date.toISOString() SOLO, YA QUE ESE MÉTODO DEVUELVE LA HORA EN UTC (SIN OFFSET LOCAL):
   //EN COLOMBIA (UTC-5) LA AUDITORÍA QUEDARÍA REGISTRADA 5 HORAS ADELANTADA RESPECTO AL MOMENTO REAL:
-  private obtenerFechaHoraLocalActual(): string {
+  private getCurrentLocalDateTime(): string {
     const ahora = new Date();
     const dosDigitos = (valor: number): string => String(valor).padStart(2, '0');
     const fecha = `${ahora.getFullYear()}-${dosDigitos(ahora.getMonth() + 1)}-${dosDigitos(ahora.getDate())}`;

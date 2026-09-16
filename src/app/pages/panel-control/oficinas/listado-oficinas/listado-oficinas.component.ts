@@ -74,7 +74,7 @@ export class ListadoOficinasComponent implements OnInit {
 
   //CONSULTA LOS CENTROS DE COSTO REALES PARA MOSTRAR SI CADA OFICINA TIENE REGISTROS ASOCIADOS:
   private cargarIndicadoresCentrosCostos(): void {
-    this.centrosCostosOficinasService.findAllCentrosCostosOficinas(undefined, undefined, undefined, undefined, 'idCentroCostoOficina', 'ASC').subscribe({
+    this.centrosCostosOficinasService.findAllOfficeCostCenters(undefined, undefined, undefined, undefined, 'idCentroCostoOficina', 'ASC').subscribe({
       next: centrosCostos => {
         this.cantidadCentrosCostosPorOficina = centrosCostos.reduce((cantidades, centroCosto) => {
           const idOficina = Number(centroCosto.oficinaDTO?.idOficina);
@@ -161,7 +161,7 @@ export class ListadoOficinasComponent implements OnInit {
   //ABRE EL MODAL DE CREAR / MODIFICAR / ELIMINAR, MOSTRANDO PRIMERO EL SPINNER GLOBAL DEL PIÑÓN GIRATORIO
   //(SpinnerModalComponent, MONTADO EN LA RAÍZ DE LA APLICACIÓN):
   abrirModalAddUpdDel(modo: 'guardar' | 'modificar' | 'eliminar', oficina: OficinasI | null = null): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.modalModo = modo;
       this.oficinaSeleccionada = oficina;
       this.modalAddUpdDelVisible = true;
@@ -170,7 +170,7 @@ export class ListadoOficinasComponent implements OnInit {
   }
 
   abrirModalVista(oficina: OficinasI): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.oficinaSeleccionada = oficina;
       this.modalVistaVisible = true;
       this.changeDetectorRef.markForCheck();
@@ -188,7 +188,7 @@ export class ListadoOficinasComponent implements OnInit {
   }
 
   abrirModalCentrosCostos(oficina: OficinasI): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.oficinaSeleccionada = oficina;
       this.modalCentrosCostosVisible = true;
       this.changeDetectorRef.markForCheck();

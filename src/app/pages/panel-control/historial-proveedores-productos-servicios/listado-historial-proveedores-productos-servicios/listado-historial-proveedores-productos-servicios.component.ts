@@ -42,9 +42,9 @@ export class ListadoHistorialProveedoresProductosServiciosComponent implements O
   listar(): void {
     const keyword = this.form.value.keyword?.trim() || undefined;
     forkJoin({
-      pagina: this.service.findAllHistorialesProveedoresProductosServiciosPag(this.pagina, this.cantidad, undefined, keyword, 'idHistorialProveedorProductoOServicio', 'ASC'),
-      filtrados: this.service.findAllHistorialesProveedoresProductosServicios(undefined, keyword, 'idHistorialProveedorProductoOServicio', 'ASC'),
-      proveedores: this.proveedoresService.findAllProveedoresProductosServicios(undefined, undefined, undefined, 'idProveedorProductoOServicio', 'ASC')
+      pagina: this.service.findAllProductOrServiceProviderHistoriesPag(this.pagina, this.cantidad, undefined, keyword, 'idHistorialProveedorProductoOServicio', 'ASC'),
+      filtrados: this.service.findAllProductOrServiceProviderHistories(undefined, keyword, 'idHistorialProveedorProductoOServicio', 'ASC'),
+      proveedores: this.proveedoresService.findAllProductOrServiceProviders(undefined, undefined, undefined, 'idProveedorProductoOServicio', 'ASC')
     }).subscribe(({ pagina, filtrados, proveedores }) => {
       const estadosPorDocumento = new Map(
         proveedores.map(proveedor => [String(proveedor.numeroDocumentoIdentificacionProvProdOServ), String(proveedor.estadoProvProdOServ || 'INACTIVO').toUpperCase()])
@@ -74,7 +74,7 @@ export class ListadoHistorialProveedoresProductosServiciosComponent implements O
 
   guardar(registro: HistorialProveedoresProductosServiciosI): void {
     const modificar = !!registro.idHistorialProveedorProductoOServicio;
-    (modificar ? this.service.updateHistorialProveedorProductoOServicio(registro) : this.service.addHistorialProveedorProductoOServicio(registro)).subscribe(respuesta => {
+    (modificar ? this.service.updateProductOrServiceProviderHistory(registro) : this.service.addProductOrServiceProviderHistory(registro)).subscribe(respuesta => {
       this.toast = respuesta.mensaje || (modificar ? 'Historial modificado correctamente.' : 'Historial creado correctamente.');
       this.cerrar();
       this.listar();
@@ -82,7 +82,7 @@ export class ListadoHistorialProveedoresProductosServiciosComponent implements O
   }
 
   eliminar(id: number): void {
-    this.service.deleteHistorialProveedorProductoOServicio(id).subscribe(respuesta => {
+    this.service.deleteProductOrServiceProviderHistory(id).subscribe(respuesta => {
       this.toast = respuesta.mensaje || 'Historial eliminado correctamente.';
       this.cerrar();
       this.listar();

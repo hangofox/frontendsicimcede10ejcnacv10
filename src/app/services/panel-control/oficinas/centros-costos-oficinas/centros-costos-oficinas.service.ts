@@ -27,7 +27,7 @@ export class CentrosCostosOficinasService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllCentrosCostosOficinas(idCentroCostoOficina?: number, keyword?: String, siglaoAcronimoUnidadMilitar?: String, nombreOficina?: String, orderBy?: String, orderMode: String = 'ASC'): Observable<CentrosCostosOficinasI[]> {
+  findAllOfficeCostCenters(idCentroCostoOficina?: number, keyword?: String, siglaoAcronimoUnidadMilitar?: String, nombreOficina?: String, orderBy?: String, orderMode: String = 'ASC'): Observable<CentrosCostosOficinasI[]> {
     let params = new HttpParams().set('orderMode', orderMode.toString());
     if (idCentroCostoOficina !== undefined) params = params.set('idCentroCostoOficina', idCentroCostoOficina.toString());
     if (keyword) params = params.set('keyword', keyword.toString());
@@ -38,7 +38,7 @@ export class CentrosCostosOficinasService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllCentrosCostosOficinasPag(page: number = 0, size: number = 10, idCentroCostoOficina?: number, keyword?: String, siglaoAcronimoUnidadMilitar?: String, nombreOficina?: String, orderBy?: String, orderMode: String = 'ASC'): Observable<CentrosCostosOficinasI[]> {
+  findAllOfficeCostCentersPag(page: number = 0, size: number = 10, idCentroCostoOficina?: number, keyword?: String, siglaoAcronimoUnidadMilitar?: String, nombreOficina?: String, orderBy?: String, orderMode: String = 'ASC'): Observable<CentrosCostosOficinasI[]> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
@@ -54,27 +54,27 @@ export class CentrosCostosOficinasService {
   }
 
   //CREAR REGISTRO.
-  addCentroCostoOficina(centroCostoOficina: CentrosCostosOficinasI): Observable<CentrosCostosOficinasMsj> {
+  addOfficeCostCenter(centroCostoOficina: CentrosCostosOficinasI): Observable<CentrosCostosOficinasMsj> {
     return this.http.post<CentrosCostosOficinasMsj>(`${this.baseUrl}/centrosCostosOficinas`, centroCostoOficina);
   }
 
   //CONSULTAR REGISTRO POR ID.
-  getCentroCostoOficinabyId(idCentroCostoOficina: number): Observable<ResponseCentroCostoOficinaDTO> {
+  getOfficeCostCenterbyId(idCentroCostoOficina: number): Observable<ResponseCentroCostoOficinaDTO> {
     return this.http.get<ResponseCentroCostoOficinaDTO>(`${this.baseUrl}/centrosCostosOficinas/${idCentroCostoOficina}`);
   }
 
   //CONSULTAR REGISTRO POR CENTRO DE COSTO Y NOMBRE DE LA OFICINA.
-  getCentroCostoOficinabyCentroCostoyNombreOficina(centroCostoOficina: String, nombreOficina: String): Observable<ResponseCentroCostoOficinaDTO> {
+  getOfficeCostCenterbyCentroCostoyNombreOficina(centroCostoOficina: String, nombreOficina: String): Observable<ResponseCentroCostoOficinaDTO> {
     return this.http.get<ResponseCentroCostoOficinaDTO>(`${this.baseUrl}/centrosCostosOficinas/centroCosto/${centroCostoOficina}/${nombreOficina}`);
   }
 
   //MODIFICAR REGISTRO.
-  updateCentroCostoOficina(centroCostoOficina: CentrosCostosOficinasI): Observable<CentrosCostosOficinasMsj> {
+  updateOfficeCostCenter(centroCostoOficina: CentrosCostosOficinasI): Observable<CentrosCostosOficinasMsj> {
     return this.http.put<CentrosCostosOficinasMsj>(`${this.baseUrl}/centrosCostosOficinas`, centroCostoOficina);
   }
 
   //ELIMINAR REGISTRO.
-  deleteCentroCostoOficina(idCentroCostoOficina: number): Observable<CentrosCostosOficinasMsj> {
+  deleteOfficeCostCenter(idCentroCostoOficina: number): Observable<CentrosCostosOficinasMsj> {
     return this.http.delete<CentrosCostosOficinasMsj>(`${this.baseUrl}/centrosCostosOficinas/${idCentroCostoOficina}`);
   }
 }

@@ -81,6 +81,15 @@
                   (click)="abrirModalAddUpdDel('eliminar', unidadMilitar)">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
                 </button>
+
+                <button
+                  type="button"
+                  class="btn-accion btn-centros-costos"
+                  title="Centros de costo de la unidad militar"
+                  [disabled]="esUnidadMilitarProtegida(unidadMilitar)"
+                  (click)="abrirModalCentrosCostos(unidadMilitar)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.8a4.5 4.5 0 1 0 0 6.4"/></svg>
+                </button>
               </div>
             </td>
           </tr>
@@ -158,6 +167,19 @@
       <div class="modal-cuerpo">
         <app-vista-unidad-militar [unidadMilitarData]="unidadMilitarSeleccionada" (cerrarModal)="cerrarModalVista()"></app-vista-unidad-militar>
       </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL: CENTROS DE COSTO DE LA UNIDAD MILITAR -->
+@if (modalCentrosCostosVisible && unidadMilitarSeleccionada) {
+  <div class="modal-overlay" (click)="cerrarModalCentrosCostos()">
+    <div class="modal-caja modal-caja-centros-costos" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Centros de costo de la unidad militar</h3>
+        <button type="button" class="modal-cerrar" (click)="cerrarModalCentrosCostos()" aria-label="Cerrar">×</button>
+      </div>
+      <div class="modal-cuerpo"><app-listado-centros-costos-unidades-militares [unidadMilitar]="unidadMilitarSeleccionada" /></div>
     </div>
   </div>
 }

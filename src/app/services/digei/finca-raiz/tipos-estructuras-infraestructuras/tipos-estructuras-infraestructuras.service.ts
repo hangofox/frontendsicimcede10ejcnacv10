@@ -24,7 +24,7 @@ export class TiposEstructurasInfraestructurasService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllTiposEstructurasInfraestructuras(idTipoEstructuraInfraestructura?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<TiposEstructurasInfraestructurasI[]> {
+  findAllTypesOfInfrastructureStructures(idTipoEstructuraInfraestructura?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<TiposEstructurasInfraestructurasI[]> {
     let params = new HttpParams().set('orderMode', orderMode);
     if (idTipoEstructuraInfraestructura !== undefined) params = params.set('idTipoEstructuraInfraestructura', idTipoEstructuraInfraestructura.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -33,7 +33,7 @@ export class TiposEstructurasInfraestructurasService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllTiposEstructurasInfraestructurasPag(page: number = 0, size: number = 10, idTipoEstructuraInfraestructura?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<TiposEstructurasInfraestructurasI[]> {
+  findAllTypesOfInfrastructureStructuresPag(page: number = 0, size: number = 10, idTipoEstructuraInfraestructura?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<TiposEstructurasInfraestructurasI[]> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('orderMode', orderMode);
     if (idTipoEstructuraInfraestructura !== undefined) params = params.set('idTipoEstructuraInfraestructura', idTipoEstructuraInfraestructura.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -44,27 +44,27 @@ export class TiposEstructurasInfraestructurasService {
   }
 
   //CREAR REGISTRO.
-  addTipoEstructuraInfraestructura(tipoEstructuraInfraestructura: TiposEstructurasInfraestructurasI): Observable<TiposEstructurasInfraestructurasMsj> {
+  addTypeOfInfrastructureStructure(tipoEstructuraInfraestructura: TiposEstructurasInfraestructurasI): Observable<TiposEstructurasInfraestructurasMsj> {
     return this.http.post<TiposEstructurasInfraestructurasMsj>(`${this.baseUrl}/tiposEstructurasInfraestructuras`, tipoEstructuraInfraestructura);
   }
 
   //CONSULTAR REGISTRO POR ID.
-  getTipoEstructuraInfraestructurabyId(idTipoEstructuraInfraestructura: number): Observable<ResponseTipoEstructuraInfraestructuraDTO> {
+  getTypeOfInfrastructureStructurebyId(idTipoEstructuraInfraestructura: number): Observable<ResponseTipoEstructuraInfraestructuraDTO> {
     return this.http.get<ResponseTipoEstructuraInfraestructuraDTO>(`${this.baseUrl}/tiposEstructurasInfraestructuras/${idTipoEstructuraInfraestructura}`);
   }
 
   //CONSULTAR REGISTRO POR NOMBRE.
-  getTipoEstructuraInfraestructurabyNombre(nombreTipoEstructuraInfraestructura: string): Observable<ResponseTipoEstructuraInfraestructuraDTO> {
+  getTypeOfInfrastructureStructurebyNombre(nombreTipoEstructuraInfraestructura: string): Observable<ResponseTipoEstructuraInfraestructuraDTO> {
     return this.http.get<ResponseTipoEstructuraInfraestructuraDTO>(`${this.baseUrl}/tiposEstructurasInfraestructuras/nombre/${nombreTipoEstructuraInfraestructura}`);
   }
 
   //MODIFICAR REGISTRO.
-  updateTipoEstructuraInfraestructura(tipoEstructuraInfraestructura: TiposEstructurasInfraestructurasI): Observable<TiposEstructurasInfraestructurasMsj> {
+  updateTypeOfInfrastructureStructure(tipoEstructuraInfraestructura: TiposEstructurasInfraestructurasI): Observable<TiposEstructurasInfraestructurasMsj> {
     return this.http.put<TiposEstructurasInfraestructurasMsj>(`${this.baseUrl}/tiposEstructurasInfraestructuras`, tipoEstructuraInfraestructura);
   }
 
   //ELIMINAR REGISTRO.
-  deleteTipoEstructuraInfraestructura(idTipoEstructuraInfraestructura: number): Observable<TiposEstructurasInfraestructurasMsj> {
+  deleteTypeOfInfrastructureStructure(idTipoEstructuraInfraestructura: number): Observable<TiposEstructurasInfraestructurasMsj> {
     return this.http.delete<TiposEstructurasInfraestructurasMsj>(`${this.baseUrl}/tiposEstructurasInfraestructuras/${idTipoEstructuraInfraestructura}`);
   }
 

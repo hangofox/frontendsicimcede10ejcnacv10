@@ -13,9 +13,7 @@ export class TokensAutorizacionesService {
   constructor(private http: HttpClient) {}
 
   //OBTIENE EL TOKEN DE AUTORIZACIÓN DEL USUARIO FIRMADO POR EL BACKEND A PARTIR DEL NICKNAME Y LA CONTRASEÑA.
-  tokenAuthorizationByNicknameAndPassword(
-    loginCredencialesI: LoginCredencialesI
-  ): Observable<ResponseTokenAutorizacionDTO> {
+  tokenAuthorizationByNicknameAndPassword(loginCredencialesI: LoginCredencialesI): Observable<ResponseTokenAutorizacionDTO> {
     return this.http.post<ResponseTokenAutorizacionDTO>(
       `${this.baseUrl}/login`,
       loginCredencialesI

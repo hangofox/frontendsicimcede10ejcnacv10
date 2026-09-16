@@ -513,7 +513,7 @@ export class AddUpdDelUsuarioComponent implements OnChanges, OnDestroy {
   //DEVUELVE LA FECHA Y HORA LOCAL ACTUAL EN FORMATO YYYY-MM-DDTHH:mm QUE REQUIERE <input type="datetime-local">.
   //A PROPÓSITO NO SE USA Date.toISOString() (DEVUELVE LA HORA EN UTC): EN COLOMBIA (UTC-5) EL CAMPO QUEDABA
   //MOSTRANDO/ENVIANDO LA HORA 5 HORAS ADELANTADA RESPECTO A LA HORA REAL DE BOGOTÁ. MISMO PATRÓN QUE
-  //AuditoriasSistemaService.obtenerFechaHoraLocalActual():
+  //AuditoriasSistemaService.getCurrentLocalDateTime():
   private obtenerFechaHoraActual(): string {
     const ahora = new Date();
     const dosDigitos = (valor: number): string => String(valor).padStart(2, '0');

@@ -279,7 +279,7 @@ export class ListadoResponsablesComponent implements OnInit, OnDestroy {
   //ABRE EL MODAL DE CREAR / MODIFICAR / ELIMINAR, MOSTRANDO PRIMERO EL SPINNER GLOBAL DEL PIÑÓN GIRATORIO
   //(SpinnerModalComponent, MONTADO EN LA RAÍZ DE LA APLICACIÓN):
   abrirModalAddUpdDel(modo: 'guardar' | 'modificar' | 'eliminar', responsable: ResponsablesI | null = null): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.modalModo = modo;
       this.responsableSeleccionado = responsable;
       this.modalAddUpdDelVisible = true;
@@ -288,7 +288,7 @@ export class ListadoResponsablesComponent implements OnInit, OnDestroy {
   }
 
   abrirModalVista(responsable: ResponsablesI): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.responsableSeleccionado = responsable;
       this.modalVistaVisible = true;
       this.changeDetectorRef.markForCheck();

@@ -46,7 +46,7 @@ export class ListadoHistorialQuimicosPiscinasInfraestComponent implements OnChan
     private spinnerService: SpinnerService
   ) {
     this.form = formBuilder.group({ palabraClave: new FormControl(''), registrosPagina: new FormControl('10') });
-    this.quimicosPiscinasService.findAllQuimicosPiscinas(undefined, undefined, 'nombreQuimicoPiscina', 'ASC').subscribe({
+    this.quimicosPiscinasService.findAllPoolChemicals(undefined, undefined, 'nombreQuimicoPiscina', 'ASC').subscribe({
       next: quimicosPiscinas => {
         this.quimicosPiscinas = quimicosPiscinas;
         this.changeDetectorRef.markForCheck();
@@ -82,7 +82,7 @@ export class ListadoHistorialQuimicosPiscinasInfraestComponent implements OnChan
   listar(): void {
     const keyword = String(this.form.value.palabraClave || '').trim().toUpperCase() || undefined;
     const idInfraestructura = this.infraestructura.idInfraestructura;
-    this.service.findAllHistorialesPag(this.paginaActual, this.tandaNumeroRegistrosporPagina, undefined, keyword, idInfraestructura, 'idHistorialQuimicoPiscinaInfraest', 'ASC').subscribe({
+    this.service.findAllInfrastructurePoolChemicalHistoriesPag(this.paginaActual, this.tandaNumeroRegistrosporPagina, undefined, keyword, idInfraestructura, 'idHistorialQuimicoPiscinaInfraest', 'ASC').subscribe({
       next: data => { this.historiales = data; this.changeDetectorRef.markForCheck(); },
       error: error => console.error('ERROR AL LISTAR HISTORIAL DE QUÍMICOS DE PISCINAS: ', error)
     });
@@ -93,13 +93,13 @@ export class ListadoHistorialQuimicosPiscinasInfraestComponent implements OnChan
   }
 
   abrirCrud(modo: 'guardar' | 'modificar' | 'eliminar', historial: HistorialQuimicosPiscinasInfraestI | null = null): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.modo = modo; this.seleccionado = historial; this.modalCrudVisible = true; this.changeDetectorRef.markForCheck();
     });
   }
 
   abrirVista(historial: HistorialQuimicosPiscinasInfraestI): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.seleccionado = historial; this.modalVistaVisible = true; this.changeDetectorRef.markForCheck();
     });
   }
@@ -108,7 +108,7 @@ export class ListadoHistorialQuimicosPiscinasInfraestComponent implements OnChan
   cerrarVista(): void { this.modalVistaVisible = false; this.seleccionado = null; }
 
   guardar(historial: HistorialQuimicosPiscinasInfraestI): void {
-    const solicitud = historial.idHistorialQuimicoPiscinaInfraest ? this.service.updateHistorial(historial) : this.service.addHistorial(historial);
+    const solicitud = historial.idHistorialQuimicoPiscinaInfraest ? this.service.updateInfrastructurePoolChemicalHistory(historial) : this.service.addInfrastructurePoolChemicalHistory(historial);
     solicitud.subscribe({
       next: respuesta => { this.mostrarToast('exito', respuesta.mensaje || 'Registro guardado correctamente.'); this.listar(); this.cerrarCrud(); },
       error: error => this.mostrarToast('error', error.error?.mensaje || 'Error al guardar el registro.')
@@ -116,7 +116,7 @@ export class ListadoHistorialQuimicosPiscinasInfraestComponent implements OnChan
   }
 
   eliminar(id: number): void {
-    this.service.deleteHistorial(id).subscribe({
+    this.service.deleteInfrastructurePoolChemicalHistory(id).subscribe({
       next: respuesta => { this.mostrarToast('exito', respuesta.mensaje || 'Registro eliminado correctamente.'); this.listar(); this.cerrarCrud(); },
       error: error => this.mostrarToast('error', error.error?.mensaje || 'Error al eliminar el registro.')
     });

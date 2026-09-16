@@ -11,37 +11,37 @@ export class EstadosTerrenosService {
 
   constructor(private readonly http: HttpClient) {}
 
-  findAllEstadosTerrenos(idEstadoTerreno?: number, orderBy?: string, orderMode = 'ASC'): Observable<EstadosTerrenosI[]> {
+  findAllLandStatuses(idEstadoTerreno?: number, orderBy?: string, orderMode = 'ASC'): Observable<EstadosTerrenosI[]> {
     let params = new HttpParams().set('orderMode', orderMode);
     if (idEstadoTerreno !== undefined) params = params.set('idEstadoTerreno', idEstadoTerreno);
     if (orderBy) params = params.set('orderBy', orderBy);
     return this.http.get<EstadosTerrenosI[]>(`${this.baseUrl}/estadosTerrenos/lista`, { params });
   }
 
-  findAllEstadosTerrenosPag(page = 0, size = 10, idEstadoTerreno?: number, orderBy?: string, orderMode = 'ASC'): Observable<EstadosTerrenosI[]> {
+  findAllLandStatusesPag(page = 0, size = 10, idEstadoTerreno?: number, orderBy?: string, orderMode = 'ASC'): Observable<EstadosTerrenosI[]> {
     let params = new HttpParams().set('page', page).set('size', size).set('orderMode', orderMode);
     if (idEstadoTerreno !== undefined) params = params.set('idEstadoTerreno', idEstadoTerreno);
     if (orderBy) params = params.set('orderBy', orderBy);
     return this.http.get<{ content: EstadosTerrenosI[] }>(`${this.baseUrl}/estadosTerrenos/listaPag`, { params }).pipe(map(slice => slice.content));
   }
 
-  addEstadoTerreno(estado: EstadosTerrenosI): Observable<EstadosTerrenosMsj> {
+  addLandStatus(estado: EstadosTerrenosI): Observable<EstadosTerrenosMsj> {
     return this.http.post<EstadosTerrenosMsj>(`${this.baseUrl}/estadosTerrenos`, estado);
   }
 
-  getEstadoTerrenobyId(id: number): Observable<ResponseEstadoTerrenoDTO> {
+  getLandStatusbyId(id: number): Observable<ResponseEstadoTerrenoDTO> {
     return this.http.get<ResponseEstadoTerrenoDTO>(`${this.baseUrl}/estadosTerrenos/${id}`);
   }
 
-  getEstadoTerrenobyNombre(nombre: string): Observable<ResponseEstadoTerrenoDTO> {
+  getLandStatusbyNombre(nombre: string): Observable<ResponseEstadoTerrenoDTO> {
     return this.http.get<ResponseEstadoTerrenoDTO>(`${this.baseUrl}/estadosTerrenos/nombre/${encodeURIComponent(nombre)}`);
   }
 
-  updateEstadoTerreno(estado: EstadosTerrenosI): Observable<EstadosTerrenosMsj> {
+  updateLandStatus(estado: EstadosTerrenosI): Observable<EstadosTerrenosMsj> {
     return this.http.put<EstadosTerrenosMsj>(`${this.baseUrl}/estadosTerrenos`, estado);
   }
 
-  deleteEstadoTerreno(id: number): Observable<EstadosTerrenosMsj> {
+  deleteLandStatus(id: number): Observable<EstadosTerrenosMsj> {
     return this.http.delete<EstadosTerrenosMsj>(`${this.baseUrl}/estadosTerrenos/${id}`);
   }
 }

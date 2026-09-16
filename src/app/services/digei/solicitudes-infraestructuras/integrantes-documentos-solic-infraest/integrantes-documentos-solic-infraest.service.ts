@@ -24,7 +24,7 @@ export class IntegrantesDocumentosSolicInfraestService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllIntegrantesDocumentosSolicInfraest(idIntegrantesSolicitudesInfraestructura?: number, idSolicitudInfraestructura?: number, orderBy?: string, orderMode: string = 'ASC'): Observable<IntegrantesDocumentosSolicInfraestI[]> {
+  findAllInfrastructureRequestDocumentMembers(idIntegrantesSolicitudesInfraestructura?: number, idSolicitudInfraestructura?: number, orderBy?: string, orderMode: string = 'ASC'): Observable<IntegrantesDocumentosSolicInfraestI[]> {
     let params = new HttpParams().set('orderMode', orderMode);
     if (idIntegrantesSolicitudesInfraestructura !== undefined) params = params.set('idIntegrantesSolicitudesInfraestructura', idIntegrantesSolicitudesInfraestructura.toString());
     if (idSolicitudInfraestructura !== undefined) params = params.set('idSolicitudInfraestructura', idSolicitudInfraestructura.toString());
@@ -33,7 +33,7 @@ export class IntegrantesDocumentosSolicInfraestService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllIntegrantesDocumentosSolicInfraestPag(page: number = 0, size: number = 10, idIntegrantesSolicitudesInfraestructura?: number, idSolicitudInfraestructura?: number, orderBy?: string, orderMode: string = 'ASC'): Observable<IntegrantesDocumentosSolicInfraestI[]> {
+  findAllInfrastructureRequestDocumentMembersPag(page: number = 0, size: number = 10, idIntegrantesSolicitudesInfraestructura?: number, idSolicitudInfraestructura?: number, orderBy?: string, orderMode: string = 'ASC'): Observable<IntegrantesDocumentosSolicInfraestI[]> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('orderMode', orderMode);
     if (idIntegrantesSolicitudesInfraestructura !== undefined) params = params.set('idIntegrantesSolicitudesInfraestructura', idIntegrantesSolicitudesInfraestructura.toString());
     if (idSolicitudInfraestructura !== undefined) params = params.set('idSolicitudInfraestructura', idSolicitudInfraestructura.toString());
@@ -44,22 +44,22 @@ export class IntegrantesDocumentosSolicInfraestService {
   }
 
   //CREAR REGISTRO.
-  addIntegrantesDocumentosSolicInfraest(integrantesDocumentosSolicInfraest: IntegrantesDocumentosSolicInfraestI): Observable<IntegrantesDocumentosSolicInfraestMsj> {
+  addInfrastructureRequestDocumentMember(integrantesDocumentosSolicInfraest: IntegrantesDocumentosSolicInfraestI): Observable<IntegrantesDocumentosSolicInfraestMsj> {
     return this.http.post<IntegrantesDocumentosSolicInfraestMsj>(`${this.baseUrl}/integrantesSolicitudesInfraestructuras`, integrantesDocumentosSolicInfraest);
   }
 
   //CONSULTAR REGISTRO POR ID.
-  getIntegrantesDocumentosSolicInfraestbyId(idIntegrantesSolicitudesInfraestructura: number): Observable<ResponseIntegrantesDocumentosSolicInfraestDTO> {
+  getInfrastructureRequestDocumentMemberbyId(idIntegrantesSolicitudesInfraestructura: number): Observable<ResponseIntegrantesDocumentosSolicInfraestDTO> {
     return this.http.get<ResponseIntegrantesDocumentosSolicInfraestDTO>(`${this.baseUrl}/integrantesSolicitudesInfraestructuras/${idIntegrantesSolicitudesInfraestructura}`);
   }
 
   //MODIFICAR REGISTRO.
-  updateIntegrantesDocumentosSolicInfraest(integrantesDocumentosSolicInfraest: IntegrantesDocumentosSolicInfraestI): Observable<IntegrantesDocumentosSolicInfraestMsj> {
+  updateInfrastructureRequestDocumentMember(integrantesDocumentosSolicInfraest: IntegrantesDocumentosSolicInfraestI): Observable<IntegrantesDocumentosSolicInfraestMsj> {
     return this.http.put<IntegrantesDocumentosSolicInfraestMsj>(`${this.baseUrl}/integrantesSolicitudesInfraestructuras`, integrantesDocumentosSolicInfraest);
   }
 
   //ELIMINAR REGISTRO.
-  deleteIntegrantesDocumentosSolicInfraest(idIntegrantesSolicitudesInfraestructura: number): Observable<IntegrantesDocumentosSolicInfraestMsj> {
+  deleteInfrastructureRequestDocumentMember(idIntegrantesSolicitudesInfraestructura: number): Observable<IntegrantesDocumentosSolicInfraestMsj> {
     return this.http.delete<IntegrantesDocumentosSolicInfraestMsj>(`${this.baseUrl}/integrantesSolicitudesInfraestructuras/${idIntegrantesSolicitudesInfraestructura}`);
   }
 

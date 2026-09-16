@@ -24,7 +24,7 @@ export class HistorialQuimicosPiscinasInfraestService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllHistoriales(idHistorialQuimicoPiscinaInfraest?: number, keyword?: string, idInfraestructura?: number, orderBy?: string, orderMode: string = 'ASC'): Observable<HistorialQuimicosPiscinasInfraestI[]> {
+  findAllInfrastructurePoolChemicalHistories(idHistorialQuimicoPiscinaInfraest?: number, keyword?: string, idInfraestructura?: number, orderBy?: string, orderMode: string = 'ASC'): Observable<HistorialQuimicosPiscinasInfraestI[]> {
     let params = new HttpParams().set('orderMode', orderMode);
     if (idHistorialQuimicoPiscinaInfraest !== undefined) params = params.set('idHistorialQuimicoPiscinaInfraest', idHistorialQuimicoPiscinaInfraest.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -34,7 +34,7 @@ export class HistorialQuimicosPiscinasInfraestService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllHistorialesPag(page: number = 0, size: number = 10, idHistorialQuimicoPiscinaInfraest?: number, keyword?: string, idInfraestructura?: number, orderBy?: string, orderMode: string = 'ASC'): Observable<HistorialQuimicosPiscinasInfraestI[]> {
+  findAllInfrastructurePoolChemicalHistoriesPag(page: number = 0, size: number = 10, idHistorialQuimicoPiscinaInfraest?: number, keyword?: string, idInfraestructura?: number, orderBy?: string, orderMode: string = 'ASC'): Observable<HistorialQuimicosPiscinasInfraestI[]> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('orderMode', orderMode);
     if (idHistorialQuimicoPiscinaInfraest !== undefined) params = params.set('idHistorialQuimicoPiscinaInfraest', idHistorialQuimicoPiscinaInfraest.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -44,34 +44,34 @@ export class HistorialQuimicosPiscinasInfraestService {
   }
 
   //CREAR REGISTRO.
-  addHistorial(historial: HistorialQuimicosPiscinasInfraestI): Observable<HistorialQuimicosPiscinasInfraestMsj> {
+  addInfrastructurePoolChemicalHistory(historial: HistorialQuimicosPiscinasInfraestI): Observable<HistorialQuimicosPiscinasInfraestMsj> {
     return this.http.post<HistorialQuimicosPiscinasInfraestMsj>(`${this.baseUrl}/historialesQuimicosPiscinasInfraest`, historial);
   }
 
   //CONSULTAR REGISTRO POR ID.
-  getHistorialbyId(id: number): Observable<ResponseHistorialQuimicoPiscinaInfraestDTO> {
+  getInfrastructurePoolChemicalHistorybyId(id: number): Observable<ResponseHistorialQuimicoPiscinaInfraestDTO> {
     return this.http.get<ResponseHistorialQuimicoPiscinaInfraestDTO>(`${this.baseUrl}/historialesQuimicosPiscinasInfraest/${id}`);
   }
 
   //CONSULTAR REGISTRO POR NÚMERO DE REGISTRO.
-  getHistorialbyNumeroRegistro(numeroRegistro: string): Observable<ResponseHistorialQuimicoPiscinaInfraestDTO> {
+  getInfrastructurePoolChemicalHistorybyNumeroRegistro(numeroRegistro: string): Observable<ResponseHistorialQuimicoPiscinaInfraestDTO> {
     return this.http.get<ResponseHistorialQuimicoPiscinaInfraestDTO>(`${this.baseUrl}/historialesQuimicosPiscinasInfraest/numeroRegistro/${numeroRegistro}`);
   }
 
   //CONSULTAR REGISTRO POR NOMBRE.
-  getHistorialbyNombre(nombre?: string): Observable<ResponseHistorialQuimicoPiscinaInfraestDTO> {
+  getInfrastructurePoolChemicalHistorybyNombre(nombre?: string): Observable<ResponseHistorialQuimicoPiscinaInfraestDTO> {
     let params = new HttpParams();
     if (nombre) params = params.set('nombreHistorialQuimicoPiscinaInfraest', nombre);
     return this.http.get<ResponseHistorialQuimicoPiscinaInfraestDTO>(`${this.baseUrl}/historialesQuimicosPiscinasInfraest/nombre`, { params });
   }
 
   //MODIFICAR REGISTRO.
-  updateHistorial(historial: HistorialQuimicosPiscinasInfraestI): Observable<HistorialQuimicosPiscinasInfraestMsj> {
+  updateInfrastructurePoolChemicalHistory(historial: HistorialQuimicosPiscinasInfraestI): Observable<HistorialQuimicosPiscinasInfraestMsj> {
     return this.http.put<HistorialQuimicosPiscinasInfraestMsj>(`${this.baseUrl}/historialesQuimicosPiscinasInfraest`, historial);
   }
 
   //ELIMINAR REGISTRO.
-  deleteHistorial(id: number): Observable<HistorialQuimicosPiscinasInfraestMsj> {
+  deleteInfrastructurePoolChemicalHistory(id: number): Observable<HistorialQuimicosPiscinasInfraestMsj> {
     return this.http.delete<HistorialQuimicosPiscinasInfraestMsj>(`${this.baseUrl}/historialesQuimicosPiscinasInfraest/${id}`);
   }
 }

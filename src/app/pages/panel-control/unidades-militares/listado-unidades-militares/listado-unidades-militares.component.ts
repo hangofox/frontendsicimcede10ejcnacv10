@@ -13,11 +13,12 @@ import { GestionArchivosService } from '../../../../services/gestion-archivos/ge
 import { AddUpdDelUnidadMilitarComponent, GuardadoUnidadMilitarEvent } from '../add-upd-del-unidad-militar/add-upd-del-unidad-militar.component';
 import { VistaUnidadMilitarComponent } from '../vista-unidad-militar/vista-unidad-militar.component';
 import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { ListadoCentrosCostosUnidadesMilitaresComponent } from '../centros-costos-unidades-militares/listado-centros-costos-unidades-militares/listado-centros-costos-unidades-militares.component';
 
 @Component({
   selector: 'app-listado-unidades-militares',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelUnidadMilitarComponent, VistaUnidadMilitarComponent, SemaforoContadoresComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelUnidadMilitarComponent, VistaUnidadMilitarComponent, SemaforoContadoresComponent, ListadoCentrosCostosUnidadesMilitaresComponent],
   templateUrl: './listado-unidades-militares.component.html',
   styleUrl: './listado-unidades-militares.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -37,6 +38,7 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
   //ESTADO DE MODALES:
   modalAddUpdDelVisible = false;
   modalVistaVisible = false;
+  modalCentrosCostosVisible = false;
   modalModo: 'guardar' | 'modificar' | 'eliminar' = 'guardar';
   unidadMilitarSeleccionada: UnidadesMilitaresI | null = null;
 
@@ -189,7 +191,7 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
   //ABRE EL MODAL DE CREAR / MODIFICAR / ELIMINAR, MOSTRANDO PRIMERO EL SPINNER GLOBAL DEL PIÑÓN GIRATORIO
   //(SpinnerModalComponent, MONTADO EN LA RAÍZ DE LA APLICACIÓN):
   abrirModalAddUpdDel(modo: 'guardar' | 'modificar' | 'eliminar', unidadMilitar: UnidadesMilitaresI | null = null): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.modalModo = modo;
       this.unidadMilitarSeleccionada = unidadMilitar;
       this.modalAddUpdDelVisible = true;
@@ -198,7 +200,7 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
   }
 
   abrirModalVista(unidadMilitar: UnidadesMilitaresI): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.unidadMilitarSeleccionada = unidadMilitar;
       this.modalVistaVisible = true;
       this.changeDetectorRef.markForCheck();
@@ -212,6 +214,19 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
 
   cerrarModalVista(): void {
     this.modalVistaVisible = false;
+    this.unidadMilitarSeleccionada = null;
+  }
+
+  abrirModalCentrosCostos(unidadMilitar: UnidadesMilitaresI): void {
+    this.spinnerService.showBeforeOpening(() => {
+      this.unidadMilitarSeleccionada = unidadMilitar;
+      this.modalCentrosCostosVisible = true;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
+  cerrarModalCentrosCostos(): void {
+    this.modalCentrosCostosVisible = false;
     this.unidadMilitarSeleccionada = null;
   }
 

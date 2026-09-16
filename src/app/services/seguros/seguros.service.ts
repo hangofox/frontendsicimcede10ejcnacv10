@@ -25,7 +25,7 @@ export class SegurosService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllSeguros(idSeguro?: number, keyword?: string, estadoSeguro?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<SegurosI[]> {
+  findAllInsurances(idSeguro?: number, keyword?: string, estadoSeguro?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<SegurosI[]> {
     let params = new HttpParams().set('orderMode', orderMode);
     if (idSeguro !== undefined) params = params.set('idSeguro', idSeguro.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -35,7 +35,7 @@ export class SegurosService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllSegurosPag(page: number = 0, size: number = 10, idSeguro?: number, keyword?: string, estadoSeguro?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<SegurosI[]> {
+  findAllInsurancesPag(page: number = 0, size: number = 10, idSeguro?: number, keyword?: string, estadoSeguro?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<SegurosI[]> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('orderMode', orderMode);
     if (idSeguro !== undefined) params = params.set('idSeguro', idSeguro.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -47,27 +47,27 @@ export class SegurosService {
   }
 
   //CREAR REGISTRO.
-  addSeguro(seguro: SegurosI): Observable<SegurosMsj> {
+  addInsurance(seguro: SegurosI): Observable<SegurosMsj> {
     return this.http.post<SegurosMsj>(`${this.baseUrl}/seguros`, seguro);
   }
 
   //CONSULTAR REGISTRO POR ID.
-  getSegurobyId(idSeguro: number): Observable<ResponseSeguroDTO> {
+  getInsurancebyId(idSeguro: number): Observable<ResponseSeguroDTO> {
     return this.http.get<ResponseSeguroDTO>(`${this.baseUrl}/seguros/${idSeguro}`);
   }
 
   //CONSULTAR REGISTRO POR NOMBRE DE ASEGURADORA Y NOMBRE DE TIPO DE SEGURO.
-  getSegurobyNombreAseguradoraNombreTipoSeguro(nombreAseguradora: string, nombreTipoSeguro: string): Observable<ResponseSeguroDTO> {
+  getInsurancebyNombreAseguradoraNombreTipoSeguro(nombreAseguradora: string, nombreTipoSeguro: string): Observable<ResponseSeguroDTO> {
     return this.http.get<ResponseSeguroDTO>(`${this.baseUrl}/seguros/aseguradora/${nombreAseguradora}/tipoSeguro/${nombreTipoSeguro}`);
   }
 
   //MODIFICAR REGISTRO.
-  updateSeguro(seguro: SegurosI): Observable<SegurosMsj> {
+  updateInsurance(seguro: SegurosI): Observable<SegurosMsj> {
     return this.http.put<SegurosMsj>(`${this.baseUrl}/seguros`, seguro);
   }
 
   //ELIMINAR REGISTRO.
-  deleteSeguro(idSeguro: number): Observable<SegurosMsj> {
+  deleteInsurance(idSeguro: number): Observable<SegurosMsj> {
     return this.http.delete<SegurosMsj>(`${this.baseUrl}/seguros/${idSeguro}`);
   }
 

@@ -189,7 +189,7 @@ export class MiPerfilComponent implements OnInit {
 
   //DEVUELVE LA FECHA Y HORA LOCAL ACTUAL EN FORMATO YYYY-MM-DDTHH:mm. A PROPÓSITO NO SE USA Date.toISOString()
   //(DEVUELVE LA HORA EN UTC): EN COLOMBIA (UTC-5) EL DATO QUEDABA 5 HORAS ADELANTADO. MISMO PATRÓN QUE
-  //AddUpdDelUsuarioComponent.obtenerFechaHoraActual() Y AuditoriasSistemaService.obtenerFechaHoraLocalActual():
+  //AddUpdDelUsuarioComponent.obtenerFechaHoraActual() Y AuditoriasSistemaService.getCurrentLocalDateTime():
   private obtenerFechaHoraActual(): string {
     const ahora = new Date();
     const dosDigitos = (valor: number): string => String(valor).padStart(2, '0');

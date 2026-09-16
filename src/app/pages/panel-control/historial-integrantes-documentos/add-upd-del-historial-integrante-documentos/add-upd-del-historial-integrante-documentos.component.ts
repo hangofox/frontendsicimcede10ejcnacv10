@@ -106,7 +106,7 @@ export class AddUpdDelHistorialIntegranteDocumentosComponent implements OnChange
   }
 
   private cargarFirmaExistente(id: number): void {
-    this.historialService.getHistorialIntegranteDocumentosbyId(id).subscribe({
+    this.historialService.getDocumentMemberHistorybyId(id).subscribe({
       next: ({ historialIntegranteDocumentosDTO }) => {
         this.nombreArchivoFotoFirma = String(historialIntegranteDocumentosDTO?.nombreArchivoFotoFirmaIntegranteDocumentos || '').trim();
         this.siglaUnidadMilitarFirmaExistente = String(historialIntegranteDocumentosDTO?.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar || '').trim();

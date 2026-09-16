@@ -67,7 +67,7 @@ export class ListadoQuimicosPiscinasComponent implements OnInit {
     const palabraClave = (this.quimicosPiscinasForm.value.ctextPalabraClave || '').trim().toUpperCase();
     const keyword: string | undefined = palabraClave || undefined;
 
-    this.quimicosPiscinasService.findAllQuimicosPiscinasPag(
+    this.quimicosPiscinasService.findAllPoolChemicalsPag(
       this.paginaActual,
       this.tandaNumeroRegistrosporPagina,
       undefined,
@@ -108,7 +108,7 @@ export class ListadoQuimicosPiscinasComponent implements OnInit {
 
   //ABRE EL MODAL SOLICITADO DESPUÉS DE MOSTRAR EL SPINNER GLOBAL:
   abrirModalAddUpdDel(modo: 'guardar' | 'modificar' | 'eliminar', quimicoPiscina: QuimicosPiscinasI | null = null): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.modalModo = modo;
       this.quimicoPiscinaSeleccionado = quimicoPiscina;
       this.modalAddUpdDelVisible = true;
@@ -117,7 +117,7 @@ export class ListadoQuimicosPiscinasComponent implements OnInit {
   }
 
   abrirModalVista(quimicoPiscina: QuimicosPiscinasI): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.quimicoPiscinaSeleccionado = quimicoPiscina;
       this.modalVistaVisible = true;
       this.changeDetectorRef.markForCheck();
@@ -137,8 +137,8 @@ export class ListadoQuimicosPiscinasComponent implements OnInit {
   //CREA O MODIFICA EL REGISTRO SEGÚN LA EXISTENCIA DEL IDENTIFICADOR:
   guardarQuimicoPiscina(quimicoPiscina: QuimicosPiscinasI): void {
     const solicitud = quimicoPiscina.idQuimicoPiscina
-      ? this.quimicosPiscinasService.updateQuimicoPiscina(quimicoPiscina)
-      : this.quimicosPiscinasService.addQuimicoPiscina(quimicoPiscina);
+      ? this.quimicosPiscinasService.updatePoolChemical(quimicoPiscina)
+      : this.quimicosPiscinasService.addPoolChemical(quimicoPiscina);
 
     solicitud.subscribe({
       next: (respuesta) => {
@@ -156,7 +156,7 @@ export class ListadoQuimicosPiscinasComponent implements OnInit {
 
   //ELIMINA EL REGISTRO SELECCIONADO:
   eliminarQuimicoPiscina(idQuimicoPiscina: number): void {
-    this.quimicosPiscinasService.deleteQuimicoPiscina(idQuimicoPiscina).subscribe({
+    this.quimicosPiscinasService.deletePoolChemical(idQuimicoPiscina).subscribe({
       next: (respuesta) => {
         this.mostrarToast('exito', respuesta.mensaje || 'Químico de piscina eliminado correctamente.');
         this.accionListar();

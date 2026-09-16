@@ -24,7 +24,7 @@ export class CargosIntegrantesDocumentosService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllCargosIntegrantesDocumentos(idCargoIntegranteDocumentos?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<CargosIntegrantesDocumentosI[]> {
+  findAllDocumentMemberPositions(idCargoIntegranteDocumentos?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<CargosIntegrantesDocumentosI[]> {
     let params = new HttpParams().set('orderMode', orderMode);
     if (idCargoIntegranteDocumentos !== undefined) params = params.set('idCargoIntegranteDocumentos', idCargoIntegranteDocumentos.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -33,7 +33,7 @@ export class CargosIntegrantesDocumentosService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllCargosIntegrantesDocumentosPag(page: number = 0, size: number = 10, idCargoIntegranteDocumentos?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<CargosIntegrantesDocumentosI[]> {
+  findAllDocumentMemberPositionsPag(page: number = 0, size: number = 10, idCargoIntegranteDocumentos?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<CargosIntegrantesDocumentosI[]> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('orderMode', orderMode);
     if (idCargoIntegranteDocumentos !== undefined) params = params.set('idCargoIntegranteDocumentos', idCargoIntegranteDocumentos.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -44,27 +44,27 @@ export class CargosIntegrantesDocumentosService {
   }
 
   //CREAR REGISTRO.
-  addCargoIntegranteDocumentos(cargoIntegranteDocumentos: CargosIntegrantesDocumentosI): Observable<CargosIntegrantesDocumentosMsj> {
+  addDocumentMemberPosition(cargoIntegranteDocumentos: CargosIntegrantesDocumentosI): Observable<CargosIntegrantesDocumentosMsj> {
     return this.http.post<CargosIntegrantesDocumentosMsj>(`${this.baseUrl}/cargosIntegrantesDocumentos`, cargoIntegranteDocumentos);
   }
 
   //CONSULTAR REGISTRO POR ID.
-  getCargoIntegranteDocumentosbyId(idCargoIntegranteDocumentos: number): Observable<ResponseCargoIntegranteDocumentosDTO> {
+  getDocumentMemberPositionbyId(idCargoIntegranteDocumentos: number): Observable<ResponseCargoIntegranteDocumentosDTO> {
     return this.http.get<ResponseCargoIntegranteDocumentosDTO>(`${this.baseUrl}/cargosIntegrantesDocumentos/${idCargoIntegranteDocumentos}`);
   }
 
   //CONSULTAR REGISTRO POR NOMBRE.
-  getCargoIntegranteDocumentosbyNombre(nombreCargoIntegranteDocumentos: string): Observable<ResponseCargoIntegranteDocumentosDTO> {
+  getDocumentMemberPositionbyNombre(nombreCargoIntegranteDocumentos: string): Observable<ResponseCargoIntegranteDocumentosDTO> {
     return this.http.get<ResponseCargoIntegranteDocumentosDTO>(`${this.baseUrl}/cargosIntegrantesDocumentos/nombre/${nombreCargoIntegranteDocumentos}`);
   }
 
   //MODIFICAR REGISTRO.
-  updateCargoIntegranteDocumentos(cargoIntegranteDocumentos: CargosIntegrantesDocumentosI): Observable<CargosIntegrantesDocumentosMsj> {
+  updateDocumentMemberPosition(cargoIntegranteDocumentos: CargosIntegrantesDocumentosI): Observable<CargosIntegrantesDocumentosMsj> {
     return this.http.put<CargosIntegrantesDocumentosMsj>(`${this.baseUrl}/cargosIntegrantesDocumentos`, cargoIntegranteDocumentos);
   }
 
   //ELIMINAR REGISTRO.
-  deleteCargoIntegranteDocumentos(idCargoIntegranteDocumentos: number): Observable<CargosIntegrantesDocumentosMsj> {
+  deleteDocumentMemberPosition(idCargoIntegranteDocumentos: number): Observable<CargosIntegrantesDocumentosMsj> {
     return this.http.delete<CargosIntegrantesDocumentosMsj>(`${this.baseUrl}/cargosIntegrantesDocumentos/${idCargoIntegranteDocumentos}`);
   }
 

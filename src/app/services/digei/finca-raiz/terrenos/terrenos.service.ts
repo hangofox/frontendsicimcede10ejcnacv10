@@ -25,7 +25,7 @@ export class TerrenosService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllTerrenos(idTerreno?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<TerrenosI[]> {
+  findAllLands(idTerreno?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<TerrenosI[]> {
     let params = new HttpParams().set('orderMode', orderMode);
     if (idTerreno !== undefined) params = params.set('idTerreno', idTerreno.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -35,7 +35,7 @@ export class TerrenosService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllTerrenosPag(page: number = 0, size: number = 10, idTerreno?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<TerrenosI[]> {
+  findAllLandsPag(page: number = 0, size: number = 10, idTerreno?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<TerrenosI[]> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('orderMode', orderMode);
     if (idTerreno !== undefined) params = params.set('idTerreno', idTerreno.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -47,17 +47,17 @@ export class TerrenosService {
   }
 
   //CREAR REGISTRO.
-  addTerreno(terreno: TerrenosI): Observable<TerrenosMsj> {
+  addLand(terreno: TerrenosI): Observable<TerrenosMsj> {
     return this.http.post<TerrenosMsj>(`${this.baseUrl}/terrenos`, terreno);
   }
 
   //CONSULTAR REGISTRO POR ID.
-  getTerrenobyId(idTerreno: number): Observable<ResponseTerrenoDTO> {
+  getLandbyId(idTerreno: number): Observable<ResponseTerrenoDTO> {
     return this.http.get<ResponseTerrenoDTO>(`${this.baseUrl}/terrenos/${idTerreno}`);
   }
 
   //CONSULTAR REGISTRO POR NÚMERO DE INVENTARIO Y NÚMERO DE ACTIVO FIJO.
-  getTerrenobyNumeroInventarioNumeroActivoFijo(numeroInventarioTerreno?: string, numeroActivoFijoTerreno?: string): Observable<ResponseTerrenoDTO> {
+  getLandbyNumeroInventarioNumeroActivoFijo(numeroInventarioTerreno?: string, numeroActivoFijoTerreno?: string): Observable<ResponseTerrenoDTO> {
     let params = new HttpParams();
     if (numeroInventarioTerreno) params = params.set('numeroInventarioTerreno', numeroInventarioTerreno);
     if (numeroActivoFijoTerreno) params = params.set('numeroActivoFijoTerreno', numeroActivoFijoTerreno);
@@ -65,12 +65,12 @@ export class TerrenosService {
   }
 
   //MODIFICAR REGISTRO.
-  updateTerreno(terreno: TerrenosI): Observable<TerrenosMsj> {
+  updateLand(terreno: TerrenosI): Observable<TerrenosMsj> {
     return this.http.put<TerrenosMsj>(`${this.baseUrl}/terrenos`, terreno);
   }
 
   //ELIMINAR REGISTRO.
-  deleteTerreno(idTerreno: number): Observable<TerrenosMsj> {
+  deleteLand(idTerreno: number): Observable<TerrenosMsj> {
     return this.http.delete<TerrenosMsj>(`${this.baseUrl}/terrenos/${idTerreno}`);
   }
 

@@ -25,7 +25,7 @@ export class InfraestructurasService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllInfraestructuras(idInfraestructura?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<InfraestructurasI[]> {
+  findAllInfrastructures(idInfraestructura?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<InfraestructurasI[]> {
     let params = new HttpParams().set('orderMode', orderMode);
     if (idInfraestructura !== undefined) params = params.set('idInfraestructura', idInfraestructura.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -35,7 +35,7 @@ export class InfraestructurasService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllInfraestructurasPag(page: number = 0, size: number = 10, idInfraestructura?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<InfraestructurasI[]> {
+  findAllInfrastructuresPag(page: number = 0, size: number = 10, idInfraestructura?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<InfraestructurasI[]> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('orderMode', orderMode);
     if (idInfraestructura !== undefined) params = params.set('idInfraestructura', idInfraestructura.toString());
     if (keyword) params = params.set('keyword', keyword);
@@ -47,27 +47,27 @@ export class InfraestructurasService {
   }
 
   //CREAR REGISTRO.
-  addInfraestructura(infraestructura: InfraestructurasI): Observable<InfraestructurasMsj> {
+  addInfrastructure(infraestructura: InfraestructurasI): Observable<InfraestructurasMsj> {
     return this.http.post<InfraestructurasMsj>(`${this.baseUrl}/infraestructuras`, infraestructura);
   }
 
   //CONSULTAR REGISTRO POR ID.
-  getInfraestructurabyId(idInfraestructura: number): Observable<ResponseInfraestructuraDTO> {
+  getInfrastructurebyId(idInfraestructura: number): Observable<ResponseInfraestructuraDTO> {
     return this.http.get<ResponseInfraestructuraDTO>(`${this.baseUrl}/infraestructuras/${idInfraestructura}`);
   }
 
   //CONSULTAR REGISTRO POR NÚMERO DE INVENTARIO Y NÚMERO DE ACTIVO FIJO.
-  getInfraestructurabyNumeroInventarioNumeroActivoFijo(numeroInventarioInfraestructura: string, numeroActivoFijoInfraestructura: string): Observable<ResponseInfraestructuraDTO> {
+  getInfrastructurebyNumeroInventarioNumeroActivoFijo(numeroInventarioInfraestructura: string, numeroActivoFijoInfraestructura: string): Observable<ResponseInfraestructuraDTO> {
     return this.http.get<ResponseInfraestructuraDTO>(`${this.baseUrl}/infraestructuras/numeroInventario/${numeroInventarioInfraestructura}/numeroActivoFijo/${numeroActivoFijoInfraestructura}`);
   }
 
   //MODIFICAR REGISTRO.
-  updateInfraestructura(infraestructura: InfraestructurasI): Observable<InfraestructurasMsj> {
+  updateInfrastructure(infraestructura: InfraestructurasI): Observable<InfraestructurasMsj> {
     return this.http.put<InfraestructurasMsj>(`${this.baseUrl}/infraestructuras`, infraestructura);
   }
 
   //ELIMINAR REGISTRO.
-  deleteInfraestructura(idInfraestructura: number): Observable<InfraestructurasMsj> {
+  deleteInfrastructure(idInfraestructura: number): Observable<InfraestructurasMsj> {
     return this.http.delete<InfraestructurasMsj>(`${this.baseUrl}/infraestructuras/${idInfraestructura}`);
   }
 

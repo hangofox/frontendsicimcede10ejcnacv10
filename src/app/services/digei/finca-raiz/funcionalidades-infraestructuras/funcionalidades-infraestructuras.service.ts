@@ -16,14 +16,14 @@ export class FuncionalidadesInfraestructurasService {
   constructor(private http: HttpClient) {}
 
   //LISTADO DE REGISTROS SIN PAGINACIÓN.
-  findAllFuncionalidadesInfraestructuras(orderBy?: string, orderMode: string = 'ASC'): Observable<FuncionalidadesInfraestructurasI[]> {
+  findAllInfrastructureFunctionalities(orderBy?: string, orderMode: string = 'ASC'): Observable<FuncionalidadesInfraestructurasI[]> {
     let params = new HttpParams().set('orderMode', orderMode);
     if (orderBy) params = params.set('orderBy', orderBy);
     return this.http.get<FuncionalidadesInfraestructurasI[]>(`${this.baseUrl}/funcionalidadesInfraestructuras/lista`, { params });
   }
 
   //LISTADO DE REGISTROS CON PAGINACIÓN.
-  findAllFuncionalidadesInfraestructurasPag(page: number = 0, size: number = 10, orderBy?: string, orderMode: string = 'ASC'): Observable<FuncionalidadesInfraestructurasI[]> {
+  findAllInfrastructureFunctionalitiesPag(page: number = 0, size: number = 10, orderBy?: string, orderMode: string = 'ASC'): Observable<FuncionalidadesInfraestructurasI[]> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('orderMode', orderMode);
     if (orderBy) params = params.set('orderBy', orderBy);
     return this.http.get<any>(`${this.baseUrl}/funcionalidadesInfraestructuras/listaPag`, { params }).pipe(
@@ -32,27 +32,27 @@ export class FuncionalidadesInfraestructurasService {
   }
 
   //CREAR REGISTRO.
-  addFuncionalidadInfraestructura(funcionalidadInfraestructura: FuncionalidadesInfraestructurasI): Observable<FuncionalidadesInfraestructurasMsj> {
+  addInfrastructureFunctionality(funcionalidadInfraestructura: FuncionalidadesInfraestructurasI): Observable<FuncionalidadesInfraestructurasMsj> {
     return this.http.post<FuncionalidadesInfraestructurasMsj>(`${this.baseUrl}/funcionalidadesInfraestructuras`, funcionalidadInfraestructura);
   }
 
   //CONSULTAR REGISTRO POR ID.
-  getFuncionalidadInfraestructurabyId(idFuncionalidadInfraestructura: number): Observable<ResponseFuncionalidadInfraestructuraDTO> {
+  getInfrastructureFunctionalitybyId(idFuncionalidadInfraestructura: number): Observable<ResponseFuncionalidadInfraestructuraDTO> {
     return this.http.get<ResponseFuncionalidadInfraestructuraDTO>(`${this.baseUrl}/funcionalidadesInfraestructuras/${idFuncionalidadInfraestructura}`);
   }
 
   //CONSULTAR REGISTRO POR NOMBRE.
-  getFuncionalidadInfraestructurabyNombre(nombreFuncionalidadInfraestructura: string): Observable<ResponseFuncionalidadInfraestructuraDTO> {
+  getInfrastructureFunctionalitybyNombre(nombreFuncionalidadInfraestructura: string): Observable<ResponseFuncionalidadInfraestructuraDTO> {
     return this.http.get<ResponseFuncionalidadInfraestructuraDTO>(`${this.baseUrl}/funcionalidadesInfraestructuras/nombre/${nombreFuncionalidadInfraestructura}`);
   }
 
   //MODIFICAR REGISTRO.
-  updateFuncionalidadInfraestructura(funcionalidadInfraestructura: FuncionalidadesInfraestructurasI): Observable<FuncionalidadesInfraestructurasMsj> {
+  updateInfrastructureFunctionality(funcionalidadInfraestructura: FuncionalidadesInfraestructurasI): Observable<FuncionalidadesInfraestructurasMsj> {
     return this.http.put<FuncionalidadesInfraestructurasMsj>(`${this.baseUrl}/funcionalidadesInfraestructura`, funcionalidadInfraestructura);
   }
 
   //ELIMINAR REGISTRO.
-  deleteFuncionalidadInfraestructura(idFuncionalidadInfraestructura: number): Observable<FuncionalidadesInfraestructurasMsj> {
+  deleteInfrastructureFunctionality(idFuncionalidadInfraestructura: number): Observable<FuncionalidadesInfraestructurasMsj> {
     return this.http.delete<FuncionalidadesInfraestructurasMsj>(`${this.baseUrl}/funcionalidadesInfraestructuras/${idFuncionalidadInfraestructura}`);
   }
 

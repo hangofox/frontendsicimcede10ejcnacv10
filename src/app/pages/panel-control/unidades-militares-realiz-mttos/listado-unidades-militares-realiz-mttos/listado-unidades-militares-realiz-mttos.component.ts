@@ -136,7 +136,7 @@ export class ListadoUnidadesMilitaresRealizMttosComponent implements OnInit {
   //ABRE EL MODAL DE CREAR / MODIFICAR / ELIMINAR, MOSTRANDO PRIMERO EL SPINNER GLOBAL DEL PIÑÓN GIRATORIO
   //(SpinnerModalComponent, MONTADO EN LA RAÍZ DE LA APLICACIÓN):
   abrirModalAddUpdDel(modo: 'guardar' | 'modificar' | 'eliminar', unidadMilitarRealizMtto: UnidadesMilitaresRealizadorasMantenimientosI | null = null): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.modalModo = modo;
       this.unidadMilitarRealizMttoSeleccionada = unidadMilitarRealizMtto;
       this.modalAddUpdDelVisible = true;
@@ -145,7 +145,7 @@ export class ListadoUnidadesMilitaresRealizMttosComponent implements OnInit {
   }
 
   abrirModalVista(unidadMilitarRealizMtto: UnidadesMilitaresRealizadorasMantenimientosI): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.unidadMilitarRealizMttoSeleccionada = unidadMilitarRealizMtto;
       this.modalVistaVisible = true;
       this.changeDetectorRef.markForCheck();

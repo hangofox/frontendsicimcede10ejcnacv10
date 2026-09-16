@@ -88,6 +88,7 @@ export class ListadoInfraestructurasComponent implements OnInit {
     this.infraestructurasForm = this.formBuilder.group({
       ctextPalabraClave: new FormControl(''),
       cboxSiglaoAcronimoUnidadMilitarSeleccionado: new FormControl(''),
+      cboxTipoEstructuraInfraestructuraSeleccionado: new FormControl(''),
       cboxTandaNumeroRegistrosporPaginaSeleccionado: new FormControl('10')
     });
   }
@@ -116,7 +117,7 @@ export class ListadoInfraestructurasComponent implements OnInit {
 
   //CARGA EL CATÁLOGO DE SOCIEDADES DE UNIDADES CENTRALIZADORAS DESDE EL BACKEND (COMBO DEL FORMULARIO):
   private cargarSociedadesUnidadesCentralizadoras(): void {
-    this.sociedadesUnidadesCentralizadorasService.findAllSociedadesUnidadesCentralizadoras(undefined, undefined, undefined, 'codigoSociedadUnidadCentralizadora', 'ASC')
+    this.sociedadesUnidadesCentralizadorasService.findAllCentralizingUnitCompanies(undefined, undefined, undefined, 'codigoSociedadUnidadCentralizadora', 'ASC')
       .subscribe({
         next: (sociedadesUnidadesCentralizadoras) => {
           this.sociedadesUnidadesCentralizadoras = sociedadesUnidadesCentralizadoras;
@@ -128,7 +129,7 @@ export class ListadoInfraestructurasComponent implements OnInit {
 
   //CARGA EL CATÁLOGO DE TIPOS DE ESTRUCTURA DE INFRAESTRUCTURA DESDE EL BACKEND (COMBO DEL FORMULARIO):
   private cargarTiposEstructurasInfraestructuras(): void {
-    this.tiposEstructurasInfraestructurasService.findAllTiposEstructurasInfraestructuras(undefined, undefined, 'nombreTipoEstructuraInfraestructura', 'ASC')
+    this.tiposEstructurasInfraestructurasService.findAllTypesOfInfrastructureStructures(undefined, undefined, 'nombreTipoEstructuraInfraestructura', 'ASC')
       .subscribe({
         next: (tiposEstructurasInfraestructuras) => {
           this.tiposEstructurasInfraestructuras = tiposEstructurasInfraestructuras;
@@ -140,7 +141,7 @@ export class ListadoInfraestructurasComponent implements OnInit {
 
   //CARGA EL CATÁLOGO DE FUNCIONALIDADES DE INFRAESTRUCTURA DESDE EL BACKEND (COMBO DEL FORMULARIO):
   private cargarFuncionalidadesInfraestructuras(): void {
-    this.funcionalidadesInfraestructurasService.findAllFuncionalidadesInfraestructuras('nombreFuncionalidadInfraestructura', 'ASC')
+    this.funcionalidadesInfraestructurasService.findAllInfrastructureFunctionalities('nombreFuncionalidadInfraestructura', 'ASC')
       .subscribe({
         next: (funcionalidadesInfraestructuras) => {
           this.funcionalidadesInfraestructuras = funcionalidadesInfraestructuras;
@@ -152,7 +153,7 @@ export class ListadoInfraestructurasComponent implements OnInit {
 
   //CARGA EL CATÁLOGO DE SEGUROS DESDE EL BACKEND (COMBO DEL FORMULARIO):
   private cargarSeguros(): void {
-    this.segurosService.findAllSeguros(undefined, undefined, undefined, 'idSeguro', 'ASC')
+    this.segurosService.findAllInsurances(undefined, undefined, undefined, 'idSeguro', 'ASC')
       .subscribe({
         next: (seguros) => {
           this.seguros = seguros;
@@ -164,7 +165,7 @@ export class ListadoInfraestructurasComponent implements OnInit {
 
   //CARGA EL CATÁLOGO DE TERRENOS DESDE EL BACKEND (COMBO DEL FORMULARIO):
   private cargarTerrenos(): void {
-    this.terrenosService.findAllTerrenos(undefined, undefined, undefined, 'denominacionTerreno', 'ASC')
+    this.terrenosService.findAllLands(undefined, undefined, undefined, 'denominacionTerreno', 'ASC')
       .subscribe({
         next: (terrenos) => {
           this.terrenos = terrenos;
@@ -186,40 +187,25 @@ export class ListadoInfraestructurasComponent implements OnInit {
     const palabraClave = (valoresFormulario.ctextPalabraClave || '').trim().toUpperCase();
     const keyword: string | undefined = palabraClave || undefined;
     const siglaoAcronimoUnidadMilitar: string | undefined = (valoresFormulario.cboxSiglaoAcronimoUnidadMilitarSeleccionado as string) || undefined;
+    const idTipoEstructura = Number(valoresFormulario.cboxTipoEstructuraInfraestructuraSeleccionado) || undefined;
 
-    this.infraestructurasService.findAllInfraestructurasPag(
-      this.paginaActual,
-      this.tandaNumeroRegistrosporPagina,
+    this.infraestructurasService.findAllInfrastructures(
       undefined,
       keyword,
       siglaoAcronimoUnidadMilitar,
       'idInfraestructura',
       'ASC'
     ).subscribe({
-      next: (data) => {
-        this.infraestructuras = data;
-        this.changeDetectorRef.markForCheck();
-      },
-      error: (err) => console.error('ERROR AL LISTAR INFRAESTRUCTURAS: ', err)
-    });
-
-    this.infraestructurasService.findCountTotalRegisters(undefined, keyword, siglaoAcronimoUnidadMilitar)
-      .subscribe({
-        next: (total) => {
-          this.totalRegistros = total;
-          this.changeDetectorRef.markForCheck();
-        },
-        error: (err) => console.error('ERROR AL CONTAR TOTAL DE INFRAESTRUCTURAS: ', err)
-      });
-
-    this.infraestructurasService.findAllInfraestructuras(
-      undefined,
-      keyword,
-      siglaoAcronimoUnidadMilitar,
-      'idInfraestructura',
-      'ASC'
-    ).subscribe({
-      next: (infraestructurasFiltradas) => {
+      next: (registros) => {
+        const infraestructurasFiltradas = registros.filter(infraestructura =>
+          !idTipoEstructura ||
+          Number(infraestructura.tipoEstructuraInfraestructuraDTO?.idTipoEstructuraInfraestructura) === idTipoEstructura
+        );
+        this.totalRegistros = infraestructurasFiltradas.length;
+        const ultimaPagina = Math.max(0, Math.ceil(this.totalRegistros / this.tandaNumeroRegistrosporPagina) - 1);
+        this.paginaActual = Math.min(this.paginaActual, ultimaPagina);
+        const inicio = this.paginaActual * this.tandaNumeroRegistrosporPagina;
+        this.infraestructuras = infraestructurasFiltradas.slice(inicio, inicio + this.tandaNumeroRegistrosporPagina);
         this.estadosUsoContadores = this.estadosUso.map(estado => ({
           ...estado,
           valor: infraestructurasFiltradas.filter(infraestructura =>
@@ -228,7 +214,7 @@ export class ListadoInfraestructurasComponent implements OnInit {
         }));
         this.changeDetectorRef.markForCheck();
       },
-      error: (err) => console.error('ERROR AL CONTAR ESTADOS DE USO DE INFRAESTRUCTURAS: ', err)
+      error: (err) => console.error('ERROR AL LISTAR INFRAESTRUCTURAS: ', err)
     });
   }
 
@@ -267,7 +253,7 @@ export class ListadoInfraestructurasComponent implements OnInit {
   //ABRE EL MODAL DE CREAR / MODIFICAR / ELIMINAR, MOSTRANDO PRIMERO EL SPINNER GLOBAL DEL PIÑÓN GIRATORIO
   //(SpinnerModalComponent, MONTADO EN LA RAÍZ DE LA APLICACIÓN):
   abrirModalAddUpdDel(modo: 'guardar' | 'modificar' | 'eliminar', infraestructura: InfraestructurasI | null = null): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.modalModo = modo;
       this.infraestructuraSeleccionada = infraestructura;
       this.modalAddUpdDelVisible = true;
@@ -276,7 +262,7 @@ export class ListadoInfraestructurasComponent implements OnInit {
   }
 
   abrirModalVista(infraestructura: InfraestructurasI): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.infraestructuraSeleccionada = infraestructura;
       this.modalVistaVisible = true;
       this.changeDetectorRef.markForCheck();
@@ -294,8 +280,27 @@ export class ListadoInfraestructurasComponent implements OnInit {
   }
 
   //ABRE EL HISTORIAL DE QUÍMICOS DE PISCINAS PARA LA INFRAESTRUCTURA SELECCIONADA:
+  esInfraestructuraPiscina(infraestructura: InfraestructurasI): boolean {
+    const tipoEstructura = String(
+      infraestructura.tipoEstructuraInfraestructuraDTO?.nombreTipoEstructuraInfraestructura ?? ''
+    )
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .replace(/\s+/g, ' ')
+      .toUpperCase();
+
+    return [
+      'PISCINA(S) CASINOS',
+      'PISCINA(S) CENTRO RECREACIONAL',
+      'PISCINA(S) DE EDUCACION / ENTRENAMIENTO'
+    ].includes(tipoEstructura);
+  }
+
   abrirModalHistorialQuimicos(infraestructura: InfraestructurasI): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    if (!this.esInfraestructuraPiscina(infraestructura)) return;
+
+    this.spinnerService.showBeforeOpening(() => {
       this.infraestructuraSeleccionada = infraestructura;
       this.modalHistorialQuimicosVisible = true;
       this.changeDetectorRef.markForCheck();
@@ -310,7 +315,7 @@ export class ListadoInfraestructurasComponent implements OnInit {
   //RECIBE LA INFRAESTRUCTURA NUEVA O MODIFICADA DESDE EL MODAL Y LA ENVÍA AL BACKEND (POST SI ES NUEVA, PUT SI YA TIENE ID):
   guardarInfraestructura(infraestructura: InfraestructurasI): void {
     if (infraestructura.idInfraestructura) {
-      this.infraestructurasService.updateInfraestructura(infraestructura).subscribe({
+      this.infraestructurasService.updateInfrastructure(infraestructura).subscribe({
         next: (respuesta) => {
           this.mostrarToast('exito', respuesta.mensaje || 'Infraestructura modificada correctamente.');
           this.accionListar();
@@ -322,7 +327,7 @@ export class ListadoInfraestructurasComponent implements OnInit {
         }
       });
     } else {
-      this.infraestructurasService.addInfraestructura(infraestructura).subscribe({
+      this.infraestructurasService.addInfrastructure(infraestructura).subscribe({
         next: (respuesta) => {
           this.mostrarToast('exito', respuesta.mensaje || 'Infraestructura creada correctamente.');
           this.accionListar();
@@ -338,7 +343,7 @@ export class ListadoInfraestructurasComponent implements OnInit {
 
   //RECIBE EL ID DE LA INFRAESTRUCTURA A ELIMINAR Y LO ENVÍA AL BACKEND:
   eliminarInfraestructura(idInfraestructura: number): void {
-    this.infraestructurasService.deleteInfraestructura(idInfraestructura).subscribe({
+    this.infraestructurasService.deleteInfrastructure(idInfraestructura).subscribe({
       next: (respuesta) => {
         this.mostrarToast('exito', respuesta.mensaje || 'Infraestructura eliminada correctamente.');
         this.accionListar();

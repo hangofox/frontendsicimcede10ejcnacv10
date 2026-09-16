@@ -79,7 +79,7 @@ export class DeshboardsEstadisticasComponent implements OnInit, AfterViewInit, O
       next: datos => { this.unidadesMilitares = datos; this.cdr.markForCheck(); },
       error: error => console.error('ERROR AL CARGAR UNIDADES MILITARES:', error)
     });
-    this.terrenosService.findAllTerrenos(undefined, undefined, undefined, 'denominacionTerreno', 'ASC').subscribe({
+    this.terrenosService.findAllLands(undefined, undefined, undefined, 'denominacionTerreno', 'ASC').subscribe({
       next: datos => { this.terrenos = datos; this.cdr.markForCheck(); },
       error: error => console.error('ERROR AL CARGAR TERRENOS:', error)
     });
@@ -101,7 +101,7 @@ export class DeshboardsEstadisticasComponent implements OnInit, AfterViewInit, O
 
     if (this.tipoSeleccionado === 'INFRAESTRUCTURAS') {
       const unidad = valores.unidad || undefined;
-      this.infraestructurasService.findAllInfraestructuras(undefined, keyword, unidad, 'idInfraestructura', 'ASC').subscribe({
+      this.infraestructurasService.findAllInfrastructures(undefined, keyword, unidad, 'idInfraestructura', 'ASC').subscribe({
         next: datos => this.procesarEstadosFijos(solicitud, datos, this.estadosInfraestructuras, dato => dato.estadoUsoInfraestructura),
         error: error => this.procesarError(solicitud, error)
       });
@@ -110,7 +110,7 @@ export class DeshboardsEstadisticasComponent implements OnInit, AfterViewInit, O
 
     if (this.tipoSeleccionado === 'INFRAESTRUCTURAS ARRENDADAS') {
       const unidad = valores.unidad || undefined;
-      this.infraestructurasArrendadasService.findAllInfraestructurasArrendadas(undefined, keyword, 'idInfraestructuraArrendada', 'ASC').subscribe({
+      this.infraestructurasArrendadasService.findAllRentedInfrastructures(undefined, keyword, 'idInfraestructuraArrendada', 'ASC').subscribe({
         next: datos => {
           const datosFiltrados = unidad
             ? datos.filter(dato => dato.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar === unidad)
@@ -124,7 +124,7 @@ export class DeshboardsEstadisticasComponent implements OnInit, AfterViewInit, O
 
     if (this.tipoSeleccionado === 'TERRENOS') {
       const unidad = valores.unidad || undefined;
-      this.terrenosService.findAllTerrenos(undefined, keyword, unidad, 'idTerreno', 'ASC').subscribe({
+      this.terrenosService.findAllLands(undefined, keyword, unidad, 'idTerreno', 'ASC').subscribe({
         next: datos => this.procesarEstadosFijos(solicitud, datos, this.estadosTerrenos, dato => dato.estadoTerrenoDTO?.nombreEstadoTerreno),
         error: error => this.procesarError(solicitud, error)
       });
@@ -132,7 +132,7 @@ export class DeshboardsEstadisticasComponent implements OnInit, AfterViewInit, O
     }
 
     const idTerreno = valores.terreno ? Number(valores.terreno) : undefined;
-    this.comodatosService.findAllComodatos(undefined, keyword, idTerreno, 'idComodatoTerreno', 'ASC').subscribe({
+    this.comodatosService.findAllLandLoans(undefined, keyword, idTerreno, 'idComodatoTerreno', 'ASC').subscribe({
       next: datos => {
         if (solicitud !== this.solicitudActual) return;
         const cantidades = new Map<string, number>();

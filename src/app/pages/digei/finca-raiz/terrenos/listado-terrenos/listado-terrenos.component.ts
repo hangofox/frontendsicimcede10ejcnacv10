@@ -64,8 +64,8 @@ export class ListadoTerrenosComponent implements OnInit {
 
   ngOnInit(): void {
     this.unidadesService.findAllMilitaryUnits(undefined, undefined, 'nombreUnidadMilitar', 'ASC').subscribe(v => { this.unidadesMilitares = v; this.cdr.markForCheck(); });
-    this.sociedadesService.findAllSociedadesUnidadesCentralizadoras(undefined, undefined, undefined, 'codigoSociedadUnidadCentralizadora', 'ASC').subscribe(v => { this.sociedades = v; this.cdr.markForCheck(); });
-    this.estadosService.findAllEstadosTerrenos(undefined, 'nombreEstadoTerreno', 'ASC').subscribe(v => { this.estados = v; this.cdr.markForCheck(); });
+    this.sociedadesService.findAllCentralizingUnitCompanies(undefined, undefined, undefined, 'codigoSociedadUnidadCentralizadora', 'ASC').subscribe(v => { this.sociedades = v; this.cdr.markForCheck(); });
+    this.estadosService.findAllLandStatuses(undefined, 'nombreEstadoTerreno', 'ASC').subscribe(v => { this.estados = v; this.cdr.markForCheck(); });
     this.listar();
   }
 
@@ -75,12 +75,12 @@ export class ListadoTerrenosComponent implements OnInit {
     const valor = this.terrenosForm.getRawValue();
     const keyword = valor.keyword?.trim().toUpperCase() || undefined;
     const unidad = valor.unidad || undefined;
-    this.terrenosService.findAllTerrenosPag(this.paginaActual, this.cantidad, undefined, keyword, unidad, 'idTerreno', 'ASC').subscribe({
+    this.terrenosService.findAllLandsPag(this.paginaActual, this.cantidad, undefined, keyword, unidad, 'idTerreno', 'ASC').subscribe({
       next: data => { this.terrenos = data; this.cdr.markForCheck(); },
       error: error => { console.error('Error al listar terrenos', error); this.toast('error', 'No fue posible listar los terrenos.'); }
     });
     this.terrenosService.findCountTotalRegisters(undefined, keyword, unidad).subscribe(total => { this.totalRegistros = total; this.cdr.markForCheck(); });
-    this.terrenosService.findAllTerrenos(undefined, keyword, unidad, 'idTerreno', 'ASC').subscribe({
+    this.terrenosService.findAllLands(undefined, keyword, unidad, 'idTerreno', 'ASC').subscribe({
       next: terrenosFiltrados => {
         this.estadosContadores = this.estadosTerreno.map(estado => ({
           ...estado,
@@ -113,15 +113,15 @@ export class ListadoTerrenosComponent implements OnInit {
   cambiarCantidad(): void { this.cantidad = Number(this.terrenosForm.value.cantidad); this.buscar(); }
 
   abrirEdicion(modo: 'guardar' | 'modificar' | 'eliminar', terreno: TerrenosI | null = null): void {
-    this.spinner.mostrarAntesDeAbrir(() => { this.modo = modo; this.seleccionado = terreno; this.modalEdicion = true; this.cdr.markForCheck(); });
+    this.spinner.showBeforeOpening(() => { this.modo = modo; this.seleccionado = terreno; this.modalEdicion = true; this.cdr.markForCheck(); });
   }
-  abrirVista(terreno: TerrenosI): void { this.spinner.mostrarAntesDeAbrir(() => { this.seleccionado = terreno; this.modalVista = true; this.cdr.markForCheck(); }); }
+  abrirVista(terreno: TerrenosI): void { this.spinner.showBeforeOpening(() => { this.seleccionado = terreno; this.modalVista = true; this.cdr.markForCheck(); }); }
   cerrarEdicion(): void { this.modalEdicion = false; this.seleccionado = null; }
   cerrarVista(): void { this.modalVista = false; this.seleccionado = null; }
 
   guardar(terreno: TerrenosI): void {
     const modificando = !!terreno.idTerreno;
-    const operacion = modificando ? this.terrenosService.updateTerreno(terreno) : this.terrenosService.addTerreno(terreno);
+    const operacion = modificando ? this.terrenosService.updateLand(terreno) : this.terrenosService.addLand(terreno);
     operacion.subscribe({
       next: respuesta => { this.toast('exito', respuesta.mensaje || (modificando ? 'Terreno modificado correctamente.' : 'Terreno creado correctamente.')); this.cerrarEdicion(); this.listar(); },
       error: error => this.toast('error', error.error?.mensaje || (modificando ? 'No fue posible modificar el terreno.' : 'No fue posible crear el terreno.'))
@@ -129,7 +129,7 @@ export class ListadoTerrenosComponent implements OnInit {
   }
 
   eliminar(id: number): void {
-    this.terrenosService.deleteTerreno(id).subscribe({
+    this.terrenosService.deleteLand(id).subscribe({
       next: respuesta => { this.toast('exito', respuesta.mensaje || 'Terreno eliminado correctamente.'); this.cerrarEdicion(); this.listar(); },
       error: error => this.toast('error', error.error?.mensaje || 'No fue posible eliminar el terreno.')
     });

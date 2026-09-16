@@ -39,7 +39,7 @@ export class VistaHistorialIntegranteDocumentosComponent implements OnChanges, O
     this.limpiarPreview();
     const id = this.historialIntegranteDocumentosData?.idHistorialIntegranteDocumentos;
     if (!id) return;
-    this.subscriptions.add(this.historialService.getHistorialIntegranteDocumentosbyId(Number(id)).subscribe({
+    this.subscriptions.add(this.historialService.getDocumentMemberHistorybyId(Number(id)).subscribe({
       next: ({ historialIntegranteDocumentosDTO }) => {
         const nombre = String(historialIntegranteDocumentosDTO?.nombreArchivoFotoFirmaIntegranteDocumentos || '').trim();
         const sigla = String(historialIntegranteDocumentosDTO?.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar || '').trim();

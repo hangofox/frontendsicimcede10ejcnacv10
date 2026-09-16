@@ -33,18 +33,18 @@ export class ListadoCentrosCostosOficinasComponent implements OnChanges {
     const keyword = String(this.form.value.palabraClave || '').trim().toUpperCase() || undefined;
     const sigla = String(this.oficina.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar || '') || undefined;
     const nombre = String(this.oficina.nombreOficina);
-    this.service.findAllCentrosCostosOficinasPag(this.paginaActual, this.registrosPorPagina, undefined, keyword, sigla, nombre, 'idCentroCostoOficina', 'ASC').subscribe(data => { this.centrosCostos = data; this.cdr.markForCheck(); });
+    this.service.findAllOfficeCostCentersPag(this.paginaActual, this.registrosPorPagina, undefined, keyword, sigla, nombre, 'idCentroCostoOficina', 'ASC').subscribe(data => { this.centrosCostos = data; this.cdr.markForCheck(); });
     this.service.findCountTotalRegisters(undefined, keyword, sigla, nombre).subscribe(total => { this.totalRegistros = total; this.cdr.markForCheck(); });
   }
-  abrirCrud(modo: 'guardar' | 'modificar' | 'eliminar', item: CentrosCostosOficinasI | null = null): void { this.spinner.mostrarAntesDeAbrir(() => { this.modo = modo; this.seleccionado = item; this.modalCrud = true; this.cdr.markForCheck(); }); }
-  abrirVista(item: CentrosCostosOficinasI): void { this.spinner.mostrarAntesDeAbrir(() => { this.seleccionado = item; this.modalVista = true; this.cdr.markForCheck(); }); }
+  abrirCrud(modo: 'guardar' | 'modificar' | 'eliminar', item: CentrosCostosOficinasI | null = null): void { this.spinner.showBeforeOpening(() => { this.modo = modo; this.seleccionado = item; this.modalCrud = true; this.cdr.markForCheck(); }); }
+  abrirVista(item: CentrosCostosOficinasI): void { this.spinner.showBeforeOpening(() => { this.seleccionado = item; this.modalVista = true; this.cdr.markForCheck(); }); }
   cerrarCrud(): void { this.modalCrud = false; this.seleccionado = null; }
   cerrarVista(): void { this.modalVista = false; this.seleccionado = null; }
   guardar(item: CentrosCostosOficinasI): void {
-    const peticion = item.idCentroCostoOficina ? this.service.updateCentroCostoOficina(item) : this.service.addCentroCostoOficina(item);
+    const peticion = item.idCentroCostoOficina ? this.service.updateOfficeCostCenter(item) : this.service.addOfficeCostCenter(item);
     peticion.subscribe({ next: respuesta => { this.notificar('exito', respuesta.mensaje || 'Centro de costo guardado correctamente.'); this.listar(); this.cerrarCrud(); }, error: error => this.notificar('error', error.error?.mensaje || 'Error al guardar el centro de costo.') });
   }
-  eliminar(id: number): void { this.service.deleteCentroCostoOficina(id).subscribe({ next: respuesta => { this.notificar('exito', respuesta.mensaje || 'Centro de costo eliminado correctamente.'); this.listar(); this.cerrarCrud(); }, error: error => this.notificar('error', error.error?.mensaje || 'Error al eliminar el centro de costo.') }); }
+  eliminar(id: number): void { this.service.deleteOfficeCostCenter(id).subscribe({ next: respuesta => { this.notificar('exito', respuesta.mensaje || 'Centro de costo eliminado correctamente.'); this.listar(); this.cerrarCrud(); }, error: error => this.notificar('error', error.error?.mensaje || 'Error al eliminar el centro de costo.') }); }
   cambiarPagina(pagina: number): void { this.paginaActual = pagina; this.listar(); }
   cambiarTanda(): void { this.registrosPorPagina = Number(this.form.value.registrosPagina); this.buscar(); }
   totalPaginas(): number { return Math.max(Math.ceil(this.totalRegistros / this.registrosPorPagina), 1); }

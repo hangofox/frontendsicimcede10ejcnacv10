@@ -17,7 +17,7 @@ export class SpinnerService {
   readonly visible$ = this.visibleSubject.asObservable();
 
   //MUESTRA EL SPINNER DURANTE duracionMs Y LUEGO EJECUTA accion() (NORMALMENTE, LA APERTURA DEL MODAL):
-  mostrarAntesDeAbrir(accion: () => void, duracionMs: number = this.duracionPorDefectoMs): void {
+  showBeforeOpening(accion: () => void, duracionMs: number = this.duracionPorDefectoMs): void {
     this.visibleSubject.next(true);
     setTimeout(() => {
       accion();

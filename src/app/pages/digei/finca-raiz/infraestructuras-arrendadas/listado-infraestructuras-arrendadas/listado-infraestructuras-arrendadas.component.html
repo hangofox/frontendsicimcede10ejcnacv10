@@ -5,12 +5,24 @@
   <div class="barra-acciones">
     <input type="text" formControlName="keyword" placeholder="Buscar infraestructura arrendada" (keyup.enter)="buscar()">
     <button type="button" class="btn-sicim btn-buscar" (click)="buscar()">Buscar</button>
+    <select formControlName="unidadMilitar" (change)="buscar()">
+      <option value="">TODAS LAS UNIDADES MILITARES</option>
+      @for (unidad of unidades; track unidad.idUnidadMilitar) {
+        <option [value]="unidad.siglaoAcronimoUnidadMilitar">{{ unidad.siglaoAcronimoUnidadMilitar }}</option>
+      }
+    </select>
+    <select formControlName="tipoEstructura" (change)="buscar()">
+      <option value="">TODOS LOS TIPOS DE ESTRUCTURA</option>
+      @for (tipo of tipos; track tipo.idTipoEstructuraInfraestructuraArrendada) {
+        <option [value]="tipo.idTipoEstructuraInfraestructuraArrendada">{{ tipo.nombreTipoEstructuraInfraestructuraArrendada }}</option>
+      }
+    </select>
     <button type="button" class="btn-sicim btn-nuevo" (click)="abrir('guardar')">Nueva Infraestructura Arrendada</button>
   </div>
 
   <div class="tabla-contenedor">
     <table>
-      <thead><tr><th>ID</th><th>Denominación</th><th>Unidad Militar</th><th>Tipo</th><th>Ciudad</th><th>Estado</th><th>Acciones</th></tr></thead>
+      <thead><tr><th>ID</th><th>Denominación</th><th>Unidad Militar</th><th>TIPO DE ESTRUCTURA</th><th>Ciudad</th><th>Estado</th><th>Acciones</th></tr></thead>
       <tbody>
         @for (infraestructura of registros; track infraestructura.idInfraestructuraArrendada) {
           <tr>

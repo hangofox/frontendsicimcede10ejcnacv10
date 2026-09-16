@@ -290,7 +290,7 @@ export class ListadoUsuariosComponent implements OnInit, OnDestroy {
   //ABRE EL MODAL DE CREAR / MODIFICAR / ELIMINAR, MOSTRANDO PRIMERO EL SPINNER GLOBAL DEL PIÑÓN GIRATORIO
   //(SpinnerModalComponent, MONTADO EN LA RAÍZ DE LA APLICACIÓN):
   abrirModalAddUpdDel(modo: 'guardar' | 'modificar' | 'eliminar', usuario: UsuariosI | null = null): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.modalModo = modo;
       this.usuarioSeleccionado = usuario;
       this.modalAddUpdDelVisible = true;
@@ -299,7 +299,7 @@ export class ListadoUsuariosComponent implements OnInit, OnDestroy {
   }
 
   abrirModalVista(usuario: UsuariosI): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.usuarioSeleccionado = usuario;
       this.modalVistaVisible = true;
       this.changeDetectorRef.markForCheck();
@@ -307,7 +307,7 @@ export class ListadoUsuariosComponent implements OnInit, OnDestroy {
   }
 
   abrirModalPrivilegiosyRestricciones(usuario: UsuariosI): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.usuarioSeleccionado = usuario;
       this.modalPrivilegiosVisible = true;
       this.changeDetectorRef.markForCheck();
@@ -482,7 +482,7 @@ export class ListadoUsuariosComponent implements OnInit, OnDestroy {
 
   //cerrarModal* SE DISPARAN DESDE (click) EN EL TEMPLATE, ASÍ QUE OnPush YA LOS DETECTA SOLO; NO NECESITAN
   //markForCheck() (abrirModalAddUpdDel/abrirModalVista/abrirModalPrivilegiosyRestricciones SÍ LO NECESITAN PORQUE
-  //MUTAN EL ESTADO DENTRO DEL setTimeout DE SpinnerService.mostrarAntesDeAbrir):
+  //MUTAN EL ESTADO DENTRO DEL setTimeout DE SpinnerService.showBeforeOpening):
 
   recibirToast(evento: { tipo: 'exito' | 'error'; mensaje: string }): void {
     this.mostrarToast(evento.tipo, evento.mensaje);

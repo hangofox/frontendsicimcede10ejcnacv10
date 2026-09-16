@@ -92,7 +92,7 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
   //CARGA TODOS LOS REGISTROS DE INTEGRANTES DE SOLICITUDES DE INFRAESTRUCTURAS Y LOS INDEXA POR
   //idSolicitudInfraestructura, PARA PODER DETERMINAR SI CADA NIVEL DE CADA SOLICITUD YA TIENE TODAS SUS FIRMAS:
   private cargarIntegrantesDocumentosSolicInfraest(): void {
-    this.integrantesDocumentosSolicInfraestService.findAllIntegrantesDocumentosSolicInfraest()
+    this.integrantesDocumentosSolicInfraestService.findAllInfrastructureRequestDocumentMembers()
       .subscribe({
         next: (integrantes) => {
           this.integrantesPorSolicitud = new Map(
@@ -120,7 +120,7 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
 
   //CARGA EL CATÁLOGO DE TIPOS DE SOLICITUD DE INFRAESTRUCTURA DESDE EL BACKEND (COMBO DEL FORMULARIO):
   private cargarTiposSolicitudesInfraestructuras(): void {
-    this.tiposSolicitudesInfraestructurasService.findAllTiposSolicitudesInfraestructuras(undefined, undefined, 'nombreTipoSolicitudInfraestructura', 'ASC')
+    this.tiposSolicitudesInfraestructurasService.findAllTypesOfInfrastructureRequests(undefined, undefined, 'nombreTipoSolicitudInfraestructura', 'ASC')
       .subscribe({
         next: (tiposSolicitudesInfraestructuras) => {
           this.tiposSolicitudesInfraestructuras = tiposSolicitudesInfraestructuras;
@@ -132,7 +132,7 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
 
   //CARGA EL CATÁLOGO DE INFRAESTRUCTURAS DESDE EL BACKEND (COMBO DEL FORMULARIO):
   private cargarInfraestructuras(): void {
-    this.infraestructurasService.findAllInfraestructuras(undefined, undefined, undefined, 'denominacionInfraestructura', 'ASC')
+    this.infraestructurasService.findAllInfrastructures(undefined, undefined, undefined, 'denominacionInfraestructura', 'ASC')
       .subscribe({
         next: (infraestructuras) => {
           this.infraestructuras = infraestructuras;
@@ -155,7 +155,7 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
     const keyword: string | undefined = palabraClave || undefined;
     const siglaoAcronimoUnidadMilitar: string | undefined = (valoresFormulario.cboxSiglaoAcronimoUnidadMilitarSeleccionado as string) || undefined;
 
-    this.solicitudesInfraestructurasService.findAllSolicitudesInfraestructurasPag(
+    this.solicitudesInfraestructurasService.findAllInfrastructureRequestsPag(
       this.paginaActual,
       this.tandaNumeroRegistrosporPagina,
       undefined,
@@ -228,7 +228,7 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
   //ABRE EL MODAL DE CREAR / MODIFICAR / ELIMINAR, MOSTRANDO PRIMERO EL SPINNER GLOBAL DEL PIÑÓN GIRATORIO
   //(SpinnerModalComponent, MONTADO EN LA RAÍZ DE LA APLICACIÓN):
   abrirModalAddUpdDel(modo: 'guardar' | 'modificar' | 'eliminar', solicitudInfraestructura: SolicitudesInfraestructurasI | null = null): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.modalModo = modo;
       this.solicitudInfraestructuraSeleccionada = solicitudInfraestructura;
       this.modalAddUpdDelVisible = true;
@@ -237,7 +237,7 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
   }
 
   abrirModalVista(solicitudInfraestructura: SolicitudesInfraestructurasI): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.solicitudInfraestructuraSeleccionada = solicitudInfraestructura;
       this.modalVistaVisible = true;
       this.changeDetectorRef.markForCheck();
@@ -256,7 +256,7 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
 
   //ABRE EL MODAL CON EL LISTADO DE INTEGRANTES DEL COMITÉ ASOCIADO A LA SOLICITUD DE INFRAESTRUCTURA SELECCIONADA:
   abrirModalIntegrantes(solicitudInfraestructura: SolicitudesInfraestructurasI): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.solicitudInfraestructuraParaIntegrantes = solicitudInfraestructura;
       this.modalIntegrantesVisible = true;
       this.changeDetectorRef.markForCheck();
@@ -274,7 +274,7 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
   //RECIBE LA SOLICITUD DE INFRAESTRUCTURA NUEVA O MODIFICADA DESDE EL MODAL Y LA ENVÍA AL BACKEND (POST SI ES NUEVA, PUT SI YA TIENE ID):
   guardarSolicitudInfraestructura(solicitudInfraestructura: SolicitudesInfraestructurasI): void {
     if (solicitudInfraestructura.idSolicitudInfraestructura) {
-      this.solicitudesInfraestructurasService.updateSolicitudInfraestructura(solicitudInfraestructura).subscribe({
+      this.solicitudesInfraestructurasService.updateInfrastructureRequest(solicitudInfraestructura).subscribe({
         next: (respuesta) => {
           this.mostrarToast('exito', respuesta.mensaje || 'Solicitud de infraestructura modificada correctamente.');
           this.accionListar();
@@ -286,7 +286,7 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
         }
       });
     } else {
-      this.solicitudesInfraestructurasService.addSolicitudInfraestructura(solicitudInfraestructura).subscribe({
+      this.solicitudesInfraestructurasService.addInfrastructureRequest(solicitudInfraestructura).subscribe({
         next: (respuesta) => {
           this.mostrarToast('exito', respuesta.mensaje || 'Solicitud de infraestructura creada correctamente.');
           this.accionListar();
@@ -302,7 +302,7 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
 
   //RECIBE EL ID DE LA SOLICITUD DE INFRAESTRUCTURA A ELIMINAR Y LO ENVÍA AL BACKEND:
   eliminarSolicitudInfraestructura(idSolicitudInfraestructura: number): void {
-    this.solicitudesInfraestructurasService.deleteSolicitudInfraestructura(idSolicitudInfraestructura).subscribe({
+    this.solicitudesInfraestructurasService.deleteInfrastructureRequest(idSolicitudInfraestructura).subscribe({
       next: (respuesta) => {
         this.mostrarToast('exito', respuesta.mensaje || 'Solicitud de infraestructura eliminada correctamente.');
         this.accionListar();

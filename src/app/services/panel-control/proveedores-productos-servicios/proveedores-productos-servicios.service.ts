@@ -25,7 +25,7 @@ export class ProveedoresProductosServiciosService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllProveedoresProductosServicios(idProveedorProductoOServicio?: number, estado?: string, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<ProveedoresProductosServiciosI[]> {
+  findAllProductOrServiceProviders(idProveedorProductoOServicio?: number, estado?: string, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<ProveedoresProductosServiciosI[]> {
     let params = new HttpParams().set('orderMode', orderMode);
     if (idProveedorProductoOServicio !== undefined) params = params.set('idProveedorProductoOServicio', idProveedorProductoOServicio.toString());
     if (estado) params = params.set('estado', estado);
@@ -35,7 +35,7 @@ export class ProveedoresProductosServiciosService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllProveedoresProductosServiciosPag(page: number = 0, size: number = 10, idProveedorProductoOServicio?: number, estado?: string, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<ProveedoresProductosServiciosI[]> {
+  findAllProductOrServiceProvidersPag(page: number = 0, size: number = 10, idProveedorProductoOServicio?: number, estado?: string, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<ProveedoresProductosServiciosI[]> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('orderMode', orderMode);
     if (idProveedorProductoOServicio !== undefined) params = params.set('idProveedorProductoOServicio', idProveedorProductoOServicio.toString());
     if (estado) params = params.set('estado', estado);
@@ -47,27 +47,27 @@ export class ProveedoresProductosServiciosService {
   }
 
   //CREAR REGISTRO.
-  addProveedorProductoOServicio(proveedorProductoOServicio: ProveedoresProductosServiciosI): Observable<ProveedoresProductosServiciosMsj> {
+  addProductOrServiceProvider(proveedorProductoOServicio: ProveedoresProductosServiciosI): Observable<ProveedoresProductosServiciosMsj> {
     return this.http.post<ProveedoresProductosServiciosMsj>(`${this.baseUrl}/proveedoresProductosOServicios`, proveedorProductoOServicio);
   }
 
   //CONSULTAR REGISTRO POR ID.
-  getProveedorProductoOServiciobyId(idProveedorProductoOServicio: number): Observable<ResponseProveedorProductoOServicioDTO> {
+  getProductOrServiceProviderbyId(idProveedorProductoOServicio: number): Observable<ResponseProveedorProductoOServicioDTO> {
     return this.http.get<ResponseProveedorProductoOServicioDTO>(`${this.baseUrl}/proveedoresProductosOServicios/${idProveedorProductoOServicio}`);
   }
 
   //CONSULTAR REGISTRO POR NÚMERO DE DOCUMENTO DE IDENTIFICACIÓN.
-  getProveedorProductoOServiciobyNumeroDocumento(numeroDocumentoIdentificacionProveedorProductoOServicio: string): Observable<ResponseProveedorProductoOServicioDTO> {
+  getProductOrServiceProviderbyNumeroDocumento(numeroDocumentoIdentificacionProveedorProductoOServicio: string): Observable<ResponseProveedorProductoOServicioDTO> {
     return this.http.get<ResponseProveedorProductoOServicioDTO>(`${this.baseUrl}/proveedoresProductosOServicios/numeroDocumento/${numeroDocumentoIdentificacionProveedorProductoOServicio}`);
   }
 
   //MODIFICAR REGISTRO.
-  updateProveedorProductoOServicio(proveedorProductoOServicio: ProveedoresProductosServiciosI): Observable<ProveedoresProductosServiciosMsj> {
+  updateProductOrServiceProvider(proveedorProductoOServicio: ProveedoresProductosServiciosI): Observable<ProveedoresProductosServiciosMsj> {
     return this.http.put<ProveedoresProductosServiciosMsj>(`${this.baseUrl}/proveedoresProductosOServicios`, proveedorProductoOServicio);
   }
 
   //ELIMINAR REGISTRO.
-  deleteProveedorProductoOServicio(idProveedorProductoOServicio: number): Observable<ProveedoresProductosServiciosMsj> {
+  deleteProductOrServiceProvider(idProveedorProductoOServicio: number): Observable<ProveedoresProductosServiciosMsj> {
     return this.http.delete<ProveedoresProductosServiciosMsj>(`${this.baseUrl}/proveedoresProductosOServicios/${idProveedorProductoOServicio}`);
   }
 

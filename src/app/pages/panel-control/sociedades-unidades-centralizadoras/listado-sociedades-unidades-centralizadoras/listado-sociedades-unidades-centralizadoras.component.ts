@@ -91,7 +91,7 @@ export class ListadoSociedadesUnidadesCentralizadorasComponent implements OnInit
     const keyword: string | undefined = palabraClave || undefined;
     const siglaoAcronimoUnidadMilitar: string | undefined = (valoresFormulario.cboxSiglaoAcronimoUnidadMilitarSeleccionado as string) || undefined;
 
-    this.sociedadesUnidadesCentralizadorasService.findAllSociedadesUnidadesCentralizadorasPag(
+    this.sociedadesUnidadesCentralizadorasService.findAllCentralizingUnitCompaniesPag(
       this.paginaActual,
       this.tandaNumeroRegistrosporPagina,
       undefined,
@@ -136,7 +136,7 @@ export class ListadoSociedadesUnidadesCentralizadorasComponent implements OnInit
   //ABRE EL MODAL DE CREAR / MODIFICAR / ELIMINAR, MOSTRANDO PRIMERO EL SPINNER GLOBAL DEL PIÑÓN GIRATORIO
   //(SpinnerModalComponent, MONTADO EN LA RAÍZ DE LA APLICACIÓN):
   abrirModalAddUpdDel(modo: 'guardar' | 'modificar' | 'eliminar', sociedadUnidadCentralizadora: SociedadesUnidadesCentralizadorasI | null = null): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.modalModo = modo;
       this.sociedadUnidadCentralizadoraSeleccionada = sociedadUnidadCentralizadora;
       this.modalAddUpdDelVisible = true;
@@ -145,7 +145,7 @@ export class ListadoSociedadesUnidadesCentralizadorasComponent implements OnInit
   }
 
   abrirModalVista(sociedadUnidadCentralizadora: SociedadesUnidadesCentralizadorasI): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.sociedadUnidadCentralizadoraSeleccionada = sociedadUnidadCentralizadora;
       this.modalVistaVisible = true;
       this.changeDetectorRef.markForCheck();
@@ -165,7 +165,7 @@ export class ListadoSociedadesUnidadesCentralizadorasComponent implements OnInit
   //RECIBE LA SOCIEDAD DE UNIDAD CENTRALIZADORA NUEVA O MODIFICADA DESDE EL MODAL Y LA ENVÍA AL BACKEND (POST SI ES NUEVA, PUT SI YA TIENE ID):
   guardarSociedadUnidadCentralizadora(sociedadUnidadCentralizadora: SociedadesUnidadesCentralizadorasI): void {
     if (sociedadUnidadCentralizadora.idSociedadUnidadCentralizadora) {
-      this.sociedadesUnidadesCentralizadorasService.updateSociedadUnidadCentralizadora(sociedadUnidadCentralizadora).subscribe({
+      this.sociedadesUnidadesCentralizadorasService.updateCentralizingUnitCompany(sociedadUnidadCentralizadora).subscribe({
         next: (respuesta) => {
           this.mostrarToast('exito', respuesta.mensaje || 'Unidad centralizadora modificada correctamente.');
           this.accionListar();
@@ -177,7 +177,7 @@ export class ListadoSociedadesUnidadesCentralizadorasComponent implements OnInit
         }
       });
     } else {
-      this.sociedadesUnidadesCentralizadorasService.addSociedadUnidadCentralizadora(sociedadUnidadCentralizadora).subscribe({
+      this.sociedadesUnidadesCentralizadorasService.addCentralizingUnitCompany(sociedadUnidadCentralizadora).subscribe({
         next: (respuesta) => {
           this.mostrarToast('exito', respuesta.mensaje || 'Unidad centralizadora creada correctamente.');
           this.accionListar();
@@ -193,7 +193,7 @@ export class ListadoSociedadesUnidadesCentralizadorasComponent implements OnInit
 
   //RECIBE EL ID DE LA SOCIEDAD DE UNIDAD CENTRALIZADORA A ELIMINAR Y LO ENVÍA AL BACKEND:
   eliminarSociedadUnidadCentralizadora(idSociedadUnidadCentralizadora: number): void {
-    this.sociedadesUnidadesCentralizadorasService.deleteSociedadUnidadCentralizadora(idSociedadUnidadCentralizadora).subscribe({
+    this.sociedadesUnidadesCentralizadorasService.deleteCentralizingUnitCompany(idSociedadUnidadCentralizadora).subscribe({
       next: (respuesta) => {
         this.mostrarToast('exito', respuesta.mensaje || 'Unidad centralizadora eliminada correctamente.');
         this.accionListar();

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -10,6 +10,8 @@ import { FuncionalidadesInfraestructurasI } from '../../../../../interfaces/dige
 import { SegurosI } from '../../../../../interfaces/seguros/seguros.interface';
 import { TerrenosI } from '../../../../../interfaces/digei/finca-raiz/terrenos/terrenos.interface';
 import { BuscadorUbicacionComponent } from '../../../../../shared/components/buscador-ubicacion/buscador-ubicacion.component';
+import { UnidadesMedidasI } from '../../../../../interfaces/unidades-medidas/unidades-medidas.interface';
+import { UnidadesMedidasService } from '../../../../../services/unidades-medidas/unidades-medidas.service';
 
 @Component({
   selector: 'app-add-upd-del-infraestructura',
@@ -35,13 +37,35 @@ export class AddUpdDelInfraestructuraComponent implements OnChanges {
   @Output() eliminar = new EventEmitter<number>();
 
   infraestructurasForm!: FormGroup;
+  unidadesMedidasLongitud: UnidadesMedidasI[] = [];
 
   get banderaCrudGuardar(): boolean { return this.modo === 'guardar'; }
   get banderaCrudModificar(): boolean { return this.modo === 'modificar'; }
   get banderaCrudEliminar(): boolean { return this.modo === 'eliminar'; }
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private unidadesMedidasService: UnidadesMedidasService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {
     this.initForm();
+    this.cargarUnidadesMedidasLongitud();
+  }
+
+  private cargarUnidadesMedidasLongitud(): void {
+    this.unidadesMedidasService.findAllUnitsOfMeasurement(undefined, 'nombreUnidadMedida', 'ASC').subscribe({
+      next: unidadesMedidas => {
+        this.unidadesMedidasLongitud = unidadesMedidas.filter(unidadMedida =>
+          this.normalizarTexto(unidadMedida.nombreCategoriaUnidadMedida) === 'LONGITUD SISTEMA METRICO'
+        );
+        this.changeDetectorRef.markForCheck();
+      },
+      error: error => console.error('ERROR AL CARGAR UNIDADES DE MEDIDA DE LONGITUD: ', error)
+    });
+  }
+
+  private normalizarTexto(valor: unknown): string {
+    return String(valor ?? '').trim().toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
 
   ngOnChanges(changes: SimpleChanges): void {

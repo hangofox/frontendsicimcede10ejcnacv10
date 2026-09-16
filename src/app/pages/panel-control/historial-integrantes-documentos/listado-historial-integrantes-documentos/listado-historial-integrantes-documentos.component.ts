@@ -116,7 +116,7 @@ export class ListadoHistorialIntegrantesDocumentosComponent implements OnInit, O
   //CARGA EL CATÁLOGO DE CARGOS DE INTEGRANTES DE DOCUMENTOS DESDE EL BACKEND (COMBO DEL FORMULARIO), ORDENADO POR
   //EL ID DEL CARGO (NO ALFABÉTICAMENTE POR NOMBRE):
   private cargarCargosIntegrantesDocumentos(): void {
-    this.cargosIntegrantesDocumentosService.findAllCargosIntegrantesDocumentos(undefined, undefined, 'idCargoIntegranteDocumentos', 'ASC')
+    this.cargosIntegrantesDocumentosService.findAllDocumentMemberPositions(undefined, undefined, 'idCargoIntegranteDocumentos', 'ASC')
       .subscribe({
         next: (cargosIntegrantesDocumentos) => {
           this.cargosIntegrantesDocumentos = cargosIntegrantesDocumentos;
@@ -151,7 +151,7 @@ export class ListadoHistorialIntegrantesDocumentosComponent implements OnInit, O
     const keyword: string | undefined = palabraClave || undefined;
     const siglaoAcronimoUnidadMilitar: string | undefined = (valoresFormulario.cboxSiglaoAcronimoUnidadMilitarSeleccionado as string) || undefined;
 
-    this.historialIntegrantesDocumentosService.findAllHistorialesIntegrantesDocumentosPag(
+    this.historialIntegrantesDocumentosService.findAllDocumentMemberHistoriesPag(
       this.paginaActual,
       this.tandaNumeroRegistrosporPagina,
       undefined,
@@ -189,7 +189,7 @@ export class ListadoHistorialIntegrantesDocumentosComponent implements OnInit, O
         historiales.forEach(historial => {
           const id = Number(historial.idHistorialIntegranteDocumentos);
           if (!id) return;
-          this.subscriptionsMiniaturas.add(this.historialIntegrantesDocumentosService.getHistorialIntegranteDocumentosbyId(id).subscribe({
+          this.subscriptionsMiniaturas.add(this.historialIntegrantesDocumentosService.getDocumentMemberHistorybyId(id).subscribe({
             next: ({ historialIntegranteDocumentosDTO }) => {
               if (solicitud !== this.solicitudMiniaturasActual) return;
               const nombre = String(historialIntegranteDocumentosDTO?.nombreArchivoFotoFirmaIntegranteDocumentos || '').trim();
@@ -263,7 +263,7 @@ export class ListadoHistorialIntegrantesDocumentosComponent implements OnInit, O
   //ABRE EL MODAL DE CREAR / MODIFICAR / ELIMINAR, MOSTRANDO PRIMERO EL SPINNER GLOBAL DEL PIÑÓN GIRATORIO
   //(SpinnerModalComponent, MONTADO EN LA RAÍZ DE LA APLICACIÓN):
   abrirModalAddUpdDel(modo: 'guardar' | 'modificar' | 'eliminar', historialIntegranteDocumentos: HistorialIntegrantesDocumentosI | null = null): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.modalModo = modo;
       this.historialIntegranteDocumentosSeleccionado = historialIntegranteDocumentos;
       this.modalAddUpdDelVisible = true;
@@ -272,7 +272,7 @@ export class ListadoHistorialIntegrantesDocumentosComponent implements OnInit, O
   }
 
   abrirModalVista(historialIntegranteDocumentos: HistorialIntegrantesDocumentosI): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.historialIntegranteDocumentosSeleccionado = historialIntegranteDocumentos;
       this.modalVistaVisible = true;
       this.changeDetectorRef.markForCheck();
@@ -331,7 +331,7 @@ export class ListadoHistorialIntegrantesDocumentosComponent implements OnInit, O
   private guardarRegistroHistorial(evento: GuardadoHistorialIntegranteDocumentosEvent, rutaBasePrevia?: string): void {
     const { historialIntegranteDocumentos, operacionFirma } = evento;
     if (historialIntegranteDocumentos.idHistorialIntegranteDocumentos) {
-      this.historialIntegrantesDocumentosService.updateHistorialIntegranteDocumentos(historialIntegranteDocumentos).subscribe({
+      this.historialIntegrantesDocumentosService.updateDocumentMemberHistory(historialIntegranteDocumentos).subscribe({
         next: (respuesta) => this.procesarFirmaDespues(operacionFirma, respuesta.mensaje || 'Historial de integrante de documentos modificado correctamente.'),
         error: (err) => {
           this.revertirFirma(operacionFirma, rutaBasePrevia);
@@ -340,7 +340,7 @@ export class ListadoHistorialIntegrantesDocumentosComponent implements OnInit, O
         }
       });
     } else {
-      this.historialIntegrantesDocumentosService.addHistorialIntegranteDocumentos(historialIntegranteDocumentos).subscribe({
+      this.historialIntegrantesDocumentosService.addDocumentMemberHistory(historialIntegranteDocumentos).subscribe({
         next: (respuesta) => this.procesarFirmaDespues(operacionFirma, respuesta.mensaje || 'Historial de integrante de documentos creado correctamente.'),
         error: (err) => {
           this.revertirFirma(operacionFirma, rutaBasePrevia);
@@ -398,7 +398,7 @@ export class ListadoHistorialIntegrantesDocumentosComponent implements OnInit, O
 
   //RECIBE EL ID DEL HISTORIAL DE INTEGRANTE DE DOCUMENTOS A ELIMINAR Y LO ENVÍA AL BACKEND:
   eliminarHistorialIntegranteDocumentos(idHistorialIntegranteDocumentos: number): void {
-    this.historialIntegrantesDocumentosService.getHistorialIntegranteDocumentosbyId(idHistorialIntegranteDocumentos).subscribe({
+    this.historialIntegrantesDocumentosService.getDocumentMemberHistorybyId(idHistorialIntegranteDocumentos).subscribe({
       next: ({ historialIntegranteDocumentosDTO }) => this.eliminarRegistroHistorial(idHistorialIntegranteDocumentos, historialIntegranteDocumentosDTO),
       error: (err) => { console.error('ERROR AL CONSULTAR EL HISTORIAL ANTES DE ELIMINARLO: ', err); this.mostrarToast('error', 'No se pudo consultar el registro y no se realizó la eliminación.'); }
     });
@@ -407,7 +407,7 @@ export class ListadoHistorialIntegrantesDocumentosComponent implements OnInit, O
   private eliminarRegistroHistorial(id: number, historial: HistorialIntegrantesDocumentosI): void {
     const nombre = String(historial.nombreArchivoFotoFirmaIntegranteDocumentos || '').trim();
     const sigla = String(historial.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar || '').trim();
-    this.historialIntegrantesDocumentosService.deleteHistorialIntegranteDocumentos(id).subscribe({
+    this.historialIntegrantesDocumentosService.deleteDocumentMemberHistory(id).subscribe({
       next: (respuesta) => {
         const mensaje = respuesta.mensaje || 'Historial de integrante de documentos eliminado correctamente.';
         if (!nombre || !sigla) { this.finalizarGuardado(mensaje); return; }

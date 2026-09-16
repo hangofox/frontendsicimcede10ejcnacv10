@@ -94,7 +94,7 @@ export class ListadoIntegrantesDocumentosSolicInfraestComponent implements OnIni
 
   //CARGA EL CATÁLOGO DE CARGOS DE INTEGRANTES DE DOCUMENTOS (COMBO "CARGO" DE CADA FILA DEL ASISTENTE):
   private cargarCargosIntegrantesDocumentos(): void {
-    this.cargosIntegrantesDocumentosService.findAllCargosIntegrantesDocumentos(undefined, undefined, 'nombreCargoIntegranteDocumentos', 'ASC')
+    this.cargosIntegrantesDocumentosService.findAllDocumentMemberPositions(undefined, undefined, 'nombreCargoIntegranteDocumentos', 'ASC')
       .subscribe({
         next: (cargos) => {
           this.cargosIntegrantesDocumentos = cargos;
@@ -107,7 +107,7 @@ export class ListadoIntegrantesDocumentosSolicInfraestComponent implements OnIni
   //CARGA EL HISTORIAL DE INTEGRANTES DE DOCUMENTOS Y SE QUEDA SOLO CON LOS QUE ESTÁN MARCADOS COMO "SI" EN
   //siONoActualIntegranteDocumentosPredeterminado (ÚNICOS DE DONDE SE PUEDEN ADJUNTAR DATOS AL COMITÉ):
   private cargarHistorialesIntegrantesDocumentosPredeterminados(): void {
-    this.historialIntegrantesDocumentosService.findAllHistorialesIntegrantesDocumentos(undefined, undefined, undefined, 'nombresYApellidosIntegranteDocumentos', 'ASC')
+    this.historialIntegrantesDocumentosService.findAllDocumentMemberHistories(undefined, undefined, undefined, 'nombresYApellidosIntegranteDocumentos', 'ASC')
       .subscribe({
         next: (historiales) => {
           this.historialesIntegrantesDocumentosPredeterminados = historiales.filter(h => h.siONoActualIntegranteDocumentosPredeterminado === 'SI');
@@ -126,7 +126,7 @@ export class ListadoIntegrantesDocumentosSolicInfraestComponent implements OnIni
       return;
     }
     this.cargando = true;
-    this.integrantesDocumentosSolicInfraestService.findAllIntegrantesDocumentosSolicInfraest(undefined, idSolicitudInfraestructura)
+    this.integrantesDocumentosSolicInfraestService.findAllInfrastructureRequestDocumentMembers(undefined, idSolicitudInfraestructura)
       .subscribe({
         next: (data) => {
           this.integranteDocumentosSolicInfraest = data[0] ?? null;
@@ -305,14 +305,14 @@ export class ListadoIntegrantesDocumentosSolicInfraestComponent implements OnIni
     };
 
     if (integranteDocumentosSolicInfraest.idIntegrantesSolicitudesInfraestructura) {
-      this.integrantesDocumentosSolicInfraestService.updateIntegrantesDocumentosSolicInfraest(integranteDocumentosSolicInfraest).subscribe({ next: alTerminar, error: alFallar });
+      this.integrantesDocumentosSolicInfraestService.updateInfrastructureRequestDocumentMember(integranteDocumentosSolicInfraest).subscribe({ next: alTerminar, error: alFallar });
     } else {
-      this.integrantesDocumentosSolicInfraestService.addIntegrantesDocumentosSolicInfraest(integranteDocumentosSolicInfraest).subscribe({ next: alTerminar, error: alFallar });
+      this.integrantesDocumentosSolicInfraestService.addInfrastructureRequestDocumentMember(integranteDocumentosSolicInfraest).subscribe({ next: alTerminar, error: alFallar });
     }
   }
 
   abrirModalVista(): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.modalVistaVisible = true;
       this.changeDetectorRef.markForCheck();
     });
@@ -323,7 +323,7 @@ export class ListadoIntegrantesDocumentosSolicInfraestComponent implements OnIni
   }
 
   abrirModalEliminar(): void {
-    this.spinnerService.mostrarAntesDeAbrir(() => {
+    this.spinnerService.showBeforeOpening(() => {
       this.modalEliminarVisible = true;
       this.changeDetectorRef.markForCheck();
     });
@@ -335,7 +335,7 @@ export class ListadoIntegrantesDocumentosSolicInfraestComponent implements OnIni
 
   //RECIBE EL ID DEL REGISTRO DE INTEGRANTES A ELIMINAR (DESDE EL MODAL DE CONFIRMACIÓN) Y LO ENVÍA AL BACKEND:
   eliminarIntegrantes(idIntegrantesSolicitudesInfraestructura: number): void {
-    this.integrantesDocumentosSolicInfraestService.deleteIntegrantesDocumentosSolicInfraest(idIntegrantesSolicitudesInfraestructura).subscribe({
+    this.integrantesDocumentosSolicInfraestService.deleteInfrastructureRequestDocumentMember(idIntegrantesSolicitudesInfraestructura).subscribe({
       next: (respuesta) => {
         this.mostrarToast('exito', respuesta.mensaje || 'Integrantes eliminados correctamente.');
         this.cargarIntegrantes();

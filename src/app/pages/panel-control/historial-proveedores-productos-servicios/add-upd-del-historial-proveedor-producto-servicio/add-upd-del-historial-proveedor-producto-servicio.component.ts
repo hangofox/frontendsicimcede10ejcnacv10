@@ -67,7 +67,7 @@ export class AddUpdDelHistorialProveedorProductoServicioComponent implements OnC
     this.buscando = true;
     this.mensajeBusqueda = '';
     this.busquedaForm.get('proveedorSeleccionado')?.setValue('');
-    this.proveedoresService.findAllProveedoresProductosServicios(undefined, undefined, termino, 'nombresProvProdOServ', 'ASC').subscribe({
+    this.proveedoresService.findAllProductOrServiceProviders(undefined, undefined, termino, 'nombresProvProdOServ', 'ASC').subscribe({
       next: proveedores => {
         this.proveedoresEncontrados = proveedores;
         this.buscando = false;
