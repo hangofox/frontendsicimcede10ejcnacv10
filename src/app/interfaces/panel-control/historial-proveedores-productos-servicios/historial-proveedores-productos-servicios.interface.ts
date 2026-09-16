@@ -16,7 +16,6 @@ export interface HistorialProveedoresProductosServiciosI {
   paisOrigenProvProdOServ: string;
   departamentoOEstadoOrigenProvProdOServ: string;
   ciudadOrigenProvProdOServ: string;
-  estadoProvProdOServ?: String;
   fechaHMSIngresoProvProdOServ?: string;
   fechaHMSModificacionProvProdOServ?: string;
 }

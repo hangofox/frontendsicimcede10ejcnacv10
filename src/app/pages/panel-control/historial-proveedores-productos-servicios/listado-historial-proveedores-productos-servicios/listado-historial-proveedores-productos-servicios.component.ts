@@ -1,10 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { forkJoin } from 'rxjs';
 import { HistorialProveedoresProductosServiciosI } from '../../../../interfaces/panel-control/historial-proveedores-productos-servicios/historial-proveedores-productos-servicios.interface';
 import { HistorialProveedoresProductosServiciosService } from '../../../../services/panel-control/historial-proveedores-productos-servicios/historial-proveedores-productos-servicios.service';
-import { ProveedoresProductosServiciosService } from '../../../../services/panel-control/proveedores-productos-servicios/proveedores-productos-servicios.service';
 import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 import { AddUpdDelHistorialProveedorProductoServicioComponent } from '../add-upd-del-historial-proveedor-producto-servicio/add-upd-del-historial-proveedor-producto-servicio.component';
 import { VistaHistorialProveedorProductoServicioComponent } from '../vista-historial-proveedor-producto-servicio/vista-historial-proveedor-producto-servicio.component';
@@ -21,8 +19,6 @@ export class ListadoHistorialProveedoresProductosServiciosComponent implements O
   form = this.fb.group({ keyword: [''], cantidad: ['10'] });
   registros: HistorialProveedoresProductosServiciosI[] = [];
   total = 0;
-  activos = 0;
-  inactivos = 0;
   pagina = 0;
   cantidad = 10;
   modal = false;
@@ -33,33 +29,22 @@ export class ListadoHistorialProveedoresProductosServiciosComponent implements O
 
   constructor(
     private readonly service: HistorialProveedoresProductosServiciosService,
-    private readonly proveedoresService: ProveedoresProductosServiciosService,
     private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void { this.listar(); }
 
+  //EL HISTORIAL NO TIENE COLUMNA DE ESTADO NI EN LA TABLA DE ORACLE NI EN HistorialProveedorProductoOServicioDTO,
+  //ASÍ QUE AQUÍ SOLO SE LISTA LA PÁGINA Y SE CUENTA EL TOTAL FILTRADO — MISMO PATRÓN QUE
+  //ListadoHistorialIntegrantesDocumentosComponent:
   listar(): void {
     const keyword = this.form.value.keyword?.trim() || undefined;
-    forkJoin({
-      pagina: this.service.findAllProductOrServiceProviderHistoriesPag(this.pagina, this.cantidad, undefined, keyword, 'idHistorialProveedorProductoOServicio', 'ASC'),
-      filtrados: this.service.findAllProductOrServiceProviderHistories(undefined, keyword, 'idHistorialProveedorProductoOServicio', 'ASC'),
-      proveedores: this.proveedoresService.findAllProductOrServiceProviders(undefined, undefined, undefined, 'idProveedorProductoOServicio', 'ASC')
-    }).subscribe(({ pagina, filtrados, proveedores }) => {
-      const estadosPorDocumento = new Map(
-        proveedores.map(proveedor => [String(proveedor.numeroDocumentoIdentificacionProvProdOServ), String(proveedor.estadoProvProdOServ || 'INACTIVO').toUpperCase()])
-      );
-      const completarEstado = (historial: HistorialProveedoresProductosServiciosI): HistorialProveedoresProductosServiciosI => ({
-        ...historial,
-        estadoProvProdOServ: historial.estadoProvProdOServ
-          ? String(historial.estadoProvProdOServ).toUpperCase()
-          : estadosPorDocumento.get(String(historial.numeroDocumentoIdentificacionProvProdOServ)) || 'INACTIVO'
-      });
-      this.registros = pagina.map(completarEstado);
-      const registrosFiltrados = filtrados.map(completarEstado);
-      this.total = registrosFiltrados.length;
-      this.activos = registrosFiltrados.filter(registro => registro.estadoProvProdOServ === 'ACTIVO').length;
-      this.inactivos = registrosFiltrados.filter(registro => registro.estadoProvProdOServ !== 'ACTIVO').length;
+    this.service.findAllProductOrServiceProviderHistoriesPag(this.pagina, this.cantidad, undefined, keyword, 'idHistorialProveedorProductoOServicio', 'ASC').subscribe(registros => {
+      this.registros = registros;
+      this.cdr.markForCheck();
+    });
+    this.service.findCountTotalRegisters(undefined, keyword).subscribe(total => {
+      this.total = total;
       this.cdr.markForCheck();
     });
   }
