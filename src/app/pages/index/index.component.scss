@@ -9,7 +9,11 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
+  //SE RECORTA CON 'clip' Y NO CON 'hidden': 'overflow-x: hidden' CONVIERTE EL EJE VERTICAL EN 'auto' Y ESTE
+  //CONTENEDOR PASA A SER EL ÁREA DE DESPLAZAMIENTO, LO QUE ANULA EL 'position: sticky' DEL MENÚ SUPERIOR.
+  //'clip' RECORTA IGUAL EL DESBORDE HORIZONTAL PERO NO CREA ÁREA DE DESPLAZAMIENTO, ASÍ QUE EL MENÚ SE SIGUE
+  //FIJANDO CONTRA LA VENTANA.
+  overflow-x: clip;
   background: #fff;
 }
 

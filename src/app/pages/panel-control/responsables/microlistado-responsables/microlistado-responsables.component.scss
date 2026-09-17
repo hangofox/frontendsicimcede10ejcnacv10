@@ -1,0 +1,46 @@
+@use '../listado-responsables/listado-responsables.component';
+
+.microlistado-responsables {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.microlistado-contexto {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--sicim-soft);
+  font-size: 13px;
+
+  .dato-label {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: var(--sicim-gray);
+  }
+}
+
+/* EL NÚMERO DE DOCUMENTO ES EL BOTÓN DE SELECCIÓN DEL MICROLISTADO */
+.btn-numero-documento {
+  padding: 5px 12px;
+  border: 1px solid var(--sicim-border);
+  border-radius: 4px;
+  background: var(--sicim-white);
+  color: var(--sicim-black);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+
+  &:hover { background: var(--sicim-black); color: var(--sicim-white); border-color: var(--sicim-black); }
+  &:focus-visible { outline: 2px solid var(--sicim-focus); outline-offset: 1px; }
+}
+
+.microlistado-acciones {
+  display: flex;
+  justify-content: flex-end;
+}

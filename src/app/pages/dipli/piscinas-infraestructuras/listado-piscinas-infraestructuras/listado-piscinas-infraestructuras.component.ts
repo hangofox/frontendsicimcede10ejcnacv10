@@ -2,38 +2,35 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
-import { InfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
-import { UnidadesMilitaresI } from '../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
-import { SociedadesUnidadesCentralizadorasI } from '../../../../../interfaces/panel-control/sociedades-unidades-centralizadoras/sociedades-unidades-centralizadoras.interface';
-import { TiposEstructurasInfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.interface';
-import { FuncionalidadesInfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/funcionalidades-infraestructuras/funcionalidades-infraestructuras.interface';
-import { SegurosI } from '../../../../../interfaces/seguros/seguros.interface';
-import { TerrenosI } from '../../../../../interfaces/digei/finca-raiz/terrenos/terrenos.interface';
+import { InfraestructurasI } from '../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
+import { UnidadesMilitaresI } from '../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
+import { SociedadesUnidadesCentralizadorasI } from '../../../../interfaces/panel-control/sociedades-unidades-centralizadoras/sociedades-unidades-centralizadoras.interface';
+import { TiposEstructurasInfraestructurasI } from '../../../../interfaces/digei/finca-raiz/tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.interface';
+import { FuncionalidadesInfraestructurasI } from '../../../../interfaces/digei/finca-raiz/funcionalidades-infraestructuras/funcionalidades-infraestructuras.interface';
+import { SegurosI } from '../../../../interfaces/seguros/seguros.interface';
+import { TerrenosI } from '../../../../interfaces/digei/finca-raiz/terrenos/terrenos.interface';
 
-import { InfraestructurasService } from '../../../../../services/digei/finca-raiz/infraestructuras/infraestructuras.service';
-import { UnidadesMilitaresService } from '../../../../../services/panel-control/unidades-militares/unidades-militares.service';
-import { SociedadesUnidadesCentralizadorasService } from '../../../../../services/panel-control/sociedades-unidades-centralizadoras/sociedades-unidades-centralizadoras.service';
-import { TiposEstructurasInfraestructurasService } from '../../../../../services/digei/finca-raiz/tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.service';
-import { FuncionalidadesInfraestructurasService } from '../../../../../services/digei/finca-raiz/funcionalidades-infraestructuras/funcionalidades-infraestructuras.service';
-import { SegurosService } from '../../../../../services/seguros/seguros.service';
-import { TerrenosService } from '../../../../../services/digei/finca-raiz/terrenos/terrenos.service';
-import { SpinnerService } from '../../../../../services/spinner/spinner.service';
-import { HistorialResponsablesInfraestService } from '../../../../../services/digei/finca-raiz/infraestructuras/historial-responsables-infraest/historial-responsables-infraest.service';
+import { InfraestructurasService } from '../../../../services/digei/finca-raiz/infraestructuras/infraestructuras.service';
+import { UnidadesMilitaresService } from '../../../../services/panel-control/unidades-militares/unidades-militares.service';
+import { SociedadesUnidadesCentralizadorasService } from '../../../../services/panel-control/sociedades-unidades-centralizadoras/sociedades-unidades-centralizadoras.service';
+import { TiposEstructurasInfraestructurasService } from '../../../../services/digei/finca-raiz/tipos-estructuras-infraestructuras/tipos-estructuras-infraestructuras.service';
+import { FuncionalidadesInfraestructurasService } from '../../../../services/digei/finca-raiz/funcionalidades-infraestructuras/funcionalidades-infraestructuras.service';
+import { SegurosService } from '../../../../services/seguros/seguros.service';
+import { TerrenosService } from '../../../../services/digei/finca-raiz/terrenos/terrenos.service';
+import { SpinnerService } from '../../../../services/spinner/spinner.service';
 
-import { AddUpdDelInfraestructuraComponent } from '../add-upd-del-infraestructura/add-upd-del-infraestructura.component';
-import { VistaInfraestructuraComponent } from '../vista-infraestructura/vista-infraestructura.component';
-import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
-import { ListadoAddUpdDelResponsablesInfraestComponent } from '../historial-responsables-infraest/listado-add-upd-del-responsables-infraest/listado-add-upd-del-responsables-infraest.component';
+import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { ListadoHistorialQuimicosPiscinasInfraestComponent } from '../historial-quimicos-piscinas-infraest/listado-historial-quimicos-piscinas-infraest/listado-historial-quimicos-piscinas-infraest.component';
 
 @Component({
-  selector: 'app-listado-infraestructuras',
+  selector: 'app-listado-piscinas-infraestructuras',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelInfraestructuraComponent, VistaInfraestructuraComponent, SemaforoContadoresComponent, ListadoAddUpdDelResponsablesInfraestComponent],
-  templateUrl: './listado-infraestructuras.component.html',
-  styleUrl: './listado-infraestructuras.component.scss',
+  imports: [CommonModule, ReactiveFormsModule, SemaforoContadoresComponent, ListadoHistorialQuimicosPiscinasInfraestComponent],
+  templateUrl: './listado-piscinas-infraestructuras.component.html',
+  styleUrl: './listado-piscinas-infraestructuras.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListadoInfraestructurasComponent implements OnInit {
+export class ListadoPiscinasInfraestructurasComponent implements OnInit {
 
   //CATÁLOGOS CARGADOS DESDE EL BACKEND (COMBO DE FILTRO Y/O COMBOS DEL FORMULARIO):
   unidadesMilitares: UnidadesMilitaresI[] = [];
@@ -63,15 +60,8 @@ export class ListadoInfraestructurasComponent implements OnInit {
   tandaNumeroRegistrosporPagina = 10;
 
   //ESTADO DE MODALES:
-  modalAddUpdDelVisible = false;
-  modalVistaVisible = false;
-  modalHistorialResponsablesVisible = false;
-  modalModo: 'guardar' | 'modificar' | 'eliminar' = 'guardar';
+  modalHistorialQuimicosVisible = false;
   infraestructuraSeleccionada: InfraestructurasI | null = null;
-
-  //RÓTULO DEL RESPONSABLE PREDETERMINADO (GRADO, NOMBRES Y APELLIDOS) POR ID DE INFRAESTRUCTURA, PARA LA COLUMNA
-  //RESPONSABLES DE LA TABLA:
-  private responsablesPredeterminados = new Map<number, string>();
 
   //TOAST LOCAL:
   toastMensaje = '';
@@ -88,8 +78,7 @@ export class ListadoInfraestructurasComponent implements OnInit {
     private funcionalidadesInfraestructurasService: FuncionalidadesInfraestructurasService,
     private segurosService: SegurosService,
     private terrenosService: TerrenosService,
-    private spinnerService: SpinnerService,
-    private historialResponsablesInfraestService: HistorialResponsablesInfraestService
+    private spinnerService: SpinnerService
   ) {
     this.infraestructurasForm = this.formBuilder.group({
       ctextPalabraClave: new FormControl(''),
@@ -106,56 +95,7 @@ export class ListadoInfraestructurasComponent implements OnInit {
     this.cargarFuncionalidadesInfraestructuras();
     this.cargarSeguros();
     this.cargarTerrenos();
-    this.cargarResponsablesPredeterminados();
     this.accionListar();
-  }
-
-  //CARGA EL HISTORIAL DE RESPONSABLES Y SE QUEDA CON EL PREDETERMINADO DE CADA INFRAESTRUCTURA. EL BACKEND NO
-  //EXPONE UN FILTRO POR idInfraestructura EN /historialesResponsablesInfraestructuras, ASÍ QUE SE TRAE EL LISTADO
-  //COMPLETO UNA SOLA VEZ Y SE INDEXA EN MEMORIA PARA NO CONSULTAR UNA VEZ POR FILA:
-  private cargarResponsablesPredeterminados(): void {
-    this.historialResponsablesInfraestService.findAllInfrastructureResponsibleHistories(undefined, undefined, 'idHistorialResponsableInfraestructura', 'ASC')
-      .subscribe({
-        next: (historiales) => {
-          this.responsablesPredeterminados = new Map<number, string>();
-          historiales
-            .filter(historial => String(historial.siONoActualResponsablePredeterminado).toUpperCase() === 'SI')
-            .forEach(historial => {
-              const idInfraestructura = Number(historial.infraestructuraDTO?.idInfraestructura);
-              if (!idInfraestructura) return;
-              const nombreCompleto = [
-                historial.gradoResponsable,
-                historial.nombresResponsable,
-                historial.primerApellidoResponsable,
-                historial.segundoApellidoResponsable
-              ].map(valor => String(valor || '').trim()).filter(Boolean).join(' ');
-              this.responsablesPredeterminados.set(idInfraestructura, nombreCompleto);
-            });
-          this.changeDetectorRef.markForCheck();
-        },
-        error: (err) => console.error('ERROR AL CARGAR LOS RESPONSABLES PREDETERMINADOS DE LAS INFRAESTRUCTURAS: ', err)
-      });
-  }
-
-  //DEVUELVE EL RÓTULO DEL RESPONSABLE PREDETERMINADO DE LA INFRAESTRUCTURA, O CADENA VACÍA SI AÚN NO TIENE UNO:
-  responsablePredeterminado(infraestructura: InfraestructurasI): string {
-    return this.responsablesPredeterminados.get(Number(infraestructura.idInfraestructura)) || '';
-  }
-
-  //ABRE EL HISTORIAL DE RESPONSABLES DE LA INFRAESTRUCTURA SELECCIONADA:
-  abrirModalHistorialResponsables(infraestructura: InfraestructurasI): void {
-    this.spinnerService.showBeforeOpening(() => {
-      this.infraestructuraSeleccionada = infraestructura;
-      this.modalHistorialResponsablesVisible = true;
-      this.changeDetectorRef.markForCheck();
-    });
-  }
-
-  //AL CERRAR EL HISTORIAL SE REFRESCA LA COLUMNA RESPONSABLES, PORQUE DENTRO SE PUDO CAMBIAR EL PREDETERMINADO:
-  cerrarModalHistorialResponsables(): void {
-    this.modalHistorialResponsablesVisible = false;
-    this.infraestructuraSeleccionada = null;
-    this.cargarResponsablesPredeterminados();
   }
 
   //CARGA EL CATÁLOGO DE UNIDADES MILITARES DESDE EL BACKEND (COMBO DE FILTRO Y COMBO DEL FORMULARIO):
@@ -187,7 +127,13 @@ export class ListadoInfraestructurasComponent implements OnInit {
     this.tiposEstructurasInfraestructurasService.findAllTypesOfInfrastructureStructures(undefined, undefined, 'nombreTipoEstructuraInfraestructura', 'ASC')
       .subscribe({
         next: (tiposEstructurasInfraestructuras) => {
-          this.tiposEstructurasInfraestructuras = tiposEstructurasInfraestructuras;
+          //EL COMBO SOLO OFRECE LOS TIPOS DE PISCINA: OFRECER EL CATÁLOGO COMPLETO DEJARÍA ELEGIR TIPOS QUE
+          //SIEMPRE DEVOLVERÍAN LA TABLA VACÍA, PORQUE ESTE LISTADO YA ESTÁ ACOTADO A PISCINAS:
+          this.tiposEstructurasInfraestructuras = tiposEstructurasInfraestructuras.filter(tipoEstructura =>
+            this.nombresTiposEstructurasPiscinas.includes(
+              this.normalizarNombreTipoEstructura(tipoEstructura.nombreTipoEstructuraInfraestructura)
+            )
+          );
           this.changeDetectorRef.markForCheck();
         },
         error: (err) => console.error('ERROR AL CARGAR TIPOS DE ESTRUCTURA DE INFRAESTRUCTURA: ', err)
@@ -252,10 +198,14 @@ export class ListadoInfraestructurasComponent implements OnInit {
       'ASC'
     ).subscribe({
       next: (registros) => {
-        const infraestructurasFiltradas = registros.filter(infraestructura =>
-          !idTipoEstructura ||
-          Number(infraestructura.tipoEstructuraInfraestructuraDTO?.idTipoEstructuraInfraestructura) === idTipoEstructura
-        );
+        //ESTE LISTADO DE DIPLI SOLO MUESTRA INFRAESTRUCTURAS DE TIPO PISCINA: EL BACKEND DEVUELVE TODAS LAS
+        //INFRAESTRUCTURAS, ASÍ QUE EL RECORTE POR TIPO DE ESTRUCTURA SE APLICA AQUÍ ANTES DE CUALQUIER OTRO FILTRO:
+        const infraestructurasFiltradas = registros
+          .filter(infraestructura => this.esInfraestructuraPiscina(infraestructura))
+          .filter(infraestructura =>
+            !idTipoEstructura ||
+            Number(infraestructura.tipoEstructuraInfraestructuraDTO?.idTipoEstructuraInfraestructura) === idTipoEstructura
+          );
         this.totalRegistros = infraestructurasFiltradas.length;
         const ultimaPagina = Math.max(0, Math.ceil(this.totalRegistros / this.tandaNumeroRegistrosporPagina) - 1);
         this.paginaActual = Math.min(this.paginaActual, ultimaPagina);
@@ -305,77 +255,42 @@ export class ListadoInfraestructurasComponent implements OnInit {
     this.accionListar();
   }
 
-  //ABRE EL MODAL DE CREAR / MODIFICAR / ELIMINAR, MOSTRANDO PRIMERO EL SPINNER GLOBAL DEL PIÑÓN GIRATORIO
-  //(SpinnerModalComponent, MONTADO EN LA RAÍZ DE LA APLICACIÓN):
-  abrirModalAddUpdDel(modo: 'guardar' | 'modificar' | 'eliminar', infraestructura: InfraestructurasI | null = null): void {
+  //TIPOS DE ESTRUCTURA QUE DIPLI RECONOCE COMO PISCINA. SE COMPARAN NORMALIZADOS (SIN TILDES, SIN ESPACIOS
+  //REPETIDOS Y EN MAYÚSCULAS) PORQUE EL CATÁLOGO DE ORACLE NO GARANTIZA UN FORMATO ÚNICO:
+  private readonly nombresTiposEstructurasPiscinas = [
+    'PISCINA(S) CASINOS',
+    'PISCINA(S) CENTRO RECREACIONAL',
+    'PISCINA(S) DE EDUCACION / ENTRENAMIENTO'
+  ];
+
+  private normalizarNombreTipoEstructura(nombreTipoEstructura: unknown): string {
+    return String(nombreTipoEstructura ?? '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .replace(/\s+/g, ' ')
+      .toUpperCase();
+  }
+
+  esInfraestructuraPiscina(infraestructura: InfraestructurasI): boolean {
+    return this.nombresTiposEstructurasPiscinas.includes(
+      this.normalizarNombreTipoEstructura(infraestructura.tipoEstructuraInfraestructuraDTO?.nombreTipoEstructuraInfraestructura)
+    );
+  }
+
+  abrirModalHistorialQuimicos(infraestructura: InfraestructurasI): void {
+    if (!this.esInfraestructuraPiscina(infraestructura)) return;
+
     this.spinnerService.showBeforeOpening(() => {
-      this.modalModo = modo;
       this.infraestructuraSeleccionada = infraestructura;
-      this.modalAddUpdDelVisible = true;
+      this.modalHistorialQuimicosVisible = true;
       this.changeDetectorRef.markForCheck();
     });
   }
 
-  abrirModalVista(infraestructura: InfraestructurasI): void {
-    this.spinnerService.showBeforeOpening(() => {
-      this.infraestructuraSeleccionada = infraestructura;
-      this.modalVistaVisible = true;
-      this.changeDetectorRef.markForCheck();
-    });
-  }
-
-  cerrarModalAddUpdDel(): void {
-    this.modalAddUpdDelVisible = false;
+  cerrarModalHistorialQuimicos(): void {
+    this.modalHistorialQuimicosVisible = false;
     this.infraestructuraSeleccionada = null;
-  }
-
-  cerrarModalVista(): void {
-    this.modalVistaVisible = false;
-    this.infraestructuraSeleccionada = null;
-  }
-
-  //RECIBE LA INFRAESTRUCTURA NUEVA O MODIFICADA DESDE EL MODAL Y LA ENVÍA AL BACKEND (POST SI ES NUEVA, PUT SI YA TIENE ID):
-  guardarInfraestructura(infraestructura: InfraestructurasI): void {
-    if (infraestructura.idInfraestructura) {
-      this.infraestructurasService.updateInfrastructure(infraestructura).subscribe({
-        next: (respuesta) => {
-          this.mostrarToast('exito', respuesta.mensaje || 'Infraestructura modificada correctamente.');
-          this.accionListar();
-          this.cerrarModalAddUpdDel();
-        },
-        error: (err) => {
-          console.error('ERROR AL MODIFICAR INFRAESTRUCTURA: ', err);
-          this.mostrarToast('error', err.error?.mensaje || 'Error al modificar la infraestructura.');
-        }
-      });
-    } else {
-      this.infraestructurasService.addInfrastructure(infraestructura).subscribe({
-        next: (respuesta) => {
-          this.mostrarToast('exito', respuesta.mensaje || 'Infraestructura creada correctamente.');
-          this.accionListar();
-          this.cerrarModalAddUpdDel();
-        },
-        error: (err) => {
-          console.error('ERROR AL CREAR INFRAESTRUCTURA: ', err);
-          this.mostrarToast('error', err.error?.mensaje || 'Error al crear la infraestructura.');
-        }
-      });
-    }
-  }
-
-  //RECIBE EL ID DE LA INFRAESTRUCTURA A ELIMINAR Y LO ENVÍA AL BACKEND:
-  eliminarInfraestructura(idInfraestructura: number): void {
-    this.infraestructurasService.deleteInfrastructure(idInfraestructura).subscribe({
-      next: (respuesta) => {
-        this.mostrarToast('exito', respuesta.mensaje || 'Infraestructura eliminada correctamente.');
-        this.accionListar();
-        this.cerrarModalAddUpdDel();
-      },
-      error: (err) => {
-        console.error('ERROR AL ELIMINAR INFRAESTRUCTURA: ', err);
-        this.mostrarToast('error', err.error?.mensaje || 'Error al eliminar la infraestructura.');
-      }
-    });
   }
 
   private mostrarToast(tipo: 'exito' | 'error', mensaje: string): void {

@@ -54,7 +54,14 @@ export const routes: Routes = [
       },
       { path: 'dinco', loadComponent: () => import('./pages/dinco/dinco.component').then(m => m.DincoComponent), title: 'DINCO | SICIM' },
       { path: 'diesp', loadComponent: () => import('./pages/diesp/diesp.component').then(m => m.DiespComponent), title: 'DIESP | SICIM' },
-      { path: 'dipli', loadComponent: () => import('./pages/dipli/dipli.component').then(m => m.DipliComponent), title: 'DIPLI | SICIM' },
+      {
+        path: 'dipli',
+        children: [
+          { path: '', loadComponent: () => import('./pages/dipli/dipli.component').then(m => m.DipliComponent), title: 'DIPLI | SICIM' },
+          { path: 'piscinas-infraestructuras/listado-piscinas-infraestructuras', loadComponent: () => import('./pages/dipli/piscinas-infraestructuras/listado-piscinas-infraestructuras/listado-piscinas-infraestructuras.component').then(m => m.ListadoPiscinasInfraestructurasComponent), title: 'Piscinas | SICIM' },
+          { path: 'piscinas-infraestructuras', redirectTo: 'piscinas-infraestructuras/listado-piscinas-infraestructuras', pathMatch: 'full' }
+        ]
+      },
       {
         path: 'panel-control',
         children: [

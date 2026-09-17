@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { HistorialQuimicosPiscinasInfraestI, HistorialQuimicosPiscinasInfraestMsj } from '../../../../../interfaces/digei/finca-raiz/infraestructuras/historial-quimicos-piscinas-infraest/historial-quimicos-piscinas-infraest.interface';
-import { ResponseHistorialQuimicoPiscinaInfraestDTO } from '../../../../../interfaces/digei/finca-raiz/infraestructuras/historial-quimicos-piscinas-infraest/responseHistorialQuimicoPiscinaInfraestDTO.interface';
+import { HistorialQuimicosPiscinasInfraestI, HistorialQuimicosPiscinasInfraestMsj } from '../../../../interfaces/dipli/piscinas-infraestructuras/historial-quimicos-piscinas-infraest/historial-quimicos-piscinas-infraest.interface';
+import { ResponseHistorialQuimicoPiscinaInfraestDTO } from '../../../../interfaces/dipli/piscinas-infraestructuras/historial-quimicos-piscinas-infraest/responseHistorialQuimicoPiscinaInfraestDTO.interface';
 
 @Injectable({ providedIn: 'root' })
 export class HistorialQuimicosPiscinasInfraestService {

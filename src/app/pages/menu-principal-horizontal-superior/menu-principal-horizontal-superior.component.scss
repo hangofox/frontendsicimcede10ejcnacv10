@@ -1,3 +1,16 @@
+/* El menú viaja con el desplazamiento de la página: mientras el cabezote
+   está a la vista conserva su sitio en el flujo, y en cuanto el borde
+   superior lo alcanza queda fijo ahí, superpuesto al contenido que sigue
+   pasando por debajo. Al volver a subir se reintegra solo a su posición.
+   El z-index queda por encima del contenido pero por debajo de los modales
+   (que usan 1000 en adelante), para no taparlos. */
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
 /* Geometría centralizada del menú futurista. */
 .menu {
   --menu-alto: 84px;
@@ -464,6 +477,16 @@
    columnas a partir del ancho disponible, sin necesidad de un breakpoint
    por cada recuento. */
 @media (max-width: 900px) {
+  /* Aquí las piezas se reparten en varias filas y el menú deja de medir una
+     altura fija. Fijado al borde superior podría ocupar media pantalla, así
+     que se le pone un techo y, si lo supera, se desplaza por dentro: ninguna
+     opción se pierde y el contenido sigue a la vista. */
+  :host {
+    max-height: 50dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
   .menu__marco { height: auto; }
 
   .menu__interior,

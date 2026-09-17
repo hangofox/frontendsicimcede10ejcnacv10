@@ -9,6 +9,7 @@ import { UnidadesMilitaresService } from '../../../../services/panel-control/uni
 import { SpinnerService } from '../../../../services/spinner/spinner.service';
 import { ParametrosSistemaService } from '../../../../services/panel-control/parametros-sistema/parametros-sistema.service';
 import { GestionArchivosService } from '../../../../services/gestion-archivos/gestion-archivos.service';
+import { CentrosCostosUnidadesMilitaresService } from '../../../../services/panel-control/unidades-militares/centros-costos-unidades-militares/centros-costos-unidades-militares.service';
 
 import { AddUpdDelUnidadMilitarComponent, GuardadoUnidadMilitarEvent } from '../add-upd-del-unidad-militar/add-upd-del-unidad-militar.component';
 import { VistaUnidadMilitarComponent } from '../vista-unidad-militar/vista-unidad-militar.component';
@@ -55,6 +56,9 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
   //DESHABILITADAS, IGUAL QUE EN PortalSiadmecEjcNacionalV20 (listado-unidades-militares.component.html):
   private readonly siglasUnidadesMilitaresProtegidas = ['TODAS LAS UNIDADES MILITARES', 'OTRA UNIDAD MILITAR U ORGANIZACION', 'BAJASEQYPERS'];
 
+  //CANTIDAD DE CENTROS DE COSTO POR ID DE UNIDAD MILITAR, PARA LA COLUMNA CENTRO DE COSTO DE LA TABLA:
+  cantidadCentrosCostosPorUnidadMilitar = new Map<number, number>();
+
   esUnidadMilitarProtegida(unidadMilitar: UnidadesMilitaresI): boolean {
     return this.siglasUnidadesMilitaresProtegidas.includes(String(unidadMilitar.siglaoAcronimoUnidadMilitar));
   }
@@ -65,7 +69,8 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
     private unidadesMilitaresService: UnidadesMilitaresService,
     private parametrosSistemaService: ParametrosSistemaService,
     private gestionArchivosService: GestionArchivosService,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
+    private centrosCostosUnidadesMilitaresService: CentrosCostosUnidadesMilitaresService
   ) {
     this.unidadesMilitaresForm = this.formBuilder.group({
       ctextPalabraClave: new FormControl(''),
@@ -74,7 +79,29 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.cargarIndicadoresCentrosCostos();
     this.accionListar();
+  }
+
+  //CONSULTA LOS CENTROS DE COSTO REALES PARA MOSTRAR CUÁNTOS TIENE ASOCIADOS CADA UNIDAD MILITAR. SE TRAEN TODOS DE
+  //UNA SOLA VEZ Y SE INDEXAN EN MEMORIA PARA NO CONSULTAR UNA VEZ POR FILA — MISMO PATRÓN QUE
+  //ListadoOficinasComponent.cargarIndicadoresCentrosCostos():
+  private cargarIndicadoresCentrosCostos(): void {
+    this.centrosCostosUnidadesMilitaresService.findAllMilitaryUnitCostCenters(undefined, undefined, undefined, 'idCentroCostoUnidadMilitar', 'ASC').subscribe({
+      next: centrosCostos => {
+        this.cantidadCentrosCostosPorUnidadMilitar = centrosCostos.reduce((cantidades, centroCosto) => {
+          const idUnidadMilitar = Number(centroCosto.unidadMilitarDTO?.idUnidadMilitar);
+          if (idUnidadMilitar > 0) cantidades.set(idUnidadMilitar, (cantidades.get(idUnidadMilitar) ?? 0) + 1);
+          return cantidades;
+        }, new Map<number, number>());
+        this.changeDetectorRef.markForCheck();
+      },
+      error: error => console.error('ERROR AL CARGAR INDICADORES DE CENTROS DE COSTO: ', error)
+    });
+  }
+
+  cantidadCentrosCostos(unidadMilitar: UnidadesMilitaresI): number {
+    return this.cantidadCentrosCostosPorUnidadMilitar.get(Number(unidadMilitar.idUnidadMilitar)) ?? 0;
   }
 
   //RESETEA LA PÁGINA Y VUELVE A CONSULTAR EL BACKEND CON LA PALABRA CLAVE ACTUAL:

@@ -155,9 +155,190 @@
     }
   </div>
 
+  <!-- Panel del titulo SICIM. Toda la pieza es un SVG multicapa trazado sobre
+       el lienzo 326 x 97 medido en la referencia: forma visible de 314 x 69
+       (razon 4,55) centrada en x=163 / y=48,5, con margen transparente arriba
+       y abajo para que los resplandores no se recorten.
+       El <h1> visible para lectores de pantalla queda fuera del SVG; todos los
+       grupos graficos son decorativos. -->
   <div class="marca">
-    <h1>SICIM</h1>
-    <p>Sistema Integrado para el Control de Ingenieros Militares</p>
+    <h1 class="sr-only">SICIM</h1>
+
+    <svg class="sicim" viewBox="0 0 326 97" preserveAspectRatio="xMidYMid meet" role="img" aria-label="SICIM" focusable="false">
+      <defs>
+        <linearGradient id="sicim-shell-metal" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#aeb4bd"/><stop offset=".16" stop-color="#51565e"/>
+          <stop offset=".42" stop-color="#111217"/><stop offset=".68" stop-color="#050507"/>
+          <stop offset=".86" stop-color="#34373e"/><stop offset="1" stop-color="#7d838c"/>
+        </linearGradient>
+        <linearGradient id="sicim-red-frame" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ff496c"/><stop offset=".12" stop-color="#f20b3d"/>
+          <stop offset=".42" stop-color="#790018"/><stop offset=".62" stop-color="#4a000e"/>
+          <stop offset=".88" stop-color="#bd0028"/><stop offset="1" stop-color="#ff496c"/>
+        </linearGradient>
+        <linearGradient id="sicim-tab-metal" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#15161b"/><stop offset=".38" stop-color="#8e949c"/>
+          <stop offset=".55" stop-color="#d6d9df"/><stop offset=".72" stop-color="#43474e"/>
+          <stop offset="1" stop-color="#050507"/>
+        </linearGradient>
+        <linearGradient id="sicim-tip-front" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#bec1c6"/><stop offset=".16" stop-color="#6f7279"/>
+          <stop offset=".42" stop-color="#303138"/><stop offset=".72" stop-color="#141419"/>
+          <stop offset="1" stop-color="#686b72"/>
+        </linearGradient>
+        <linearGradient id="sicim-tip-red-transition" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#590712" stop-opacity=".25"/>
+          <stop offset=".55" stop-color="#c80d30" stop-opacity=".8"/>
+          <stop offset="1" stop-color="#ff1748"/>
+        </linearGradient>
+        <linearGradient id="sicim-tip-rail" x1="8" y1="0" x2="96" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#aeb1b7"/><stop offset=".12" stop-color="#70737a"/>
+          <stop offset=".24" stop-color="#2a2c32"/><stop offset=".36" stop-color="#39050d"/>
+          <stop offset=".47" stop-color="#a70b27"/><stop offset=".55" stop-color="#ff1748"/>
+          <stop offset=".66" stop-color="#940a22"/><stop offset=".78" stop-color="#31040b"/>
+          <stop offset=".9" stop-color="#686b72"/><stop offset="1" stop-color="#b9bcc1"/>
+        </linearGradient>
+        <linearGradient id="sicim-rail-highlight" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#fff8fa" stop-opacity="0"/><stop offset=".48" stop-color="#fff8fa" stop-opacity=".78"/>
+          <stop offset=".55" stop-color="#ffb7c4" stop-opacity=".52"/><stop offset="1" stop-color="#ffb7c4" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="sicim-horizontal-fade" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#b5092a" stop-opacity="0"/><stop offset=".22" stop-color="#b5092a" stop-opacity=".04"/>
+          <stop offset=".34" stop-color="#c80d30" stop-opacity=".12"/><stop offset=".43" stop-color="#ff1748" stop-opacity=".35"/>
+          <stop offset=".48" stop-color="#ff6b87" stop-opacity=".7"/><stop offset=".5" stop-color="#ffb7c4"/>
+          <stop offset=".52" stop-color="#ff6b87" stop-opacity=".7"/><stop offset=".57" stop-color="#ff1748" stop-opacity=".35"/>
+          <stop offset=".66" stop-color="#c80d30" stop-opacity=".12"/><stop offset=".78" stop-color="#b5092a" stop-opacity=".04"/>
+          <stop offset="1" stop-color="#b5092a" stop-opacity="0"/>
+        </linearGradient>
+        <radialGradient id="sicim-vertical-fall">
+          <stop offset="0" stop-color="#ffb7c4" stop-opacity=".65"/><stop offset=".18" stop-color="#ff496c" stop-opacity=".5"/>
+          <stop offset=".42" stop-color="#ff1748" stop-opacity=".28"/><stop offset=".72" stop-color="#790018" stop-opacity=".08"/>
+          <stop offset="1" stop-color="#590712" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="sicim-center-surface" cx="50%" cy="47%" r="70%">
+          <stop offset="0" stop-color="#42000f"/><stop offset=".42" stop-color="#250007"/>
+          <stop offset=".78" stop-color="#0d0306"/><stop offset="1" stop-color="#020204"/>
+        </radialGradient>
+        <linearGradient id="sicim-metal-text" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffffff"/><stop offset=".25" stop-color="#f6f6f6"/>
+          <stop offset=".55" stop-color="#b9bcc0"/><stop offset=".75" stop-color="#ffffff"/>
+          <stop offset="1" stop-color="#8d9298"/>
+        </linearGradient>
+        <radialGradient id="sicim-flare">
+          <stop offset="0" stop-color="#ffffff" stop-opacity="1"/><stop offset=".2" stop-color="#fff0f4" stop-opacity=".9"/>
+          <stop offset=".48" stop-color="#ff496c" stop-opacity=".52"/><stop offset="1" stop-color="#bd0028" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="sicim-soft-glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="2.2"/></filter>
+        <filter id="sicim-central-core-glow" x="-200%" y="-250%" width="500%" height="600%">
+          <feGaussianBlur stdDeviation="1.15" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="sicim-central-bloom" x="-120%" y="-180%" width="340%" height="460%"><feGaussianBlur stdDeviation="6.4"/></filter>
+        <filter id="sicim-horizontal-flare" x="-120%" y="-300%" width="340%" height="700%"><feGaussianBlur stdDeviation="2.8"/></filter>
+        <filter id="sicim-vertical-diffuse" x="-180%" y="-100%" width="460%" height="300%"><feGaussianBlur stdDeviation="3.2 4.4"/></filter>
+        <filter id="sicim-core-soft" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="1.2"/></filter>
+        <filter id="sicim-edge-red-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="1.8"/></filter>
+        <filter id="sicim-text-shadow" x="-20%" y="-30%" width="140%" height="160%">
+          <feDropShadow dx="0" dy="1.2" stdDeviation="1" flood-color="#000" flood-opacity=".95"/>
+          <feDropShadow dx="0" dy="0" stdDeviation="1.4" flood-color="#bd0028" flood-opacity=".38"/>
+        </filter>
+
+        <path id="sicim-outer-profile" d="M6 48.5Q6 45 9 42L27 24Q29 22 33 22H87L96 16H136L143 20H183L190 16H230L239 22H293Q297 22 299 25L317 43Q320 46 320 48.5T317 54L299 72Q297 75 293 75H239L230 81H190L183 77H143L136 81H96L87 75H33Q29 75 27 73L9 55Q6 52 6 48.5Z"/>
+        <path id="sicim-inner-profile" d="M15 48.5Q15 46 17 44L34 29Q36 28 39 28H91L99 22H227L235 28H287Q290 28 292 30L309 45Q311 47 311 48.5T309 52L292 67Q290 69 287 69H235L227 75H99L91 69H39Q36 69 34 68L17 53Q15 51 15 48.5Z"/>
+        <g id="sicim-side-module">
+          <!-- Volumen cerrado de la punta: sombra, cara frontal y biseles. -->
+          <path d="M5 48.5Q5 44 9 40L26 22Q29 19 34 19H72L78 25H35Q32 25 30 27L13 44Q9 48.5 13 53L30 70Q32 72 35 72H78L72 78H34Q29 78 26 75L9 57Q5 53 5 48.5Z" fill="#020203"/>
+          <path d="M8 48.5Q8 45 11 42L28 24Q30 22 34 22H73L78 27H36Q33 27 31 29L16 44Q12 48.5 16 53L31 68Q33 70 36 70H78L73 75H34Q30 75 28 73L11 55Q8 52 8 48.5Z" fill="url(#sicim-tip-front)"/>
+          <path d="M11 43 29 24Q31 22 35 22H72L75 25H36Q33 25 31 28L15 44Z" fill="#bec1c6" opacity=".56"/>
+          <path d="M11 54 29 73Q31 75 35 75H72L75 72H36Q33 72 31 69L15 53Z" fill="#141419" opacity=".9"/>
+          <!-- Cada riel usa exactamente el mismo recorrido para sombra y cara. -->
+          <path d="M8 48.5Q8 46 11 42L28 24Q30 22 34 22H88Q91 22 96 18M8 48.5Q8 51 11 55L28 73Q30 75 34 75H88Q91 75 96 79" fill="none" stroke="#020203" stroke-width="8" stroke-linejoin="round"/>
+          <path d="M8 48.5Q8 46 11 42L28 24Q30 22 34 22H88Q91 22 96 18M8 48.5Q8 51 11 55L28 73Q30 75 34 75H88Q91 75 96 79" fill="none" stroke="url(#sicim-tip-rail)" stroke-width="3.8" stroke-linejoin="round"/>
+          <path d="M17 48.5 34 31H69L77 27M17 48.5 34 66H69L77 70" fill="none" stroke="#120207" stroke-width="5" stroke-linejoin="round"/>
+          <path d="M17 48.5 34 31H69L77 27M17 48.5 34 66H69L77 70" fill="none" stroke="url(#sicim-tip-rail)" stroke-width="1.65" stroke-linejoin="round"/>
+          <!-- Reflejos parciales: nunca atraviesan la ranura roja. -->
+          <path d="M13 42 28 27" fill="none" stroke="url(#sicim-rail-highlight)" stroke-width=".85" stroke-linecap="round" filter="url(#sicim-core-soft)"/>
+          <path d="M39 23.8H63" fill="none" stroke="url(#sicim-rail-highlight)" stroke-width=".8" stroke-linecap="round"/>
+          <path d="M14 54 27 68" fill="none" stroke="url(#sicim-rail-highlight)" stroke-width=".65" stroke-linecap="round" opacity=".48"/>
+          <path d="M36 40 28 48.5 36 57M48 40 40 48.5 48 57" class="sicim__chevron"/>
+        </g>
+      </defs>
+
+      <g class="panel-shadow" aria-hidden="true">
+        <use href="#sicim-outer-profile" fill="#020204" stroke="#000" stroke-width="7" stroke-linejoin="round"/>
+      </g>
+
+      <g class="outer-metal-shell" aria-hidden="true">
+        <use href="#sicim-outer-profile" fill="url(#sicim-shell-metal)" stroke="#07070a" stroke-width="3.2" stroke-linejoin="round"/>
+        <use href="#sicim-outer-profile" fill="none" stroke="#90959d" stroke-width="1" opacity=".42" stroke-linejoin="round"/>
+      </g>
+
+      <g class="dark-center-surface" aria-hidden="true">
+        <use href="#sicim-inner-profile" fill="url(#sicim-center-surface)" stroke="#180006" stroke-width="2"/>
+        <path d="M44 31H282L299 48.5 282 66H44L27 48.5Z" fill="none" stroke="#4a000e" stroke-width="1.2" opacity=".7"/>
+      </g>
+
+      <g class="outer-red-frame" aria-hidden="true">
+        <use href="#sicim-outer-profile" fill="none" stroke="#2a0009" stroke-width="5.4" stroke-linejoin="round"/>
+        <use href="#sicim-outer-profile" fill="none" stroke="url(#sicim-red-frame)" stroke-width="3.5" stroke-linejoin="round"/>
+      </g>
+      <g class="inner-red-frame" aria-hidden="true">
+        <use href="#sicim-inner-profile" fill="none" stroke="#bd0028" stroke-width="2.2" stroke-linejoin="round"/>
+        <use href="#sicim-inner-profile" fill="none" stroke="#ff496c" stroke-width=".85" stroke-linejoin="round" opacity=".7"/>
+      </g>
+
+      <g class="top-mechanical-tabs" aria-hidden="true">
+        <path d="M82 22 92 12 114 12 122 21 116 24H90Z" fill="#020203" stroke="#0b0b0e" stroke-width="2.4"/>
+        <path d="M88 21 96 14H110L116 21Z" fill="url(#sicim-tab-metal)"/><path d="M94 14H109L113 17H91Z" fill="#a6a8ad" opacity=".48"/><path d="M89 22H118" stroke="#c90d2e" stroke-width="1.6"/>
+        <path d="M140 21 148 11H178L186 21 181 24H145Z" fill="#020203" stroke="#570711" stroke-width="2.4"/>
+        <path d="M148 20 154 13H172L178 20Z" fill="url(#sicim-red-frame)"/><path d="M153 14H173L177 18H149Z" fill="#34343a" opacity=".72"/>
+        <path d="M204 21 212 12H234L244 22 236 24H210Z" fill="#020203" stroke="#0b0b0e" stroke-width="2.4"/>
+        <path d="M210 21 216 14H230L238 21Z" fill="url(#sicim-tab-metal)"/><path d="M217 14H232L235 17H213Z" fill="#a6a8ad" opacity=".48"/><path d="M208 22H237" stroke="#c90d2e" stroke-width="1.6"/>
+      </g>
+
+      <g class="bottom-mechanical-tabs" aria-hidden="true">
+        <path d="M82 75 92 85H114L122 76 116 73H90Z" fill="#020203" stroke="#0b0b0e" stroke-width="2.4"/>
+        <path d="M88 76 96 83H110L116 76Z" fill="url(#sicim-tab-metal)"/><path d="M94 83H109L113 80H91Z" fill="#a6a8ad" opacity=".42"/><path d="M89 75H118" stroke="#c90d2e" stroke-width="1.6"/>
+        <path d="M140 76 148 86H178L186 76 181 73H145Z" fill="#020203" stroke="#570711" stroke-width="2.4"/>
+        <path d="M148 77 154 84H172L178 77Z" fill="url(#sicim-red-frame)"/><path d="M153 83H173L177 79H149Z" fill="#34343a" opacity=".72"/>
+        <path d="M204 76 212 85H234L244 75 236 73H210Z" fill="#020203" stroke="#0b0b0e" stroke-width="2.4"/>
+        <path d="M210 76 216 83H230L238 76Z" fill="url(#sicim-tab-metal)"/><path d="M217 83H232L235 80H213Z" fill="#a6a8ad" opacity=".42"/><path d="M208 75H237" stroke="#c90d2e" stroke-width="1.6"/>
+      </g>
+
+      <g class="left-side-module" aria-hidden="true"><use href="#sicim-side-module"/></g>
+      <g class="right-side-module" aria-hidden="true"><use href="#sicim-side-module" transform="translate(326 0) scale(-1 1)"/></g>
+
+      <g class="center-flares" aria-hidden="true">
+        <g class="sicim__central-glow sicim__central-glow--top">
+          <ellipse cx="163" cy="22" rx="27" ry="8" fill="#b5092a" opacity=".28" filter="url(#sicim-central-bloom)"/>
+          <ellipse cx="163" cy="22" rx="31" ry="4.8" fill="url(#sicim-horizontal-fade)" filter="url(#sicim-horizontal-flare)"/>
+          <ellipse cx="163" cy="22" rx="16" ry="3.8" fill="#ff1748" opacity=".48" filter="url(#sicim-horizontal-flare)"/>
+          <ellipse cx="163" cy="22" rx="5" ry="8" fill="url(#sicim-vertical-fall)" opacity=".48" filter="url(#sicim-vertical-diffuse)"/>
+          <ellipse cx="163" cy="22" rx="4" ry="2" fill="#ffb7c4" opacity=".88" filter="url(#sicim-core-soft)"/>
+          <ellipse cx="163" cy="22" rx="1.35" ry="1" fill="#fff8fa" opacity=".96"/>
+        </g>
+        <g class="sicim__central-glow sicim__central-glow--bottom">
+          <ellipse cx="163" cy="75" rx="29" ry="8.5" fill="#b5092a" opacity=".34" filter="url(#sicim-central-bloom)"/>
+          <ellipse cx="163" cy="75" rx="32" ry="5.2" fill="url(#sicim-horizontal-fade)" filter="url(#sicim-horizontal-flare)"/>
+          <ellipse cx="163" cy="75" rx="17" ry="4" fill="#ff1748" opacity=".56" filter="url(#sicim-horizontal-flare)"/>
+          <ellipse cx="163" cy="75" rx="5.4" ry="9" fill="url(#sicim-vertical-fall)" opacity=".54" filter="url(#sicim-vertical-diffuse)"/>
+          <ellipse cx="163" cy="75" rx="4.4" ry="2.2" fill="#ffb7c4" opacity=".94" filter="url(#sicim-core-soft)"/>
+          <ellipse cx="163" cy="75" rx="1.5" ry="1.1" fill="#fff8fa"/>
+        </g>
+        <g filter="url(#sicim-soft-glow)">
+        <ellipse class="sicim__fogonazo" style="--d:.8s" cx="91" cy="23" rx="12" ry="4"/>
+        <ellipse class="sicim__fogonazo" style="--d:2.8s" cx="235" cy="74" rx="12" ry="4"/>
+        <circle class="sicim__fogonazo" style="--d:2s" cx="10" cy="48.5" r="5"/>
+        <circle class="sicim__fogonazo" style="--d:3.2s" cx="316" cy="48.5" r="5"/>
+        </g>
+      </g>
+
+      <g class="moving-highlights" aria-hidden="true">
+        <path class="sicim__recorrido" pathLength="100" d="M29 22H87L96 16H136L143 20H183L190 16H230L239 22H297"/>
+        <path class="sicim__recorrido sicim__recorrido--inf" pathLength="100" d="M297 75H239L230 81H190L183 77H143L136 81H96L87 75H29"/>
+      </g>
+
+    </svg>
+    <span class="sicim__titulo-html" aria-hidden="true">SICIM</span>
   </div>
 
   <!-- Logo compuesto por capas independientes sobre los tres PNG originales.

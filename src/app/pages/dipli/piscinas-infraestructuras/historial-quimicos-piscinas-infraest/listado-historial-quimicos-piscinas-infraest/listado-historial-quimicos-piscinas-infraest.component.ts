@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { InfraestructurasI } from '../../../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
-import { HistorialQuimicosPiscinasInfraestI } from '../../../../../../interfaces/digei/finca-raiz/infraestructuras/historial-quimicos-piscinas-infraest/historial-quimicos-piscinas-infraest.interface';
-import { OficinasI } from '../../../../../../interfaces/panel-control/oficinas/oficinas.interface';
-import { QuimicosPiscinasI } from '../../../../../../interfaces/panel-control/quimicos-piscinas/quimicos-piscinas.interface';
-import { HistorialQuimicosPiscinasInfraestService } from '../../../../../../services/digei/finca-raiz/infraestructuras/historial-quimicos-piscinas-infraest/historial-quimicos-piscinas-infraest.service';
-import { OficinasService } from '../../../../../../services/panel-control/oficinas/oficinas.service';
-import { QuimicosPiscinasService } from '../../../../../../services/panel-control/quimicos-piscinas/quimicos-piscinas.service';
-import { SpinnerService } from '../../../../../../services/spinner/spinner.service';
+import { InfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
+import { HistorialQuimicosPiscinasInfraestI } from '../../../../../interfaces/dipli/piscinas-infraestructuras/historial-quimicos-piscinas-infraest/historial-quimicos-piscinas-infraest.interface';
+import { OficinasI } from '../../../../../interfaces/panel-control/oficinas/oficinas.interface';
+import { QuimicosPiscinasI } from '../../../../../interfaces/panel-control/quimicos-piscinas/quimicos-piscinas.interface';
+import { HistorialQuimicosPiscinasInfraestService } from '../../../../../services/dipli/piscinas-infraestructuras/historial-quimicos-piscinas-infraest/historial-quimicos-piscinas-infraest.service';
+import { OficinasService } from '../../../../../services/panel-control/oficinas/oficinas.service';
+import { QuimicosPiscinasService } from '../../../../../services/panel-control/quimicos-piscinas/quimicos-piscinas.service';
+import { SpinnerService } from '../../../../../services/spinner/spinner.service';
 import { AddUpdDelHistorialQuimicoPiscinaInfraestComponent } from '../add-upd-del-historial-quimico-piscina-infraest/add-upd-del-historial-quimico-piscina-infraest.component';
 import { VistaHistorialQuimicoPiscinaInfraestComponent } from '../vista-historial-quimico-piscina-infraest/vista-historial-quimico-piscina-infraest.component';
 

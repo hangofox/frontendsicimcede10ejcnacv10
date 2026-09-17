@@ -1,5 +1,5 @@
-import { OficinasI } from '../../../../panel-control/oficinas/oficinas.interface';
-import { InfraestructurasI } from '../infraestructuras.interface';
+import { OficinasI } from '../../../panel-control/oficinas/oficinas.interface';
+import { InfraestructurasI } from '../../../digei/finca-raiz/infraestructuras/infraestructuras.interface';
 
 export interface HistorialQuimicosPiscinasInfraestI {
   idHistorialQuimicoPiscinaInfraest?: number;

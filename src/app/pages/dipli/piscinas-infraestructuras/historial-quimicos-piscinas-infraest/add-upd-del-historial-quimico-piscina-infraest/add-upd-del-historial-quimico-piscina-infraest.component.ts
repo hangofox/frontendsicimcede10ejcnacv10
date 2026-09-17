@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HistorialQuimicosPiscinasInfraestI } from '../../../../../../interfaces/digei/finca-raiz/infraestructuras/historial-quimicos-piscinas-infraest/historial-quimicos-piscinas-infraest.interface';
-import { InfraestructurasI } from '../../../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
-import { OficinasI } from '../../../../../../interfaces/panel-control/oficinas/oficinas.interface';
-import { QuimicosPiscinasI } from '../../../../../../interfaces/panel-control/quimicos-piscinas/quimicos-piscinas.interface';
-import { CentrosCostosOficinasI } from '../../../../../../interfaces/panel-control/oficinas/centros-costos-oficinas/centros-costos-oficinas.interface';
-import { CentrosCostosOficinasService } from '../../../../../../services/panel-control/oficinas/centros-costos-oficinas/centros-costos-oficinas.service';
+import { HistorialQuimicosPiscinasInfraestI } from '../../../../../interfaces/dipli/piscinas-infraestructuras/historial-quimicos-piscinas-infraest/historial-quimicos-piscinas-infraest.interface';
+import { InfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
+import { OficinasI } from '../../../../../interfaces/panel-control/oficinas/oficinas.interface';
+import { QuimicosPiscinasI } from '../../../../../interfaces/panel-control/quimicos-piscinas/quimicos-piscinas.interface';
+import { CentrosCostosOficinasI } from '../../../../../interfaces/panel-control/oficinas/centros-costos-oficinas/centros-costos-oficinas.interface';
+import { CentrosCostosOficinasService } from '../../../../../services/panel-control/oficinas/centros-costos-oficinas/centros-costos-oficinas.service';
 
 @Component({ selector: 'app-add-upd-del-historial-quimico-piscina-infraest', standalone: true, imports: [CommonModule, ReactiveFormsModule], templateUrl: './add-upd-del-historial-quimico-piscina-infraest.component.html', styleUrl: './add-upd-del-historial-quimico-piscina-infraest.component.scss' })
 export class AddUpdDelHistorialQuimicoPiscinaInfraestComponent implements OnChanges {

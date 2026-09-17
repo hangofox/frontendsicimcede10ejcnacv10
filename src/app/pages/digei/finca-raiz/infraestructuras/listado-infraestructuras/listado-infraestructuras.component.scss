@@ -197,12 +197,7 @@
   &.btn-ver:hover { background: #0ea5e9; color: #fff; border-color: #0ea5e9; }
   &.btn-editar:hover { background: #ca8a04; color: #fff; border-color: #ca8a04; }
   &.btn-eliminar:hover:not(:disabled) { background: #b91c1c; color: #fff; border-color: #b91c1c; }
-  &.btn-historial-quimicos:hover { background: #0f766e; color: #fff; border-color: #0f766e; }
   &:disabled { opacity: .35; cursor: not-allowed; }
-}
-
-.modal-caja-historial {
-  max-width: 1180px;
 }
 
 /* Modales */
@@ -296,3 +291,25 @@
 .badge-patrimonial { background: rgba(139, 90, 22, .13); color: #7a4c10; }
 .badge-reserva { background: rgba(22, 131, 58, .12); color: #15803d; }
 .badge-neutral { background: rgba(107, 114, 128, .12); color: #5b6472; }
+
+/* Columna RESPONSABLES y acción de historial de responsables */
+.celda-responsable {
+  min-width: 190px;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.sin-responsable {
+  color: var(--sicim-gray);
+  font-style: italic;
+}
+
+.btn-accion.btn-historial-responsables:hover:not(:disabled) {
+  background: #7c3aed;
+  color: #fff;
+  border-color: #7c3aed;
+}
+
+.modal-caja-historial {
+  max-width: 1180px;
+}

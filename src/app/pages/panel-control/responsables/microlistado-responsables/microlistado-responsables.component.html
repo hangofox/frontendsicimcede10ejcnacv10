@@ -1,0 +1,98 @@
+<section class="microlistado-responsables" [formGroup]="responsablesForm">
+
+  <!-- EL MICROLISTADO SE ABRE ACOTADO A LA UNIDAD MILITAR QUE LE PASA EL COMPONENTE QUE LO INVOCA -->
+  <div class="microlistado-contexto">
+    <span class="dato-label">Unidad militar</span>
+    <strong>{{ siglaoAcronimoUnidadMilitar }}</strong>
+  </div>
+
+  <!-- BARRA DE BÚSQUEDA -->
+  <div class="barra-acciones">
+    <input
+      type="text"
+      formControlName="ctextPalabraClave"
+      placeholder="Buscar por documento, grado, nombres o apellidos..."
+      (keyup.enter)="buscar()">
+
+    <button type="button" class="btn-sicim btn-buscar" (click)="buscar()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Buscar
+    </button>
+  </div>
+
+  <!-- TABLA -->
+  <div class="tabla-contenedor">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Unidad militar</th>
+          <th>N.° de documento</th>
+          <th>Grado</th>
+          <th>Nombres y apellidos</th>
+          <th>Móvil</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (responsable of responsables; track responsable.idResponsable; let i = $index) {
+          <tr>
+            <td>{{ i + 1 + (paginaActual * tandaNumeroRegistrosporPagina) }}</td>
+            <td>{{ responsable.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</td>
+            <td>
+              <!-- EL NÚMERO DE DOCUMENTO ES EL BOTÓN DE SELECCIÓN: AL OPRIMIRLO SE CIERRA EL MICROLISTADO Y EL
+                   NÚMERO QUEDA ESCRITO EN LA CAJA DE TEXTO DEL FORMULARIO QUE LO INVOCÓ -->
+              <button
+                type="button"
+                class="btn-numero-documento"
+                title="Número de documento de identificación del responsable"
+                (click)="ponerNumeroDocumentoIdentificacionResponsable(responsable)">
+                {{ responsable.numeroDocumentoIdentificacionResponsable }}
+              </button>
+            </td>
+            <td>{{ responsable.gradoResponsable }}</td>
+            <td>{{ responsable.nombresResponsable }} {{ responsable.primerApellidoResponsable }} {{ responsable.segundoApellidoResponsable }}</td>
+            <td>{{ responsable.movilResponsable }}</td>
+            <td>
+              <span class="badge-estado" [class.badge-activo]="responsable.estadoResponsable === 'ACTIVO'" [class.badge-inactivo]="responsable.estadoResponsable !== 'ACTIVO'">
+                {{ responsable.estadoResponsable }}
+              </span>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7" class="tabla-vacia">No se encontraron responsables de esta unidad militar con los filtros aplicados.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PAGINACIÓN -->
+  <div class="paginacion">
+    <div class="paginacion-info">
+      <span>Registros por página:</span>
+      <select formControlName="cboxTandaNumeroRegistrosporPaginaSeleccionado" (change)="seleccionarTandaNumeroRegistrosporPagina()">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+      <span class="paginacion-total">{{ totalRegistros }} responsables en total</span>
+    </div>
+    <div class="paginacion-controles">
+      <button type="button" class="btn-pag" [disabled]="paginaActual === 0" (click)="cambiarPagina(paginaActual - 1)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <span class="paginacion-texto">{{ paginaActual + 1 }} / {{ calcularTotalPaginas() }}</span>
+      <button type="button" class="btn-pag" [disabled]="paginaActual >= calcularTotalPaginas() - 1" (click)="cambiarPagina(paginaActual + 1)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="microlistado-acciones">
+    <button type="button" class="btn-sicim btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>
+  </div>
+
+</section>
