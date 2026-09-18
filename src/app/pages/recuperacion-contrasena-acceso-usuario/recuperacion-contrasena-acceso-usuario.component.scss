@@ -771,12 +771,26 @@ a:focus-visible {
     min-height: auto;
   }
 
+  /* Mismo caso que en el cuadro de acceso: el hueco bajo el recuadro dejaba
+     ver la imagen de fondo de <main>, que no empata con el negro del pie. Se
+     traslada a relleno superior de la division del pie, pintada con el color
+     de fondo del propio pie. */
   .division-recuperacion {
-    padding: 16px 12px;
+    padding: 16px 12px 0;
+  }
+
+  .division-pie-pagina {
+    padding-top: 16px;
+    background: #010100;
   }
 }
 
 @media (max-width: 720px) {
+  /* Mismo caso que en el cuadro de acceso: aqui tambien se retira el marco
+     SVG, y un box-shadow inset traza la caja rectangular, de modo que el
+     clip-path recortaba el rojo de las cuatro diagonales y las verticales
+     quedaban sin unir con las horizontales. Se dibuja con dos octogonos
+     superpuestos para que la linea recorra el contorno completo. */
   .consola {
     width: 100%;
     max-width: 100%;
@@ -784,12 +798,28 @@ a:focus-visible {
     display: grid;
     gap: 16px;
     padding: 22px 16px 18px;
-    background: linear-gradient(158deg, rgb(12 6 8 / 96%), rgb(2 2 3 / 98%));
+    background: rgb(255 23 56 / 52%);
     clip-path: polygon(
       18px 0, calc(100% - 18px) 0, 100% 18px, 100% calc(100% - 18px),
       calc(100% - 18px) 100%, 18px 100%, 0 calc(100% - 18px), 0 18px
     );
-    box-shadow: inset 0 0 0 1px rgb(255 23 56 / 45%), inset 0 0 30px rgb(102 16 25 / 22%);
+    box-shadow: none;
+
+    /* Bisel interior de 17px con sangria de 1,5px: deja la diagonal a la
+       misma distancia perpendicular que los tramos rectos. */
+    &::before {
+      position: absolute;
+      z-index: 0;
+      inset: 1.5px;
+      background: linear-gradient(158deg, rgb(12 6 8 / 96%), rgb(2 2 3 / 98%));
+      clip-path: polygon(
+        17px 0, calc(100% - 17px) 0, 100% 17px, 100% calc(100% - 17px),
+        calc(100% - 17px) 100%, 17px 100%, 0 calc(100% - 17px), 0 17px
+      );
+      box-shadow: inset 0 0 30px rgb(102 16 25 / 22%);
+      pointer-events: none;
+      content: '';
+    }
   }
 
   /* el marco decorativo no encaja en vertical */
@@ -797,11 +827,14 @@ a:focus-visible {
     display: none;
   }
 
+  /* relative + z-index para quedar sobre .consola::before, que al ser absoluto
+     pintaria encima de estos bloques si siguieran estaticos. */
   .encabezado,
   .panel,
   .confirmacion,
   .volver {
-    position: static;
+    position: relative;
+    z-index: 1;
     top: auto;
     left: auto;
     width: 100%;
@@ -840,9 +873,27 @@ a:focus-visible {
       14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px),
       calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px
     );
-    box-shadow:
-      inset 0 0 0 1px rgb(115 13 25),
-      inset 0 0 24px rgb(102 16 25 / 22%);
+    box-shadow: inset 0 0 24px rgb(102 16 25 / 22%);
+
+    /* Mismo anillo que en el cuadro de acceso: el box-shadow inset trazaba la
+       caja rectangular y el clip-path recortaba sus esquinas, asi que el rojo
+       de las diagonales se perdia. El poligono recorre el octogono exterior y
+       luego el interior en sentido contrario para dejar el centro calado. */
+    &::after {
+      position: absolute;
+      inset: 0;
+      background: rgb(115 13 25);
+      clip-path: polygon(
+        14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px),
+        calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px,
+        14px 0,
+        1px 14px, 1px calc(100% - 14px), 14px calc(100% - 1px),
+        calc(100% - 14px) calc(100% - 1px), calc(100% - 1px) calc(100% - 14px),
+        calc(100% - 1px) 14px, calc(100% - 14px) 1px, 14px 1px, 1px 14px
+      );
+      pointer-events: none;
+      content: '';
+    }
   }
 
   .indicacion {

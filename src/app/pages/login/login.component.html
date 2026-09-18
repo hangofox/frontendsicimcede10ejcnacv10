@@ -97,6 +97,16 @@
             <path d="M96 402 L128 434 L214 434 L232 416 L286 416" />
             <path d="M800 402 L768 434 L682 434 L664 416 L610 416" />
             <path d="M90 359 L90 309 M806 359 L806 309" />
+            <!-- Segunda escalera del hombro inferior y su par de verticales.
+                 Faltaban: arriba el hombro lo forman cuatro piezas por lado
+                 (dos escaleras y dos verticales) y abajo solo estaban la
+                 primera escalera y la vertical exterior, asi que las de x=90
+                 y x=806 quedaban sueltas, sin esquinero que las uniera con
+                 las horizontales. Son el espejo exacto de las de arriba
+                 sobre el eje y=477-y, la misma regla que ya usan las demas. -->
+            <path d="M112 384 L140 412 L206 412 L222 396 L268 396" />
+            <path d="M784 384 L756 412 L690 412 L674 396 L628 396" />
+            <path d="M106 339 L106 301 M790 339 L790 301" />
           </g>
 
           <!-- === reflejos metalicos cortos === -->
@@ -213,6 +223,16 @@
                Cierra en y=406, por encima del hombro inferior de riel-3 (413). -->
           <path class="riel-recuperacion"
             d="M281 357 L593 357 L609 381.5 L593 406 L281 406 L265 381.5 Z" />
+
+          <!-- Esquineros que cierran la horizontal inferior: el riel interno
+               termina en (249,387) y (625,387), y los vertices del recuadro de
+               recuperacion estan en (265,381.5) y (609,381.5). Sin estos dos
+               tramos el rojo quedaba cortado a ambos lados del recuadro. La
+               curva Q redondea la union en vez de dejar un vertice en pico. -->
+          <path class="riel-recuperacion riel-union"
+            d="M249 387 Q259 387 265 381.5" />
+          <path class="riel-recuperacion riel-union"
+            d="M625 387 Q615 387 609 381.5" />
         </svg>
 
         <form (ngSubmit)="ingresar()" #formLogin="ngForm" novalidate>

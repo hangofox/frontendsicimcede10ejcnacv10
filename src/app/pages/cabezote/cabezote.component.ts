@@ -13,4 +13,9 @@ import { DatosUsuarioConectadoComponent } from '../datos-usuario-conectado/datos
 export class CabezoteComponent {
   @Input() mostrarUsuario = true;
   readonly ahora = new Date();
+
+  //Rotulo del titulo del sistema. Vive aqui y no escrito en la plantilla para
+  //que el marcado y los estilos del panel no dependan de su valor: cambiarlo
+  //no obliga a tocar ninguna clase, identificador SVG ni animacion.
+  readonly tituloSistema = 'SICIM';
 }

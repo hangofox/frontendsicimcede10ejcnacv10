@@ -1,3 +1,8 @@
+/* El PNG del pie no es una imagen llena: cerca del 30 % de sus pixeles son
+   transparentes, y el recorte entra en diagonal por la esquina superior
+   izquierda. Lo que asome por ese hueco es el color de fondo de esta misma
+   caja, porque la imagen se estira justo a su tamano (background-size:
+   100% 100%). Ver --pie-fondo mas abajo. */
 .pie {
   position: relative;
   width: 100%;
@@ -7,7 +12,7 @@
   margin-left: auto;
   margin-right: 0;
   transform: translateY(0);
-  background-color: transparent;
+  background-color: var(--pie-fondo, transparent);
   background-image: url('../../../assets/images/imagen_pie_pagina_01.png');
   background-repeat: no-repeat;
   background-position: center bottom;
@@ -211,4 +216,15 @@
 
 @media (prefers-reduced-motion: reduce) {
   .legal-texto-brillo { display: none; }
+}
+
+/* En pantallas pequenas la pagina deja de ser de dos columnas y el pie pasa a
+   ocupar todo el ancho. Ahi el recorte diagonal del PNG queda sobre el fondo
+   general y se nota el salto de tonalidad, asi que esa zona se rellena con el
+   vinotinto del propio pie. Se hace con una variable para que el color entre
+   solo en este tramo y la vista de escritorio no cambie. */
+@media (max-width: 900px) {
+  .pie {
+    --pie-fondo: #010100;
+  }
 }

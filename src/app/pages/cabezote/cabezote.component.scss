@@ -32,7 +32,7 @@ $marco-inferior: 3.03%;
   width: var(--escudo-ancho);
   aspect-ratio: 208 / 152;
   /* Desplazamiento lateral del conjunto. Va en transform y no en
-     --escudo-derecha porque esa variable ancla tambien el titulo SICIM,
+     --escudo-derecha porque esa variable ancla tambien el titulo del sistema,
      y moverla lo arrastraria con el logo. */
   --logo-desplaz-x: calc(var(--escudo-ancho) * .30);
   transform: translate(var(--logo-desplaz-x), -50%);
@@ -255,7 +255,7 @@ $marco-inferior: 3.03%;
 /* El dibujo del hexagono no esta centrado en su PNG: su centro real cae en
    (647,5, 549,5) de un lienzo de 1318 x 1177, o sea 39 px mas arriba y 11,5
    a la izquierda. El emblema se ancla a ese centro y no al del archivo. */
-.logo-sicim {
+.logo-sistema {
   position: absolute;
   z-index: 5;
   top: 46.69%;
@@ -470,45 +470,45 @@ $marco-inferior: 3.03%;
      borde derecho. */
     /* --marca-ajuste corre el texto a la derecha en medida absoluta, para
      poder pedirlo en milimetros sin depender del ancho de la ventana. */
-  right: calc(var(--escudo-derecha) + var(--escudo-ancho) * .56 + var(--sicim-panel-separacion));
+  right: calc(var(--escudo-derecha) + var(--escudo-ancho) * .56 + var(--titulo-sistema-panel-separacion));
   transform: translateY(-50%);
   color: #fff;
   text-align: right;
 
   /* ---- Medidas del panel del titulo ------------------------------------
      El anclaje sale del propio logo y no de un porcentaje fijo: el borde
-     derecho del panel queda a --sicim-panel-separacion del canto izquierdo
+     derecho del panel queda a --titulo-sistema-panel-separacion del canto izquierdo
      del logo. El borde derecho permanece fijo respecto al estado de referencia;
      cualquier crecimiento del panel ocurre hacia la izquierda.
      Asi la separacion se mantiene en cualquier resolucion sin coordenadas
      calculadas para un ancho concreto. */
   /* Medidas tomadas de titulo_sistema_futurista_01.png: el panel ocupa el
      24,6 % del ancho del cabezote y el 44 % de su alto. */
-  --sicim-ancho: clamp(322px, 18vw, 326px);
-  --sicim-panel-separacion: clamp(8px, .75vw, 14px);
-  width: var(--sicim-ancho);
+  --titulo-sistema-ancho: 326px;
+  --titulo-sistema-panel-separacion: clamp(8px, .75vw, 14px);
+  width: var(--titulo-sistema-ancho);
 
   /* Paleta tomada del cuadro de acceso y completada con los tonos de la
      referencia del titulo. */
-  --sicim-negro: #030305;
-  --sicim-vino-oscuro: #240008;
-  --sicim-vino-medio: #4b0014;
-  --sicim-rojo-oscuro: #75001d;
-  --sicim-carmesi: #c60035;
-  --sicim-rojo-luz: #ff174f;
-  --sicim-rosado: #ff5578;
-  --sicim-plata-oscura: #5f646d;
-  --sicim-plata-clara: #d6d9df;
-  --sicim-reflejo: #fff4f7;
+  --titulo-sistema-negro: #030305;
+  --titulo-sistema-vino-oscuro: #240008;
+  --titulo-sistema-vino-medio: #4b0014;
+  --titulo-sistema-rojo-oscuro: #75001d;
+  --titulo-sistema-carmesi: #c60035;
+  --titulo-sistema-rojo-luz: #ff174f;
+  --titulo-sistema-rosado: #ff5578;
+  --titulo-sistema-plata-oscura: #5f646d;
+  --titulo-sistema-plata-clara: #d6d9df;
+  --titulo-sistema-reflejo: #fff4f7;
 }
 
 
-/* ---- Panel del titulo SICIM ---------------------------------------------
+/* ---- Panel del titulo del sistema ---------------------------------------
    Toda la geometria vive en el SVG (lienzo 326 x 97). Aqui solo se fija su
    tamano, su sitio respecto al logo y el movimiento de las capas decorativas.
    El lienzo conserva la proporcion con xMidYMid meet: la forma no se deforma
    a ningun ancho. */
-.sicim {
+.titulo-sistema {
   display: block;
   width: 100%;
   max-width: none;
@@ -529,7 +529,7 @@ $marco-inferior: 3.03%;
 /* Texto HTML real sobre la placa. La cuadricula ocupa solo el cuerpo central,
    por lo que el centrado no depende del ancho de las puntas ni de margenes
    manuales por resolucion. */
-.sicim__titulo-html {
+.titulo-sistema__titulo-html {
   position: absolute;
   z-index: 4;
   inset: 0 29%;
@@ -546,7 +546,7 @@ $marco-inferior: 3.03%;
   opacity: 1;
   mix-blend-mode: normal;
   pointer-events: none;
-  transform: scaleX(1.06);
+  transform: translateY(.5mm) scaleX(1.06);
   transform-origin: center;
   background: linear-gradient(180deg, #fff 0%, #f8f8f8 25%, #b8bbc0 55%, #fff 75%, #858a91 100%);
   background-clip: text;
@@ -559,8 +559,8 @@ $marco-inferior: 3.03%;
    explicitos para que ninguna regla heredada del cabezote (que pinta en blanco
    los textos) pueda dejarlo oscuro. El trazo va por debajo del relleno gracias
    a paint-order, de modo que el gris no invade el blanco de las letras. */
-.sicim__texto {
-  fill: url(#sicim-metal-text);
+.titulo-sistema__texto {
+  fill: url(#titulo-sistema-metal-text);
   stroke: #3a3f47;
   stroke-width: .7;
   paint-order: stroke fill;
@@ -583,39 +583,46 @@ $marco-inferior: 3.03%;
 
 /* Segmentos que recorren el marco. El contorno mide 858 unidades: el hueco lo
    cubre entero para que solo se vea un tramo corto viajando. */
-.sicim__recorrido {
+.titulo-sistema__recorrido {
   stroke: #fff0f4;
   stroke-width: 1.8;
   stroke-linecap: round;
   stroke-dasharray: 12 88;
   filter: drop-shadow(0 0 3px rgb(242 11 61 / 85%));
-  animation: sicim-recorrido 6s linear infinite;
+  animation: titulo-sistema-recorrido 6s linear infinite;
 }
 
-.sicim__recorrido--inf {
+.titulo-sistema__recorrido--inf {
   stroke: rgb(255 73 108 / 62%);
   stroke-width: 1.3;
   stroke-dasharray: 10 90;
-  animation: sicim-recorrido-inverso 8.4s linear infinite;
+  animation: titulo-sistema-recorrido-inverso 8.4s linear infinite;
 }
 
 /* Fogonazos concentrados: nucleo blanco con halo rosado y carmesi. El retardo
    llega por --d desde la plantilla para que no enciendan a la vez. */
-.sicim__fogonazo {
+.titulo-sistema__fogonazo {
   fill: url(#sc-fogonazo);
-  animation: sicim-fogonazo 4s ease-in-out infinite;
+  animation: titulo-sistema-fogonazo 4s ease-in-out infinite;
   animation-delay: var(--d, 0s);
 }
 
-.sicim__central-glow {
+.titulo-sistema__central-glow {
   transform-box: fill-box;
   transform-origin: center;
-  animation: sicim-central-breath 3.4s ease-in-out infinite;
+  animation: titulo-sistema-central-breath 3.4s ease-in-out infinite;
 }
 
-.sicim__central-glow--bottom { animation-delay: 1.7s; }
+.titulo-sistema__central-glow--bottom { animation-delay: 1.7s; }
 
-.sicim__chevron {
+.titulo-sistema__inner-lighting,
+.titulo-sistema__triangular-reflection {
+  animation: titulo-sistema-energia-interior 3.4s ease-in-out infinite;
+}
+
+.titulo-sistema__triangular-reflection--bottom { animation-delay: 1.7s; }
+
+.titulo-sistema__chevron {
   fill: none;
   stroke: #ff496c;
   stroke-width: 3.2;
@@ -623,43 +630,48 @@ $marco-inferior: 3.03%;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
   filter: drop-shadow(0 0 2px rgb(255 240 244 / 75%)) drop-shadow(0 0 5px rgb(242 11 61 / 70%));
-  animation: sicim-pulso 2.6s ease-in-out infinite;
+  animation: titulo-sistema-pulso 2.6s ease-in-out infinite;
 }
 
 /* Alternados: cuando uno sube el otro baja. */
-.sicim__chevron--der { animation-delay: 1.3s; }
+.titulo-sistema__chevron--der { animation-delay: 1.3s; }
 
 /* En escritorios anchos el lienzo transparente del PNG institucional crece
    mas que su contenido visible. Se compensa solo el panel para conservar un
    espacio optico de 12--28 px sin desplazar el logo. */
 @media (min-width: 1600px) {
   .marca {
-    --sicim-panel-separacion: 0px;
+    --titulo-sistema-panel-separacion: 0px;
   }
 }
 
-@keyframes sicim-recorrido {
+@keyframes titulo-sistema-recorrido {
   from { stroke-dashoffset: 100; }
   to { stroke-dashoffset: 0; }
 }
 
-@keyframes sicim-recorrido-inverso {
+@keyframes titulo-sistema-recorrido-inverso {
   from { stroke-dashoffset: 0; }
   to { stroke-dashoffset: 100; }
 }
 
-@keyframes sicim-fogonazo {
+@keyframes titulo-sistema-fogonazo {
   0%, 64%, 100% { opacity: .3; }
   80% { opacity: 1; }
 }
 
-@keyframes sicim-pulso {
+@keyframes titulo-sistema-pulso {
   0%, 100% { opacity: .7; }
   50% { opacity: 1; }
 }
 
-@keyframes sicim-central-breath {
+@keyframes titulo-sistema-central-breath {
   0%, 100% { opacity: .72; }
+  50% { opacity: 1; }
+}
+
+@keyframes titulo-sistema-energia-interior {
+  0%, 100% { opacity: .8; }
   50% { opacity: 1; }
 }
 
@@ -1298,24 +1310,26 @@ $marco-inferior: 3.03%;
 /* El panel del titulo se detiene por completo pero no se apaga: conserva sus
    capas, su marco y un brillo estatico equilibrado sobre el contorno. */
 @media (prefers-reduced-motion: reduce) {
-  .sicim__recorrido,
-  .sicim__recorrido--inf,
-  .sicim__fogonazo,
-  .sicim__chevron,
-  .sicim__central-glow {
+  .titulo-sistema__recorrido,
+  .titulo-sistema__recorrido--inf,
+  .titulo-sistema__fogonazo,
+  .titulo-sistema__chevron,
+  .titulo-sistema__central-glow,
+  .titulo-sistema__inner-lighting,
+  .titulo-sistema__triangular-reflection {
     animation: none;
   }
 
   /* Los segmentos se quedan como un filo continuo y tenue: la composicion
      completa sigue a la vista, solo deja de recorrerla nada. */
-  .sicim__recorrido,
-  .sicim__recorrido--inf {
+  .titulo-sistema__recorrido,
+  .titulo-sistema__recorrido--inf {
     stroke-dasharray: none;
     stroke: rgb(255 73 108 / 26%);
   }
 
-  .sicim__fogonazo { opacity: .8; }
-  .sicim__chevron { opacity: .92; }
+  .titulo-sistema__fogonazo { opacity: .8; }
+  .titulo-sistema__chevron { opacity: .92; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1354,7 +1368,7 @@ $marco-inferior: 3.03%;
   }
 
   .marca {
-    --sicim-ancho: clamp(260px, 27vw, 310px);
+    --titulo-sistema-ancho: clamp(285px, 30vw, 326px);
 
     top: auto;
     right: auto;
@@ -1363,7 +1377,7 @@ $marco-inferior: 3.03%;
     transform: none;
   }
 
-  .sicim__titulo-html {
+  .titulo-sistema__titulo-html {
     font-size: clamp(24px, 2.5vw, 30px);
   }
 
@@ -1403,14 +1417,14 @@ $marco-inferior: 3.03%;
   /* Aqui el panel si necesita encogerse por debajo del suelo de los clamp():
      la banda libre entre el margen izquierdo y el logo ya es estrecha. */
   .marca {
-    --sicim-ancho: clamp(200px, 46vw, 250px);
-    --sicim-panel-separacion: clamp(10px, 2vw, 16px);
+    --titulo-sistema-ancho: clamp(200px, 46vw, 250px);
+    --titulo-sistema-panel-separacion: clamp(10px, 2vw, 16px);
 
     right: auto;
     left: clamp(30px, 5vw, 40px);
   }
 
-  .sicim__titulo-html {
+  .titulo-sistema__titulo-html {
     font-size: clamp(20px, 4.8vw, 25px);
     letter-spacing: .1em;
   }
@@ -1439,15 +1453,15 @@ $marco-inferior: 3.03%;
   }
 
   .marca {
-    --sicim-ancho: clamp(180px, 48vw, 202px);
-    --sicim-panel-separacion: 8px;
+    --titulo-sistema-ancho: clamp(180px, 48vw, 202px);
+    --titulo-sistema-panel-separacion: 8px;
 
     right: auto;
     bottom: 12px;
     left: 26px;
   }
 
-  .sicim__titulo-html {
+  .titulo-sistema__titulo-html {
     font-size: 19px;
   }
 

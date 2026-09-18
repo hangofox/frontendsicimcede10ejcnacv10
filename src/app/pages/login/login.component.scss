@@ -1019,7 +1019,11 @@ output {
   align-items: center;
   justify-content: space-between;
   padding: 0 2.4cqw;
-  background: linear-gradient(90deg, rgb(53 8 13 / 55%), rgb(2 2 3 / 30%) 50%, rgb(53 8 13 / 55%));
+  /* Mismo velo que .panel: antes este recuadro llevaba un degradado propio,
+     rojizo en los extremos y con solo un 30 % de opacidad en el centro, asi
+     que por el asomaba la imagen de fondo de la pagina y se leia como una
+     mancha de otro tono dentro del cuadro de acceso. */
+  background: linear-gradient(158deg, rgb(12 7 9 / 46%), rgb(3 2 4 / 52%) 60%);
   clip-path: polygon(
     1.8cqw 0,
     calc(100% - 1.8cqw) 0,
@@ -1256,8 +1260,18 @@ a:focus-visible {
     min-height: auto;
   }
 
+  /* En una sola columna, el hueco que quedaba bajo el cuadro de acceso era el
+     relleno inferior de esta division, y por el asomaba la imagen de fondo de
+     <main>, que no empata con el negro del pie. Ese hueco pasa a ser relleno
+     SUPERIOR de la division del pie, que se pinta con el mismo color de fondo
+     del pie, asi que la franja deja de notarse. */
   .division-login {
-    padding: 16px 12px;
+    padding: 16px 12px 0;
+  }
+
+  .division-pie-pagina {
+    padding-top: 16px;
+    background: #010100;
   }
 }
 
@@ -1267,18 +1281,44 @@ a:focus-visible {
     overflow: hidden;
   }
 
+  /* Aqui se retira el marco SVG, asi que el contorno rojo hay que dibujarlo
+     con CSS. No sirve un box-shadow inset: ese traza la caja RECTANGULAR y el
+     clip-path recorta despues las cuatro esquinas, de modo que el rojo de las
+     diagonales desaparecia y las verticales quedaban sin unir con las
+     horizontales.
+     Se resuelve con dos octogonos superpuestos: el fondo de la caja es el rojo
+     y ::before vuelve a tapar el interior con el degradado oscuro, 1,5px mas
+     adentro. Lo que asoma entre ambos es una linea que recorre TODO el
+     contorno, diagonales incluidas. */
   .consola {
     width: 100%;
     max-width: 100%;
     aspect-ratio: auto;
     min-height: 0;
     padding: 22px 14px 18px;
-    background: linear-gradient(158deg, rgb(12 6 8 / 96%), rgb(2 2 3 / 98%));
+    background: rgb(255 23 56 / 52%);
     clip-path: polygon(
       18px 0, calc(100% - 18px) 0, 100% 18px, 100% calc(100% - 18px),
       calc(100% - 18px) 100%, 18px 100%, 0 calc(100% - 18px), 0 18px
     );
-    box-shadow: inset 0 0 0 1px rgb(255 23 56 / 45%), inset 0 0 30px rgb(102 16 25 / 22%);
+    box-shadow: none;
+
+    /* El bisel interior es de 17px y no de 18px: con la sangria de 1,5px eso
+       deja la diagonal a la misma distancia perpendicular que los tramos
+       rectos, y la linea no adelgaza en las esquinas. */
+    &::before {
+      position: absolute;
+      z-index: 0;
+      inset: 1.5px;
+      background: linear-gradient(158deg, rgb(12 6 8 / 96%), rgb(2 2 3 / 98%));
+      clip-path: polygon(
+        17px 0, calc(100% - 17px) 0, 100% 17px, 100% calc(100% - 17px),
+        calc(100% - 17px) 100%, 17px 100%, 0 calc(100% - 17px), 0 17px
+      );
+      box-shadow: inset 0 0 30px rgb(102 16 25 / 22%);
+      pointer-events: none;
+      content: '';
+    }
   }
 
   /* el marco decorativo se retira: sus trazos no encajan en vertical */
@@ -1286,8 +1326,11 @@ a:focus-visible {
     display: none;
   }
 
+  /* relative + z-index para quedar por encima de .consola::before, que al ser
+     absoluto pintaria sobre el formulario si este siguiera estatico. */
   form {
-    position: static;
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 14px;
@@ -1343,16 +1386,41 @@ a:focus-visible {
   }
 
   .panel {
+    /* relative, no static: el anillo del contorno se ancla a esta caja. */
+    position: relative;
     gap: 8px;
     padding: 14px 14px;
     /* el SVG esta oculto en movil, asi que aqui el contorno vuelve al CSS */
-    box-shadow:
-      inset 0 0 0 1px rgb(115 13 25),
-      inset 0 0 24px rgb(102 16 25 / 22%);
+    box-shadow: inset 0 0 24px rgb(102 16 25 / 22%);
     clip-path: polygon(
       14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px),
       calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px
     );
+
+    /* Contorno con esquineros. Antes lo daba un box-shadow inset, que traza la
+       caja RECTANGULAR: el clip-path recortaba luego las cuatro esquinas y el
+       rojo de las diagonales desaparecia, dejando las verticales sin unir con
+       las horizontales.
+       Aqui se dibuja como un anillo: el poligono recorre el octogono exterior,
+       vuelve al punto de partida y recorre el interior en sentido contrario,
+       de modo que el hueco central queda calado. La costura de ida y vuelta
+       mide cero y no se ve. Va en ::after para quedar sobre los campos sin
+       tener que reposicionarlos. */
+    &::after {
+      position: absolute;
+      inset: 0;
+      background: rgb(115 13 25);
+      clip-path: polygon(
+        14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px),
+        calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px,
+        14px 0,
+        1px 14px, 1px calc(100% - 14px), 14px calc(100% - 1px),
+        calc(100% - 14px) calc(100% - 1px), calc(100% - 1px) calc(100% - 14px),
+        calc(100% - 1px) 14px, calc(100% - 14px) 1px, 14px 1px, 1px 14px
+      );
+      pointer-events: none;
+      content: '';
+    }
   }
 
   label,

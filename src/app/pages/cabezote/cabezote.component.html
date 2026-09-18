@@ -155,54 +155,86 @@
     }
   </div>
 
-  <!-- Panel del titulo SICIM. Toda la pieza es un SVG multicapa trazado sobre
+  <!-- Panel del titulo del sistema. Toda la pieza es un SVG multicapa trazado sobre
        el lienzo 326 x 97 medido en la referencia: forma visible de 314 x 69
        (razon 4,55) centrada en x=163 / y=48,5, con margen transparente arriba
        y abajo para que los resplandores no se recorten.
        El <h1> visible para lectores de pantalla queda fuera del SVG; todos los
        grupos graficos son decorativos. -->
   <div class="marca">
-    <h1 class="sr-only">SICIM</h1>
+    <h1 class="sr-only">{{ tituloSistema }}</h1>
 
-    <svg class="sicim" viewBox="0 0 326 97" preserveAspectRatio="xMidYMid meet" role="img" aria-label="SICIM" focusable="false">
+    <svg class="titulo-sistema" viewBox="0 0 326 97" preserveAspectRatio="xMidYMid meet" role="img" [attr.aria-label]="tituloSistema" focusable="false">
       <defs>
-        <linearGradient id="sicim-shell-metal" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="titulo-sistema-shell-metal" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stop-color="#aeb4bd"/><stop offset=".16" stop-color="#51565e"/>
           <stop offset=".42" stop-color="#111217"/><stop offset=".68" stop-color="#050507"/>
           <stop offset=".86" stop-color="#34373e"/><stop offset="1" stop-color="#7d838c"/>
         </linearGradient>
-        <linearGradient id="sicim-red-frame" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="titulo-sistema-red-frame" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stop-color="#ff496c"/><stop offset=".12" stop-color="#f20b3d"/>
           <stop offset=".42" stop-color="#790018"/><stop offset=".62" stop-color="#4a000e"/>
           <stop offset=".88" stop-color="#bd0028"/><stop offset="1" stop-color="#ff496c"/>
         </linearGradient>
-        <linearGradient id="sicim-tab-metal" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#15161b"/><stop offset=".38" stop-color="#8e949c"/>
-          <stop offset=".55" stop-color="#d6d9df"/><stop offset=".72" stop-color="#43474e"/>
+        <!-- Cuerpo de los trapecios que flanquean el haz central. El sombreado
+             va en la base mayor, que es la que da al fondo negro de afuera, y
+             la pieza se enciende hacia la base menor, que es la que da al
+             interior del panel y por donde pasa el brillo. Medido sobre
+             titulo_sistema_futurista_05.png en la misma franja: el promedio de
+             la banda sube de rgb(33,2,4) en y=14 a rgb(177,15,33) en y=19. -->
+        <linearGradient id="titulo-sistema-trapecio-cuerpo" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#26000a"/><stop offset=".38" stop-color="#5e0014"/>
+          <stop offset=".78" stop-color="#bd0028"/><stop offset="1" stop-color="#ff3157"/>
+        </linearGradient>
+        <linearGradient id="titulo-sistema-tab-metal" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#15161b"/><stop offset=".38" stop-color="#676a71"/>
+          <stop offset=".55" stop-color="#aeb1b7"/><stop offset=".72" stop-color="#34363c"/>
           <stop offset="1" stop-color="#050507"/>
         </linearGradient>
-        <linearGradient id="sicim-tip-front" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#bec1c6"/><stop offset=".16" stop-color="#6f7279"/>
+        <linearGradient id="titulo-sistema-tip-front" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#aeb1b7"/><stop offset=".16" stop-color="#676a71"/>
           <stop offset=".42" stop-color="#303138"/><stop offset=".72" stop-color="#141419"/>
-          <stop offset="1" stop-color="#686b72"/>
+          <stop offset="1" stop-color="#565960"/>
         </linearGradient>
-        <linearGradient id="sicim-tip-red-transition" x1="0" y1="0" x2="1" y2="0">
+        <radialGradient id="titulo-sistema-triangular-light" cx="50%" cy="0%" r="75%">
+          <stop offset="0" stop-color="#fff5f7" stop-opacity=".98"/>
+          <stop offset=".12" stop-color="#ff3158" stop-opacity=".84"/>
+          <stop offset=".44" stop-color="#c80d30" stop-opacity=".42"/>
+          <stop offset="1" stop-color="#590712" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="titulo-sistema-triangular-light-bottom" cx="50%" cy="100%" r="75%">
+          <stop offset="0" stop-color="#fff5f7" stop-opacity="1"/>
+          <stop offset=".12" stop-color="#ff3158" stop-opacity=".92"/>
+          <stop offset=".44" stop-color="#c80d30" stop-opacity=".48"/>
+          <stop offset="1" stop-color="#590712" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="titulo-sistema-tip-red-transition" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0" stop-color="#590712" stop-opacity=".25"/>
           <stop offset=".55" stop-color="#c80d30" stop-opacity=".8"/>
           <stop offset="1" stop-color="#ff1748"/>
         </linearGradient>
-        <linearGradient id="sicim-tip-rail" x1="8" y1="0" x2="96" y2="0" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stop-color="#aeb1b7"/><stop offset=".12" stop-color="#70737a"/>
+        <linearGradient id="titulo-sistema-tip-rail" x1="8" y1="0" x2="96" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#8f939a"/><stop offset=".12" stop-color="#676a71"/>
           <stop offset=".24" stop-color="#2a2c32"/><stop offset=".36" stop-color="#39050d"/>
           <stop offset=".47" stop-color="#a70b27"/><stop offset=".55" stop-color="#ff1748"/>
           <stop offset=".66" stop-color="#940a22"/><stop offset=".78" stop-color="#31040b"/>
-          <stop offset=".9" stop-color="#686b72"/><stop offset="1" stop-color="#b9bcc1"/>
+          <stop offset=".9" stop-color="#5b5e65"/><stop offset="1" stop-color="#9b9fa6"/>
         </linearGradient>
-        <linearGradient id="sicim-rail-highlight" x1="0" y1="0" x2="1" y2="0">
+        <linearGradient id="titulo-sistema-tip-rail-metal" x1="8" y1="0" x2="96" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#b8bbc1"/>
+          <stop offset=".14" stop-color="#858990"/>
+          <stop offset=".3" stop-color="#5b5e65"/>
+          <stop offset=".46" stop-color="#3b3e45"/>
+          <stop offset=".58" stop-color="#292c32"/>
+          <stop offset=".72" stop-color="#41444b"/>
+          <stop offset=".88" stop-color="#74787f"/>
+          <stop offset="1" stop-color="#aeb1b7"/>
+        </linearGradient>
+        <linearGradient id="titulo-sistema-rail-highlight" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0" stop-color="#fff8fa" stop-opacity="0"/><stop offset=".48" stop-color="#fff8fa" stop-opacity=".78"/>
           <stop offset=".55" stop-color="#ffb7c4" stop-opacity=".52"/><stop offset="1" stop-color="#ffb7c4" stop-opacity="0"/>
         </linearGradient>
-        <linearGradient id="sicim-horizontal-fade" x1="0" y1="0" x2="1" y2="0">
+        <linearGradient id="titulo-sistema-horizontal-fade" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0" stop-color="#b5092a" stop-opacity="0"/><stop offset=".22" stop-color="#b5092a" stop-opacity=".04"/>
           <stop offset=".34" stop-color="#c80d30" stop-opacity=".12"/><stop offset=".43" stop-color="#ff1748" stop-opacity=".35"/>
           <stop offset=".48" stop-color="#ff6b87" stop-opacity=".7"/><stop offset=".5" stop-color="#ffb7c4"/>
@@ -210,135 +242,334 @@
           <stop offset=".66" stop-color="#c80d30" stop-opacity=".12"/><stop offset=".78" stop-color="#b5092a" stop-opacity=".04"/>
           <stop offset="1" stop-color="#b5092a" stop-opacity="0"/>
         </linearGradient>
-        <radialGradient id="sicim-vertical-fall">
+        <radialGradient id="titulo-sistema-vertical-fall">
           <stop offset="0" stop-color="#ffb7c4" stop-opacity=".65"/><stop offset=".18" stop-color="#ff496c" stop-opacity=".5"/>
           <stop offset=".42" stop-color="#ff1748" stop-opacity=".28"/><stop offset=".72" stop-color="#790018" stop-opacity=".08"/>
           <stop offset="1" stop-color="#590712" stop-opacity="0"/>
         </radialGradient>
-        <radialGradient id="sicim-center-surface" cx="50%" cy="47%" r="70%">
+        <radialGradient id="titulo-sistema-center-surface" cx="50%" cy="47%" r="70%">
           <stop offset="0" stop-color="#42000f"/><stop offset=".42" stop-color="#250007"/>
           <stop offset=".78" stop-color="#0d0306"/><stop offset="1" stop-color="#020204"/>
         </radialGradient>
-        <linearGradient id="sicim-metal-text" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="titulo-sistema-metal-text" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stop-color="#ffffff"/><stop offset=".25" stop-color="#f6f6f6"/>
           <stop offset=".55" stop-color="#b9bcc0"/><stop offset=".75" stop-color="#ffffff"/>
           <stop offset="1" stop-color="#8d9298"/>
         </linearGradient>
-        <radialGradient id="sicim-flare">
+        <radialGradient id="titulo-sistema-flare">
           <stop offset="0" stop-color="#ffffff" stop-opacity="1"/><stop offset=".2" stop-color="#fff0f4" stop-opacity=".9"/>
           <stop offset=".48" stop-color="#ff496c" stop-opacity=".52"/><stop offset="1" stop-color="#bd0028" stop-opacity="0"/>
         </radialGradient>
-        <filter id="sicim-soft-glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="2.2"/></filter>
-        <filter id="sicim-central-core-glow" x="-200%" y="-250%" width="500%" height="600%">
+        <radialGradient id="titulo-sistema-degradado-nucleo-oblicuo" cx="50%" cy="50%" r="60%">
+          <stop offset="0" stop-color="#ffffff" stop-opacity=".76"/>
+          <stop offset=".08" stop-color="#fff8fa" stop-opacity=".68"/>
+          <stop offset=".24" stop-color="#fff0f4" stop-opacity=".48"/>
+          <stop offset=".46" stop-color="#ff9aaf" stop-opacity=".27"/>
+          <stop offset=".72" stop-color="#ff3158" stop-opacity=".09"/>
+          <stop offset="1" stop-color="#bd0028" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="titulo-sistema-degradado-halo-oblicuo" cx="50%" cy="50%" r="58%">
+          <stop offset="0" stop-color="#ff1748" stop-opacity=".92"/>
+          <stop offset=".18" stop-color="#e90e3b" stop-opacity=".76"/>
+          <stop offset=".42" stop-color="#bd0028" stop-opacity=".42"/>
+          <stop offset=".68" stop-color="#790018" stop-opacity=".14"/>
+          <stop offset=".86" stop-color="#4a000e" stop-opacity=".035"/>
+          <stop offset="1" stop-color="#250007" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="titulo-sistema-soft-glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="2.2"/></filter>
+        <filter id="titulo-sistema-central-core-glow" x="-200%" y="-250%" width="500%" height="600%">
           <feGaussianBlur stdDeviation="1.15" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
         </filter>
-        <filter id="sicim-central-bloom" x="-120%" y="-180%" width="340%" height="460%"><feGaussianBlur stdDeviation="6.4"/></filter>
-        <filter id="sicim-horizontal-flare" x="-120%" y="-300%" width="340%" height="700%"><feGaussianBlur stdDeviation="2.8"/></filter>
-        <filter id="sicim-vertical-diffuse" x="-180%" y="-100%" width="460%" height="300%"><feGaussianBlur stdDeviation="3.2 4.4"/></filter>
-        <filter id="sicim-core-soft" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="1.2"/></filter>
-        <filter id="sicim-edge-red-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="1.8"/></filter>
-        <filter id="sicim-text-shadow" x="-20%" y="-30%" width="140%" height="160%">
+        <filter id="titulo-sistema-central-bloom" x="-120%" y="-180%" width="340%" height="460%"><feGaussianBlur stdDeviation="6.4"/></filter>
+        <filter id="titulo-sistema-horizontal-flare" x="-120%" y="-300%" width="340%" height="700%"><feGaussianBlur stdDeviation="2.8"/></filter>
+        <filter id="titulo-sistema-vertical-diffuse" x="-180%" y="-100%" width="460%" height="300%"><feGaussianBlur stdDeviation="3.2 4.4"/></filter>
+        <filter id="titulo-sistema-core-soft" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="1.2"/></filter>
+        <filter id="titulo-sistema-edge-red-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="1.8"/></filter>
+        <filter id="titulo-sistema-text-shadow" x="-20%" y="-30%" width="140%" height="160%">
           <feDropShadow dx="0" dy="1.2" stdDeviation="1" flood-color="#000" flood-opacity=".95"/>
           <feDropShadow dx="0" dy="0" stdDeviation="1.4" flood-color="#bd0028" flood-opacity=".38"/>
         </filter>
 
-        <path id="sicim-outer-profile" d="M6 48.5Q6 45 9 42L27 24Q29 22 33 22H87L96 16H136L143 20H183L190 16H230L239 22H293Q297 22 299 25L317 43Q320 46 320 48.5T317 54L299 72Q297 75 293 75H239L230 81H190L183 77H143L136 81H96L87 75H33Q29 75 27 73L9 55Q6 52 6 48.5Z"/>
-        <path id="sicim-inner-profile" d="M15 48.5Q15 46 17 44L34 29Q36 28 39 28H91L99 22H227L235 28H287Q290 28 292 30L309 45Q311 47 311 48.5T309 52L292 67Q290 69 287 69H235L227 75H99L91 69H39Q36 69 34 68L17 53Q15 51 15 48.5Z"/>
-        <g id="sicim-side-module">
+        <g id="titulo-sistema-brillo-eliptico-oblicuo">
+          <ellipse cx="0" cy="0" rx="18" ry="9.5" fill="url(#titulo-sistema-degradado-halo-oblicuo)" opacity=".4" filter="url(#titulo-sistema-central-bloom)"/>
+          <ellipse cx="0" cy="0" rx="14.5" ry="7.8" fill="url(#titulo-sistema-degradado-halo-oblicuo)" opacity=".7" filter="url(#titulo-sistema-horizontal-flare)"/>
+          <ellipse cx="0" cy="0" rx="8.3" ry="5.2" fill="url(#titulo-sistema-degradado-halo-oblicuo)" opacity=".96" filter="url(#titulo-sistema-core-soft)"/>
+          <ellipse cx="0" cy="0" rx="6.8" ry="3.8" fill="url(#titulo-sistema-degradado-nucleo-oblicuo)" opacity=".78" filter="url(#titulo-sistema-central-core-glow)"/>
+        </g>
+
+        <path id="titulo-sistema-outer-profile" d="M6 48.5Q6 45 9 42L27 24Q29 22 33 22H87L96 16H136L143 20H183L190 16H230L239 22H293Q297 22 299 25L317 43Q320 46 320 48.5T317 54L299 72Q297 75 293 75H239L230 81H190L183 77H143L136 81H96L87 75H33Q29 75 27 73L9 55Q6 52 6 48.5Z"/>
+        <!-- Perfil del recuadro interior. Las puntas van en angulo vivo, no
+             redondeadas, y sus diagonales caen a 45 grados igual que las del
+             perfil externo, asi que las dos siluetas quedan paralelas: de la
+             punta (15; 48,5) a la esquina (35,5; 28) hay 20,5 en x y 20,5 en y.
+             Antes cada punta llevaba tres curvas Q que la redondeaban y rompian
+             ese paralelismo contra el filo metalico. -->
+        <!-- Superficie oscura del centro. Es el riel rojo desplazado 4 hacia
+             afuera por todo su contorno, no una silueta distinta: por eso el
+             fondo que rodea al riel es el mismo en cualquier punto del recorrido
+             y no aparece la cuna triangular que dejaba el escalon central.
+             El desplazamiento de un vertice a 45 grados no es 4 sino 4 en cada
+             una de las dos rectas, asi que la punta pasa de x=15 a x=11 y la
+             esquina de (35,5; 28) a (35,5; 24).
+             Medido en titulo_sistema_futurista_05.png: encima del riel siempre
+             hay oscuro (en x=70 y x=85 de y=24 a y=28, en x=100 y x=110 de y=22
+             a y=27) y la chapa gris queda mas arriba, en una franja delgada. -->
+        <path id="titulo-sistema-inner-profile" d="M11 48.5L35.5 24H290.5L315 48.5L290.5 73H35.5Z"/>
+        <!-- El riel rojo interior no comparte silueta con la superficie oscura.
+             En titulo_sistema_futurista_05.png la superficie sube en el centro
+             (a x=130 lo oscuro arranca en y=21) pero la linea roja corre recta
+             a la misma altura de punta a punta (y=28 a 30 tanto en x=60 como en
+             x=130). Por eso el riel usa este perfil sin el escalon central. -->
+        <path id="titulo-sistema-inner-rail-profile" d="M15 48.5L35.5 28H290.5L311 48.5L290.5 69H35.5Z"/>
+        <!-- Trapecio isosceles que flanquea el haz central. Ocupa la MISMA
+             franja que las pestanas metalicas grises vecinas (de y=14 a y=21),
+             de modo que su base queda al ras de la base de esas barras y la
+             linea roja de y=22 pasa por debajo de las dos piezas.
+             Base mayor arriba de x=117 a x=152,35 y base menor abajo de x=124 a
+             x=145,35: los dos lados miden 7 en horizontal por 7 en vertical, asi
+             que la pieza es isosceles por construccion.
+             El ancho no es libre: a la altura de la base mayor el vecino de
+             afuera (la base oscura de la pestana) termina en x=115,78 y el de
+             adentro (el trazo de 2,4 del triangulo central) arranca en x=149,43.
+             La pieza se ensancha 4,15 hacia el triangulo (0,3 mm mas 0,4 mm mas
+             0,4 mm: el panel mide 326 px para 326 unidades del viewBox, asi que
+             1 mm son 3,78 unidades). A partir de este ultimo paso el trapecio
+             deja de estar separado del triangulo: lo pisa 0,40 en la esquina,
+             entre y=14,95 y y=15,21, porque el borde del triangulo se va hacia
+             la derecha 0,538 por unidad de y y el lado del trapecio se va hacia
+             la izquierda 1, de modo que el cruce se cierra solo a las 0,26
+             unidades. Afuera sigue 1,22. -->
+             Una sola pieza y un solo degradado vertical: del negro en la base
+             menor subiendo al rojo vivo de la base mayor. Sin canto, sin brillo
+             y sin filo, que eran bandas sueltas y cortaban ese tono continuo.
+             Se dibuja UNA sola vez: las otras tres salen por reflejo, de modo
+             que no pueden descuadrarse entre si. -->
+        <g id="titulo-sistema-trapecio-central">
+          <path d="M117 14H152.35L145.35 21H124Z" fill="url(#titulo-sistema-trapecio-cuerpo)"/>
+        </g>
+
+        <g id="titulo-sistema-side-module">
           <!-- Volumen cerrado de la punta: sombra, cara frontal y biseles. -->
           <path d="M5 48.5Q5 44 9 40L26 22Q29 19 34 19H72L78 25H35Q32 25 30 27L13 44Q9 48.5 13 53L30 70Q32 72 35 72H78L72 78H34Q29 78 26 75L9 57Q5 53 5 48.5Z" fill="#020203"/>
-          <path d="M8 48.5Q8 45 11 42L28 24Q30 22 34 22H73L78 27H36Q33 27 31 29L16 44Q12 48.5 16 53L31 68Q33 70 36 70H78L73 75H34Q30 75 28 73L11 55Q8 52 8 48.5Z" fill="url(#sicim-tip-front)"/>
-          <path d="M11 43 29 24Q31 22 35 22H72L75 25H36Q33 25 31 28L15 44Z" fill="#bec1c6" opacity=".56"/>
+          <path d="M8 48.5Q8 45 11 42L28 24Q30 22 34 22H73L78 27H36Q33 27 31 29L16 44Q12 48.5 16 53L31 68Q33 70 36 70H78L73 75H34Q30 75 28 73L11 55Q8 52 8 48.5Z" fill="url(#titulo-sistema-tip-front)"/>
+          <path d="M11 43 29 24Q31 22 35 22H72L75 25H36Q33 25 31 28L15 44Z" fill="#8d9198" opacity=".42"/>
           <path d="M11 54 29 73Q31 75 35 75H72L75 72H36Q33 72 31 69L15 53Z" fill="#141419" opacity=".9"/>
           <!-- Cada riel usa exactamente el mismo recorrido para sombra y cara. -->
           <path d="M8 48.5Q8 46 11 42L28 24Q30 22 34 22H88Q91 22 96 18M8 48.5Q8 51 11 55L28 73Q30 75 34 75H88Q91 75 96 79" fill="none" stroke="#020203" stroke-width="8" stroke-linejoin="round"/>
-          <path d="M8 48.5Q8 46 11 42L28 24Q30 22 34 22H88Q91 22 96 18M8 48.5Q8 51 11 55L28 73Q30 75 34 75H88Q91 75 96 79" fill="none" stroke="url(#sicim-tip-rail)" stroke-width="3.8" stroke-linejoin="round"/>
+          <path d="M8 48.5Q8 46 11 42L28 24Q30 22 34 22H88Q91 22 96 18M8 48.5Q8 51 11 55L28 73Q30 75 34 75H88Q91 75 96 79" fill="none" stroke="url(#titulo-sistema-tip-rail-metal)" stroke-width="3.8" stroke-linejoin="round"/>
           <path d="M17 48.5 34 31H69L77 27M17 48.5 34 66H69L77 70" fill="none" stroke="#120207" stroke-width="5" stroke-linejoin="round"/>
-          <path d="M17 48.5 34 31H69L77 27M17 48.5 34 66H69L77 70" fill="none" stroke="url(#sicim-tip-rail)" stroke-width="1.65" stroke-linejoin="round"/>
-          <!-- Reflejos parciales: nunca atraviesan la ranura roja. -->
-          <path d="M13 42 28 27" fill="none" stroke="url(#sicim-rail-highlight)" stroke-width=".85" stroke-linecap="round" filter="url(#sicim-core-soft)"/>
-          <path d="M39 23.8H63" fill="none" stroke="url(#sicim-rail-highlight)" stroke-width=".8" stroke-linecap="round"/>
-          <path d="M14 54 27 68" fill="none" stroke="url(#sicim-rail-highlight)" stroke-width=".65" stroke-linecap="round" opacity=".48"/>
-          <path d="M36 40 28 48.5 36 57M48 40 40 48.5 48 57" class="sicim__chevron"/>
+          <path d="M17 48.5 34 31H69L77 27M17 48.5 34 66H69L77 70" fill="none" stroke="url(#titulo-sistema-tip-rail)" stroke-width="1.65" stroke-linejoin="round"/>
+          <!-- Sistema energetico interior: halo y nucleo comparten geometria. -->
+          <g class="titulo-sistema__inner-energy">
+            <path d="M17 48.5 34 31" fill="none" stroke="#d90d36" stroke-width="6.5" stroke-linecap="round" opacity=".52" filter="url(#titulo-sistema-horizontal-flare)"/>
+            <path d="M17 48.5 34 31" fill="none" stroke="#ff1748" stroke-width="1.9" stroke-linecap="round" opacity=".92"/>
+            <path d="M17 48.5 34 66" fill="none" stroke="#d90d36" stroke-width="6.5" stroke-linecap="round" opacity=".52" filter="url(#titulo-sistema-horizontal-flare)"/>
+            <path d="M17 48.5 34 66" fill="none" stroke="#ff1748" stroke-width="1.9" stroke-linecap="round" opacity=".92"/>
+            <path d="M34 31H66M34 66H66" fill="none" stroke="#d90d36" stroke-width="5.5" stroke-linecap="round" opacity=".44" filter="url(#titulo-sistema-horizontal-flare)"/>
+            <path d="M34 31H66M34 66H66" fill="none" stroke="#ff1748" stroke-width="1.65" stroke-linecap="round" opacity=".86"/>
+          </g>
+          <!-- Puntos luminosos sobre los oblicuos del recuadro rojo interior. -->
+          <g id="titulo-sistema-brillos-rieles-oblicuos">
+            <g transform="translate(25.5 39.75) rotate(-46)"><use href="#titulo-sistema-brillo-eliptico-oblicuo"/></g>
+            <g transform="translate(25.5 57.25) rotate(46)"><use href="#titulo-sistema-brillo-eliptico-oblicuo"/></g>
+          </g>
+          <!-- Reflejos parciales exclusivamente dentro del marco rojo. -->
+          <path d="M39 31H66M39 66H66" fill="none" stroke="url(#titulo-sistema-rail-highlight)" stroke-width=".8" stroke-linecap="round"/>
+          <path d="M36 40 28 48.5 36 57M48 40 40 48.5 48 57" transform="translate(1.5118 0)" class="titulo-sistema__chevron"/>
+        </g>
+        <g id="titulo-sistema-iluminacion-interna-izquierda">
+          <!-- Horizontal interior: halo y nucleo permanecen dentro del riel rojo. -->
+          <path d="M42 28H89" fill="none" stroke="#e90e3b" stroke-width="5.5" opacity=".38" stroke-linecap="round" filter="url(#titulo-sistema-horizontal-flare)"/>
+          <path d="M42 28H89" fill="none" stroke="url(#titulo-sistema-rail-highlight)" stroke-width="1.15" stroke-linecap="round"/>
+          <path d="M42 69H89" fill="none" stroke="#e90e3b" stroke-width="5.5" opacity=".38" stroke-linecap="round" filter="url(#titulo-sistema-horizontal-flare)"/>
+          <path d="M42 69H89" fill="none" stroke="url(#titulo-sistema-rail-highlight)" stroke-width="1.15" stroke-linecap="round"/>
+          <!-- Continuacion recta del riel: antes estos ocho trazos doblaban por
+               el oblicuo del escalon (91,28)-(99,22). Ahora siguen derecho y
+               conservan su largo de 10, asi que los guiones no cambian de paso. -->
+          <path d="M91 28H101" pathLength="10" fill="none" stroke="#da0d37" stroke-width="8" opacity=".64" stroke-linecap="round" filter="url(#titulo-sistema-horizontal-flare)"/>
+          <path d="M91 28H101" pathLength="10" fill="none" stroke="#ff1748" stroke-width="2" opacity=".96" stroke-linecap="round"/>
+          <path d="M91 28H101" pathLength="10" fill="none" stroke="#ff8aa0" stroke-width="2.8" stroke-dasharray="5 10" stroke-dashoffset="-3" opacity=".78" stroke-linecap="round" filter="url(#titulo-sistema-core-soft)"/>
+          <path d="M91 28H101" pathLength="10" fill="none" stroke="#fff5f7" stroke-width="1.2" stroke-dasharray="3 10" stroke-dashoffset="-4" opacity=".98" stroke-linecap="round" filter="url(#titulo-sistema-core-soft)"/>
+          <path d="M91 69H101" pathLength="10" fill="none" stroke="#da0d37" stroke-width="8" opacity=".64" stroke-linecap="round" filter="url(#titulo-sistema-horizontal-flare)"/>
+          <path d="M91 69H101" pathLength="10" fill="none" stroke="#ff1748" stroke-width="2" opacity=".96" stroke-linecap="round"/>
+          <path d="M91 69H101" pathLength="10" fill="none" stroke="#ff8aa0" stroke-width="2.8" stroke-dasharray="5 10" stroke-dashoffset="-3" opacity=".78" stroke-linecap="round" filter="url(#titulo-sistema-core-soft)"/>
+          <path d="M91 69H101" pathLength="10" fill="none" stroke="#fff5f7" stroke-width="1.2" stroke-dasharray="3 10" stroke-dashoffset="-4" opacity=".98" stroke-linecap="round" filter="url(#titulo-sistema-core-soft)"/>
         </g>
       </defs>
 
       <g class="panel-shadow" aria-hidden="true">
-        <use href="#sicim-outer-profile" fill="#020204" stroke="#000" stroke-width="7" stroke-linejoin="round"/>
+        <use href="#titulo-sistema-outer-profile" fill="#020204" stroke="#000" stroke-width="7" stroke-linejoin="round"/>
       </g>
 
-      <g class="outer-metal-shell" aria-hidden="true">
-        <use href="#sicim-outer-profile" fill="url(#sicim-shell-metal)" stroke="#07070a" stroke-width="3.2" stroke-linejoin="round"/>
-        <use href="#sicim-outer-profile" fill="none" stroke="#90959d" stroke-width="1" opacity=".42" stroke-linejoin="round"/>
+      <g id="titulo-sistema-marco-externo" class="outer-metal-shell" aria-hidden="true">
+        <use href="#titulo-sistema-outer-profile" fill="url(#titulo-sistema-shell-metal)" stroke="#07070a" stroke-width="3.2" stroke-linejoin="round"/>
+        <use href="#titulo-sistema-outer-profile" fill="none" stroke="#90959d" stroke-width="1" opacity=".42" stroke-linejoin="round"/>
       </g>
 
       <g class="dark-center-surface" aria-hidden="true">
-        <use href="#sicim-inner-profile" fill="url(#sicim-center-surface)" stroke="#180006" stroke-width="2"/>
+        <use href="#titulo-sistema-inner-profile" fill="url(#titulo-sistema-center-surface)" stroke="#180006" stroke-width="2"/>
         <path d="M44 31H282L299 48.5 282 66H44L27 48.5Z" fill="none" stroke="#4a000e" stroke-width="1.2" opacity=".7"/>
       </g>
 
       <g class="outer-red-frame" aria-hidden="true">
-        <use href="#sicim-outer-profile" fill="none" stroke="#2a0009" stroke-width="5.4" stroke-linejoin="round"/>
-        <use href="#sicim-outer-profile" fill="none" stroke="url(#sicim-red-frame)" stroke-width="3.5" stroke-linejoin="round"/>
+        <use href="#titulo-sistema-outer-profile" fill="none" stroke="#2a0009" stroke-width="5.4" stroke-linejoin="round"/>
+        <use href="#titulo-sistema-outer-profile" fill="none" stroke="url(#titulo-sistema-red-frame)" stroke-width="3.5" stroke-linejoin="round"/>
       </g>
-      <g class="inner-red-frame" aria-hidden="true">
-        <use href="#sicim-inner-profile" fill="none" stroke="#bd0028" stroke-width="2.2" stroke-linejoin="round"/>
-        <use href="#sicim-inner-profile" fill="none" stroke="#ff496c" stroke-width=".85" stroke-linejoin="round" opacity=".7"/>
-      </g>
-
       <g class="top-mechanical-tabs" aria-hidden="true">
-        <path d="M82 22 92 12 114 12 122 21 116 24H90Z" fill="#020203" stroke="#0b0b0e" stroke-width="2.4"/>
-        <path d="M88 21 96 14H110L116 21Z" fill="url(#sicim-tab-metal)"/><path d="M94 14H109L113 17H91Z" fill="#a6a8ad" opacity=".48"/><path d="M89 22H118" stroke="#c90d2e" stroke-width="1.6"/>
-        <path d="M140 21 148 11H178L186 21 181 24H145Z" fill="#020203" stroke="#570711" stroke-width="2.4"/>
-        <path d="M148 20 154 13H172L178 20Z" fill="url(#sicim-red-frame)"/><path d="M153 14H173L177 18H149Z" fill="#34343a" opacity=".72"/>
+        <path d="M82 22 92 12H114L122 21 116 24H90Z" fill="#020203" stroke="#0b0b0e" stroke-width="2.4"/>
+        <path d="M88 21 96 14H110L116 21Z" fill="url(#titulo-sistema-tab-metal)"/><path d="M94 14H109L113 17H91Z" fill="#777b82" opacity=".35"/><path d="M89 22H118" stroke="#c90d2e" stroke-width="1.6"/>
+        <path d="M151 21H175L168 34H158Z" transform="translate(0 -6.0472)" fill="#020203" stroke="#570711" stroke-width="2.4" stroke-linejoin="miter" stroke-miterlimit="10"/>
+        <path d="M155 22H171L166 32H160Z" transform="translate(0 -6.0472)" fill="url(#titulo-sistema-triangular-light)" opacity=".9" filter="url(#titulo-sistema-core-soft)"/>
         <path d="M204 21 212 12H234L244 22 236 24H210Z" fill="#020203" stroke="#0b0b0e" stroke-width="2.4"/>
-        <path d="M210 21 216 14H230L238 21Z" fill="url(#sicim-tab-metal)"/><path d="M217 14H232L235 17H213Z" fill="#a6a8ad" opacity=".48"/><path d="M208 22H237" stroke="#c90d2e" stroke-width="1.6"/>
+        <path d="M210 21 216 14H230L238 21Z" fill="url(#titulo-sistema-tab-metal)"/><path d="M217 14H232L235 17H213Z" fill="#777b82" opacity=".35"/><path d="M208 22H237" stroke="#c90d2e" stroke-width="1.6"/>
       </g>
 
       <g class="bottom-mechanical-tabs" aria-hidden="true">
         <path d="M82 75 92 85H114L122 76 116 73H90Z" fill="#020203" stroke="#0b0b0e" stroke-width="2.4"/>
-        <path d="M88 76 96 83H110L116 76Z" fill="url(#sicim-tab-metal)"/><path d="M94 83H109L113 80H91Z" fill="#a6a8ad" opacity=".42"/><path d="M89 75H118" stroke="#c90d2e" stroke-width="1.6"/>
-        <path d="M140 76 148 86H178L186 76 181 73H145Z" fill="#020203" stroke="#570711" stroke-width="2.4"/>
-        <path d="M148 77 154 84H172L178 77Z" fill="url(#sicim-red-frame)"/><path d="M153 83H173L177 79H149Z" fill="#34343a" opacity=".72"/>
+        <path d="M88 76 96 83H110L116 76Z" fill="url(#titulo-sistema-tab-metal)"/><path d="M94 83H109L113 80H91Z" fill="#777b82" opacity=".32"/><path d="M89 75H118" stroke="#c90d2e" stroke-width="1.6"/>
+        <path d="M151 76H175L168 63H158Z" transform="translate(0 6.0472)" fill="#020203" stroke="#570711" stroke-width="2.4" stroke-linejoin="miter" stroke-miterlimit="10"/>
+        <path d="M155 75H171L166 65H160Z" transform="translate(0 6.0472)" fill="url(#titulo-sistema-triangular-light-bottom)" opacity=".98" filter="url(#titulo-sistema-core-soft)"/>
         <path d="M204 76 212 85H234L244 75 236 73H210Z" fill="#020203" stroke="#0b0b0e" stroke-width="2.4"/>
-        <path d="M210 76 216 83H230L238 76Z" fill="url(#sicim-tab-metal)"/><path d="M217 83H232L235 80H213Z" fill="#a6a8ad" opacity=".42"/><path d="M208 75H237" stroke="#c90d2e" stroke-width="1.6"/>
+        <path d="M210 76 216 83H230L238 76Z" fill="url(#titulo-sistema-tab-metal)"/><path d="M217 83H232L235 80H213Z" fill="#777b82" opacity=".32"/><path d="M208 75H237" stroke="#c90d2e" stroke-width="1.6"/>
       </g>
 
-      <g class="left-side-module" aria-hidden="true"><use href="#sicim-side-module"/></g>
-      <g class="right-side-module" aria-hidden="true"><use href="#sicim-side-module" transform="translate(326 0) scale(-1 1)"/></g>
+      <!-- El riel rojo se pinta DESPUES de las pestanas. El triangulo central
+           baja hasta y=27,95 y su trazo de 2,4 llega a 29,15, o sea que tapaba
+           por completo la banda del riel (26,9 a 29,1) entre x=158 y x=168: la
+           linea se cortaba justo en el centro. En titulo_sistema_futurista_05.png
+           la linea pasa entera por ahi y lo que hace el haz es dejarle un destello
+           encima, no partirla. -->
+      <g id="titulo-sistema-marco-interno" class="inner-red-frame" aria-hidden="true">
+        <use href="#titulo-sistema-inner-rail-profile" fill="none" stroke="#bd0028" stroke-width="2.2" stroke-linejoin="miter" stroke-miterlimit="10"/>
+        <use href="#titulo-sistema-inner-rail-profile" fill="none" stroke="#ff496c" stroke-width=".85" stroke-linejoin="miter" stroke-miterlimit="10" opacity=".7"/>
+      </g>
+
+
+
+      <g class="left-side-module" aria-hidden="true"><use href="#titulo-sistema-side-module"/></g>
+      <g class="right-side-module" aria-hidden="true"><use href="#titulo-sistema-side-module" transform="translate(326 0) scale(-1 1)"/></g>
+
+      <g id="titulo-sistema-horizontales-rojas-centrales" aria-hidden="true">
+        <path d="M44 31H154M172 31H282" fill="none" stroke="#250007" stroke-width="3" stroke-linecap="round" opacity=".9"/>
+        <path d="M44 31H154M172 31H282" fill="none" stroke="#790018" stroke-width="1.45" stroke-linecap="round" opacity=".9"/>
+        <path d="M44 31H154M172 31H282" fill="none" stroke="#bd0028" stroke-width=".55" stroke-linecap="round" opacity=".48"/>
+        <path d="M44 66H154M172 66H282" fill="none" stroke="#250007" stroke-width="3" stroke-linecap="round" opacity=".9"/>
+        <path d="M44 66H154M172 66H282" fill="none" stroke="#790018" stroke-width="1.45" stroke-linecap="round" opacity=".9"/>
+        <path d="M44 66H154M172 66H282" fill="none" stroke="#bd0028" stroke-width=".55" stroke-linecap="round" opacity=".48"/>
+      </g>
+
+      <g id="titulo-sistema-iluminacion-interna" class="titulo-sistema__inner-lighting" aria-hidden="true">
+        <g id="titulo-sistema-oblicuos-internos">
+          <use href="#titulo-sistema-iluminacion-interna-izquierda"/>
+          <use href="#titulo-sistema-iluminacion-interna-izquierda" transform="translate(326 0) scale(-1 1)"/>
+        </g>
+        <g id="titulo-sistema-elipses-internas">
+          <ellipse cx="62" cy="31" rx="15" ry="4.4" fill="url(#titulo-sistema-degradado-halo-oblicuo)" opacity=".62" filter="url(#titulo-sistema-horizontal-flare)"/>
+          <ellipse cx="62" cy="31" rx="9" ry="2.6" fill="url(#titulo-sistema-degradado-halo-oblicuo)" opacity=".9" filter="url(#titulo-sistema-core-soft)"/>
+          <ellipse cx="62" cy="31" rx="4.8" ry="1.45" fill="url(#titulo-sistema-degradado-nucleo-oblicuo)" opacity=".82" filter="url(#titulo-sistema-central-core-glow)"/>
+          <ellipse cx="62" cy="66" rx="15" ry="4.4" fill="url(#titulo-sistema-degradado-halo-oblicuo)" opacity=".62" filter="url(#titulo-sistema-horizontal-flare)"/>
+          <ellipse cx="62" cy="66" rx="9" ry="2.6" fill="url(#titulo-sistema-degradado-halo-oblicuo)" opacity=".9" filter="url(#titulo-sistema-core-soft)"/>
+          <ellipse cx="62" cy="66" rx="4.8" ry="1.45" fill="url(#titulo-sistema-degradado-nucleo-oblicuo)" opacity=".82" filter="url(#titulo-sistema-central-core-glow)"/>
+          <ellipse cx="264" cy="31" rx="15" ry="4.4" fill="url(#titulo-sistema-degradado-halo-oblicuo)" opacity=".62" filter="url(#titulo-sistema-horizontal-flare)"/>
+          <ellipse cx="264" cy="31" rx="9" ry="2.6" fill="url(#titulo-sistema-degradado-halo-oblicuo)" opacity=".9" filter="url(#titulo-sistema-core-soft)"/>
+          <ellipse cx="264" cy="31" rx="4.8" ry="1.45" fill="url(#titulo-sistema-degradado-nucleo-oblicuo)" opacity=".82" filter="url(#titulo-sistema-central-core-glow)"/>
+          <ellipse cx="264" cy="66" rx="15" ry="4.4" fill="url(#titulo-sistema-degradado-halo-oblicuo)" opacity=".62" filter="url(#titulo-sistema-horizontal-flare)"/>
+          <ellipse cx="264" cy="66" rx="9" ry="2.6" fill="url(#titulo-sistema-degradado-halo-oblicuo)" opacity=".9" filter="url(#titulo-sistema-core-soft)"/>
+          <ellipse cx="264" cy="66" rx="4.8" ry="1.45" fill="url(#titulo-sistema-degradado-nucleo-oblicuo)" opacity=".82" filter="url(#titulo-sistema-central-core-glow)"/>
+        </g>
+      </g>
 
       <g class="center-flares" aria-hidden="true">
-        <g class="sicim__central-glow sicim__central-glow--top">
-          <ellipse cx="163" cy="22" rx="27" ry="8" fill="#b5092a" opacity=".28" filter="url(#sicim-central-bloom)"/>
-          <ellipse cx="163" cy="22" rx="31" ry="4.8" fill="url(#sicim-horizontal-fade)" filter="url(#sicim-horizontal-flare)"/>
-          <ellipse cx="163" cy="22" rx="16" ry="3.8" fill="#ff1748" opacity=".48" filter="url(#sicim-horizontal-flare)"/>
-          <ellipse cx="163" cy="22" rx="5" ry="8" fill="url(#sicim-vertical-fall)" opacity=".48" filter="url(#sicim-vertical-diffuse)"/>
-          <ellipse cx="163" cy="22" rx="4" ry="2" fill="#ffb7c4" opacity=".88" filter="url(#sicim-core-soft)"/>
-          <ellipse cx="163" cy="22" rx="1.35" ry="1" fill="#fff8fa" opacity=".96"/>
+        <g id="titulo-sistema-reflejos-triangulares">
+          <path class="titulo-sistema__triangular-reflection" d="M152 22H174L168 34H158Z" transform="translate(0 -6.0472)" fill="url(#titulo-sistema-triangular-light)" opacity=".9" filter="url(#titulo-sistema-core-soft)"/>
+          <path class="titulo-sistema__triangular-reflection titulo-sistema__triangular-reflection--bottom" d="M152 75H174L168 63H158Z" transform="translate(0 6.0472)" fill="url(#titulo-sistema-triangular-light-bottom)" opacity="1" filter="url(#titulo-sistema-core-soft)"/>
         </g>
-        <g class="sicim__central-glow sicim__central-glow--bottom">
-          <ellipse cx="163" cy="75" rx="29" ry="8.5" fill="#b5092a" opacity=".34" filter="url(#sicim-central-bloom)"/>
-          <ellipse cx="163" cy="75" rx="32" ry="5.2" fill="url(#sicim-horizontal-fade)" filter="url(#sicim-horizontal-flare)"/>
-          <ellipse cx="163" cy="75" rx="17" ry="4" fill="#ff1748" opacity=".56" filter="url(#sicim-horizontal-flare)"/>
-          <ellipse cx="163" cy="75" rx="5.4" ry="9" fill="url(#sicim-vertical-fall)" opacity=".54" filter="url(#sicim-vertical-diffuse)"/>
-          <ellipse cx="163" cy="75" rx="4.4" ry="2.2" fill="#ffb7c4" opacity=".94" filter="url(#sicim-core-soft)"/>
-          <ellipse cx="163" cy="75" rx="1.5" ry="1.1" fill="#fff8fa"/>
+        <g class="titulo-sistema__central-glow titulo-sistema__central-glow--top">
+          <!-- Brillo horizontal exactamente sobre la punta y el riel rojo superior (y=31). -->
+          <ellipse cx="163" cy="31" rx="88" ry="8.2" fill="url(#titulo-sistema-horizontal-fade)" opacity=".86" filter="url(#titulo-sistema-central-bloom)"/>
+          <ellipse cx="163" cy="31" rx="74" ry="5.7" fill="url(#titulo-sistema-degradado-halo-oblicuo)" opacity="1" filter="url(#titulo-sistema-horizontal-flare)"/>
+          <ellipse cx="163" cy="31" rx="54" ry="3.4" fill="url(#titulo-sistema-horizontal-fade)" opacity="1" filter="url(#titulo-sistema-core-soft)"/>
+          <ellipse cx="163" cy="31" rx="10" ry="1.8" fill="url(#titulo-sistema-degradado-nucleo-oblicuo)" opacity=".9" filter="url(#titulo-sistema-central-core-glow)"/>
+          <ellipse cx="163" cy="31" rx="83" ry="1.1" fill="url(#titulo-sistema-horizontal-fade)" opacity="1" filter="url(#titulo-sistema-core-soft)"/>
+          <ellipse cx="163" cy="31" rx="31" ry="1.45" fill="url(#titulo-sistema-degradado-nucleo-oblicuo)" opacity="1" filter="url(#titulo-sistema-central-core-glow)"/>
+          <ellipse cx="163" cy="31" rx="6.2" ry="2.25" fill="#ffb7c4" opacity=".96" filter="url(#titulo-sistema-central-core-glow)"/>
+          <ellipse cx="163" cy="31" rx="5.2" ry="2.1" fill="#fff5f7" opacity="1"/>
+          <ellipse cx="163" cy="22" rx="8.5" ry="15" fill="#ad0829" opacity=".34" filter="url(#titulo-sistema-central-bloom)"/>
+          <ellipse cx="163" cy="22" rx="5.2" ry="11" fill="#c80d30" opacity=".46" filter="url(#titulo-sistema-vertical-diffuse)"/>
+          <ellipse cx="163" cy="22" rx="4.2" ry="8" fill="#ff1748" opacity=".72" filter="url(#titulo-sistema-horizontal-flare)"/>
+          <ellipse cx="163" cy="22" rx="3.1" ry="5.8" fill="url(#titulo-sistema-flare)" opacity=".84"/>
+          <ellipse cx="163" cy="22" rx="2.2" ry="3.8" fill="#ffb7c4" opacity=".9" filter="url(#titulo-sistema-central-core-glow)"/>
+          <ellipse cx="163" cy="22" rx="1.25" ry="2.1" fill="#fff5f7" opacity=".98"/>
         </g>
-        <g filter="url(#sicim-soft-glow)">
-        <ellipse class="sicim__fogonazo" style="--d:.8s" cx="91" cy="23" rx="12" ry="4"/>
-        <ellipse class="sicim__fogonazo" style="--d:2.8s" cx="235" cy="74" rx="12" ry="4"/>
-        <circle class="sicim__fogonazo" style="--d:2s" cx="10" cy="48.5" r="5"/>
-        <circle class="sicim__fogonazo" style="--d:3.2s" cx="316" cy="48.5" r="5"/>
+        <g class="titulo-sistema__central-glow titulo-sistema__central-glow--bottom">
+          <!-- Brillo horizontal exactamente sobre la punta y el riel rojo inferior (y=66). -->
+          <ellipse cx="163" cy="66" rx="92" ry="8.6" fill="url(#titulo-sistema-horizontal-fade)" opacity=".92" filter="url(#titulo-sistema-central-bloom)"/>
+          <ellipse cx="163" cy="66" rx="78" ry="6" fill="url(#titulo-sistema-degradado-halo-oblicuo)" opacity="1" filter="url(#titulo-sistema-horizontal-flare)"/>
+          <ellipse cx="163" cy="66" rx="57" ry="3.6" fill="url(#titulo-sistema-horizontal-fade)" opacity="1" filter="url(#titulo-sistema-core-soft)"/>
+          <ellipse cx="163" cy="66" rx="10.5" ry="1.9" fill="url(#titulo-sistema-degradado-nucleo-oblicuo)" opacity=".94" filter="url(#titulo-sistema-central-core-glow)"/>
+          <ellipse cx="163" cy="66" rx="87" ry="1.15" fill="url(#titulo-sistema-horizontal-fade)" opacity="1" filter="url(#titulo-sistema-core-soft)"/>
+          <ellipse cx="163" cy="66" rx="34" ry="1.5" fill="url(#titulo-sistema-degradado-nucleo-oblicuo)" opacity="1" filter="url(#titulo-sistema-central-core-glow)"/>
+          <ellipse cx="163" cy="66" rx="6.6" ry="2.4" fill="#ffb7c4" opacity=".98" filter="url(#titulo-sistema-central-core-glow)"/>
+          <ellipse cx="163" cy="66" rx="5.5" ry="2.25" fill="#fff5f7" opacity="1"/>
+          <ellipse cx="163" cy="75" rx="9" ry="16" fill="#ad0829" opacity=".39" filter="url(#titulo-sistema-central-bloom)"/>
+          <ellipse cx="163" cy="75" rx="5.5" ry="11.8" fill="#c80d30" opacity=".52" filter="url(#titulo-sistema-vertical-diffuse)"/>
+          <ellipse cx="163" cy="75" rx="4.5" ry="8.6" fill="#ff1748" opacity=".78" filter="url(#titulo-sistema-horizontal-flare)"/>
+          <ellipse cx="163" cy="75" rx="3.3" ry="6.2" fill="url(#titulo-sistema-flare)" opacity=".9"/>
+          <ellipse cx="163" cy="75" rx="2.35" ry="4.1" fill="#ffb7c4" opacity=".94" filter="url(#titulo-sistema-central-core-glow)"/>
+          <ellipse cx="163" cy="75" rx="1.35" ry="2.25" fill="#fff5f7"/>
+        </g>
+        <g filter="url(#titulo-sistema-soft-glow)">
+        <ellipse class="titulo-sistema__fogonazo" style="--d:.8s" cx="91" cy="23" rx="12" ry="4"/>
+        <ellipse class="titulo-sistema__fogonazo" style="--d:2.8s" cx="235" cy="74" rx="12" ry="4"/>
+        <circle class="titulo-sistema__fogonazo" style="--d:2s" cx="10" cy="48.5" r="5"/>
+        <circle class="titulo-sistema__fogonazo" style="--d:3.2s" cx="316" cy="48.5" r="5"/>
         </g>
       </g>
 
+      <!-- Cunas negras del rebaje central. Bajan hasta y=21,9 (y suben hasta
+           y=75,1 abajo) para tapar el escalon del marco rojo exterior: ese
+           marco corre a y=16 y en el rebaje central cae a y=20, y el trozo que
+           quedaba a la vista entre el trapecio y el triangulo se leia como una
+           punta roja asomada del propio trapecio. El trazo de ese marco es de
+           3,5, asi que su banda llega hasta y=21,75: por eso las cunas tienen
+           que bajar a 21,9 y no a 20,9, que dejaba viva una tira de 0,85 justo
+           al lado del triangulo.
+           Por abajo se detienen en y=24, que es donde empieza la superficie
+           oscura: de ahi para abajo ya todo es oscuro y las cunas no aportan
+           nada. Llegaban antes a y=31 y a y=29, y como se pintan DESPUES del
+           riel rojo se comian su banda (26,9 a 29,1) en dos sitios, x=152 a 158
+           y x=168 a 174: ahi se partian tanto la linea como el brillo que la
+           recorre. -->
+      <g id="titulo-sistema-cortes-laterales-trapecios" aria-hidden="true">
+        <path d="M138 14H151L156 24 147.85 24 146 21.9H138Z" fill="#020203"/>
+        <path d="M188 14H175L170 24 178.15 24 180 21.9H188Z" fill="#020203"/>
+        <path d="M138 83H151L156 73 147.85 73 146 75.1H138Z" fill="#020203"/>
+        <path d="M188 83H175L170 73 178.15 73 180 75.1H188Z" fill="#020203"/>
+        <path d="M146 20 148.91 24M180 20 177.09 24M146 77 148.91 73M180 77 177.09 73" fill="none" stroke="#250007" stroke-width="1.1" stroke-linecap="round"/>
+      </g>
+      <!-- Los cuatro trapecios isosceles que flanquean los haces centrales.
+           Uno dibujado y tres reflejos: horizontal sobre x=163, vertical sobre
+           y=48,5 y los dos a la vez. No tocan los haces triangulares. -->
+      <g id="titulo-sistema-trapecios-centrales" aria-hidden="true">
+        <use href="#titulo-sistema-trapecio-central"/>
+        <use href="#titulo-sistema-trapecio-central" transform="translate(326 0) scale(-1 1)"/>
+        <use href="#titulo-sistema-trapecio-central" transform="translate(0 97) scale(1 -1)"/>
+        <use href="#titulo-sistema-trapecio-central" transform="translate(326 97) scale(-1 -1)"/>
+      </g>
+
+
+      <!-- El recorrido va de punta a punta en un solo tramo. Antes se partia en
+           x=136 y x=190 para saltarse el centro, y el corte se notaba justo al
+           llegar a las puntas de los triangulos: el brillo desaparecia ahi y
+           reaparecia del otro lado. Ahora el riel rojo tambien es continuo, asi
+           que el brillo puede recorrerlo entero. -->
       <g class="moving-highlights" aria-hidden="true">
-        <path class="sicim__recorrido" pathLength="100" d="M29 22H87L96 16H136L143 20H183L190 16H230L239 22H297"/>
-        <path class="sicim__recorrido sicim__recorrido--inf" pathLength="100" d="M297 75H239L230 81H190L183 77H143L136 81H96L87 75H29"/>
+        <path class="titulo-sistema__recorrido" pathLength="100" d="M35.5 28H290.5"/>
+        <path class="titulo-sistema__recorrido titulo-sistema__recorrido--inf" pathLength="100" d="M290.5 69H35.5"/>
       </g>
 
     </svg>
-    <span class="sicim__titulo-html" aria-hidden="true">SICIM</span>
+    <span class="titulo-sistema__titulo-html" aria-hidden="true">{{ tituloSistema }}</span>
   </div>
 
   <!-- Logo compuesto por capas independientes sobre los tres PNG originales.
@@ -390,7 +621,7 @@
       >
 
       <img
-        class="logo-sicim"
+        class="logo-sistema"
         src="assets/images/logo/logo_sicim_01.png"
         alt="Logo del Sistema Integrado para el Control de Ingenieros Militares"
       >
