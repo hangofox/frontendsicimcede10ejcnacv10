@@ -555,31 +555,6 @@ $marco-inferior: 3.03%;
   filter: drop-shadow(0 1.2px 1px #000) drop-shadow(0 0 1.4px rgb(189 0 40 / 38%));
 }
 
-/* Relleno metalico del texto. Se declara con especificidad de clase y valores
-   explicitos para que ninguna regla heredada del cabezote (que pinta en blanco
-   los textos) pueda dejarlo oscuro. El trazo va por debajo del relleno gracias
-   a paint-order, de modo que el gris no invade el blanco de las letras. */
-.titulo-sistema__texto {
-  fill: url(#titulo-sistema-metal-text);
-  stroke: #3a3f47;
-  stroke-width: .7;
-  paint-order: stroke fill;
-  opacity: 1;
-  mix-blend-mode: normal;
-  /* Misma pila tecnica que el cuadro de acceso. Bahnschrift es condensada y
-     local, que es justo la proporcion de letra de la referencia: 43 unidades
-     de alto por 106 de ancho las cinco juntas. textLength fija ese ancho, asi
-     que el resultado no depende de que fuente de la pila resuelva el sistema. */
-  font-family: 'Bahnschrift', 'DIN Alternate', 'Segoe UI Variable Display', 'Segoe UI', Arial, sans-serif;
-  font-size: 32px;
-  font-weight: 900;
-  letter-spacing: 3.2px;
-  /* Sombra negra corta y un resplandor rojo minimo: profundidad sin ensuciar
-     el relleno. */
-  filter:
-    drop-shadow(0 1px 1px rgb(0 0 0 / 85%))
-    drop-shadow(0 0 4px rgb(242 11 61 / 30%));
-}
 
 /* Segmentos que recorren el marco. El contorno mide 858 unidades: el hueco lo
    cubre entero para que solo se vea un tramo corto viajando. */
@@ -599,6 +574,48 @@ $marco-inferior: 3.03%;
   animation: titulo-sistema-recorrido-inverso 8.4s linear infinite;
 }
 
+/* Barrido de luz del circuito, en modo screen: solo suma luz, no tapa nada.
+   Tres capas concentricas de largo decreciente -26, 18 y 10 de 100- centradas
+   entre si con --fase, que desplaza el guion por el recorrido. Asi la estela se
+   afila hacia las dos puntas: en los extremos solo queda la capa difusa, y el
+   nucleo blanco vive en el tramo central. --turno separa el segundo barrido. */
+.titulo-sistema-barrido {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  mix-blend-mode: screen;
+  animation: titulo-sistema-recorrido 38s linear infinite;
+  animation-delay: calc(var(--fase, 0s) + var(--turno, 0s));
+}
+
+.titulo-sistema-barrido--nucleo {
+  stroke: rgb(255 240 244 / 48%);
+  stroke-width: 1.2;
+  stroke-dasharray: 10 90;
+  --fase: -3s;
+}
+
+.titulo-sistema-barrido--halo {
+  stroke: rgb(255 120 148 / 20%);
+  stroke-width: 5.6;
+  stroke-dasharray: 18 82;
+  filter: blur(2.6px);
+  --fase: -1.5s;
+}
+
+.titulo-sistema-barrido--difuso {
+  stroke: rgb(255 90 120 / 10%);
+  stroke-width: 11;
+  stroke-dasharray: 26 74;
+  filter: blur(4.6px);
+}
+
+.titulo-sistema-barrido--par { --turno: -19s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .titulo-sistema-barrido { animation: none; }
+}
+
 /* Fogonazos concentrados: nucleo blanco con halo rosado y carmesi. El retardo
    llega por --d desde la plantilla para que no enciendan a la vez. */
 .titulo-sistema__fogonazo {
@@ -610,17 +627,21 @@ $marco-inferior: 3.03%;
 .titulo-sistema__central-glow {
   transform-box: fill-box;
   transform-origin: center;
-  animation: titulo-sistema-central-breath 3.4s ease-in-out infinite;
+  animation: titulo-sistema-central-breath 4.8s ease-in-out infinite;
 }
 
-.titulo-sistema__central-glow--bottom { animation-delay: 1.7s; }
+.titulo-sistema__central-glow--bottom { animation-delay: 0s; }
+
+.titulo-sistema__brillos-internos {
+  animation: titulo-sistema-central-breath 4.8s ease-in-out infinite;
+}
 
 .titulo-sistema__inner-lighting,
 .titulo-sistema__triangular-reflection {
-  animation: titulo-sistema-energia-interior 3.4s ease-in-out infinite;
+  animation: titulo-sistema-central-breath 4.8s ease-in-out infinite;
 }
 
-.titulo-sistema__triangular-reflection--bottom { animation-delay: 1.7s; }
+.titulo-sistema__triangular-reflection--bottom { animation-delay: 0s; }
 
 .titulo-sistema__chevron {
   fill: none;
@@ -634,7 +655,6 @@ $marco-inferior: 3.03%;
 }
 
 /* Alternados: cuando uno sube el otro baja. */
-.titulo-sistema__chevron--der { animation-delay: 1.3s; }
 
 /* En escritorios anchos el lienzo transparente del PNG institucional crece
    mas que su contenido visible. Se compensa solo el panel para conservar un
@@ -666,8 +686,11 @@ $marco-inferior: 3.03%;
 }
 
 @keyframes titulo-sistema-central-breath {
-  0%, 100% { opacity: .72; }
-  50% { opacity: 1; }
+  0%, 12%, 100% { opacity: 1; }
+  38% { opacity: .22; }
+  48%, 56% { opacity: .035; }
+  72% { opacity: .34; }
+  88% { opacity: .86; }
 }
 
 @keyframes titulo-sistema-energia-interior {
@@ -1315,6 +1338,7 @@ $marco-inferior: 3.03%;
   .titulo-sistema__fogonazo,
   .titulo-sistema__chevron,
   .titulo-sistema__central-glow,
+  .titulo-sistema__brillos-internos,
   .titulo-sistema__inner-lighting,
   .titulo-sistema__triangular-reflection {
     animation: none;
@@ -1330,6 +1354,22 @@ $marco-inferior: 3.03%;
 
   .titulo-sistema__fogonazo { opacity: .8; }
   .titulo-sistema__chevron { opacity: .92; }
+}
+
+/* Pulso de los ocho focos laterales del marco interno. Solo varia la
+   opacidad, y como maximo un 18 %, para que su maximo siga siendo el mismo
+   de los focos centrales. Dos cadencias alternas para que no latan a la vez. */
+.titulo-sistema-foco-lateral {
+  animation: titulo-sistema-central-breath 4.8s ease-in-out infinite;
+}
+
+.titulo-sistema-foco-lateral--alterno {
+  animation-duration: 4.8s;
+  animation-delay: 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .titulo-sistema-foco-lateral { animation: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1368,7 +1408,11 @@ $marco-inferior: 3.03%;
   }
 
   .marca {
-    --titulo-sistema-ancho: clamp(285px, 30vw, 326px);
+    /* La referencia mide 326 de ancho. Con 30vw el panel caia en 288 px en
+       una pantalla de 960 y el dibujo quedaba en 279. Con 34vw esa misma
+       pantalla llega al tope de 326, o sea 316 de dibujo, que es el objetivo,
+       y por debajo baja de forma proporcional hasta el minimo de 300. */
+    --titulo-sistema-ancho: clamp(300px, 34vw, 326px);
 
     top: auto;
     right: auto;
