@@ -9,20 +9,91 @@
 }
 
 .avatar {
-  width: 52px;
-  height: 52px;
+  position: relative;
+  isolation: isolate;
+  width: 70px;
+  height: 59px;
   flex: 0 0 auto;
-  overflow: hidden;
-  border-radius: 50%;
-  background: var(--sicim-soft);
-  border: 1px solid var(--sicim-border);
+  overflow: visible;
+  background: transparent;
+  filter:
+    drop-shadow(0 0 2px rgb(255 240 244 / 34%))
+    drop-shadow(0 0 5px rgb(242 11 61 / 42%));
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: '';
+    pointer-events: none;
+    clip-path: polygon(24% 0, 76% 0, 100% 50%, 76% 100%, 24% 100%, 0 50%);
+  }
+
+  &::before {
+    z-index: 0;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 0, rgb(255 245 247 / 72%) 0 2%, rgb(255 73 108 / 48%) 5%, transparent 22%),
+      radial-gradient(ellipse at 50% 100%, rgb(255 245 247 / 72%) 0 2%, rgb(255 73 108 / 48%) 5%, transparent 22%),
+      linear-gradient(120deg, #790018 0%, #f20b3d 22%, #ff496c 34%, #790018 50%, #ff496c 66%, #f20b3d 78%, #790018 100%);
+  }
+
+  &::after {
+    z-index: 1;
+    inset: 2px;
+    background: radial-gradient(ellipse at 50% 45%, #3b000c 0%, #250007 58%, #080205 100%);
+  }
 }
 
 .avatar img {
+  position: absolute;
+  z-index: 2;
+  inset: 4px;
   display: block;
-  width: 100%;
-  height: 100%;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
   object-fit: cover;
+  clip-path: polygon(24% 0, 76% 0, 100% 50%, 76% 100%, 24% 100%, 0 50%);
+}
+
+.avatar__silueta {
+  position: absolute;
+  z-index: 2;
+  inset: 4px;
+  display: block;
+  clip-path: polygon(24% 0, 76% 0, 100% 50%, 76% 100%, 24% 100%, 0 50%);
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    filter:
+      drop-shadow(0 1px 0 rgb(255 255 255 / 38%))
+      drop-shadow(0 2px 2px rgb(0 0 0 / 58%))
+      drop-shadow(0 0 2px rgb(210 216 223 / 28%));
+  }
+}
+
+.avatar__brillos {
+  position: absolute;
+  z-index: 3;
+  inset: -2px;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 24% 8% at 50% 4%, #fff 0 4%, #ff4962 18%, rgb(255 23 56 / 35%) 46%, transparent 100%),
+    radial-gradient(ellipse 24% 8% at 50% 96%, #fff 0 4%, #ff4962 18%, rgb(255 23 56 / 35%) 46%, transparent 100%),
+    radial-gradient(circle at 12% 27%, #fff 0 1.5%, #ff4962 12%, rgb(255 23 56 / 35%) 27%, transparent 48%),
+    radial-gradient(circle at 12% 73%, #fff 0 1.5%, #ff4962 12%, rgb(255 23 56 / 35%) 27%, transparent 48%),
+    radial-gradient(circle at 88% 27%, #fff 0 1.5%, #ff4962 12%, rgb(255 23 56 / 35%) 27%, transparent 48%),
+    radial-gradient(circle at 88% 73%, #fff 0 1.5%, #ff4962 12%, rgb(255 23 56 / 35%) 27%, transparent 48%);
+  clip-path: polygon(24% 0, 76% 0, 100% 50%, 76% 100%, 24% 100%, 0 50%);
+  mix-blend-mode: screen;
+  animation: avatar-usuario-resplandor 3.8s ease-in-out infinite;
+}
+
+@keyframes avatar-usuario-resplandor {
+  0%, 100% { opacity: .5; }
+  50% { opacity: .82; }
 }
 
 .usuario div {
@@ -60,12 +131,19 @@ button:focus-visible {
 
 @media (max-width: 760px) {
   .avatar {
-    width: 42px;
-    height: 42px;
+    width: 58px;
+    height: 49px;
   }
 
   .fecha {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar__brillos {
+    animation: none;
+    opacity: .86;
   }
 }
 

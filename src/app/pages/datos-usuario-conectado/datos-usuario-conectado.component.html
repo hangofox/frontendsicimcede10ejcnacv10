@@ -2,7 +2,22 @@
   <section class="usuario" aria-label="Datos del usuario conectado">
     <div class="avatar" aria-label="Foto del usuario conectado">
       <img *ngIf="previewUrlFotoUsuario" [src]="previewUrlFotoUsuario" (error)="onErrorFotoUsuario()" alt="Foto de usuario">
-      <img *ngIf="!previewUrlFotoUsuario" src="assets/images/imagen_usuario_incognito_01.png" alt="Avatar sin foto">
+      <span *ngIf="!previewUrlFotoUsuario" class="avatar__silueta" role="img" aria-label="Avatar sin foto">
+        <svg viewBox="0 0 128 128" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="avatar-usuario-metal" x1="0" y1="0" x2="0.82" y2="1">
+              <stop offset="0" stop-color="#ffffff"></stop>
+              <stop offset="0.22" stop-color="#dfe3e7"></stop>
+              <stop offset="0.48" stop-color="#858c94"></stop>
+              <stop offset="0.7" stop-color="#cbd0d5"></stop>
+              <stop offset="1" stop-color="#656c74"></stop>
+            </linearGradient>
+          </defs>
+          <circle cx="64" cy="39" r="24" fill="url(#avatar-usuario-metal)"></circle>
+          <path d="M18 108C21.5 80.5 39 63 64 63S106.5 80.5 110 108Z" fill="url(#avatar-usuario-metal)"></path>
+        </svg>
+      </span>
+      <span class="avatar__brillos" aria-hidden="true"></span>
     </div>
     <div>
       <div>{{ usuario.grado }} {{ usuario.nombreCompleto }}</div>
