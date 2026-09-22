@@ -104,6 +104,13 @@
   overflow-wrap: anywhere;
 }
 
+/* Grado, nombres y apellidos del usuario conectado. Lleva clase propia en vez
+   de apoyarse en la posicion del div, para que el dia que cambie el orden del
+   bloque el color no se vaya a la linea equivocada. */
+.usuario__nombre {
+  color: #f3b417;
+}
+
 .fecha {
   margin-bottom: 4px;
   font-size: .68rem;
@@ -121,7 +128,19 @@ button {
   font-weight: 700;
   text-decoration: underline;
   cursor: pointer;
-  color: inherit;
+  /* Crema en reposo y dorado al pasar el cursor, con un resplandor corto que
+     nace del propio texto. La transicion afecta solo a color y sombra, asi que
+     no mueve ni redibuja el resto del bloque. */
+  color: #f1e4c8;
+  transition: color .18s ease, text-shadow .18s ease;
+}
+
+button:hover {
+  color: #e9c45f;
+  text-shadow:
+    0 0 2px rgb(255 232 170 / 85%),
+    0 0 7px rgb(233 196 95 / 65%),
+    0 0 14px rgb(212 160 40 / 45%);
 }
 
 button:focus-visible {
@@ -148,9 +167,11 @@ button:focus-visible {
 }
 
 @media (max-width: 600px) {
+  /* Sin filete superior: --sicim-border es #b9b9b9 y sobre el fondo negro del
+     cabezote se leia como una linea blanca cruzando justo debajo de la fecha.
+     La separacion la da el padding, que se conserva. */
   .usuario {
     width: 100%;
     padding-top: 10px;
-    border-top: 1px solid var(--sicim-border);
   }
 }

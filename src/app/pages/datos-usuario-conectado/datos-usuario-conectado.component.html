@@ -17,10 +17,10 @@
           <path d="M18 108C21.5 80.5 39 63 64 63S106.5 80.5 110 108Z" fill="url(#avatar-usuario-metal)"></path>
         </svg>
       </span>
-      <span class="avatar__brillos" aria-hidden="true"></span>
+      <span *ngIf="!previewUrlFotoUsuario" class="avatar__brillos" aria-hidden="true"></span>
     </div>
     <div>
-      <div>{{ usuario.grado }} {{ usuario.nombreCompleto }}</div>
+      <div class="usuario__nombre">{{ usuario.grado }} {{ usuario.nombreCompleto }}</div>
       <div>{{ usuario.rol }}</div>
       <button type="button" (click)="cerrarSesion()">Cerrar sesión</button>
     </div>

@@ -558,22 +558,6 @@ $marco-inferior: 3.03%;
 
 /* Segmentos que recorren el marco. El contorno mide 858 unidades: el hueco lo
    cubre entero para que solo se vea un tramo corto viajando. */
-.titulo-sistema__recorrido {
-  stroke: #fff0f4;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-dasharray: 12 88;
-  filter: drop-shadow(0 0 3px rgb(242 11 61 / 85%));
-  animation: titulo-sistema-recorrido 6s linear infinite;
-}
-
-.titulo-sistema__recorrido--inf {
-  stroke: rgb(255 73 108 / 62%);
-  stroke-width: 1.3;
-  stroke-dasharray: 10 90;
-  animation: titulo-sistema-recorrido-inverso 8.4s linear infinite;
-}
-
 /* Barrido de luz del circuito, en modo screen: solo suma luz, no tapa nada.
    Tres capas concentricas de largo decreciente -26, 18 y 10 de 100- centradas
    entre si con --fase, que desplaza el guion por el recorrido. Asi la estela se
@@ -670,11 +654,6 @@ $marco-inferior: 3.03%;
   to { stroke-dashoffset: 0; }
 }
 
-@keyframes titulo-sistema-recorrido-inverso {
-  from { stroke-dashoffset: 0; }
-  to { stroke-dashoffset: 100; }
-}
-
 @keyframes titulo-sistema-fogonazo {
   0%, 64%, 100% { opacity: .3; }
   80% { opacity: 1; }
@@ -717,7 +696,13 @@ $marco-inferior: 3.03%;
   font-weight: 400;
   line-height: 1.2;
   white-space: nowrap;
-  color: #fff;
+  /* Rosado de la propia paleta del cabezote -la familia de #fddbea y #f2b8ba de
+     los rieles- en vez de blanco puro, para que el texto pertenezca al conjunto.
+     El resplandor corto lo despega del fondo sin restarle legibilidad. */
+  color: #f4cdd6;
+  text-shadow:
+    0 0 1px rgb(255 255 255 / 45%),
+    0 0 6px rgb(242 13 35 / 30%);
 
   &::first-letter {
     text-transform: uppercase;
@@ -964,6 +949,11 @@ $marco-inferior: 3.03%;
     /* negro puro: con un negro rojizo el rectangulo del adorno se recortaba
        contra el interior del marco */
     background: #000;
+    /* Sus dos cantos verticales cortaban en seco el resplandor de la capa de
+       destellos, que pasa por debajo: este rectangulo va en z-index 4 y aquella
+       en 3. Con la mascara el negro nace y muere desvanecido, asi que el halo
+       entra y sale sin canto. */
+    mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
 
     svg {
       display: block;
@@ -1009,6 +999,13 @@ $marco-inferior: 3.03%;
         drop-shadow(0 0 .6px rgb(255 60 110 / 70%))
         drop-shadow(0 0 1.4px rgb(214 16 74 / 58%))
         drop-shadow(0 0 2.8px rgb(242 13 35 / 34%));
+    }
+
+    /* Remate redondo en las dos barras exteriores: con el cuadrado que heredan
+       de .linea-adorno, el canto del trazo se sumaba al corte del degradado. */
+    .linea-exterior-izquierda,
+    .linea-exterior-derecha {
+      stroke-linecap: round;
     }
 
     .linea-exterior-izquierda {
@@ -1397,6 +1394,62 @@ $marco-inferior: 3.03%;
     display: none;
   }
 
+  /* El resplandor deja de venir del SVG lateral y pasa a salir del propio
+     hexagono. Ese SVG lleva preserveAspectRatio="none": sus esquinas se empinan
+     hasta 75 grados al estrechar la ventana, asi que por mucho que se recorten
+     nunca coinciden con el chaflan de 45 grados, solo quedan paralelas. El
+     borde del marco, en cambio, ES el hexagono, de modo que su halo sigue el
+     esquinero exacto. Hereda la misma respiracion que tenia el SVG. */
+  .cabezote-futurista .resplandor-continuo-laterales {
+    display: none;
+  }
+
+  .cabezote-futurista::before {
+    filter:
+      drop-shadow(0 0 2px #fff)
+      drop-shadow(0 0 5px #d37a7c)
+      drop-shadow(0 0 10px rgb(211 122 124 / 72%))
+      drop-shadow(0 0 16px rgb(242 13 35 / 46%));
+    animation: respiracion-resplandor-cabezote 8s ease-in-out infinite;
+  }
+
+
+  .informacion-cabezote {
+    /* Con padding, no con top ni transform: mueve el contenido dentro de la
+       caja en vez de la caja entera. */
+    /* Sin fondo negro aqui: eran tres capas superpuestas que tapaban lo que
+       hubiera detras. */
+    padding-top: 2.9mm;
+    isolation: isolate;
+
+    /* Velo negro fuera: desbordaba la caja y pisaba la barra superior. */
+    &::before {
+      display: none;
+    }
+  }
+
+  .fecha-login {
+    position: relative;
+    z-index: 3;
+    display: block;
+    border: 0;
+    padding-bottom: 3px;
+    box-shadow: none;
+    text-decoration: none;
+  }
+
+  /* Riel inferior y pepitas restituidos: la linea blanca venia del border-top
+     de .usuario, en datos-usuario-conectado. El ::before sigue oculto porque es
+     la horizontal superior, que si cruzaba tras el texto. */
+  .horizontales-internas-izquierda {
+    background:
+      linear-gradient(90deg, #edb9bb 0%, #d37a7c 6%, #7a3d41 12%, #301517 18%, #0c0506 24%, #000 30%, #000 100%) bottom left / 100% 1px no-repeat;
+
+    &::before {
+      display: none;
+    }
+  }
+
   /* El panel es mucho mas bajo que el bloque de dos lineas que habia antes,
      asi que conserva el centrado vertical en vez de colgar del borde
      inferior, y sigue pegado al canto izquierdo del logo. Las medidas no se
@@ -1453,16 +1506,8 @@ $marco-inferior: 3.03%;
   }
 
   .fecha-login {
-    position: relative;
-    z-index: 1;
-    top: .4mm;
-    display: block;
-    border: 0;
-    box-shadow: none;
-    background: #000;
     font-size: clamp(.7rem, 2.2vw, .9rem);
     line-height: 1.3;
-    text-decoration: none;
     white-space: normal;
   }
 
