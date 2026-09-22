@@ -782,6 +782,42 @@ $marco-inferior: 3.03%;
      caja, asi que esta se retrae esa misma cantidad para caer sobre el marco */
   /* por encima del SVG de las lineas (z-index 2): si comparten capa el SVG,
      que va despues en el DOM, se pinta encima y apaga los destellos */
+  /* Sombra del escudo: va en z-index 1, o sea sobre el negro interior del
+     marco -que esta en -1- y por debajo de todo el contenido, que arranca en 2.
+     Asi hace de fondo y nunca estorba al texto ni al panel. */
+  .sombra-escudo {
+    position: absolute;
+    z-index: 1;
+    top: 13%;
+    left: 50%;
+    height: 84%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    opacity: .17;
+  }
+
+  .sombra-escudo__figura {
+    fill: #c2c8d0;
+    fill-rule: evenodd;
+  }
+
+  /* El perfil exterior va mas grueso que la cruz, como en la referencia: alli
+     el canto del escudo es una banda y las divisiones internas un filete. */
+  .sombra-escudo__perfil,
+  .sombra-escudo__cruz {
+    fill: none;
+    stroke: #c2c8d0;
+    stroke-linejoin: round;
+  }
+
+  .sombra-escudo__perfil {
+    stroke-width: 4.2;
+  }
+
+  .sombra-escudo__cruz {
+    stroke-width: 3;
+  }
+
   .destellos-marco {
     position: absolute;
     z-index: 3;
