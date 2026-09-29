@@ -5,7 +5,7 @@ $chaflan: 14px;
 :host {
   display: flex;
   width: 100%;
-  min-height: 100%;
+  min-height: 0;
   flex: 1 1 auto;
   align-self: stretch;
   background: #020203 url('../../../assets/images/imagen_fondo_cuerpo_inicio_01.png') center / 100% 100% no-repeat;
@@ -19,10 +19,11 @@ $chaflan: 14px;
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr);
+  row-gap: clamp(6px, .7vw, 10px);
   justify-items: center;
   overflow: hidden;
-  padding: clamp(18px, 2vw, 30px);
+  padding: clamp(12px, 1.45vw, 22px) clamp(18px, 2vw, 30px);
   background: transparent;
 }
 
@@ -35,6 +36,142 @@ $chaflan: 14px;
   background:
     radial-gradient(ellipse at 50% 56%, rgb(255 36 64 / 9%), transparent 36%),
     linear-gradient(90deg, rgb(0 0 0 / 8%), transparent 28% 72%, rgb(0 0 0 / 8%));
+}
+
+/* Rotulo de la seccion inspirado en la pieza INICIO del menu principal.
+   Los laterales son concavos: el quiebre entra hacia la placa en vez de
+   formar el saliente circular que une las opciones del menu. */
+.titulo-seccion {
+  --titulo-seccion-alto: 74px;
+  --titulo-seccion-icono: 40px;
+  --titulo-seccion-texto: clamp(12px, .9vw, 16px);
+  --titulo-seccion-separacion: 10px;
+  --titulo-seccion-padding: 12px;
+
+  position: relative;
+  z-index: 11;
+  isolation: isolate;
+  box-sizing: border-box;
+  justify-self: start;
+  width: clamp(270px, 30vw, 320px);
+  height: var(--titulo-seccion-alto);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--titulo-seccion-separacion);
+  padding: 0 var(--titulo-seccion-padding);
+  color: #3a2100;
+  filter:
+    drop-shadow(0 3px 3px rgb(0 0 0 / 74%))
+    drop-shadow(0 0 5px rgb(246 185 0 / 30%));
+}
+
+@media (max-width: 1500px) {
+  .titulo-seccion {
+    --titulo-seccion-alto: 70px;
+    --titulo-seccion-icono: 35px;
+    --titulo-seccion-texto: clamp(11px, .85vw, 14px);
+    --titulo-seccion-separacion: 7px;
+    --titulo-seccion-padding: 8px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .titulo-seccion {
+    --titulo-seccion-alto: 64px;
+    --titulo-seccion-icono: 31px;
+    --titulo-seccion-texto: clamp(9px, .82vw, 12px);
+    --titulo-seccion-separacion: 5px;
+    --titulo-seccion-padding: 5px;
+  }
+}
+
+.titulo-seccion__marco {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.titulo-seccion__borde {
+  fill: url('#titulo-seccion-oro');
+  stroke: #3b2100;
+  stroke-width: 2;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.titulo-seccion__placa {
+  fill: url('#titulo-seccion-plata');
+  stroke: #2d1800;
+  stroke-width: 1.2;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 2;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 2px 2px rgb(25 25 25 / 42%));
+}
+
+/* El canal dorado se pinta por delante de la placa, igual que el trazo del
+   separador del menu. Asi el oro acompana toda la semicircunferencia y no
+   desaparece en el punto de maxima concavidad. */
+.titulo-seccion__curva-dorada {
+  fill: none;
+  stroke: url('#titulo-seccion-oro');
+  stroke-width: 4;
+  stroke-linecap: butt;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 1px rgb(255 242 166 / 52%));
+}
+
+.titulo-seccion__reflejo {
+  fill: none;
+  stroke: rgb(255 247 199 / 82%);
+  stroke-width: 1;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.titulo-seccion h1 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: var(--titulo-seccion-texto);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: .04em;
+  color: #5a3100;
+  text-transform: uppercase;
+  text-shadow:
+    0 1px 0 #fff2a6,
+    0 2px 1px rgb(38 19 0 / 42%),
+    0 0 2px rgb(246 185 0 / 35%);
+}
+
+.titulo-seccion__icono {
+  position: relative;
+  z-index: 1;
+  width: var(--titulo-seccion-icono);
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  filter:
+    drop-shadow(0 2px 1px rgb(38 19 0 / 82%))
+    drop-shadow(0 0 2px rgb(255 216 90 / 44%));
+}
+
+.titulo-seccion__icono::before {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background: linear-gradient(145deg,
+    #fff2a6 4%, #ffd85a 27%, #f6b900 48%, #c98200 69%, #3b2100 100%);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='3 3.5 42 39.5'%3E%3Cpath d='M24 3.5 L45 23 H3 Z M8.5 27 H39.5 V43 H28 V33 H20 V43 H8.5 Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='3 3.5 42 39.5'%3E%3Cpath d='M24 3.5 L45 23 H3 Z M8.5 27 H39.5 V43 H28 V33 H20 V43 H8.5 Z'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
 /* El texto se apoya en un cuadro achaflanado con el filo del marco del
@@ -96,7 +233,7 @@ $chaflan: 14px;
   );
 }
 
-.bienvenida h1 {
+.bienvenida h2 {
   margin: 0 0 6px;
   font-size: clamp(1rem, 1.5vw, 1.25rem);
   font-weight: 700;
@@ -117,7 +254,9 @@ $chaflan: 14px;
   /* Proporcion nativa del nuevo escudo general: todas las coordenadas de las
      piezas se expresan sobre este lienzo de 1017 x 1405 px. */
   aspect-ratio: 1017 / 1405;
-  margin-block: clamp(8px, 1.2vh, 14px);
+  margin-top: clamp(6px, .8vh, 10px);
+  margin-bottom: clamp(-46px, -4vh, -30px);
+  transform: translateY(clamp(-58px, -5vh, -42px));
   filter: drop-shadow(0 10px 14px rgb(0 0 0 / 72%));
 }
 
@@ -239,8 +378,33 @@ $chaflan: 14px;
     background-size: cover;
   }
 
+  .bienvenida {
+    box-sizing: border-box;
+    justify-self: stretch;
+    width: 100%;
+    max-width: none;
+    margin-top: 8px;
+    padding: 16px 12px;
+  }
+
+  .bienvenida h2 {
+    margin-bottom: 10px;
+    font-size: .82rem;
+    line-height: 1.05;
+  }
+
+  .bienvenida p {
+    overflow: hidden;
+    font-size: clamp(.61rem, 1.62vw, .79rem);
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
   .rompecabezas {
     width: min(52vw, 390px);
+    margin-top: 30px;
+    margin-bottom: 0;
+    transform: translateY(4px);
   }
 }
 
@@ -250,13 +414,31 @@ $chaflan: 14px;
   }
 
   .bienvenida {
-    max-width: 100%;
-    padding: 12px 14px;
+    margin-top: 10px;
+    padding: 14px 8px;
+  }
+
+  .bienvenida h2 {
+    margin-bottom: 9px;
+    font-size: .74rem;
+    line-height: 1;
+  }
+
+  .bienvenida p {
+    font-size: clamp(.43rem, 1.74vw, .62rem);
+    line-height: 1;
+  }
+
+  .titulo-seccion {
+    width: min(100%, 290px);
   }
 
   .rompecabezas {
     width: min(82vw, 340px);
     min-width: 235px;
+    margin-top: 34px;
+    margin-bottom: 0;
+    transform: translateY(18px);
   }
 }
 

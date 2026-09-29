@@ -1,7 +1,7 @@
 @if (usuario$ | async; as usuario) {
   <section class="usuario" aria-label="Datos del usuario conectado">
     <div class="avatar" aria-label="Foto del usuario conectado">
-      <img *ngIf="previewUrlFotoUsuario" [src]="previewUrlFotoUsuario" (error)="onErrorFotoUsuario()" alt="Foto de usuario">
+      <img *ngIf="previewUrlFotoUsuario" [src]="previewUrlFotoUsuario" [style.object-position]="posicionFotoUsuario" (error)="onErrorFotoUsuario()" alt="Foto de usuario">
       <span *ngIf="!previewUrlFotoUsuario" class="avatar__silueta" role="img" aria-label="Avatar sin foto">
         <svg viewBox="0 0 128 128" aria-hidden="true" focusable="false">
           <defs>

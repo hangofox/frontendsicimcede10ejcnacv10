@@ -8,6 +8,11 @@ import { AuthService } from '../../../core/services/auth.service';
 import { UsuariosService } from '../../../services/panel-control/usuarios/usuarios.service';
 import { ParametrosSistemaService } from '../../../services/panel-control/parametros-sistema/parametros-sistema.service';
 import { GestionArchivosService } from '../../../services/gestion-archivos/gestion-archivos.service';
+import { generarMiniaturaFotografia } from '../../../shared/fotografias/miniatura-fotografia.util';
+import { CajaFotografia } from '../../../shared/fotografias/encuadre-rostro.util';
+
+//MEDIDAS EN PÍXELES DEL CÍRCULO DE LA VISTA PREVIA. DEBEN COINCIDIR CON EL SCSS DE ESTE COMPONENTE:
+const CAJA_FOTO_PREVIA: CajaFotografia = { ancho: 68, alto: 68 };
 
 @Component({
   selector: 'app-mi-perfil',
@@ -24,8 +29,17 @@ export class MiPerfilComponent implements OnInit {
   cargandoDatos = false;
 
   //FOTO DE PERFIL — VISTA PREVIA DE LA YA ALMACENADA EN EL SERVIDOR DE ARCHIVOS (resolverPreviewFotoUsuario) O DE
-  //UNA NUEVA SELECCIONADA LOCALMENTE (onSelectFileUserPhoto, CON FileReader PARA VISTA PREVIA INMEDIATA):
+  //UNA NUEVA SELECCIONADA LOCALMENTE (onSelectFileUserPhoto). EN LOS DOS CASOS SE MUESTRA LA MINIATURA NÍTIDA Y
+  //ENCUADRADA QUE PREPARA mostrarPreviewReescalada, NO EL ARCHIVO ORIGINAL:
   previewUrlFotoUsuario: string | null = null;
+
+  //object-position CALCULADO PARA ESTA FOTOGRAFÍA CONCRETA (VER encuadre-rostro.util.ts). MIENTRAS SEA null MANDA
+  //EL VALOR FIJO DEL SCSS, QUE ES EL COMPORTAMIENTO DE SIEMPRE:
+  posicionFotoUsuario: string | null = null;
+
+  //IDENTIFICA LA PETICIÓN DE VISTA PREVIA EN CURSO: SI SE ELIGE OTRA FOTOGRAFÍA MIENTRAS SE REESCALA LA ANTERIOR,
+  //LA QUE LLEGUE TARDE SE DESCARTA EN VEZ DE PISAR A LA BUENA:
+  private solicitudPreviewFoto = 0;
   nombreArchivoFotoExtensionoFormatoUsuario: string | null = null;
   selectedFileUserPhoto: File | null = null;
   isSelectedFileUserPhoto = false;
@@ -159,11 +173,7 @@ export class MiPerfilComponent implements OnInit {
         this.gestionArchivosService.getFile(rutaCompleta).subscribe({
           next: (respuestaArchivo) => {
             this.gestionArchivosService.getFileBytes(respuestaArchivo.rutaEstatica).subscribe({
-              next: (blob) => {
-                this.liberarPreviewFotoUsuario();
-                this.previewUrlFotoUsuario = URL.createObjectURL(blob);
-                this.changeDetectorRef.markForCheck();
-              },
+              next: (blob) => this.mostrarPreviewReescalada(blob),
               error: () => { this.previewUrlFotoUsuario = null; this.changeDetectorRef.markForCheck(); }
             });
           },
@@ -221,17 +231,13 @@ export class MiPerfilComponent implements OnInit {
     this.selectedFileUserPhoto = file;
     this.isSelectedFileUserPhoto = true;
 
-    const lector = new FileReader();
-    lector.onload = () => {
-      this.liberarPreviewFotoUsuario();
-      this.previewUrlFotoUsuario = lector.result as string;
-      this.changeDetectorRef.markForCheck();
-    };
-    lector.readAsDataURL(file);
+    this.mostrarPreviewReescalada(file);
   }
 
   //CANCELA LA SELECCIÓN PENDIENTE DE UN ARCHIVO NUEVO Y RESTAURA LA VISTA PREVIA DE LA FOTO YA ALMACENADA (SI HABÍA UNA):
   onRemoveFileUserPhoto(): void {
+    //SE INVALIDA CUALQUIER REESCALADO EN CURSO PARA QUE NO REAPAREZCA LA FOTOGRAFÍA QUE SE ACABA DE QUITAR:
+    this.solicitudPreviewFoto++;
     this.selectedFileUserPhoto = null;
     this.isSelectedFileUserPhoto = false;
     this.liberarPreviewFotoUsuario();
@@ -242,13 +248,33 @@ export class MiPerfilComponent implements OnInit {
   }
 
   onErrorPreviewFotoUsuario(): void {
+    this.solicitudPreviewFoto++;
     this.liberarPreviewFotoUsuario();
     this.previewUrlFotoUsuario = null;
     this.changeDetectorRef.markForCheck();
   }
 
+  //LA FOTOGRAFÍA SE MUESTRA EN UN CÍRCULO DE 68 PÍXELES. ENTREGARLE AL <img> EL ARCHIVO ORIGINAL (MÁS DE MIL
+  //PÍXELES DE LADO) HACE QUE EL NAVEGADOR LO ENCOJA DE UN GOLPE CON UN FILTRO BARATO Y LA VISTA PREVIA SE VEA
+  //ASERRADA. SE REDUCE ANTES CON EL REESCALADOR DE ALTA CALIDAD, SE LE DEVUELVE EL CONTRASTE LOCAL Y DE PASO SE
+  //ENCUADRA LA CARA (VER miniatura-fotografia.util.ts). EL ARCHIVO QUE SE SUBE AL SERVIDOR SIGUE SIENDO EL ORIGINAL:
+  private mostrarPreviewReescalada(fotografia: Blob): void {
+    const solicitud = ++this.solicitudPreviewFoto;
+    generarMiniaturaFotografia(fotografia, CAJA_FOTO_PREVIA).then(({ url, posicionObjeto }) => {
+      if (solicitud !== this.solicitudPreviewFoto) {
+        URL.revokeObjectURL(url);
+        return;
+      }
+      this.liberarPreviewFotoUsuario();
+      this.previewUrlFotoUsuario = url;
+      this.posicionFotoUsuario = posicionObjeto;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
   private liberarPreviewFotoUsuario(): void {
     if (this.previewUrlFotoUsuario?.startsWith('blob:')) URL.revokeObjectURL(this.previewUrlFotoUsuario);
+    this.posicionFotoUsuario = null;
   }
 
   confirmarEliminarFotoUsuario(): void {

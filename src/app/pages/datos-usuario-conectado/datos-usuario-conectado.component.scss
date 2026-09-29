@@ -52,6 +52,12 @@
   width: calc(100% - 8px);
   height: calc(100% - 8px);
   object-fit: cover;
+  //El hexagono es mas ancho que alto -proporcion 1,2- y las fotografias de perfil casi
+  //siempre son verticales, asi que "cover" recorta arriba y abajo. Centrado -el 50% por
+  //omision- ese recorte se come cerca del 19 % superior de la fotografia, justo donde
+  //estan el pelo y la frente. Sesgando el encuadre hacia arriba solo se pierde un 8 %
+  //y la cabeza queda completa, sin dejar de llenar el hexagono:
+  object-position: 50% 22%;
   clip-path: polygon(24% 0, 76% 0, 100% 50%, 76% 100%, 24% 100%, 0 50%);
 }
 
@@ -146,6 +152,25 @@ button:hover {
 button:focus-visible {
   outline: 2px solid var(--sicim-focus);
   outline-offset: 2px;
+}
+
+/* Pantalla grande: el hexagono crece para que la fotografia se lea mejor.
+   Va en un tramo propio por encima de 1200 px y no en la regla base, para que
+   ni el responsive de tablet ni el de movil se enteren: alli el avatar se queda
+   con sus medidas y el titulo del sistema conserva su ubicacion.
+   La proporcion se respeta -70/59 y 110/93 dan la misma razon, 1,18- asi que el
+   recorte hexagonal no se deforma. */
+@media (min-width: 1201px) {
+  .avatar {
+    width: 110px;
+    height: 93px;
+  }
+
+  .avatar img {
+    inset: 5px;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+  }
 }
 
 @media (max-width: 760px) {

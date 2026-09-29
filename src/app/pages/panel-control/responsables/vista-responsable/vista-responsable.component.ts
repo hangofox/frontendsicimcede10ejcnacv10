@@ -6,7 +6,12 @@ import { ResponsablesI } from '../../../../interfaces/panel-control/responsables
 import { ResponsablesService } from '../../../../services/panel-control/responsables/responsables.service';
 import { ParametrosSistemaService } from '../../../../services/panel-control/parametros-sistema/parametros-sistema.service';
 import { GestionArchivosService } from '../../../../services/gestion-archivos/gestion-archivos.service';
+import { generarMiniaturaFotografia } from '../../../../shared/fotografias/miniatura-fotografia.util';
+import { CajaFotografia } from '../../../../shared/fotografias/encuadre-rostro.util';
 import { UnidadesMilitaresService } from '../../../../services/panel-control/unidades-militares/unidades-militares.service';
+
+//MEDIDAS EN PÍXELES DEL CÍRCULO DE LA FOTOGRAFÍA. DEBEN COINCIDIR CON .avatar DEL SCSS DE ESTE COMPONENTE:
+const CAJA_FOTO: CajaFotografia = { ancho: 96, alto: 96 };
 
 @Component({
   selector: 'app-vista-responsable',
@@ -22,6 +27,10 @@ export class VistaResponsableComponent implements OnChanges, OnDestroy {
   @Output() cerrarModal = new EventEmitter<void>();
 
   previewUrlFotoResponsable: string | null = null;
+
+  //object-position CALCULADO PARA ESTA FOTOGRAFÍA CONCRETA (VER encuadre-rostro.util.ts). MIENTRAS SEA null MANDA
+  //EL VALOR FIJO DEL SCSS, QUE ES EL COMPORTAMIENTO DE SIEMPRE:
+  posicionFotoResponsable: string | null = null;
   private readonly subscriptions = new Subscription();
   private solicitudFotoActual = 0;
 
@@ -134,9 +143,7 @@ export class VistaResponsableComponent implements OnChanges, OnDestroy {
         this.subscriptions.add(this.gestionArchivosService.getFileBytes(rutaEstatica).subscribe({
         next: (blob) => {
           if (solicitud !== this.solicitudFotoActual) return;
-          this.limpiarPreviewFoto();
-          this.previewUrlFotoResponsable = URL.createObjectURL(blob);
-          this.changeDetectorRef.markForCheck();
+          this.mostrarFotoReescalada(blob, solicitud);
         },
         error: (err) => {
           console.error('ERROR AL DESCARGAR LOS BYTES DE LA FOTO DEL RESPONSABLE: ', ruta, err);
@@ -155,10 +162,28 @@ export class VistaResponsableComponent implements OnChanges, OnDestroy {
     this.limpiarPreviewFoto();
   }
 
+  //LA FOTOGRAFÍA LLEGA EN SU TAMAÑO ORIGINAL (NORMALMENTE MÁS DE 1000 PÍXELES DE LADO) Y SE MUESTRA EN UN CÍRCULO
+  //DE 96 PÍXELES. SI SE LE ENTREGA ASÍ AL <img>, EL NAVEGADOR LA ENCOGE CON UN FILTRO BARATO Y SE VE BLANDA;
+  //REDUCIÉNDOLA ANTES CON EL REESCALADOR DE ALTA CALIDAD SE VE NÍTIDA (VER miniatura-fotografia.util.ts):
+  private mostrarFotoReescalada(blob: Blob, solicitud: number): void {
+    generarMiniaturaFotografia(blob, CAJA_FOTO).then(({ url, posicionObjeto }) => {
+      //SI MIENTRAS SE REESCALABA SE PIDIÓ OTRA FOTOGRAFÍA (O SE CERRÓ EL MODAL), SE DESCARTA ESTA Y SE LIBERA SU URL:
+      if (solicitud !== this.solicitudFotoActual) {
+        URL.revokeObjectURL(url);
+        return;
+      }
+      this.limpiarPreviewFoto();
+      this.previewUrlFotoResponsable = url;
+      this.posicionFotoResponsable = posicionObjeto;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
   private limpiarPreviewFoto(solicitud?: number): void {
     if (solicitud !== undefined && solicitud !== this.solicitudFotoActual) return;
     if (this.previewUrlFotoResponsable?.startsWith('blob:')) URL.revokeObjectURL(this.previewUrlFotoResponsable);
     this.previewUrlFotoResponsable = null;
+    this.posicionFotoResponsable = null;
     this.changeDetectorRef.markForCheck();
   }
 

@@ -7,6 +7,11 @@ import { GradosSiathI } from '../../../../interfaces/grados-siath/grados-siath.i
 import { UsuariosService } from '../../../../services/panel-control/usuarios/usuarios.service';
 import { ParametrosSistemaService } from '../../../../services/panel-control/parametros-sistema/parametros-sistema.service';
 import { GestionArchivosService } from '../../../../services/gestion-archivos/gestion-archivos.service';
+import { generarMiniaturaFotografia } from '../../../../shared/fotografias/miniatura-fotografia.util';
+import { CajaFotografia } from '../../../../shared/fotografias/encuadre-rostro.util';
+
+//MEDIDAS EN PÍXELES DEL CÍRCULO DE LA FOTOGRAFÍA. DEBEN COINCIDIR CON .avatar DEL SCSS DE ESTE COMPONENTE:
+const CAJA_FOTO: CajaFotografia = { ancho: 96, alto: 96 };
 
 @Component({
   selector: 'app-vista-usuario',
@@ -23,6 +28,10 @@ export class VistaUsuarioComponent implements OnChanges, OnDestroy {
   @Output() cerrarModal = new EventEmitter<void>();
 
   previewUrlFotoUsuario: string | null = null;
+
+  //object-position CALCULADO PARA ESTA FOTOGRAFÍA CONCRETA (VER encuadre-rostro.util.ts). MIENTRAS SEA null MANDA
+  //EL VALOR FIJO DEL SCSS, QUE ES EL COMPORTAMIENTO DE SIEMPRE:
+  posicionFotoUsuario: string | null = null;
   private readonly subscriptions = new Subscription();
   private solicitudFotoActual = 0;
 
@@ -64,9 +73,7 @@ export class VistaUsuarioComponent implements OnChanges, OnDestroy {
             this.subscriptions.add(this.gestionArchivosService.getFileBytes(rutaEstatica).subscribe({
               next: (blob) => {
                 if (solicitud !== this.solicitudFotoActual) return;
-                this.limpiarPreviewFoto();
-                this.previewUrlFotoUsuario = URL.createObjectURL(blob);
-                this.changeDetectorRef.markForCheck();
+                this.mostrarFotoReescalada(blob, solicitud);
               },
               error: () => this.limpiarPreviewFoto(solicitud)
             }));
@@ -81,6 +88,23 @@ export class VistaUsuarioComponent implements OnChanges, OnDestroy {
     }));
   }
 
+  //LA FOTOGRAFÍA LLEGA EN SU TAMAÑO ORIGINAL (NORMALMENTE MÁS DE 1000 PÍXELES DE LADO) Y SE MUESTRA EN UN CÍRCULO
+  //DE 96 PÍXELES. SI SE LE ENTREGA ASÍ AL <img>, EL NAVEGADOR LA ENCOGE CON UN FILTRO BARATO Y SE VE BLANDA;
+  //REDUCIÉNDOLA ANTES CON EL REESCALADOR DE ALTA CALIDAD SE VE NÍTIDA (VER miniatura-fotografia.util.ts):
+  private mostrarFotoReescalada(blob: Blob, solicitud: number): void {
+    generarMiniaturaFotografia(blob, CAJA_FOTO).then(({ url, posicionObjeto }) => {
+      //SI MIENTRAS SE REESCALABA SE PIDIÓ OTRA FOTOGRAFÍA (O SE CERRÓ EL MODAL), SE DESCARTA ESTA Y SE LIBERA SU URL:
+      if (solicitud !== this.solicitudFotoActual) {
+        URL.revokeObjectURL(url);
+        return;
+      }
+      this.limpiarPreviewFoto();
+      this.previewUrlFotoUsuario = url;
+      this.posicionFotoUsuario = posicionObjeto;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
   onErrorFotoUsuario(): void {
     this.limpiarPreviewFoto();
   }
@@ -89,6 +113,7 @@ export class VistaUsuarioComponent implements OnChanges, OnDestroy {
     if (solicitud !== undefined && solicitud !== this.solicitudFotoActual) return;
     if (this.previewUrlFotoUsuario?.startsWith('blob:')) URL.revokeObjectURL(this.previewUrlFotoUsuario);
     this.previewUrlFotoUsuario = null;
+    this.posicionFotoUsuario = null;
     this.changeDetectorRef.markForCheck();
   }
 

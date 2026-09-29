@@ -13,9 +13,9 @@
 
 /* Geometría centralizada del menú futurista. */
 .menu {
-  --menu-alto: 84px;
-  --marco: 9px;
-  --pieza-alto: 66px;
+  --menu-alto: 74px;
+  --marco: 8px;
+  --pieza-alto: 58px;
   /* Derivados de --pieza-alto. El viewBox es 30x66 y se estira con
      preserveAspectRatio="none", así que solo manteniendo esta proporción
      el nudo sigue siendo un círculo y no un óvalo a cualquier tamaño. */
@@ -24,7 +24,7 @@
   --trazo-oscuro: 9px;
   --trazo-oro: 6px;
   --trazo-luz: 1.5px;
-  --icono: 46px;
+  --icono: 40px;
   /* Desplazamiento de la sombra del icono, proporcional a su tamaño. */
   --icono-sombra: max(2px, calc(var(--icono) * .075));
   --separacion: 10px;
@@ -444,10 +444,10 @@
 /* Los tres anchos de validación permanecen en una fila. */
 @media (max-width: 1500px) {
   .menu {
-    --menu-alto: 80px;
+    --menu-alto: 70px;
     --marco: 8px;
-    --pieza-alto: 64px;
-    --icono: 42px;
+    --pieza-alto: 54px;
+    --icono: 35px;
     --separacion: 7px;
     --texto: clamp(11px, .85vw, 14px);
   }
@@ -458,10 +458,10 @@
 
 @media (max-width: 1100px) {
   .menu {
-    --menu-alto: 72px;
+    --menu-alto: 64px;
     --marco: 7px;
-    --pieza-alto: 58px;
-    --icono: 35px;
+    --pieza-alto: 50px;
+    --icono: 31px;
     --separacion: 5px;
     --texto: clamp(9px, .82vw, 12px);
   }

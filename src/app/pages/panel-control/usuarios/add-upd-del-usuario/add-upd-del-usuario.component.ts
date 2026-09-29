@@ -10,6 +10,8 @@ import { PaisesMundoI } from '../../../../interfaces/paises-mundo/paises-mundo.i
 import { DepartamentosoEstadosMundoI } from '../../../../interfaces/paises-mundo/departamentos-estados-mundo/departamentos-estados-mundo.interface';
 import { ParametrosSistemaService } from '../../../../services/panel-control/parametros-sistema/parametros-sistema.service';
 import { GestionArchivosService } from '../../../../services/gestion-archivos/gestion-archivos.service';
+import { generarMiniaturaFotografia } from '../../../../shared/fotografias/miniatura-fotografia.util';
+import { CajaFotografia } from '../../../../shared/fotografias/encuadre-rostro.util';
 
 export interface OperacionFotoUsuario {
   tipo: 'subir' | 'renombrar' | 'eliminar';
@@ -107,6 +109,9 @@ const EMPLEADOS_SIMULADOS: EmpleadoSimuladoI[] = [
   }
 ];
 
+//MEDIDAS EN PÍXELES DEL CÍRCULO DE LA VISTA PREVIA. DEBEN COINCIDIR CON EL SCSS DE ESTE COMPONENTE:
+const CAJA_FOTO_PREVIA: CajaFotografia = { ancho: 68, alto: 68 };
+
 @Component({
   selector: 'app-add-upd-del-usuario',
   standalone: true,
@@ -131,9 +136,17 @@ export class AddUpdDelUsuarioComponent implements OnChanges, OnDestroy {
 
   usuariosForm!: FormGroup;
 
-  //FOTO DEL USUARIO — SIMULADA CON UNA VISTA PREVIA LOCAL (FileReader), SIN SUBIRSE A NINGÚN SERVIDOR DE ARCHIVOS
+  //FOTO DEL USUARIO — VISTA PREVIA LOCAL (LA PREPARA mostrarPreviewReescalada), SIN SUBIRSE A NINGÚN SERVIDOR
   //TODAVÍA (MISMO PATRÓN QUE AddUpdDelResponsableComponent):
   previewUrlFotoUsuario: string | null = null;
+
+  //object-position CALCULADO PARA ESTA FOTOGRAFÍA CONCRETA (VER encuadre-rostro.util.ts). MIENTRAS SEA null MANDA
+  //EL VALOR FIJO DEL SCSS, QUE ES EL COMPORTAMIENTO DE SIEMPRE:
+  posicionFotoUsuario: string | null = null;
+
+  //IDENTIFICA LA PETICIÓN DE VISTA PREVIA EN CURSO: SI SE ELIGE OTRA FOTOGRAFÍA MIENTRAS SE REESCALA LA ANTERIOR,
+  //LA QUE LLEGUE TARDE SE DESCARTA EN VEZ DE PISAR A LA BUENA:
+  private solicitudPreviewFoto = 0;
   selectedFileUsuarioPhoto: File | null = null;
   isSelectedFileUsuarioPhoto = false;
   banderaConfirmacionEliminacionFoto = false;
@@ -404,11 +417,7 @@ export class AddUpdDelUsuarioComponent implements OnChanges, OnDestroy {
           + String(parametrosSistemaDTO.rutaDestinoArchivosUsuarios) + nombreArchivo;
         this.gestionArchivosService.getFile(ruta).subscribe({
           next: ({ rutaEstatica }) => this.gestionArchivosService.getFileBytes(rutaEstatica).subscribe({
-            next: (blob) => {
-              this.liberarPreviewFotoUsuario();
-              this.previewUrlFotoUsuario = URL.createObjectURL(blob);
-              this.changeDetectorRef.markForCheck();
-            },
+            next: (blob) => this.mostrarPreviewReescalada(blob),
             error: () => this.onErrorPreviewFotoUsuario()
           }),
           error: () => this.onErrorPreviewFotoUsuario()
@@ -418,11 +427,32 @@ export class AddUpdDelUsuarioComponent implements OnChanges, OnDestroy {
     });
   }
 
+  //LA FOTOGRAFÍA SE MUESTRA EN UN CÍRCULO DE 68 PÍXELES. ENTREGARLE AL <img> EL ARCHIVO ORIGINAL (MÁS DE MIL
+  //PÍXELES DE LADO) HACE QUE EL NAVEGADOR LO ENCOJA DE UN GOLPE CON UN FILTRO BARATO Y LA VISTA PREVIA SE VEA
+  //ASERRADA. SE REDUCE ANTES CON EL REESCALADOR DE ALTA CALIDAD, SE LE DEVUELVE EL CONTRASTE LOCAL Y DE PASO SE
+  //ENCUADRA LA CARA (VER miniatura-fotografia.util.ts). EL ARCHIVO QUE SE SUBE AL SERVIDOR SIGUE SIENDO EL ORIGINAL:
+  private mostrarPreviewReescalada(fotografia: Blob): void {
+    const solicitud = ++this.solicitudPreviewFoto;
+    generarMiniaturaFotografia(fotografia, CAJA_FOTO_PREVIA).then(({ url, posicionObjeto }) => {
+      if (solicitud !== this.solicitudPreviewFoto) {
+        URL.revokeObjectURL(url);
+        return;
+      }
+      this.liberarPreviewFotoUsuario();
+      this.previewUrlFotoUsuario = url;
+      this.posicionFotoUsuario = posicionObjeto;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
   private liberarPreviewFotoUsuario(): void {
     if (this.previewUrlFotoUsuario?.startsWith('blob:')) URL.revokeObjectURL(this.previewUrlFotoUsuario);
+    this.posicionFotoUsuario = null;
   }
 
   onErrorPreviewFotoUsuario(): void {
+    //SE INVALIDA CUALQUIER REESCALADO EN CURSO PARA QUE NO REAPAREZCA UNA FOTOGRAFÍA YA DESCARTADA:
+    this.solicitudPreviewFoto++;
     this.liberarPreviewFotoUsuario();
     this.previewUrlFotoUsuario = null;
     this.changeDetectorRef.markForCheck();
@@ -567,13 +597,7 @@ export class AddUpdDelUsuarioComponent implements OnChanges, OnDestroy {
     this.isSelectedFileUsuarioPhoto = true;
     this.fotoExistenteEliminada = false;
 
-    const lector = new FileReader();
-    lector.onload = () => {
-      this.liberarPreviewFotoUsuario();
-      this.previewUrlFotoUsuario = lector.result as string;
-      this.changeDetectorRef.markForCheck();
-    };
-    lector.readAsDataURL(file);
+    this.mostrarPreviewReescalada(file);
   }
 
   onRemoveFileUsuarioPhoto(): void {
