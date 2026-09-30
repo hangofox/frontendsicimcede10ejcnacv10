@@ -1,7 +1,3 @@
-/* Chaflan del cuadro de titulo, en las dos esquinas opuestas, igual que los
-   cortes del marco del cabezote y que el cuadro de bienvenida de Inicio. */
-$chaflan: 14px;
-
 :host {
   display: flex;
   width: 100%;
@@ -39,84 +35,157 @@ $chaflan: 14px;
 }
 
 /* ------------------------------------------------------------------ */
-/* Cuadro del titulo: mismo achaflanado, borde y relleno que el cuadro  */
-/* de bienvenida de Inicio. Texto en blanco junto al icono de DIGEI.    */
+/* Rotulo del titulo: la misma placa plateada con marco dorado y        */
+/* laterales concavos del titulo de Inicio (.titulo-seccion de          */
+/* inicio.component.scss). Solo cambian el icono, que es el de DIGEI    */
+/* con el mismo degradado dorado, y el texto. El ancho sale del texto   */
+/* (max-content) porque este es mas largo que "Inicio".                 */
 /* ------------------------------------------------------------------ */
 
-.bienvenida {
+.titulo-seccion {
+  --titulo-seccion-alto: 74px;
+  --titulo-seccion-icono: 40px;
+  --titulo-seccion-texto: clamp(12px, .9vw, 16px);
+  --titulo-seccion-separacion: 10px;
+  --titulo-seccion-padding: 12px;
+
   position: relative;
-  z-index: 10;
+  z-index: 11;
   isolation: isolate;
+  box-sizing: border-box;
   justify-self: start;
+  width: max-content;
+  max-width: 100%;
+  height: var(--titulo-seccion-alto);
   display: flex;
   align-items: center;
-  gap: clamp(12px, 1.3vw, 18px);
-  max-width: min(760px, 74%);
-  padding: clamp(12px, 1.35vw, 18px) clamp(18px, 1.9vw, 28px);
-  color: #fff;
-  text-align: left;
-  text-shadow: 0 1px 2px #000;
+  justify-content: center;
+  gap: var(--titulo-seccion-separacion);
+  /* 40px extra por lado para que el texto no quede a ras de la curva  */
+  /* concava ni del borde.                                             */
+  padding: 0 calc(var(--titulo-seccion-padding) + 40px);
+  color: #3a2100;
+  filter:
+    drop-shadow(0 3px 3px rgb(0 0 0 / 74%))
+    drop-shadow(0 0 5px rgb(246 185 0 / 30%));
 }
 
-.bienvenida::before,
-.bienvenida::after {
+@media (max-width: 1500px) {
+  .titulo-seccion {
+    --titulo-seccion-alto: 70px;
+    --titulo-seccion-icono: 35px;
+    --titulo-seccion-texto: clamp(11px, .85vw, 14px);
+    --titulo-seccion-separacion: 7px;
+    --titulo-seccion-padding: 8px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .titulo-seccion {
+    --titulo-seccion-alto: 64px;
+    --titulo-seccion-icono: 31px;
+    --titulo-seccion-texto: clamp(9px, .82vw, 12px);
+    --titulo-seccion-separacion: 5px;
+    --titulo-seccion-padding: 5px;
+  }
+}
+
+.titulo-seccion__marco {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.titulo-seccion__borde {
+  fill: url('#titulo-digei-oro');
+  stroke: #3b2100;
+  stroke-width: 2;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.titulo-seccion__placa {
+  fill: url('#titulo-digei-plata');
+  stroke: #2d1800;
+  stroke-width: 1.2;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 2;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 2px 2px rgb(25 25 25 / 42%));
+}
+
+.titulo-seccion__curva-dorada {
+  fill: none;
+  stroke: url('#titulo-digei-oro');
+  stroke-width: 4;
+  stroke-linecap: butt;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 1px rgb(255 242 166 / 52%));
+}
+
+.titulo-seccion__reflejo {
+  fill: none;
+  stroke: rgb(255 247 199 / 82%);
+  stroke-width: 1;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.titulo-seccion h1 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: var(--titulo-seccion-texto);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: .04em;
+  color: #5a3100;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow:
+    0 1px 0 #fff2a6,
+    0 2px 1px rgb(38 19 0 / 42%),
+    0 0 2px rgb(246 185 0 / 35%);
+}
+
+.titulo-seccion__icono {
+  position: relative;
+  z-index: 1;
+  width: var(--titulo-seccion-icono);
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  filter:
+    drop-shadow(0 2px 1px rgb(38 19 0 / 82%))
+    drop-shadow(0 0 2px rgb(255 216 90 / 44%));
+}
+
+/* Mismo degradado dorado que la casita de Inicio; la silueta la da el
+   canal alfa del icono de DIGEI. */
+.titulo-seccion__icono::before {
   position: absolute;
   inset: 0;
   content: '';
-  pointer-events: none;
-  clip-path: polygon(
-    #{$chaflan} 0,
-    100% 0,
-    100% calc(100% - #{$chaflan}),
-    calc(100% - #{$chaflan}) 100%,
-    0 100%,
-    0 #{$chaflan}
-  );
+  background: linear-gradient(145deg,
+    #fff2a6 4%, #ffd85a 27%, #f6b900 48%, #c98200 69%, #3b2100 100%);
+  mask: url('../../../assets/images/imagen_digei_01.png') center / contain no-repeat;
+  -webkit-mask: url('../../../assets/images/imagen_digei_01.png') center / contain no-repeat;
 }
 
-/* Borde gris uniforme, sin degradados ni resplandores de color. */
-.bienvenida::before {
-  z-index: -2;
-  background:
-    linear-gradient(#7f7f7f 0 0) top right / calc(100% - #{$chaflan} + 2px) 2px no-repeat,
-    linear-gradient(#7f7f7f 0 0) right top / 2px calc(100% - #{$chaflan} + 2px) no-repeat,
-    linear-gradient(#7f7f7f 0 0) bottom left / calc(100% - #{$chaflan} + 2px) 2px no-repeat,
-    linear-gradient(#7f7f7f 0 0) left bottom / 2px calc(100% - #{$chaflan} + 2px) no-repeat,
-    linear-gradient(135deg, transparent calc(50% - 1.4px), #7f7f7f calc(50% - 1.4px) calc(50% + 1.4px), transparent calc(50% + 1.4px)) top left / #{$chaflan} #{$chaflan} no-repeat,
-    linear-gradient(135deg, transparent calc(50% - 1.4px), #7f7f7f calc(50% - 1.4px) calc(50% + 1.4px), transparent calc(50% + 1.4px)) bottom right / #{$chaflan} #{$chaflan} no-repeat;
-}
+@media (max-width: 520px) {
+  .titulo-seccion {
+    padding: 0 calc(var(--titulo-seccion-padding) + 24px);
+  }
 
-/* Relleno: negro al 40%, sin degradado, para que el plano del fondo se siga
-   viendo a traves del cuadro. Retraido 2px para dejar ver el filo. */
-.bienvenida::after {
-  z-index: -1;
-  inset: 2px;
-  background: rgb(0 0 0 / 40%);
-  clip-path: polygon(
-    #{$chaflan - 2px} 0,
-    100% 0,
-    100% calc(100% - #{$chaflan - 2px}),
-    calc(100% - #{$chaflan - 2px}) 100%,
-    0 100%,
-    0 #{$chaflan - 2px}
-  );
-}
-
-.bienvenida__logo {
-  flex: none;
-  width: clamp(44px, 3.6vw, 62px);
-  height: auto;
-  filter: brightness(0) invert(1);
-}
-
-.bienvenida__texto {
-  min-width: 0;
-}
-
-.bienvenida h1 {
-  margin: 0;
-  font-size: clamp(1rem, 1.5vw, 1.25rem);
-  font-weight: 700;
+  .titulo-seccion h1 {
+    white-space: normal;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -155,10 +224,15 @@ $chaflan: 14px;
   --digei-radio: 196;
 
   /* El medallon central ocupa el 48% del pinon (referencia: 45-50%).  */
-  /* Los medallones perifericos quedan dentro de la abertura de 0,6486 */
-  /* del diametro del anillo, sin cubrir su banda purpura.             */
-  --digei-contenido-central: 110;
-  --digei-contenido-satelite: 119.5;
+  /* Los medallones perifericos cubren la banda purpura del anillo;    */
+  /* cada posicion fija su propio tamano (ver mas abajo).              */
+  /* El central tapa el pinon interno y queda a ras del borde interior */
+  /* del circulo dorado del medio (antes 110, ver .digei-pinon--central).*/
+  /* Circulo visible = 95,38 % de la caja. El borde interior del       */
+  /* dorado no es redondo (144,5 a 150 px): el medallon llega a 150,25 */
+  /* px para tapar la linea negra en todo el contorno al girar.        */
+  --digei-contenido-central: 150.35;
+  --digei-contenido-satelite: 150;
 
   /* Duraciones de giro. El anillo central tiene 30 dientes y el       */
   /* periferico 24: la relacion correcta es 30/24 = 1,25, o sea el     */
@@ -251,21 +325,34 @@ $chaflan: 14px;
 
 .digei-pinon--central {
   --digei-d: calc(var(--digei-u) * var(--digei-d-central));
-  --digei-contenido: calc(var(--digei-u) * var(--digei-contenido-central));
+  /* Ajuste fino a ojo: a las 06:00 asomaba linea negra (dos pasos de */
+  /* 0,2 mm). Radio +0,2 mm y bajada de 0,2 mm: el borde inferior     */
+  /* avanza 0,4 mm y el superior se queda donde estaba.               */
+  --digei-contenido: calc(var(--digei-u) * var(--digei-contenido-central) + 0.4mm);
+  --digei-contenido-ajuste-y: 0.2mm;
   --digei-fx: 0;
   --digei-fy: 0;
-  /* El engranaje dibujado no esta centrado en su PNG: se corrige el   */
-  /* eje de giro para que el anillo no bascule al rotar.               */
-  --digei-rotor-x: -0.298;
-  --digei-rotor-y: 0;
-  /* ...y la posicion se compensa al reves, para que ese centro real   */
-  /* caiga exactamente en el centro de la composicion.                 */
-  --digei-ajuste-x: 0.298;
-  --digei-ajuste-y: 0;
-  /* El circulo visible del PNG 400x400 esta 1 px arriba y a la        */
-  /* izquierda del centro del archivo.                                */
-  --digei-contenido-x: -0.175;
-  --digei-contenido-y: -0.142;
+  /* El medallon llega hasta el borde interior del circulo dorado del  */
+  /* medio del anillo. Ese circulo NO es concentrico con los dientes:  */
+  /* ajustando una circunferencia a sus dos bordes (360 angulos),      */
+  /* interior r = 147,82 px y exterior r = 155,80 px, centrados en     */
+  /* (240,39 ; 234,96) px de la caja 482, unos 6 px MAS ARRIBA que el  */
+  /* centro de los dientes (1 px = 0,47718 ud). El eje se afino a      */
+  /* (240,39 ; 234,46), el centro que hace minimo el radio maximo del  */
+  /* inicio del dorado (150 px), para que el medallon lo tape entero   */
+  /* con el menor tamano. El eje de giro se lleva ahi para que el      */
+  /* borde dorado no se corra alrededor del medallon; la posicion se   */
+  /* compensa al reves. El desajuste pasa a los dientes (3,1 ud), que  */
+  /* quedan por debajo de los satelites.                               */
+  --digei-rotor-x: -0.291;
+  --digei-rotor-y: -3.121;
+  --digei-ajuste-x: 0.291;
+  --digei-ajuste-y: 3.121;
+  /* El circulo visible del PNG 600x600 del medallon esta en           */
+  /* (299,24 ; 300,76): se descuenta ese desvio para que caiga justo   */
+  /* sobre el eje.                                                     */
+  --digei-contenido-x: -0.101;
+  --digei-contenido-y: -3.311;
   z-index: 1;
 }
 
@@ -284,13 +371,18 @@ $chaflan: 14px;
 /* ---- Pinones perifericos ------------------------------------------ */
 
 .digei-pinon--satelite {
-  /* La abertura transparente del PNG 482x482 mide aprox. 313x312 px  */
-  /* y esta centrada en (240, 237.5), no en el centro de la caja.      */
-  /* El eje se lleva a ese centro y la posicion se compensa al reves. */
-  --digei-rotor-x: -0.070;
-  --digei-rotor-y: 0.528;
-  --digei-ajuste-x: 0.070;
-  --digei-ajuste-y: -0.528;
+  /* En el PNG 482x482 del anillo la banda purpura no es concentrica   */
+  /* con la abertura: el borde exterior de la banda esta centrado en   */
+  /* (240,69 ; 239,98) px y la abertura en (240,81 ; 242,35). Como los */
+  /* medallones tapan toda la banda, el eje de giro se lleva al centro */
+  /* del borde exterior de la banda (1 px = 0,37579 ud): asi ese borde */
+  /* no cabecea alrededor del medallon al girar. La posicion se        */
+  /* compensa al reves y el medallon va sobre el mismo eje (los seis   */
+  /* PNG de medallon estan centrados en su caja, error < 0,4 px).      */
+  --digei-rotor-x: -0.117;
+  --digei-rotor-y: -0.383;
+  --digei-ajuste-x: 0.117;
+  --digei-ajuste-y: 0.383;
   /* --digei-d-extra permite agrandar un pinon concreto sin tocar los     */
   /* otros cinco. El medallon crece con el mismo factor para conservar    */
   /* la proporcion 0,6277 entre ilustracion y anillo.                     */
@@ -300,10 +392,10 @@ $chaflan: 14px;
   --digei-contenido: calc(var(--digei-u) * var(--digei-contenido-satelite)
     + var(--digei-d-extra, 0px) * 0.6277
     + var(--digei-contenido-extra, 0px));
-  --digei-contenido-x: 0;
-  --digei-contenido-y: 0;
-  /* Mismo aumento cuadrado afinado primero sobre Finca Raiz. */
-  --digei-contenido-extra: 1.6mm;
+  --digei-contenido-x: -0.117;
+  --digei-contenido-y: -0.383;
+  /* Aumento afinado sobre Gestion del Riesgo (antes 1,6 mm; radio +0,3 mm). */
+  --digei-contenido-extra: 2.2mm;
   z-index: 2;
 }
 
@@ -401,70 +493,59 @@ $chaflan: 14px;
 /* que el diente que el pinon central presenta en esa direccion caiga    */
 /* dentro de un hueco del periferico.                                   */
 
+/* Medallones ampliados a pedido de la duena: cubren toda la banda   */
+/* purpura con sus rombos, un poco por debajo del tamano del zoom.   */
+/* Base 150 ud en Gestion del Riesgo (antes ~123). Cada PNG dibuja   */
+/* su aro dorado exterior con un radio distinto (px sobre caja 482): */
+/* el tamano se escala por 233,99 / radio para que los seis se vean  */
+/* iguales. Eje y centrado van en .digei-pinon--satelite.            */
+
 .digei-pinon[data-posicion="superior-izquierda"] {
   --digei-fx: -0.5;
   --digei-fy: -0.8660254;
   --digei-fase: 7deg;
-  --digei-contenido-x: -0.058;
-  /* Medallon: circulo visible de 116,75 ud, centrado sobre el eje    */
-  /* real de giro del anillo (no sobre el centro de la caja).         */
-  --digei-contenido-satelite: 123.24;
-  --digei-contenido-y: 0.507;
+  /* Aro de 233,99 px (referencia). */
+  --digei-contenido-satelite: 150;
 }
 
 .digei-pinon[data-posicion="superior-derecha"] {
   --digei-fx: 0.5;
   --digei-fy: -0.8660254;
   --digei-fase: 7deg;
-  --digei-contenido-y: 0.558;
-  /* Medallon: circulo visible de 116,75 ud, centrado sobre el eje    */
-  /* real de giro del anillo (no sobre el centro de la caja).         */
-  --digei-contenido-satelite: 123.72;
-  --digei-contenido-x: -0.103;
+  /* Aro de 233,43 px. */
+  --digei-contenido-satelite: 150.36;
 }
 
 .digei-pinon[data-posicion="izquierda"] {
   --digei-fx: -1;
   --digei-fy: 0;
   --digei-fase: 7deg;
-  --digei-contenido-x: -0.123;
-  --digei-contenido-y: 0.493;
-  /* Medallon: circulo visible de 116,75 ud, centrado sobre el eje    */
-  /* real de giro del anillo (no sobre el centro de la caja).         */
-  --digei-contenido-satelite: 126.35;
+  /* Aro de 228,59 px. */
+  --digei-contenido-satelite: 153.54;
 }
 
 .digei-pinon[data-posicion="derecha"] {
   --digei-fx: 1;
   --digei-fy: 0;
   --digei-fase: 7deg;
-  --digei-contenido-x: -0.045;
-  --digei-contenido-y: 0.401;
-  /* Medallon: circulo visible de 116,75 ud, centrado sobre el eje    */
-  /* real de giro del anillo (no sobre el centro de la caja).         */
-  --digei-contenido-satelite: 124.27;
+  /* Aro de 232,52 px. */
+  --digei-contenido-satelite: 150.95;
 }
 
 .digei-pinon[data-posicion="inferior-izquierda"] {
   --digei-fx: -0.5;
   --digei-fy: 0.8660254;
   --digei-fase: 7deg;
-  --digei-contenido-x: -0.043;
-  --digei-contenido-y: 0.453;
-  /* Medallon: circulo visible de 116,75 ud, centrado sobre el eje    */
-  /* real de giro del anillo (no sobre el centro de la caja).         */
-  --digei-contenido-satelite: 123.86;
+  /* Aro de 233,34 px. */
+  --digei-contenido-satelite: 150.42;
 }
 
 .digei-pinon[data-posicion="inferior-derecha"] {
   --digei-fx: 0.5;
   --digei-fy: 0.8660254;
   --digei-fase: 7deg;
-  --digei-contenido-x: -0.086;
-  --digei-contenido-y: 0.515;
-  /* Medallon: circulo visible de 116,75 ud, centrado sobre el eje    */
-  /* real de giro del anillo (no sobre el centro de la caja).         */
-  --digei-contenido-satelite: 122.29;
+  /* Aro de 235,96 px. */
+  --digei-contenido-satelite: 148.75;
 }
 
 /* ---- Animaciones -------------------------------------------------- */
@@ -517,10 +598,5 @@ $chaflan: 14px;
 @media (max-width: 520px) {
   .digei-futurista {
     padding-inline: 10px;
-  }
-
-  .bienvenida {
-    max-width: 100%;
-    padding: 12px 14px;
   }
 }
