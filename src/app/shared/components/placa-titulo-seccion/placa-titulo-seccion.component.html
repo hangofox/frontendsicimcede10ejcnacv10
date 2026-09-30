@@ -1,0 +1,28 @@
+<div class="titulo-seccion">
+  <svg class="titulo-seccion__marco" [attr.viewBox]="'0 0 ' + anchoMarco + ' 70'" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient [attr.id]="idOro" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#fff2a6" />
+        <stop offset=".08" stop-color="#f6b900" />
+        <stop offset=".2" stop-color="#ffd85a" />
+        <stop offset=".46" stop-color="#9a5700" />
+        <stop offset=".58" stop-color="#542b00" />
+        <stop offset=".76" stop-color="#c98200" />
+        <stop offset=".91" stop-color="#fff2a6" />
+        <stop offset="1" stop-color="#7a4300" />
+      </linearGradient>
+      <linearGradient [attr.id]="idPlata" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ffffff" />
+        <stop offset=".3" stop-color="#d8d8d8" />
+        <stop offset=".68" stop-color="#a6a6a6" />
+        <stop offset="1" stop-color="#5d5d5d" />
+      </linearGradient>
+    </defs>
+    <path class="titulo-seccion__borde" [attr.d]="trazoBorde" [attr.fill]="'url(#' + idOro + ')'" />
+    <path class="titulo-seccion__placa" [attr.d]="trazoPlaca" [attr.fill]="'url(#' + idPlata + ')'" />
+    <path class="titulo-seccion__curva-dorada" [attr.d]="trazoCurvaDorada" [attr.stroke]="'url(#' + idOro + ')'" />
+    <path class="titulo-seccion__reflejo" [attr.d]="trazoReflejo" />
+  </svg>
+  <span class="titulo-seccion__icono" [attr.data-icono]="icono" aria-hidden="true"></span>
+  <h1>{{ texto }}</h1>
+</div>

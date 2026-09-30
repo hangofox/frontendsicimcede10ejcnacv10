@@ -1,10 +1,16 @@
 :host {
   display: flex;
   width: 100%;
-  min-height: 100%;
+  /* Mismo patron que Inicio: 0 y no 100%, para que el cuerpo mida lo que
+     mide su contenido y no fuerce la barra de desplazamiento vertical. */
+  min-height: 0;
   flex: 1 1 auto;
   align-self: stretch;
   background: #020203 url('../../../assets/images/imagen_fondo_cuerpo_digei_01.png') center / 100% 100% no-repeat;
+  /* Por debajo del ancho minimo de .digei-futurista aparece la barra
+     horizontal aqui, dentro del cuerpo, y no en la ventana: asi no se
+     toca el recorte global de index/styles ni el menu superior fijo. */
+  overflow-x: auto;
 }
 
 /* El componente administra su propio fondo, igual que Login. */
@@ -13,6 +19,9 @@
   isolation: isolate;
   box-sizing: border-box;
   width: 100%;
+  /* Ancho minimo: por debajo de 900px los pinones dejan de achicarse y
+     se conserva la composicion de escritorio con barra horizontal. */
+  min-width: 900px;
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
@@ -54,6 +63,13 @@
   isolation: isolate;
   box-sizing: border-box;
   justify-self: start;
+  /* Misma altura que la placa de Inicio: su seccion tiene clamp(12px,
+     1.45vw, 22px) arriba y .digei-futurista clamp(18px, 2vw, 30px). A la
+     izquierda ya coinciden. */
+  margin-top: calc(clamp(12px, 1.45vw, 22px) - clamp(18px, 2vw, 30px));
+  /* Pegada al borde izquierdo, donde arranca el menu principal: descuenta
+     el padding izquierdo de .digei-futurista (10px desde 520px). */
+  margin-left: calc(-1 * clamp(18px, 2vw, 30px));
   width: max-content;
   max-width: 100%;
   height: var(--titulo-seccion-alto);
@@ -178,16 +194,6 @@
   -webkit-mask: url('../../../assets/images/imagen_digei_01.png') center / contain no-repeat;
 }
 
-@media (max-width: 520px) {
-  .titulo-seccion {
-    padding: 0 calc(var(--titulo-seccion-padding) + 24px);
-  }
-
-  .titulo-seccion h1 {
-    white-space: normal;
-  }
-}
-
 /* ------------------------------------------------------------------ */
 /* Composicion de engranajes                                           */
 /*                                                                     */
@@ -199,16 +205,17 @@
 /* excluyendo la sombra suave del borde):                              */
 /*                                                                     */
 /*   imagen_anillo_pinon_central_01.png  482x482                       */
-/*     23 dientes - paso 15,6522 grados                                */
-/*     radio de cabeza 0,9911 - radio de pie 0,8645 (sobre el radio    */
-/*     de la caja) - primer diente centrado a 4,80 grados              */
+/*     30 dientes - paso 12 grados - primer diente a 0,50 grados       */
+/*     (medido sobre el centro de los dientes, 240,85 ; 240,80 px)     */
 /*                                                                     */
-/*   imagen_anillo_pinon_externo_01.png  350x350                       */
-/*     24 dientes - paso 15,0000 grados                                */
-/*     radio de cabeza 1,0057 - radio de pie 0,8900                    */
-/*     primer diente centrado a 0,75 grados - hueco interior 0,6486    */
-/*     del radio de la caja, que limita el tamano de la imagen         */
-/*     interior                                                        */
+/*   imagen_anillo_pinon_externo_01.png  482x482                       */
+/*     24 dientes - paso 15 grados - primer diente a 0,01 grados       */
+/*     (medido sobre el centro de los dientes, 240,90 ; 241,45 px)     */
+/*                                                                     */
+/* Empate: cada 60 grados el central avanza 5 dientes y el periferico  */
+/* 4, asi que la misma fase de 7 grados vale para las seis posiciones. */
+/* Con ella el hueco del periferico queda a 0,14 grados del diente del */
+/* central en todas (verificado 2026-09-30).                           */
 /* ------------------------------------------------------------------ */
 
 .digei-escena {
@@ -248,6 +255,15 @@
   margin-inline: auto;
   aspect-ratio: 1020 / 593;
   transform: translateY(-98px);
+  /* El transform sube el dibujo pero no libera su espacio en el flujo:
+     sin esto quedaban 98px vacios debajo que sacaban la barra vertical.
+     Mismo recurso que .rompecabezas de Inicio (translateY + margen
+     inferior negativo). */
+  /* Ademas se descuenta el espacio vacio que el lienzo 1020 x 593 deja
+     bajo los pinones inferiores (36 ud = 3,529 % del ancho de la escena,
+     que es min(100%, 1240px)): baja la altura del cuerpo sin tocar el
+     tamano ni la posicion de los pinones. */
+  margin-bottom: calc(-98px - min(3.529%, 43.76px));
 
   /* Los piñones conservan su lienzo proporcional mientras el fondo   */
   /* del cuerpo se expande independientemente en ambos ejes.           */
@@ -332,27 +348,25 @@
   --digei-contenido-ajuste-y: 0.2mm;
   --digei-fx: 0;
   --digei-fy: 0;
-  /* El medallon llega hasta el borde interior del circulo dorado del  */
-  /* medio del anillo. Ese circulo NO es concentrico con los dientes:  */
-  /* ajustando una circunferencia a sus dos bordes (360 angulos),      */
-  /* interior r = 147,82 px y exterior r = 155,80 px, centrados en     */
-  /* (240,39 ; 234,96) px de la caja 482, unos 6 px MAS ARRIBA que el  */
-  /* centro de los dientes (1 px = 0,47718 ud). El eje se afino a      */
-  /* (240,39 ; 234,46), el centro que hace minimo el radio maximo del  */
-  /* inicio del dorado (150 px), para que el medallon lo tape entero   */
-  /* con el menor tamano. El eje de giro se lleva ahi para que el      */
-  /* borde dorado no se corra alrededor del medallon; la posicion se   */
-  /* compensa al reves. El desajuste pasa a los dientes (3,1 ud), que  */
-  /* quedan por debajo de los satelites.                               */
-  --digei-rotor-x: -0.291;
-  --digei-rotor-y: -3.121;
-  --digei-ajuste-x: 0.291;
-  --digei-ajuste-y: 3.121;
+  /* En el PNG 482 del anillo el circulo dorado del medio NO es        */
+  /* concentrico con los dientes: los dientes estan centrados en       */
+  /* (240,85 ; 240,80) px y el dorado en (240,39 ; 234,46) px, 6,3 px  */
+  /* mas arriba (1 px = 0,47718 ud). Un solo eje no sirve: girando     */
+  /* sobre el dorado los dientes orbitan y no engranan; girando sobre  */
+  /* los dientes el dorado se corre alrededor del medallon.            */
+  /* Solucion: el eje va en el centro de los dientes (engrane exacto)  */
+  /* y .digei-pinon__anillo--interior superpone una copia del mismo    */
+  /* PNG bajada 6,3 px, recortada al interior, para que su dorado      */
+  /* quede concentrico con los dientes. Ambas capas giran juntas.      */
+  --digei-rotor-x: -0.072;
+  --digei-rotor-y: -0.095;
+  --digei-ajuste-x: 0.072;
+  --digei-ajuste-y: 0.095;
   /* El circulo visible del PNG 600x600 del medallon esta en           */
   /* (299,24 ; 300,76): se descuenta ese desvio para que caiga justo   */
   /* sobre el eje.                                                     */
-  --digei-contenido-x: -0.101;
-  --digei-contenido-y: -3.311;
+  --digei-contenido-x: 0.118;
+  --digei-contenido-y: -0.285;
   z-index: 1;
 }
 
@@ -364,6 +378,19 @@
   background-image: url('../../../assets/images/imagen_anillo_pinon_central_01.png');
 }
 
+/* Copia interior: se traslada (0,46 ; 6,34) px de 482 para llevar el  */
+/* centro del dorado (240,39 ; 234,46) al de los dientes. La mascara   */
+/* se centra en el dorado (coordenadas propias de la copia) y funde    */
+/* entre 166 y 182 px de radio: esa franja cae entera dentro de la     */
+/* banda purpura exterior en las dos capas, asi la union no se ve.     */
+.digei-pinon--central .digei-pinon__anillo--interior {
+  position: absolute;
+  inset: 0;
+  transform: translate(0.0954%, 1.3154%);
+  mask: radial-gradient(ellipse 50% 50% at 49.873% 48.643%, #000 68.9%, transparent 75.5%);
+  -webkit-mask: radial-gradient(ellipse 50% 50% at 49.873% 48.643%, #000 68.9%, transparent 75.5%);
+}
+
 .digei-pinon--central .digei-pinon__contenido {
   background-image: url('../../../assets/images/imagen_circulo_proceso_digei_01.png');
 }
@@ -372,17 +399,18 @@
 
 .digei-pinon--satelite {
   /* En el PNG 482x482 del anillo la banda purpura no es concentrica   */
-  /* con la abertura: el borde exterior de la banda esta centrado en   */
-  /* (240,69 ; 239,98) px y la abertura en (240,81 ; 242,35). Como los */
-  /* medallones tapan toda la banda, el eje de giro se lleva al centro */
-  /* del borde exterior de la banda (1 px = 0,37579 ud): asi ese borde */
-  /* no cabecea alrededor del medallon al girar. La posicion se        */
-  /* compensa al reves y el medallon va sobre el mismo eje (los seis   */
-  /* PNG de medallon estan centrados en su caja, error < 0,4 px).      */
-  --digei-rotor-x: -0.117;
-  --digei-rotor-y: -0.383;
-  --digei-ajuste-x: 0.117;
-  --digei-ajuste-y: 0.383;
+  /* con los dientes: el borde exterior de la banda esta centrado en   */
+  /* (240,73 ; 239,90) px y los dientes en (240,90 ; 241,45), 1,55 px  */
+  /* mas abajo (1 px = 0,37579 ud). El eje de giro va en el centro de  */
+  /* los dientes (engrane exacto) y .digei-pinon__anillo--interior     */
+  /* superpone una copia del PNG bajada 1,55 px para que la banda      */
+  /* quede concentrica con el eje y no cabecee alrededor del medallon. */
+  /* La posicion se compensa al reves y el medallon va sobre el mismo  */
+  /* eje (los seis PNG de medallon estan centrados, error < 0,4 px).   */
+  --digei-rotor-x: -0.038;
+  --digei-rotor-y: 0.169;
+  --digei-ajuste-x: 0.038;
+  --digei-ajuste-y: -0.169;
   /* --digei-d-extra permite agrandar un pinon concreto sin tocar los     */
   /* otros cinco. El medallon crece con el mismo factor para conservar    */
   /* la proporcion 0,6277 entre ilustracion y anillo.                     */
@@ -392,8 +420,8 @@
   --digei-contenido: calc(var(--digei-u) * var(--digei-contenido-satelite)
     + var(--digei-d-extra, 0px) * 0.6277
     + var(--digei-contenido-extra, 0px));
-  --digei-contenido-x: -0.117;
-  --digei-contenido-y: -0.383;
+  --digei-contenido-x: -0.038;
+  --digei-contenido-y: 0.169;
   /* Aumento afinado sobre Gestion del Riesgo (antes 1,6 mm; radio +0,3 mm). */
   --digei-contenido-extra: 2.2mm;
   z-index: 2;
@@ -405,6 +433,18 @@
 
 .digei-pinon--satelite .digei-pinon__anillo {
   background-image: url('../../../assets/images/imagen_anillo_pinon_externo_01.png');
+}
+
+/* Copia interior trasladada (0,17 ; 1,55) px de 482: lleva el centro  */
+/* de la banda purpura al de los dientes. La mascara se centra en la   */
+/* banda y funde entre 205,5 y 212 px, sobre el aro dorado liso que    */
+/* hay antes del pie de los dientes, asi la union no se ve.            */
+.digei-pinon--satelite .digei-pinon__anillo--interior {
+  position: absolute;
+  inset: 0;
+  transform: translate(0.0353%, 0.3216%);
+  mask: radial-gradient(ellipse 50% 50% at 49.944% 49.772%, #000 85.27%, transparent 87.97%);
+  -webkit-mask: radial-gradient(ellipse 50% 50% at 49.944% 49.772%, #000 85.27%, transparent 87.97%);
 }
 
 .digei-pinon[data-posicion="superior-izquierda"] .digei-pinon__contenido {
@@ -587,16 +627,59 @@
 /* y posiciones escalan siempre juntos y la composicion hexagonal se     */
 /* conserva integra.                                                     */
 
-@media (max-width: 900px) {
+/* Entre 601 y 900px .digei-futurista conserva su ancho minimo de 900px y
+   se desplaza horizontalmente con la composicion de escritorio. */
+
+/* Celular: sin ancho minimo ni barra horizontal. Los pinones vuelven a
+   achicarse con el ancho, pierden la subida de 98px (que los montaba sobre
+   la placa) y quedan centrados en el espacio bajo la placa. */
+@media (max-width: 600px) {
+  .digei-futurista {
+    min-width: 0;
+    /* Mismo alto que el cuerpo de Inicio (.inicio-futurista) en celular,
+       cuyo alto lo manda el escudo: min(56.2vw, 421px) de ancho con
+       proporcion 1405/1017 = 1,3815, mas 204px de placa, bienvenida y
+       margenes (medido en Chrome a 540, 580 y 600px). Si cambia el ancho
+       del escudo en inicio.component.scss, actualizarlo aqui. */
+    min-height: calc(min(56.2vw, 421px) * 1.3815 + 204px);
+  }
+
+  /* Los pinones solo ocupan el 56 % del ancho del lienzo 1020: en celular
+     se agrandan un 52 % (quedan en el 85 %) y el lienzo crece en alto en
+     la misma proporcion (593 x 1,52 = 901) para que no se recorten arriba
+     ni abajo. El centro de la composicion no se mueve.
+     Separacion de la placa reducida (antes clamp(44px, 7vw, 58px)) para
+     subirlos: el lienzo ya deja su propio margen vacio sobre los pinones. */
   .digei-escena {
+    /* Arriba y no al centro: el alto extra (igual al de Inicio) queda
+       debajo y los pinones conservan su distancia a la placa. */
     align-self: start;
-    margin-top: clamp(44px, 7vw, 58px);
+    /* -1,8 mm: subida fina a ojo (dos pasos: 0,8 mm y 1 mm). */
+    margin-top: calc(clamp(8px, 2vw, 16px) - 1.8mm);
+    margin-bottom: 0;
     transform: none;
+    aspect-ratio: 1020 / 901;
+  }
+
+  .digei-engranajes {
+    --digei-u: calc(0.0980392cqw * 1.52);
   }
 }
 
 @media (max-width: 520px) {
   .digei-futurista {
+    /* Inicio aqui: escudo de min(88.6vw, 367px), mas 200px (medido en
+       Chrome a 360, 375, 390 y 412px). */
+    min-height: calc(min(88.6vw, 367px) * 1.3815 + 200px);
     padding-inline: 10px;
+  }
+
+  .titulo-seccion {
+    margin-left: -10px;
+    padding: 0 calc(var(--titulo-seccion-padding) + 24px);
+  }
+
+  .titulo-seccion h1 {
+    white-space: normal;
   }
 }

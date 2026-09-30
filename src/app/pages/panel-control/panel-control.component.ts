@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { PlacaTituloSeccionComponent } from '../../shared/components/placa-titulo-seccion/placa-titulo-seccion.component';
 
 interface AccesoPanelControl {
   titulo: string;
@@ -10,7 +11,7 @@ interface AccesoPanelControl {
 @Component({
   selector: 'app-panel-control',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, PlacaTituloSeccionComponent],
   templateUrl: './panel-control.component.html',
   styleUrl: './panel-control.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

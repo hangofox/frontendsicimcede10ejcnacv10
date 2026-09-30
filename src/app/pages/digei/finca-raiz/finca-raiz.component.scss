@@ -158,20 +158,20 @@
      0,2 mm tapan la línea negra que asomaba a las 06:00. */
   --fr-contenido: calc(var(--fr-u) * var(--fr-contenido-digei) + .4mm);
   --fr-contenido-ajuste-y: .2mm;
-  /* El medallón llega al borde interior del círculo dorado del medio.
-     Ese círculo NO es concéntrico con los dientes: está unos 6 px más
-     arriba en el PNG 482. El eje se lleva a (240,39 ; 234,46) px, el
-     centro que hace mínimo el radio máximo del inicio del dorado, para
-     que el borde dorado no se corra alrededor del medallón al girar.
-     Mismos valores que .digei-pinon--central. */
-  --fr-rotor-x: -.291;
-  --fr-rotor-y: -3.121;
-  --fr-ajuste-x: .291;
-  --fr-ajuste-y: 3.121;
+  /* El círculo dorado del medio NO es concéntrico con los dientes: está
+     6,3 px más arriba en el PNG 482. El eje va en el centro de los
+     dientes (240,85 ; 240,80) para que engranen exacto, y
+     .fr-pinon__anillo--interior superpone una copia del PNG bajada 6,3 px
+     para que el dorado quede concéntrico. Mismos valores que
+     .digei-pinon--central. */
+  --fr-rotor-x: -.072;
+  --fr-rotor-y: -.095;
+  --fr-ajuste-x: .072;
+  --fr-ajuste-y: .095;
   /* El círculo visible del PNG 600x600 del medallón está en
      (299,24 ; 300,76): se descuenta ese desvío para que caiga sobre el eje. */
-  --fr-contenido-x: -.101;
-  --fr-contenido-y: -3.311;
+  --fr-contenido-x: .118;
+  --fr-contenido-y: -.285;
 
   left: calc(var(--fr-u) * (115 + var(--fr-ajuste-x)));
   top: calc(var(--fr-u) * (115 + var(--fr-ajuste-y)));
@@ -186,6 +186,18 @@
   background-image: url('../../../../assets/images/imagen_anillo_pinon_central_01.png');
 }
 
+/* Copia interior trasladada (0,46 ; 6,34) px de 482: lleva el centro del
+   dorado al de los dientes. La máscara se centra en el dorado y funde
+   entre 166 y 182 px, dentro de la banda púrpura, así la unión no se ve.
+   Igual que .digei-pinon__anillo--interior. */
+.fr-pinon--digei .fr-pinon__anillo--interior {
+  position: absolute;
+  inset: 0;
+  transform: translate(.0954%, 1.3154%);
+  mask: radial-gradient(ellipse 50% 50% at 49.873% 48.643%, #000 68.9%, transparent 75.5%);
+  -webkit-mask: radial-gradient(ellipse 50% 50% at 49.873% 48.643%, #000 68.9%, transparent 75.5%);
+}
+
 .fr-pinon--digei .fr-pinon__medallon-img {
   background-image: url('../../../../assets/images/imagen_circulo_proceso_digei_01.png');
 }
@@ -197,16 +209,17 @@
   /* Mismo aumento del medallón que en digei (allí 2,2 mm; antes 1,6 mm =
      5 ud), expresado en ud para que escale con el resto. */
   --fr-contenido: calc(var(--fr-u) * (var(--fr-contenido-finca) + 6.9));
-  /* Eje del anillo externo en el centro del borde exterior de su banda
-     purpura, que no es concentrica con la abertura: como el medallon tapa
-     la banda, asi el borde no cabecea al girar. Copiado de
-     .digei-pinon--satelite; el medallon (PNG centrado) va sobre el eje. */
-  --fr-rotor-x: -.117;
-  --fr-rotor-y: -.383;
-  --fr-ajuste-x: .117;
-  --fr-ajuste-y: .383;
-  --fr-contenido-x: -.117;
-  --fr-contenido-y: -.383;
+  /* Eje del anillo externo en el centro de sus dientes (engrane exacto);
+     .fr-pinon__anillo--interior superpone una copia del PNG bajada 1,55 px
+     para que la banda purpura, que no es concentrica con los dientes,
+     no cabecee alrededor del medallon. Copiado de .digei-pinon--satelite;
+     el medallon (PNG centrado) va sobre el eje. */
+  --fr-rotor-x: -.038;
+  --fr-rotor-y: .169;
+  --fr-ajuste-x: .038;
+  --fr-ajuste-y: -.169;
+  --fr-contenido-x: -.038;
+  --fr-contenido-y: .169;
   /* Fase de engrane: la misma de los seis satélites de digei. */
   --fr-fase: 7deg;
 
@@ -221,6 +234,17 @@
 
 .fr-pinon--finca .fr-pinon__anillo {
   background-image: url('../../../../assets/images/imagen_anillo_pinon_externo_01.png');
+}
+
+/* Copia interior trasladada (0,17 ; 1,55) px de 482: lleva el centro de
+   la banda púrpura al de los dientes. Funde entre 205,5 y 212 px, sobre
+   el aro dorado liso previo a los dientes. Igual que en digei. */
+.fr-pinon--finca .fr-pinon__anillo--interior {
+  position: absolute;
+  inset: 0;
+  transform: translate(.0353%, .3216%);
+  mask: radial-gradient(ellipse 50% 50% at 49.944% 49.772%, #000 85.27%, transparent 87.97%);
+  -webkit-mask: radial-gradient(ellipse 50% 50% at 49.944% 49.772%, #000 85.27%, transparent 87.97%);
 }
 
 .fr-pinon--finca .fr-pinon__medallon-img {

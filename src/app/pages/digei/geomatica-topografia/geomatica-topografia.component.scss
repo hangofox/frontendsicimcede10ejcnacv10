@@ -157,16 +157,17 @@
   --gt-contenido: calc(var(--gt-u) * var(--gt-contenido-digei) + .4mm);
   --gt-contenido-ajuste-y: .2mm;
   /* El círculo dorado del medio NO es concéntrico con los dientes: está
-     unos 6 px más arriba en el PNG 482. El eje se lleva a su centro para
-     que el borde no se corra alrededor del medallón al girar; el medallón
-     descuenta el desvío de su propio PNG. Mismos valores que
-     .digei-pinon--central. */
-  --gt-rotor-x: -.291;
-  --gt-rotor-y: -3.121;
-  --gt-ajuste-x: .291;
-  --gt-ajuste-y: 3.121;
-  --gt-contenido-x: -.101;
-  --gt-contenido-y: -3.311;
+     6,3 px más arriba en el PNG 482. El eje va en el centro de los
+     dientes para que engranen exacto, y .gt-pinon__anillo--interior
+     superpone una copia del PNG bajada 6,3 px para que el dorado quede
+     concéntrico; el medallón descuenta el desvío de su propio PNG.
+     Mismos valores que .digei-pinon--central. */
+  --gt-rotor-x: -.072;
+  --gt-rotor-y: -.095;
+  --gt-ajuste-x: .072;
+  --gt-ajuste-y: .095;
+  --gt-contenido-x: .118;
+  --gt-contenido-y: -.285;
 
   left: calc(var(--gt-u) * (115 + var(--gt-ajuste-x)));
   top: calc(var(--gt-u) * (115 + var(--gt-ajuste-y)));
@@ -181,6 +182,18 @@
   background-image: url('../../../../assets/images/imagen_anillo_pinon_central_01.png');
 }
 
+/* Copia interior trasladada (0,46 ; 6,34) px de 482: lleva el centro del
+   dorado al de los dientes. La máscara se centra en el dorado y funde
+   entre 166 y 182 px, dentro de la banda púrpura, así la unión no se ve.
+   Igual que .digei-pinon__anillo--interior. */
+.gt-pinon--digei .gt-pinon__anillo--interior {
+  position: absolute;
+  inset: 0;
+  transform: translate(.0954%, 1.3154%);
+  mask: radial-gradient(ellipse 50% 50% at 49.873% 48.643%, #000 68.9%, transparent 75.5%);
+  -webkit-mask: radial-gradient(ellipse 50% 50% at 49.873% 48.643%, #000 68.9%, transparent 75.5%);
+}
+
 .gt-pinon--digei .gt-pinon__medallon-img {
   background-image: url('../../../../assets/images/imagen_circulo_proceso_digei_01.png');
 }
@@ -192,16 +205,17 @@
   /* Mismo aumento del medallón que en digei (allí 2,2 mm; antes 1,6 mm =
      5 ud), en ud para que escale con el resto. */
   --gt-contenido: calc(var(--gt-u) * (var(--gt-contenido-geomatica) + 6.9));
-  /* Eje del anillo externo en el centro del borde exterior de su banda
-     púrpura, que no es concéntrica con la abertura: como el medallón tapa
-     la banda, así el borde no cabecea al girar. Copiado de
-     .digei-pinon--satelite; el medallón (PNG centrado) va sobre el eje. */
-  --gt-rotor-x: -.117;
-  --gt-rotor-y: -.383;
-  --gt-ajuste-x: .117;
-  --gt-ajuste-y: .383;
-  --gt-contenido-x: -.117;
-  --gt-contenido-y: -.383;
+  /* Eje del anillo externo en el centro de sus dientes (engrane exacto);
+     .gt-pinon__anillo--interior superpone una copia del PNG bajada 1,55 px
+     para que la banda púrpura, que no es concéntrica con los dientes,
+     no cabecee alrededor del medallón. Copiado de .digei-pinon--satelite;
+     el medallón (PNG centrado) va sobre el eje. */
+  --gt-rotor-x: -.038;
+  --gt-rotor-y: .169;
+  --gt-ajuste-x: .038;
+  --gt-ajuste-y: -.169;
+  --gt-contenido-x: -.038;
+  --gt-contenido-y: .169;
   /* Fase de engrane: la misma de los satélites de digei. */
   --gt-fase: 7deg;
 
@@ -216,6 +230,17 @@
 
 .gt-pinon--geomatica .gt-pinon__anillo {
   background-image: url('../../../../assets/images/imagen_anillo_pinon_externo_01.png');
+}
+
+/* Copia interior trasladada (0,17 ; 1,55) px de 482: lleva el centro de
+   la banda púrpura al de los dientes. Funde entre 205,5 y 212 px, sobre
+   el aro dorado liso previo a los dientes. Igual que en digei. */
+.gt-pinon--geomatica .gt-pinon__anillo--interior {
+  position: absolute;
+  inset: 0;
+  transform: translate(.0353%, .3216%);
+  mask: radial-gradient(ellipse 50% 50% at 49.944% 49.772%, #000 85.27%, transparent 87.97%);
+  -webkit-mask: radial-gradient(ellipse 50% 50% at 49.944% 49.772%, #000 85.27%, transparent 87.97%);
 }
 
 .gt-pinon--geomatica .gt-pinon__medallon-img {

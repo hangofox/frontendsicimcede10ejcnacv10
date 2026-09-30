@@ -28,14 +28,16 @@
       <path class="titulo-seccion__reflejo" d="M18 5H462" />
     </svg>
     <span class="titulo-seccion__icono" aria-hidden="true"></span>
-    <h1 id="titulo-digei">Dirección de Gestión de Ingenieros</h1>
+    <h1 id="titulo-digei">Dirección Gestión de Ingenieros</h1>
   </div>
 
-  <div class="digei-escena" aria-label="Procesos de la Dirección de Gestión de Ingenieros">
+  <div class="digei-escena" aria-label="Procesos de la Dirección Gestión de Ingenieros">
     <div class="digei-engranajes">
       <div class="digei-pinon digei-pinon--central">
         <div class="digei-pinon__rotor" aria-hidden="true">
           <span class="digei-pinon__anillo"></span>
+          <!-- Copia de la parte interior del mismo PNG, recentrada sobre los dientes. -->
+          <span class="digei-pinon__anillo digei-pinon__anillo--interior"></span>
         </div>
         <span class="digei-pinon__contenido" role="img" aria-label="Proceso DIGEI"></span>
       </div>
@@ -45,6 +47,8 @@
           <li class="digei-pinon digei-pinon--satelite" [attr.data-posicion]="area.posicion">
             <div class="digei-pinon__rotor" aria-hidden="true">
               <span class="digei-pinon__anillo"></span>
+              <!-- Copia interior del mismo PNG, recentrada sobre los dientes. -->
+              <span class="digei-pinon__anillo digei-pinon__anillo--interior"></span>
             </div>
             <a class="digei-pinon__enlace" [routerLink]="area.ruta"
                [attr.aria-label]="'Ir a ' + area.nombre">

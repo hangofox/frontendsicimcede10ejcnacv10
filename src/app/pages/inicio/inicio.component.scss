@@ -53,6 +53,9 @@ $chaflan: 14px;
   isolation: isolate;
   box-sizing: border-box;
   justify-self: start;
+  /* Pegada al borde izquierdo, donde arranca el menu principal: descuenta
+     el padding izquierdo de .inicio-futurista (10px desde 520px). */
+  margin-left: calc(-1 * clamp(18px, 2vw, 30px));
   width: clamp(270px, 30vw, 320px);
   height: var(--titulo-seccion-alto);
   display: flex;
@@ -187,6 +190,9 @@ $chaflan: 14px;
   color: #fff;
   text-align: left;
   text-shadow: 0 1px 2px #000;
+  /* Oculto a pedido (no eliminado): conserva su espacio para no desplazar
+     el escudo; para mostrarlo de nuevo basta quitar esta linea. */
+  visibility: hidden;
 }
 
 .bienvenida::before,
@@ -249,14 +255,17 @@ $chaflan: 14px;
   position: relative;
   align-self: center;
   justify-self: center;
-  width: min(36vw, 400px);
+  /* +8 % sobre el tamano anterior, min(36vw, 400px). */
+  width: min(38.9vw, 432px);
   min-width: 250px;
   /* Proporcion nativa del nuevo escudo general: todas las coordenadas de las
      piezas se expresan sobre este lienzo de 1017 x 1405 px. */
   aspect-ratio: 1017 / 1405;
   margin-top: clamp(6px, .8vh, 10px);
-  margin-bottom: clamp(-46px, -4vh, -30px);
-  transform: translateY(clamp(-58px, -5vh, -42px));
+  /* Sube 60px mas que antes (tres pasos de 20px); el margen inferior
+     devuelve esos 60px para que el cuerpo no gane alto vacio. */
+  margin-bottom: calc(clamp(-46px, -4vh, -30px) - 60px);
+  transform: translateY(calc(clamp(-58px, -5vh, -42px) - 60px));
   filter: drop-shadow(0 10px 14px rgb(0 0 0 / 72%));
 }
 
@@ -400,17 +409,22 @@ $chaflan: 14px;
     white-space: nowrap;
   }
 
+  /* +8 % (antes min(52vw, 390px)) y 60px mas arriba (antes +4px). */
   .rompecabezas {
-    width: min(52vw, 390px);
+    width: min(56.2vw, 421px);
     margin-top: 30px;
     margin-bottom: 0;
-    transform: translateY(4px);
+    transform: translateY(-56px);
   }
 }
 
 @media (max-width: 520px) {
   .inicio-futurista {
     padding-inline: 10px;
+  }
+
+  .titulo-seccion {
+    margin-left: -10px;
   }
 
   .bienvenida {
@@ -433,12 +447,13 @@ $chaflan: 14px;
     width: min(100%, 290px);
   }
 
+  /* +8 % (antes min(82vw, 340px)) y 60px mas arriba (antes +18px). */
   .rompecabezas {
-    width: min(82vw, 340px);
+    width: min(88.6vw, 367px);
     min-width: 235px;
     margin-top: 34px;
     margin-bottom: 0;
-    transform: translateY(18px);
+    transform: translateY(-42px);
   }
 }
 
