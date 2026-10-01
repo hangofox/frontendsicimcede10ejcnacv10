@@ -1571,7 +1571,8 @@ a:focus-visible {
   output { height: 32px; font-size: 21px; }
   .recuperacion { padding: 6px 12px; gap: 6px; }
   .recuperacion-texto { font-size: 12px; }
-  .recuperacion a { padding: 4px 8px; font-size: 12px; }
+  /* Boton RECUPERAR bajado 0,5 mm en movil (solo visual, no mueve nada). */
+  .recuperacion a { padding: 4px 8px; font-size: 12px; position: relative; top: .5mm; }
 }
 
 @media (max-width: 720px) and (max-height: 760px) {
