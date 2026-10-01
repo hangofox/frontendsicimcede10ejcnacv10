@@ -25,7 +25,11 @@
     aria-label="Todos los derechos reservados, Ejército Nacional, CAOCC, versión 1.0.0.0."
   >
     <defs>
-      <path id="arco-legal-pie" d="M -182 223 Q 356 433 894 223"></path>
+      <!-- Arco mas pronunciado: centro del arco en y=336 (bajado ~0,5 mm) y
+           extremos del texto elevados ~1 mm (dos pasos de 3 unidades) con el centro
+           intacto. Antes
+           "M -182 223 Q 356 433 894 223". -->
+      <path id="arco-legal-pie" d="M -182 209.3 Q 356 462.7 894 209.3"></path>
       <!-- El ancho (280/736 = 38 %) y el recorrido reproducen exactamente
            background-size: 38% y background-position: -48% a 148% de los escudos. -->
       <linearGradient id="brillo-legal-pie" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="280" y2="0">
@@ -34,24 +38,25 @@
         <stop offset="0.5" stop-color="#fff8dc" stop-opacity="0.95"></stop>
         <stop offset="0.72" stop-color="#fff" stop-opacity="0.12"></stop>
         <stop offset="1" stop-color="#fff" stop-opacity="0"></stop>
-        <!-- El pico central de la banda parte en x=31 y termina en x=681,
-             que son los extremos reales del texto de 650 unidades. -->
+        <!-- El pico central de la banda parte en x=34 y termina en x=678,
+             que son los extremos reales del texto de 644 unidades (antes
+             650; se recogio ~0,5 mm por cada extremo). -->
         <animateTransform
           attributeName="gradientTransform"
           type="translate"
-          from="-109 0"
-          to="541 0"
+          from="-106 0"
+          to="538 0"
           dur="5s"
           repeatCount="indefinite"></animateTransform>
       </linearGradient>
     </defs>
     <text class="legal-texto-base">
-      <textPath href="#arco-legal-pie" startOffset="50%" text-anchor="middle" textLength="650" lengthAdjust="spacing">
+      <textPath href="#arco-legal-pie" startOffset="50%" text-anchor="middle" textLength="644" lengthAdjust="spacing">
         Todos los derechos reservados  |  Ejército Nacional  |  CAOCC  |  V1.0.0.0.
       </textPath>
     </text>
     <text class="legal-texto-brillo" aria-hidden="true">
-      <textPath href="#arco-legal-pie" startOffset="50%" text-anchor="middle" textLength="650" lengthAdjust="spacing">
+      <textPath href="#arco-legal-pie" startOffset="50%" text-anchor="middle" textLength="644" lengthAdjust="spacing">
         Todos los derechos reservados  |  Ejército Nacional  |  CAOCC  |  V1.0.0.0.
       </textPath>
     </text>

@@ -37,8 +37,12 @@
           <ellipse class="halo-nucleo" cx="448" cy="261" rx="180" ry="140" fill="url(#grad-nucleo)" />
 
           <!-- === capa 1: riel exterior === -->
+          <!-- Con hundimiento central arriba y abajo, paralelo al del riel-2
+               (300,22)-(324,46)-(572,46)-(596,22) y a la misma separacion de
+               16 unidades: las diagonales a 45 grados se corren 16 por fuera
+               (16*raiz2 = 22.63 en x) y el fondo queda en y=30 / y=447. -->
           <path class="riel riel-1"
-            d="M106 6 L790 6 Q806 6 816 16 L880 80 Q890 90 890 106 L890 371 Q890 387 880 397 L816 461 Q806 471 790 471 L106 471 Q90 471 80 461 L16 397 Q6 387 6 371 L6 106 Q6 90 16 80 L80 16 Q90 6 106 6 Z" />
+            d="M106 6 L306.63 6 L330.63 30 L565.37 30 L589.37 6 L790 6 Q806 6 816 16 L880 80 Q890 90 890 106 L890 371 Q890 387 880 397 L816 461 Q806 471 790 471 L589.37 471 L565.37 447 L330.63 447 L306.63 471 L106 471 Q90 471 80 461 L16 397 Q6 387 6 371 L6 106 Q6 90 16 80 L80 16 Q90 6 106 6 Z" />
 
           <!-- === capa 2: riel vinotinto con hombros === -->
           <path class="riel riel-2"
