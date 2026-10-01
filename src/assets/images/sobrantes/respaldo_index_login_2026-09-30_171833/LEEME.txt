@@ -1,0 +1,6 @@
+﻿Respaldo del diseno actual del index y login.
+Fecha: 2026-09-30 17:18:33
+Incluye componentes del index, login, cabezote, pie de pagina, datos de usuario y menu superior; estilos globales e imagenes referenciadas.
+Los archivos conservan sus rutas relativas al proyecto. Para recuperar el diseno, copiar los archivos necesarios desde src a las mismas rutas del proyecto.
+Es una copia de los archivos del diseno, no una aplicacion independiente. Los originales no fueron modificados.
+manifest.json contiene los hashes SHA256 verificados de cada archivo.

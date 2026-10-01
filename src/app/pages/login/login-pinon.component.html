@@ -1,0 +1,55 @@
+<img class="pinon-imagen" src="assets/images/imagen_pinon_titulo_sistema_01.png" alt="Título del sistema" width="1254" height="1254" decoding="async">
+<!-- Placas plateadas del aro: brillan y las recorre una banda de luz al
+     pasar el cursor (o al tocar en movil). La silueta sale de
+     imagen_pinon_titulo_sistema_01_placas.png, generada del mismo PNG. -->
+<span class="pinon-placas" aria-hidden="true"></span>
+
+<!-- Destellos intermitentes sobre los puntos de brillo del PNG, como los
+     del hexagono del logo. Posiciones medidas sobre el lienzo 1254 x 1254
+     (agrupando los pixeles casi blancos); cada uno con su ritmo y retardo
+     para que no parpadeen a la vez. -->
+<span class="pinon-chispas" aria-hidden="true">
+  <i style="--x:50.02%; --y:18.84%; --d:3.1s; --r:0s"></i>
+  <i style="--x:29.38%; --y:25.51%; --d:4.6s; --r:.9s"></i>
+  <i style="--x:70.55%; --y:25.6%;  --d:3.7s; --r:1.4s"></i>
+  <i style="--x:18.86%; --y:40.68%; --d:4.9s; --r:2.1s"></i>
+  <i style="--x:81.27%; --y:40.78%; --d:5.4s; --r:3.2s"></i>
+  <i style="--x:21.15%; --y:49.6%;  --d:4.3s; --r:.7s"></i>
+  <i style="--x:78.85%; --y:49.92%; --d:3.4s; --r:2.6s"></i>
+  <i style="--x:19.12%; --y:60.8%;  --d:4.1s; --r:1.1s"></i>
+  <i style="--x:80.76%; --y:60.93%; --d:5.1s; --r:.4s"></i>
+  <i style="--x:29.01%; --y:74.59%; --d:3.9s; --r:1.8s"></i>
+  <i style="--x:71.04%; --y:74.43%; --d:4.4s; --r:2.9s"></i>
+  <i style="--x:49.92%; --y:81.87%; --d:3.3s; --r:1.6s"></i>
+  <i class="menor" style="--x:49.96%; --y:14.15%; --d:2.9s; --r:.3s"></i>
+  <i class="menor" style="--x:49.96%; --y:21.72%; --d:3.6s; --r:2.2s"></i>
+  <i class="menor" style="--x:49.99%; --y:79.26%; --d:4.7s; --r:.6s"></i>
+  <i class="menor" style="--x:49.97%; --y:87.01%; --d:3.2s; --r:2.4s"></i>
+</span>
+
+<span class="pinon-titulo" aria-hidden="true">SICIM</span>
+
+<!-- Los dos puntos de brillo junto a la C de SICIM (lineas centrales del
+     PNG) quedaban debajo del texto: van en su propia capa, por encima.
+     Mismo ritmo y retardo: parpadean al mismo tiempo. -->
+<span class="pinon-chispas pinon-chispas--sobre-texto" aria-hidden="true">
+  <i style="--x:49.95%; --y:44.87%; --d:3.3s; --r:.5s"></i>
+  <i style="--x:49.67%; --y:56.48%; --d:3.3s; --r:.5s"></i>
+</span>
+<svg class="pinon-efectos" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="pinon-trazo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff1738" />
+      <stop offset="0.48" stop-color="#ffd7dc" />
+      <stop offset="1" stop-color="#ff1738" />
+    </linearGradient>
+    <filter id="pinon-halo" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.2" /></filter>
+  </defs>
+  <!-- Recorrido de los dientes en los 360 grados: contorno de la silueta del
+       PNG (muestreado cada 0,1 grados, simplificado a tramos rectos) corrido
+       23 px hacia dentro para ir sobre la linea de neon de cada diente. -->
+  <path class="pinon-dientes-halo" pathLength="100" d="M50 2.99 L53.1 3.01 L52.66 2.7 L55 10.78 L61.55 12.21 L66.73 5.67 L66.44 5.77 L71.36 8.14 L70.09 15.55 L73.26 18.15 L75.09 18.9 L81.23 15.47 L81.66 15.34 L85.36 18.84 L85.15 18.49 L85.17 18.42 L81 24.72 L84.36 29.62 L91.93 28.55 L92.02 28.58 L94.16 33.03 L94.13 32.64 L87.96 37.14 L87.99 38.72 L89.24 42.87 L96.39 44.68 L96.46 44.72 L96.6 49.61 L96.48 49.94 L89.34 52.19 L88.59 58.26 L94.36 62.14 L94.31 61.83 L92.57 66.21 L84.88 65.68 L81.94 70.95 L85.87 77.05 L82.46 80.93 L82.58 80.89 L75.9 77.33 L70.55 81.84 L72.22 88.83 L72.19 88.92 L67.3 91.26 L62.47 86.03 L56.08 87.58 L54.59 88.08 L52.71 95.31 L53.04 95.09 L50 95.16 L46.94 95.1 L47.31 95.38 L45.61 88.94 L44.39 87.75 L37.42 86.11 L32.69 91.26 L27.73 88.91 L27.7 88.8 L29.25 81.71 L23.87 77.24 L17.31 80.9 L17.5 80.93 L14.06 76.93 L17.97 71.03 L15.59 66.63 L13.87 65.7 L6.98 66.3 L7.3 66.64 L5.62 61.94 L5.59 62.09 L11.44 58.26 L10.56 52.2 L3.04 49.79 L3.32 50.04 L3.31 49.95 L3.51 44.95 L10.79 42.83 L11.74 39.49 L12.05 37.2 L6.07 32.76 L7.99 28.37 L7.73 28.5 L15.47 29.61 L18.94 24.79 L14.89 18.57 L14.9 18.52 L18.4 15.27 L18.29 15.25 L24.98 19.05 L26.46 18.27 L29.87 15.64 L28.58 8.18 L33.31 5.87 L33.34 5.89 L38.38 12.21 L44.85 10.78 L47.26 2.69 L46.84 2.99 Z" />
+  <path class="pinon-dientes" pathLength="100" d="M50 2.99 L53.1 3.01 L52.66 2.7 L55 10.78 L61.55 12.21 L66.73 5.67 L66.44 5.77 L71.36 8.14 L70.09 15.55 L73.26 18.15 L75.09 18.9 L81.23 15.47 L81.66 15.34 L85.36 18.84 L85.15 18.49 L85.17 18.42 L81 24.72 L84.36 29.62 L91.93 28.55 L92.02 28.58 L94.16 33.03 L94.13 32.64 L87.96 37.14 L87.99 38.72 L89.24 42.87 L96.39 44.68 L96.46 44.72 L96.6 49.61 L96.48 49.94 L89.34 52.19 L88.59 58.26 L94.36 62.14 L94.31 61.83 L92.57 66.21 L84.88 65.68 L81.94 70.95 L85.87 77.05 L82.46 80.93 L82.58 80.89 L75.9 77.33 L70.55 81.84 L72.22 88.83 L72.19 88.92 L67.3 91.26 L62.47 86.03 L56.08 87.58 L54.59 88.08 L52.71 95.31 L53.04 95.09 L50 95.16 L46.94 95.1 L47.31 95.38 L45.61 88.94 L44.39 87.75 L37.42 86.11 L32.69 91.26 L27.73 88.91 L27.7 88.8 L29.25 81.71 L23.87 77.24 L17.31 80.9 L17.5 80.93 L14.06 76.93 L17.97 71.03 L15.59 66.63 L13.87 65.7 L6.98 66.3 L7.3 66.64 L5.62 61.94 L5.59 62.09 L11.44 58.26 L10.56 52.2 L3.04 49.79 L3.32 50.04 L3.31 49.95 L3.51 44.95 L10.79 42.83 L11.74 39.49 L12.05 37.2 L6.07 32.76 L7.99 28.37 L7.73 28.5 L15.47 29.61 L18.94 24.79 L14.89 18.57 L14.9 18.52 L18.4 15.27 L18.29 15.25 L24.98 19.05 L26.46 18.27 L29.87 15.64 L28.58 8.18 L33.31 5.87 L33.34 5.89 L38.38 12.21 L44.85 10.78 L47.26 2.69 L46.84 2.99 Z" />
+  <path class="pinon-chevron pinon-chevron--left" d="M17 47 L13 50 L17 54.2" />
+  <path class="pinon-chevron pinon-chevron--right" d="M83 47 L87 50 L83 54.2" />
+</svg>

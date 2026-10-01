@@ -1,0 +1,70 @@
+// Distribucion comun de las pantallas publicas de acceso.
+@mixin distribucion {
+/* Composicion medida en la referencia 1024 x 740, sin la barra del navegador.
+   Las coordenadas solo pertenecen al acceso; no afectan al index autenticado. */
+main {
+  display: block;
+  flex: 0 0 auto;
+  height: 100dvh;
+  min-height: 0;
+  background: #020203;
+}
+.fondo-login {
+  position: absolute;
+  // Fondo de lado a lado, sin franjas exteriores ni degradados en los bordes.
+  inset: 0;
+  opacity: .66;
+  pointer-events: none;
+  background-image: url('../../../assets/images/imagen_fondo_cuerpo_index_01.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+}
+.division-login, .division-recuperacion { position: absolute; left: 0; top: 7%; width: 50%; min-height: 0; }
+.division-login .consola, .division-recuperacion .consola { transform: scaleY(.89); transform-origin: top center; }
+.marca-login { position: absolute; z-index: 2; right: 6.7%; top: .5%; width: 14.66%; height: 30%; }
+.titulo-login {
+  position: absolute;
+  z-index: 1;
+  left: 25%;
+  top: calc(2.6dvh + min(26.62vw, 477px) + 12px);
+  // Solo el pinon se adapta al espacio libre bajo el cuadro original.
+  width: min(14.6611vw, max(0px, calc((97.4dvh - min(26.62vw, 477px) - 28px) * .7330556)));
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+}
+// Pie reducido al 92 % (antes 37.5 % de ancho; escala todo el conjunto:
+// fondo, escudos y texto) y separado del borde inferior, que el texto casi
+// tocaba (quedaba a 6-8px).
+.division-pie-pagina { position: absolute; right: 0; bottom: clamp(8px, 1.4vh, 16px); width: calc(37.5% * .92); min-height: 0; padding: 0; background: transparent; }
+
+@media (max-width: 720px) {
+  main {
+    --marca-movil: clamp(81.68202px, 15.31537875dvh, 132.7332825px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    min-height: 100dvh;
+    padding-top: calc(var(--marca-movil) + 34px);
+  }
+  .fondo-login { opacity: .3; }
+  // Ambas marcas comparten tamano y alineacion, centradas como conjunto.
+  .marca-login { top: 26px; right: calc(50% - var(--marca-movil) - 8px); width: var(--marca-movil); height: var(--marca-movil); }
+  .titulo-login { position: absolute; top: 26px; left: calc(50% - var(--marca-movil) - 8px); width: var(--marca-movil); margin: 0; transform: none; }
+  .division-login, .division-recuperacion { position: relative; inset: auto; width: 100%; padding: 4px 12px; overflow: visible; }
+  .division-pie-pagina { position: relative; inset: auto; width: min(100%, 520px); margin-left: auto; margin-top: 2px; transform: translateX(-10px); }
+
+  // Compactar espacios, sin ocultar controles ni recortar el formulario.
+  .division-login .consola, .division-recuperacion .consola { transform: none; }
+  .consola { padding: 8px 12px; }
+  .encabezado { gap: 8px; margin: 0; }
+  .insignia { width: 30px; }
+  .titulos strong { font-size: 18px; }
+  .titulos small { font-size: 9px; }
+  .panel { padding: 7px 12px; gap: 3px; }
+  input { height: 39px; font-size: 16px; }
+  .volver { padding: 7px 12px; }
+}
+
+}

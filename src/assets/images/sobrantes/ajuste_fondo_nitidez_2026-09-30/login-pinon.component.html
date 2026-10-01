@@ -1,0 +1,23 @@
+﻿<!-- Arte original de la referencia. La mascara sigue el contorno exterior
+     para retirar el fondo sin redibujar dientes, letras, galones ni luces. -->
+<svg viewBox="25 25 700 680" preserveAspectRatio="xMidYMid meet" role="img" aria-label="SICIM" focusable="false">
+  <defs>
+    <filter id="pinon-borde-original" x="-5%" y="-5%" width="110%" height="110%">
+      <feGaussianBlur stdDeviation="1.1"/>
+    </filter>
+    <mask id="pinon-silueta-original" maskUnits="userSpaceOnUse" x="25" y="25" width="700" height="680">
+      <path fill="white" filter="url(#pinon-borde-original)"
+        d="M350 34 L402 34 L418 95 L455 106 L490 52 L538 76 L524 134 L546 150
+           L599 121 L635 157 L596 201 L619 235 L680 219 L702 265 L652 295 L659 325
+           L717 341 L718 391 L658 406 L650 437 L704 469 L682 515 L620 499 L597 533
+           L636 582 L600 618 L545 584 L518 600 L537 659 L490 682 L454 627 L419 639
+           L402 697 L350 697 L333 641 L297 631 L263 681 L216 661 L229 605 L201 588
+           L152 622 L117 586 L155 541 L131 508 L69 522 L49 474 L102 441 L96 401
+           L33 395 L34 342 L94 329 L106 295 L53 266 L71 221 L133 230 L155 199
+           L119 158 L152 121 L204 151 L234 133 L214 75 L263 53 L298 106 L333 94Z"/>
+    </mask>
+  </defs>
+  <image href="assets/images/login_futurista_2026_09_30_01.png"
+    x="-519" y="-966" width="3072" height="2304"
+    preserveAspectRatio="none" mask="url(#pinon-silueta-original)"/>
+</svg>

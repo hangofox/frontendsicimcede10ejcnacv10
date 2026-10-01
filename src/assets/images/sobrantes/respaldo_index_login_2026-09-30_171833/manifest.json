@@ -1,0 +1,186 @@
+﻿[
+    {
+        "Archivo":  "src/assets/images/imagen_diesp_01.png",
+        "SHA256":  "E6D44AC588FC1AE9C94BEDC4009A6C6A2AF1C62C0F0C1BAF053CD9116E8B9C8B"
+    },
+    {
+        "Archivo":  "src/assets/images/imagen_digei_01.png",
+        "SHA256":  "8940AC3AFE59C7AEA04580FC7D5E03480DB41FDCF171489BC3D7E01B4DE188A8"
+    },
+    {
+        "Archivo":  "src/assets/images/imagen_dinco_01.png",
+        "SHA256":  "4383A04E0CAAA3DD66FD9AA21A956116896AEA40EFEC77B5CD852583F27CE02E"
+    },
+    {
+        "Archivo":  "src/assets/images/imagen_dipli_01.png",
+        "SHA256":  "FDAA934F3E5A236AF59946F37391EDA26DE10D8607AC98979AD48F4A86DC2AE9"
+    },
+    {
+        "Archivo":  "src/assets/images/imagen_fondo_cuerpo_index_01.png",
+        "SHA256":  "235FE2CEE9691BD0B8E9B7581414135E5F467765685A8901BDA532070A04BFCB"
+    },
+    {
+        "Archivo":  "src/assets/images/imagen_footer_escudo_baicc_01.png",
+        "SHA256":  "FD53811060D010CD75BA498F11CB1E0ECBC51A83B2E9DE2E99BDB05571562997"
+    },
+    {
+        "Archivo":  "src/assets/images/imagen_footer_escudo_caocc_01.png",
+        "SHA256":  "9FE8DB527324B917AE8D6D38248494A43D3DB41E5DC0D1E9AB7CFF4CACD7D220"
+    },
+    {
+        "Archivo":  "src/assets/images/imagen_footer_escudo_ejercito_nacional_01.png",
+        "SHA256":  "22B91E112D01DB9BFC1B773A406A555ABC58A8C3FE958303F429DA60860C5CAE"
+    },
+    {
+        "Archivo":  "src/assets/images/imagen_footer_escudo_jempp_cede10_01.png",
+        "SHA256":  "6B4911515A6261CC7CFA546A641F21631BF77560A56E63548C446B5EE00198D7"
+    },
+    {
+        "Archivo":  "src/assets/images/imagen_pie_pagina_01.png",
+        "SHA256":  "118C457DFC9818AB369A36D53DAAB31544F73AFABB2DE81B5940EEDF05A5DE98"
+    },
+    {
+        "Archivo":  "src/assets/images/logo/base_logo_01.png",
+        "SHA256":  "208C4778CFE4FCE1A4ADBEC41410576B0029AC1073AC83BA442102F47B9C66B5"
+    },
+    {
+        "Archivo":  "src/assets/images/logo/hexagono_logo_01.png",
+        "SHA256":  "709CB83B153C7401B359F1CDBCA0388B9480DA40C331F128038CB4C7E6BE7D78"
+    },
+    {
+        "Archivo":  "src/assets/images/logo/logo_sicim_01.png",
+        "SHA256":  "37D81ACDBFD9DE13B7C73AC203D41267721422C12F8CA0CDD35519E0F1098B19"
+    },
+    {
+        "Archivo":  "src/favicon.svg",
+        "SHA256":  "D37C75C67BB0B21F3FED6069F1C4F560DE9FCBEEBE63B9594195EB3FD8004B77"
+    },
+    {
+        "Archivo":  "src/index.html",
+        "SHA256":  "09EC2FD798A813BBFE9D910910D497AE35722C311154AC0EEBDF84109829E493"
+    },
+    {
+        "Archivo":  "src/styles.scss",
+        "SHA256":  "8067B436B65BEE8D39604F0A0C70A6A6047768F01F9D079EF0405D6CA8A9BF19"
+    },
+    {
+        "Archivo":  "src\\app\\app.component.html",
+        "SHA256":  "04628A13510ED7AC9D8240617CD9A300832372AA1066E82F2851AAE313597DC7"
+    },
+    {
+        "Archivo":  "src\\app\\app.component.scss",
+        "SHA256":  "C2D732B96CDAF8EC88649F9B1FF2AB816E81E211825E8690D6797AEDB1F1E35E"
+    },
+    {
+        "Archivo":  "src\\app\\app.component.spec.ts",
+        "SHA256":  "6E05720F81AEC2FAF05EC5ADC01A48518C4DE747B41B902B0A397722E38BE564"
+    },
+    {
+        "Archivo":  "src\\app\\app.component.ts",
+        "SHA256":  "8AA3FD078347C1CEE23DDEA27A3369285EA14231E41D44D44FF73D195031B9AC"
+    },
+    {
+        "Archivo":  "src\\app\\app.config.ts",
+        "SHA256":  "5513755322104E51E07A078D1FDD2526C87DF862495353508439876B9FB8AD20"
+    },
+    {
+        "Archivo":  "src\\app\\app.routes.ts",
+        "SHA256":  "F98CE7CAC79B1D109F2A9F73340A0A9DCEBC9BA8616D90A7E7E93B2E9DC33D3D"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\cabezote\\cabezote.component.html",
+        "SHA256":  "A510E6B11483DD089911C03C5B3B9CC3CD013E719BFD23AF8305247896588DFC"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\cabezote\\cabezote.component.scss",
+        "SHA256":  "DC8B6C72800C1C5E85E28E77A3FF84A2059C841C844E8094CF8FDCD5735EDF2C"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\cabezote\\cabezote.component.spec.ts",
+        "SHA256":  "86F9B740A00EF22C7C0C64C79820824B12C3F29B8406407F19257BF721DF8B3A"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\cabezote\\cabezote.component.ts",
+        "SHA256":  "20CCAEAB4BA55B161E328CD7FE15F2B55F69FAAEE47C015B214D51FE1D35194B"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\datos-usuario-conectado\\datos-usuario-conectado.component.html",
+        "SHA256":  "D0B7EAF20DF9314936FA1B97E25EC50D2BE29BDE55AD6EA40AF8D4ECD4CAC757"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\datos-usuario-conectado\\datos-usuario-conectado.component.scss",
+        "SHA256":  "B9E5CE62E7677844C70D590A55D38EF86E4EBEDCF4785EA228D4FA809FFB2F64"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\datos-usuario-conectado\\datos-usuario-conectado.component.spec.ts",
+        "SHA256":  "0199BF68A9B3D116B4A08A0B96B133FDFAF26CAEE4B626586D25B3A9656FD016"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\datos-usuario-conectado\\datos-usuario-conectado.component.ts",
+        "SHA256":  "FC349680DD3D644CD63EDB2F122ABEE300188B3A3625CFB497361626CF53F68B"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\index\\index.component.html",
+        "SHA256":  "A5EB9F703F9F5151B17EC713306DCE2B499713F4FD2E8D8A93E14B241FC20044"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\index\\index.component.scss",
+        "SHA256":  "D45E254378B8B0FEAC40DB1309F19F9AB2BAB0DC3E68F00C238737E53B4323EC"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\index\\index.component.spec.ts",
+        "SHA256":  "90B19CC398B585CC7980408E0C50ACCCFA765CD9F717CA2939980B4260ABCBF7"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\index\\index.component.ts",
+        "SHA256":  "75897C7757B455A2DDA442904E28545445B2ABDB6AF1C3D147C3FDE2C9A9E889"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\login\\login.component.html",
+        "SHA256":  "A19AF046495F49AE627EB53B3F58D996F576729499E97FF661BA94C691C3506D"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\login\\login.component.scss",
+        "SHA256":  "BD6D73B3D4F13F9FD21FB31ECBEC3C9BC7CA445F9915C4B232BA02F9EE761358"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\login\\login.component.spec.ts",
+        "SHA256":  "C23E6ABD9A50A3357F5290F33F551AF85EEE5DF896BC9796BD0EAB0E81192397"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\login\\login.component.ts",
+        "SHA256":  "AED65FCC7A7009FD1509A51FE0C1E563A628547B36432BFBA210B70F8CD156AA"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\menu-principal-horizontal-superior\\menu-principal-horizontal-superior.component.html",
+        "SHA256":  "B862ECE4010AA68AFF39F4A1CFAEA5E6E85CECDBD238F6A823358A63632B5A65"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\menu-principal-horizontal-superior\\menu-principal-horizontal-superior.component.scss",
+        "SHA256":  "4DFBDB5E4B04FF8FA6EE6B2459944DED91B0AE63985E7231EF2278093A9AA192"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\menu-principal-horizontal-superior\\menu-principal-horizontal-superior.component.spec.ts",
+        "SHA256":  "0CF3D74F53DB8C7ED90F66876E4F2759A5EAF21F6918D804CAB6C8AD4BB9850C"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\menu-principal-horizontal-superior\\menu-principal-horizontal-superior.component.ts",
+        "SHA256":  "7C5E36376BE65296D7F49CC7CB4285C54B0BA07662C09F32C8485CBF122A5CDF"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\pie-pagina\\pie-pagina.component.html",
+        "SHA256":  "50B86D727E8BED03615216BBC980790BE00327F33D764C677281BB58C6A710DE"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\pie-pagina\\pie-pagina.component.scss",
+        "SHA256":  "A4AE76D2A6E6EB87538600D92F54238CF61B095E70E9CDF13E2FDE321E53A01F"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\pie-pagina\\pie-pagina.component.spec.ts",
+        "SHA256":  "2AEFF4A0E80109D43723D8DEB9FB8D5F8CA4EDE94E79EC7911C817CBCC3F3D48"
+    },
+    {
+        "Archivo":  "src\\app\\pages\\pie-pagina\\pie-pagina.component.ts",
+        "SHA256":  "ED68E405161EB33FAF37F0C67BE8635440C381A43D949E92C74E75438C91CE47"
+    }
+]

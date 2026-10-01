@@ -1,5 +1,3 @@
-@use './acceso-layout';
-
 /* ==========================================================================
    Cuadro de acceso futurista — lienzo base 896 x 477
    Toda medida se expresa en cqw (1cqw = 1% del ancho del cuadro = 8.96px
@@ -46,7 +44,7 @@ main {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   overflow: hidden;
-  background: #020203;
+  background: #000 url('../../../assets/images/imagen_fondo_cuerpo_index_01.png') center / 100% 100% no-repeat;
 }
 
 .division-login,
@@ -1550,53 +1548,4 @@ a:focus-visible {
   .error {
     font-size: 13px;
   }
-}
-
-@include acceso-layout.distribucion;
-
-@media (max-width: 720px) {
-  form { gap: 6px; }
-  /* En movil el boton LOGIN (con sus puntos) va DESPUES del codigo de
-     verificacion y sus puntos, no entre usuario/contrasena y el codigo como
-     en el HTML. Solo cambia el orden visual; el de tabulacion sigue el HTML. */
-  .nucleo { order: 1; }
-  .recuperacion { order: 2; }
-  .error { order: 3; }
-  .panel-credenciales label[for='contrasena'] { margin-top: 0; }
-  .nucleo { gap: 4px; }
-  .ingresar { min-height: 42px; }
-  .ingresar-texto { font-size: 22px; }
-  .puntos i { width: 4px; height: 4px; }
-  .marco-icono, .recargar { width: 32px; height: 32px; }
-  output { height: 32px; font-size: 21px; }
-  .recuperacion { padding: 6px 12px; gap: 6px; }
-  .recuperacion-texto { font-size: 12px; }
-  .recuperacion a { padding: 4px 8px; font-size: 12px; }
-}
-
-@media (max-width: 720px) and (max-height: 760px) {
-  .consola { padding-block: 8px; }
-  form {
-    gap: 1px;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-areas: 'encabezado encabezado' 'credenciales credenciales' 'captcha captcha' 'ingreso recuperar' 'error error';
-  }
-  .encabezado { grid-area: encabezado; }
-  .panel-credenciales {
-    grid-area: credenciales;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: center;
-  }
-  .panel-credenciales label { font-size: 12px; gap: 4px; }
-  .panel-credenciales .ico { width: 15px; height: 15px; }
-  .panel-credenciales input { padding-inline: 6px; }
-  .panel-credenciales .campo input { padding-right: 34px; }
-  .panel-captcha { grid-area: captcha; }
-  .nucleo { grid-area: ingreso; align-self: center; }
-  .recuperacion { grid-area: recuperar; padding-inline: 4px; }
-  .recuperacion .chevron { display: none; }
-  .recuperacion-texto { font-size: 10px; }
-  .error { grid-area: error; }
-  .panel { padding-block: 6px; }
 }

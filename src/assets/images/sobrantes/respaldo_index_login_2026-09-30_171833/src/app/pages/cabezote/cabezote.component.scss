@@ -1,0 +1,1608 @@
+/* Geometria del marco, en porcentaje sobre el lienzo de referencia de la
+   imagen (2000 x 198): el marco arranca a 22px de los bordes superior y
+   laterales y a 6px del inferior. Expresarlo en porcentaje hace que el marco,
+   los adornos y el SVG (que usa preserveAspectRatio="none") escalen juntos en
+   cualquier ancho, sin desalinearse. */
+$marco-lateral: 1.25%;
+$marco-superior: 11.11%;
+$marco-inferior: 3.03%;
+
+/* El cabezote es el contenedor de referencia: fecha, titulo y escudo se
+   posicionan respecto a el, no al viewport. El marco vive en ::before/::after
+   y en el SVG. */
+.cabezote {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  border-bottom: 0;
+  background: rgb(0 0 0 / 96%);
+  /* el titulo se ancla al escudo a traves de estas dos medidas: si fueran dos
+     clamp independientes se descuadrarian entre si al reducir el ancho */
+  --escudo-derecha: clamp(60px, 7.15vw, 143px);
+  --escudo-ancho: clamp(132px, 10.4vw, 208px);
+}
+
+/* Escudo institucional: hexagono luminoso de fondo con el emblema encima.
+   Se reutilizan los dos recursos originales del proyecto. */
+.contenedor-logo {
+  position: absolute;
+  z-index: 2;
+  top: 52.8%;
+  right: var(--escudo-derecha);
+  width: var(--escudo-ancho);
+  aspect-ratio: 208 / 152;
+  /* Desplazamiento lateral del conjunto. Va en transform y no en
+     --escudo-derecha porque esa variable ancla tambien el titulo del sistema,
+     y moverla lo arrastraria con el logo. */
+  --logo-desplaz-x: calc(var(--escudo-ancho) * .30);
+  transform: translate(var(--logo-desplaz-x), -50%);
+
+  /* ---- Medidas de la composicion ---------------------------------
+     El limite real del logo no es el contenedor sino la banda entre las
+     dos lineas del marco: de 11,11 % a 96,97 % del alto del cabezote,
+     o sea el 85,86 %. Se reserva 3 px de respiro a cada lado: es lo
+     minimo que deja el logo sin apoyarse en la linea.
+     El ancho de referencia es el menor de dos topes: el que permite el
+     ancho del contenedor y el que permite esa banda, ya que el alto de la
+     composicion es 0,8877 veces su ancho. Asi crece todo lo que cabe sin
+     tocar el marco a ninguna resolucion. */
+  --cabezote-alto: clamp(150px, 9.9vw, 200px);
+  --logo-banda: calc(var(--cabezote-alto) * .8586 - 6px);
+  --logo-caja: min(
+    calc(var(--escudo-ancho) * .97),
+    calc(var(--logo-banda) / .8877));
+  --logo-base-ancho: calc(var(--logo-caja) * .88);
+  /* 0,72 = 0,821 x 0,88. El 0,821 es la relacion medida entre el ancho del
+     hexagono (238 px) y el de la base (290 px) en la imagen objetivo. */
+  --logo-rombo-ancho: calc(var(--logo-caja) * .72);
+  /* El emblema es vertical (765 x 856) y el hexagono apaisado, asi que se
+     mide por ALTURA. Medido por ancho quedaba demasiado alto y tocaba el
+     borde luminoso interior, que el encargo prohibe. */
+  --logo-emblema-alto: 66%;
+  /* Proporciones del LIENZO de cada PNG, no del dibujo: object-fit encaja
+     el archivo completo, asi que las cajas y los SVG superpuestos deben
+     usar las mismas coordenadas que la imagen.
+       rombo 1318 x 1177 = 1,1198     base 1856 x 959 = 1,9354 */
+  --logo-rombo-alto: calc(var(--logo-caja) * .72 / 1.1198);
+  --logo-base-alto: calc(var(--logo-caja) * .88 / 1.9354);
+  /* Centro luminoso de la base, medido en el PNG: y=443 de 959. */
+  --logo-base-centro: calc(var(--logo-base-alto) * .4619);
+  /* La composicion se centra en la banda del marco, no en el contenedor:
+     el contenedor esta anclado al 52,8 % y no coincide con el centro de
+     esa banda, asi que centrarlo en el desperdiciaba espacio abajo. */
+  --logo-comp-alto: calc(var(--logo-rombo-alto) + var(--logo-base-alto) - var(--logo-base-centro));
+  --logo-contenedor-alto: calc(var(--escudo-ancho) * 152 / 208);
+  --logo-rombo-arriba: calc(
+    var(--cabezote-alto) * .1111 + 3px
+    - (var(--cabezote-alto) * .528 - var(--logo-contenedor-alto) / 2)
+    + (var(--logo-banda) - var(--logo-comp-alto)) / 2);
+  --logo-brillo: 1;
+
+  /* Paleta del cuadro de acceso, reutilizada con sus mismos valores. */
+  --logo-negro: #020203;
+  --logo-vinotinto: #35080d;
+  --logo-borgona: #661019;
+  --logo-rojo: #c8172b;
+  --logo-neon: #ff1738;
+  --logo-rosa: #ff4962;
+  --logo-reflejo: #ffd7dc;
+
+  display: block;
+  overflow: visible;
+}
+
+/* Capas decorativas: nunca capturan el puntero ni el foco. */
+.logo-ambiente,
+.logo-base,
+.logo-anillos,
+.logo-union,
+.logo-rombo__png,
+.logo-lineas,
+.logo-chispa {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* 1. Resplandor ambiental, detras de todo. */
+.logo-ambiente {
+  z-index: 0;
+  top: 44%;
+  left: 50%;
+  width: calc(var(--logo-caja) * 1.05);
+  aspect-ratio: 1.5;
+  transform: translate(-50%, -50%);
+  background:
+    radial-gradient(closest-side,
+      rgb(255 23 56 / calc(14% * var(--logo-brillo))),
+      rgb(200 23 43 / calc(7% * var(--logo-brillo))) 55%,
+      transparent 100%);
+}
+
+/* 2. Base tecnologica. Se ancla por su centro luminoso, que debe caer
+      bajo el vertice inferior del rombo. */
+.logo-base {
+  z-index: 1;
+  left: 50%;
+  top: calc(var(--logo-rombo-arriba) + var(--logo-rombo-alto) - var(--logo-base-centro));
+  width: var(--logo-base-ancho);
+  height: auto;
+  object-fit: contain;
+  transform: translateX(-50%);
+  filter:
+    drop-shadow(0 0 calc(var(--escudo-ancho) * .05) rgb(255 23 56 / 34%))
+    drop-shadow(0 calc(var(--escudo-ancho) * .012) calc(var(--escudo-ancho) * .03) rgb(0 0 0 / 70%));
+  animation: logo-pulso-base 3.2s ease-in-out infinite;
+}
+
+/* 3. Anillos luminosos sobre la base: el PNG no gira, se desplazan los
+      segmentos a lo largo de cada elipse. */
+.logo-anillos {
+  z-index: 2;
+  left: 50%;
+  top: calc(var(--logo-rombo-arriba) + var(--logo-rombo-alto) - var(--logo-base-centro));
+  width: var(--logo-base-ancho);
+  aspect-ratio: 1856 / 959;
+  overflow: visible;
+  transform: translateX(-50%);
+}
+
+/* El grupo se contrae hacia el centro de la plataforma. Las trayectorias
+   medidas caian sobre el filo exterior de los paneles; con esta escala se
+   cierran hacia dentro sin perder su forma ni su reparto angular.
+   En SVG transform-origin va en unidades del viewBox. */
+.segmentos {
+  --acercar: .96;
+  /* Vuelta completa del recorrido. El retardo de cada turno se calcula a
+     partir de el, asi que basta cambiar este numero para ir mas rapido o
+     mas lento sin que se solapen los encendidos. */
+  --ciclo: 3.8s;
+  /* Centro ajustado a los diez segmentos: con el, sus radios quedan entre
+     498 y 511, o sea 0,8 % de dispersion. El (886, 430) que usaba antes
+     dejaba el lado derecho mas afuera. */
+  transform-origin: 882px 414px;
+  transform: scale(var(--acercar));
+}
+
+/* Los diez segmentos. El grosor va en unidades del viewBox, no en pixeles
+   fijos, para que engorde y adelgace con el logo. */
+.seg {
+  fill: none;
+  stroke: var(--logo-reflejo);
+  stroke-width: 34;
+  stroke-linecap: round;
+  opacity: .16;
+  /* El turno lo marca --i: cada uno arranca un decimo de ciclo despues que
+     el anterior, asi que solo hay uno encendido en cada momento. */
+  animation: logo-segmento var(--ciclo) linear infinite;
+  animation-delay: calc(var(--i) * var(--ciclo) / 10);
+  will-change: opacity;
+}
+
+.anillo {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  will-change: stroke-dashoffset;
+}
+
+/* Perimetros calculados con la formula de Ramanujan sobre cada elipse. */
+.anillo--exterior {
+  stroke: var(--logo-rosa);
+  stroke-width: 2.2;
+  stroke-dasharray: 305 3543;
+  opacity: .75;
+  animation: logo-anillo-horario 11s linear infinite;
+}
+
+.anillo--medio {
+  stroke: var(--logo-neon);
+  stroke-width: 1.8;
+  stroke-dasharray: 185 2730;
+  opacity: .68;
+  animation: logo-anillo-antihorario 6.5s linear infinite;
+}
+
+.anillo--interior {
+  stroke: var(--logo-reflejo);
+  stroke-width: 1.4;
+  stroke-dasharray: 115 1821;
+  opacity: .6;
+  animation: logo-anillo-horario 4.2s linear infinite;
+}
+
+/* 4. Resplandor de union entre el vertice inferior del rombo y el centro
+      de la plataforma. */
+.logo-union {
+  z-index: 3;
+  left: 50%;
+  top: calc(var(--logo-rombo-arriba) + var(--logo-rombo-alto) - var(--escudo-ancho) * .06);
+  width: calc(var(--logo-caja) * .36);
+  aspect-ratio: 2.4;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(closest-side,
+      rgb(255 215 220 / calc(58% * var(--logo-brillo))),
+      rgb(255 23 56 / calc(30% * var(--logo-brillo))) 42%,
+      transparent 100%);
+  animation: logo-pulso-union 3.6s ease-in-out infinite;
+}
+
+/* 5. Rombo: contenedor relativo de la pieza superior. */
+.logo-rombo {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: var(--logo-rombo-arriba);
+  width: var(--logo-rombo-ancho);
+  aspect-ratio: 1318 / 1177;
+  transform: translateX(-50%);
+}
+
+.logo-rombo__png {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 calc(var(--escudo-ancho) * .035) rgb(255 23 56 / 45%))
+    drop-shadow(0 0 calc(var(--escudo-ancho) * .012) rgb(255 73 98 / 55%))
+    drop-shadow(0 calc(var(--escudo-ancho) * .01) calc(var(--escudo-ancho) * .02) rgb(0 0 0 / 75%));
+}
+
+/* 6. Emblema institucional: fijo, derecho y sin recoloracion global. */
+/* El dibujo del hexagono no esta centrado en su PNG: su centro real cae en
+   (647,5, 549,5) de un lienzo de 1318 x 1177, o sea 39 px mas arriba y 11,5
+   a la izquierda. El emblema se ancla a ese centro y no al del archivo. */
+.logo-sistema {
+  position: absolute;
+  z-index: 5;
+  top: 46.69%;
+  left: 49.13%;
+  width: auto;
+  height: var(--logo-emblema-alto);
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  /* Sombra corta y resplandor magenta minimo: separan el emblema del
+     fondo del rombo sin teñir sus plateados. */
+  filter:
+    drop-shadow(0 1px 2px rgb(0 0 0 / 85%))
+    drop-shadow(0 0 calc(var(--escudo-ancho) * .014) rgb(255 73 98 / 38%));
+}
+
+/* 7. Lineas que recorren el perimetro del hexagono. */
+.logo-lineas {
+  z-index: 6;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.linea {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.linea--profundidad {
+  stroke: var(--logo-vinotinto);
+  stroke-width: 5;
+  opacity: .8;
+  filter: blur(1px);
+}
+
+.linea--roja {
+  stroke: var(--logo-rojo);
+  stroke-width: 2.4;
+  opacity: .85;
+}
+
+/* Perimetro del hexagono interior: 2914 unidades, seis lados de 485,7.
+   Los segmentos no se desplazan: se quedan quietos sobre los lados y lo
+   que varia es su brillo, asi que la linea parece encenderse y apagarse
+   por tramos en vez de tener un punto corriendo alrededor.
+   El resplandor va en el propio trazo, de modo que al subir la opacidad
+   tambien crece el halo y es eso lo que los hace visibles. */
+.linea--energia {
+  stroke: var(--logo-reflejo);
+  stroke-width: 2;
+  /* El reflejo es casi blanco y resultaba demasiado intenso. stroke-opacity
+     se multiplica con la opacity animada, asi que rebaja esta linea sin
+     tocar la curva de respiro, que comparte con la estela rosada:
+     0,95 x 0,75 = 0,71 en el pico. */
+  stroke-opacity: .75;
+  stroke-dasharray: 308.4 177.3;
+  opacity: .2;
+  filter: drop-shadow(0 0 2px var(--logo-rosa));
+  will-change: opacity;
+  animation: logo-respiro-linea 5.2s ease-in-out infinite;
+}
+
+/* Patron complementario: sus tramos caen en los huecos del anterior y
+   respiran en contrafase, asi que el encendido recorre el hexagono sin
+   que nada se desplace. */
+.linea--estela {
+  stroke: var(--logo-rosa);
+  stroke-width: 1.6;
+  stroke-dasharray: 177.3 308.4;
+  stroke-dashoffset: -308.4;
+  opacity: .15;
+  filter: drop-shadow(0 0 3px var(--logo-neon));
+  will-change: opacity;
+  animation: logo-respiro-linea 6.8s ease-in-out 2.4s infinite;
+}
+
+/* 8. Destellos sobre los vertices, con ritmos distintos para que no
+      parpadeen a la vez. */
+.logo-chispa {
+  z-index: 7;
+  width: 13%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background:
+    radial-gradient(closest-side,
+      #fff 0%,
+      var(--logo-rosa) 32%,
+      rgb(255 23 56 / 35%) 60%,
+      transparent 100%);
+  filter: blur(.4px);
+  will-change: transform, opacity;
+}
+
+/* Posiciones medidas sobre el lienzo del PNG (1318 x 1177). Cada uno con
+   su propia duracion y retardo para que no parpadeen sincronizados. */
+.logo-chispa--sup-izq {
+  top: 5.86%;
+  left: 25.49%;
+  animation: logo-destello 3.1s ease-in-out infinite;
+}
+
+.logo-chispa--sup-der {
+  top: 5.86%;
+  left: 72.76%;
+  animation: logo-destello 4.6s ease-in-out .9s infinite;
+}
+
+.logo-chispa--derecha {
+  top: 47.11%;
+  left: 94.69%;
+  animation: logo-destello 3.7s ease-in-out 1.4s infinite;
+}
+
+.logo-chispa--inf-der {
+  top: 87.51%;
+  left: 72.91%;
+  animation: logo-destello 4.9s ease-in-out 2.1s infinite;
+}
+
+.logo-chispa--inf-izq {
+  top: 87.51%;
+  left: 25.34%;
+  animation: logo-destello 5.4s ease-in-out 3.2s infinite;
+}
+
+.logo-chispa--izquierda {
+  top: 47.11%;
+  left: 3.57%;
+  animation: logo-destello 4.3s ease-in-out .7s infinite;
+}
+
+/* ---- Animaciones del logo ---------------------------------------- */
+
+/* Encendido y apagado suave: sin cortes bruscos ni saturacion blanca
+   permanente, para que no parezca una alarma. */
+@keyframes logo-respiro-linea {
+  0%, 100% { opacity: .16; }
+  45% { opacity: .95; }
+  70% { opacity: .55; }
+}
+
+/* Pulso corto: ocupa el 9 % del ciclo, de modo que con diez turnos
+   escalonados se enciende uno por vez y el recorrido da la vuelta. */
+@keyframes logo-segmento {
+  0% { opacity: .16; }
+  2% { opacity: 1; }
+  9% { opacity: .16; }
+  100% { opacity: .16; }
+}
+
+@keyframes logo-anillo-horario {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -3848; }
+}
+
+@keyframes logo-anillo-antihorario {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 2915; }
+}
+
+/* La pulsacion cambia el brillo, nunca el tamano de la base. */
+@keyframes logo-pulso-base {
+  0%, 100% { filter:
+    drop-shadow(0 0 calc(var(--escudo-ancho) * .05) rgb(255 23 56 / 34%))
+    drop-shadow(0 calc(var(--escudo-ancho) * .012) calc(var(--escudo-ancho) * .03) rgb(0 0 0 / 70%)); }
+  50% { filter:
+    drop-shadow(0 0 calc(var(--escudo-ancho) * .06) rgb(255 23 56 / 44%))
+    drop-shadow(0 calc(var(--escudo-ancho) * .012) calc(var(--escudo-ancho) * .03) rgb(0 0 0 / 70%))
+    brightness(1.09); }
+}
+
+@keyframes logo-pulso-union {
+  0%, 100% { opacity: .78; }
+  50% { opacity: 1; }
+}
+
+@keyframes logo-destello {
+  0%, 100% { opacity: .25; transform: translate(-50%, -50%) scale(.75); }
+  50% { opacity: .95; transform: translate(-50%, -50%) scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-base,
+  .logo-union,
+  .anillo,
+  .seg,
+  .linea--energia,
+  .linea--estela,
+  .logo-chispa {
+    animation: none;
+  }
+
+  /* Se conserva la composicion completa con un brillo estatico. */
+  .logo-chispa { opacity: .6; transform: translate(-50%, -50%) scale(.95); }
+  .linea--energia { opacity: .7; }
+  .linea--estela { opacity: .5; }
+}
+
+/* Titulo institucional, en blanco, a la izquierda del escudo y centrado
+   verticalmente en el marco. */
+.marca {
+  position: absolute;
+  z-index: 2;
+  top: 52.8%;
+  /* El texto se alinea con el arranque del brillo inferior derecho del
+     marco, que en el lienzo de referencia de 2000 unidades empieza a
+     encenderse en x=1160: eso es el 42 % del ancho contado desde el
+     borde derecho. */
+    /* --marca-ajuste corre el texto a la derecha en medida absoluta, para
+     poder pedirlo en milimetros sin depender del ancho de la ventana. */
+  right: calc(var(--escudo-derecha) + var(--escudo-ancho) * .56 + var(--titulo-sistema-panel-separacion));
+  transform: translateY(-50%);
+  color: #fff;
+  text-align: right;
+
+  /* ---- Medidas del panel del titulo ------------------------------------
+     El anclaje sale del propio logo y no de un porcentaje fijo: el borde
+     derecho del panel queda a --titulo-sistema-panel-separacion del canto izquierdo
+     del logo. El borde derecho permanece fijo respecto al estado de referencia;
+     cualquier crecimiento del panel ocurre hacia la izquierda.
+     Asi la separacion se mantiene en cualquier resolucion sin coordenadas
+     calculadas para un ancho concreto. */
+  /* Medidas tomadas de titulo_sistema_futurista_01.png: el panel ocupa el
+     24,6 % del ancho del cabezote y el 44 % de su alto. */
+  --titulo-sistema-ancho: 326px;
+  --titulo-sistema-panel-separacion: clamp(8px, .75vw, 14px);
+  width: var(--titulo-sistema-ancho);
+
+  /* Paleta tomada del cuadro de acceso y completada con los tonos de la
+     referencia del titulo. */
+  --titulo-sistema-negro: #030305;
+  --titulo-sistema-vino-oscuro: #240008;
+  --titulo-sistema-vino-medio: #4b0014;
+  --titulo-sistema-rojo-oscuro: #75001d;
+  --titulo-sistema-carmesi: #c60035;
+  --titulo-sistema-rojo-luz: #ff174f;
+  --titulo-sistema-rosado: #ff5578;
+  --titulo-sistema-plata-oscura: #5f646d;
+  --titulo-sistema-plata-clara: #d6d9df;
+  --titulo-sistema-reflejo: #fff4f7;
+}
+
+
+/* ---- Panel del titulo del sistema ---------------------------------------
+   Toda la geometria vive en el SVG (lienzo 326 x 97). Aqui solo se fija su
+   tamano, su sitio respecto al logo y el movimiento de las capas decorativas.
+   El lienzo conserva la proporcion con xMidYMid meet: la forma no se deforma
+   a ningun ancho. */
+.titulo-sistema {
+  display: block;
+  width: 100%;
+  max-width: none;
+  flex: 0 0 auto;
+  aspect-ratio: 326 / 97;
+  overflow: visible;
+  filter: drop-shadow(0 4px 8px rgb(0 0 0 / 80%));
+
+  /* El SVG es completamente decorativo excepto por su nombre accesible. */
+  g,
+  path,
+  use,
+  ellipse,
+  circle,
+  text { pointer-events: none; }
+}
+
+/* Texto HTML real sobre la placa. La cuadricula ocupa solo el cuerpo central,
+   por lo que el centrado no depende del ancho de las puntas ni de margenes
+   manuales por resolucion. */
+.titulo-sistema__titulo-html {
+  position: absolute;
+  z-index: 4;
+  inset: 0 29%;
+  display: grid;
+  place-items: center;
+  padding-inline-start: .13em;
+  color: #f4f5f7;
+  font-family: Bahnschrift, "Arial Narrow", Arial, sans-serif;
+  font-size: clamp(30px, 2.1vw, 34px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: .13em;
+  white-space: nowrap;
+  opacity: 1;
+  mix-blend-mode: normal;
+  pointer-events: none;
+  transform: translateY(.5mm) scaleX(1.06);
+  transform-origin: center;
+  background: linear-gradient(180deg, #fff 0%, #f8f8f8 25%, #b8bbc0 55%, #fff 75%, #858a91 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1.2px 1px #000) drop-shadow(0 0 1.4px rgb(189 0 40 / 38%));
+}
+
+
+/* Segmentos que recorren el marco. El contorno mide 858 unidades: el hueco lo
+   cubre entero para que solo se vea un tramo corto viajando. */
+/* Barrido de luz del circuito, en modo screen: solo suma luz, no tapa nada.
+   Tres capas concentricas de largo decreciente -26, 18 y 10 de 100- centradas
+   entre si con --fase, que desplaza el guion por el recorrido. Asi la estela se
+   afila hacia las dos puntas: en los extremos solo queda la capa difusa, y el
+   nucleo blanco vive en el tramo central. --turno separa el segundo barrido. */
+.titulo-sistema-barrido {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  mix-blend-mode: screen;
+  animation: titulo-sistema-recorrido 38s linear infinite;
+  animation-delay: calc(var(--fase, 0s) + var(--turno, 0s));
+}
+
+.titulo-sistema-barrido--nucleo {
+  stroke: rgb(255 240 244 / 48%);
+  stroke-width: 1.2;
+  stroke-dasharray: 10 90;
+  --fase: -3s;
+}
+
+.titulo-sistema-barrido--halo {
+  stroke: rgb(255 120 148 / 20%);
+  stroke-width: 5.6;
+  stroke-dasharray: 18 82;
+  filter: blur(2.6px);
+  --fase: -1.5s;
+}
+
+.titulo-sistema-barrido--difuso {
+  stroke: rgb(255 90 120 / 10%);
+  stroke-width: 11;
+  stroke-dasharray: 26 74;
+  filter: blur(4.6px);
+}
+
+.titulo-sistema-barrido--par { --turno: -19s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .titulo-sistema-barrido { animation: none; }
+}
+
+/* Fogonazos concentrados: nucleo blanco con halo rosado y carmesi. El retardo
+   llega por --d desde la plantilla para que no enciendan a la vez. */
+.titulo-sistema__fogonazo {
+  fill: url(#sc-fogonazo);
+  animation: titulo-sistema-fogonazo 4s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+
+.titulo-sistema__central-glow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: titulo-sistema-central-breath 4.8s ease-in-out infinite;
+}
+
+.titulo-sistema__central-glow--bottom { animation-delay: 0s; }
+
+.titulo-sistema__brillos-internos {
+  animation: titulo-sistema-central-breath 4.8s ease-in-out infinite;
+}
+
+.titulo-sistema__inner-lighting,
+.titulo-sistema__triangular-reflection {
+  animation: titulo-sistema-central-breath 4.8s ease-in-out infinite;
+}
+
+.titulo-sistema__triangular-reflection--bottom { animation-delay: 0s; }
+
+.titulo-sistema__chevron {
+  fill: none;
+  stroke: #ff496c;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 2px rgb(255 240 244 / 75%)) drop-shadow(0 0 5px rgb(242 11 61 / 70%));
+  animation: titulo-sistema-pulso 2.6s ease-in-out infinite;
+}
+
+/* Alternados: cuando uno sube el otro baja. */
+
+/* En escritorios anchos el lienzo transparente del PNG institucional crece
+   mas que su contenido visible. Se compensa solo el panel para conservar un
+   espacio optico de 12--28 px sin desplazar el logo. */
+@media (min-width: 1600px) {
+  .marca {
+    --titulo-sistema-panel-separacion: 0px;
+  }
+}
+
+@keyframes titulo-sistema-recorrido {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes titulo-sistema-fogonazo {
+  0%, 64%, 100% { opacity: .3; }
+  80% { opacity: 1; }
+}
+
+@keyframes titulo-sistema-pulso {
+  0%, 100% { opacity: .7; }
+  50% { opacity: 1; }
+}
+
+@keyframes titulo-sistema-central-breath {
+  0%, 12%, 100% { opacity: 1; }
+  38% { opacity: .22; }
+  48%, 56% { opacity: .035; }
+  72% { opacity: .34; }
+  88% { opacity: .86; }
+}
+
+@keyframes titulo-sistema-energia-interior {
+  0%, 100% { opacity: .8; }
+  50% { opacity: 1; }
+}
+
+/* Fecha y hora: arriba a la izquierda, dentro del marco. En la referencia
+   (lienzo de 2000px) arranca en x=62 y su tinta va de y=48 a y=65. */
+.informacion-cabezote {
+  position: absolute;
+  z-index: 2;
+  top: clamp(34px, 2.27vw, 45px);
+  left: clamp(40px, 3.2vw, 64px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.fecha-login {
+  font-family: Arial, sans-serif;
+  font-size: clamp(.86rem, .95vw, 1.2rem);
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+  /* Rosado de la propia paleta del cabezote -la familia de #fddbea y #f2b8ba de
+     los rieles- en vez de blanco puro, para que el texto pertenezca al conjunto.
+     El resplandor corto lo despega del fondo sin restarle legibilidad. */
+  color: #f4cdd6;
+  text-shadow:
+    0 0 1px rgb(255 255 255 / 45%),
+    0 0 6px rgb(242 13 35 / 30%);
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+.adorno-superior,
+.oblicuas-logo,
+.marco-interno,
+.horizontales-internas,
+.destellos-marco,
+.resplandor-continuo-laterales {
+  display: none;
+}
+
+/* Altura: en la referencia (lienzo de 2000px) el marco va de y=22 a y=190.
+   Con 9.9vw el elemento mide ~196px a 1984px de ancho, de modo que el marco
+   queda con 22px de margen superior y lateral y ~172px de alto visual. */
+.cabezote-futurista {
+  height: clamp(150px, 9.9vw, 200px);
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: '';
+    pointer-events: none;
+    clip-path: polygon(
+      18px 0,
+      calc(100% - 18px) 0,
+      100% 18px,
+      100% calc(100% - 18px),
+      calc(100% - 18px) 100%,
+      18px 100%,
+      0 calc(100% - 18px),
+      0 18px
+    );
+  }
+
+  &::before {
+    z-index: -2;
+    inset: $marco-superior $marco-lateral $marco-inferior;
+    background: linear-gradient(
+      90deg,
+      #702f34 0%,
+      #d37a7c 3%,
+      #fff4f4 7%,
+      #d37a7c 12%,
+      #8f3f45 20%,
+      #f2b8ba 29%,
+      #d37a7c 39%,
+      #fff 50%,
+      #d37a7c 61%,
+      #f2b8ba 71%,
+      #8f3f45 80%,
+      #d37a7c 88%,
+      #fff4f4 93%,
+      #d37a7c 97%,
+      #702f34 100%
+    );
+    filter:
+      drop-shadow(0 0 2px #fff)
+      drop-shadow(0 0 5px #d37a7c)
+      drop-shadow(0 0 10px rgb(211 122 124 / 72%));
+  }
+
+  /* interior negro profundo, sin tono vino: deja ver 3px del degradado */
+  &::after {
+    z-index: -1;
+    inset:
+      calc(#{$marco-superior} + 3px)
+      calc(#{$marco-lateral} + 3px)
+      calc(#{$marco-inferior} + 3px);
+    background: #000;
+  }
+
+  /* los destellos se dibujan a 8px (vertical) y 12px (horizontal) de su propia
+     caja, asi que esta se retrae esa misma cantidad para caer sobre el marco */
+  /* por encima del SVG de las lineas (z-index 2): si comparten capa el SVG,
+     que va despues en el DOM, se pinta encima y apaga los destellos */
+  /* Marca de agua del cabezote: va en z-index 1, sobre el negro interior del
+     marco -que esta en -1- y por debajo de todo el contenido, que arranca en 2.
+     Permanece como fondo tenue y nunca interfiere con el texto ni el panel. */
+  .marca-agua-cabezote {
+    position: absolute;
+    z-index: 1;
+    top: 13%;
+    left: 50%;
+    height: 84%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    opacity: .17;
+  }
+
+  .marca-agua-cabezote__figura {
+    fill: #c2c8d0;
+    fill-rule: evenodd;
+  }
+
+  /* El perfil exterior de la marca de agua va mas grueso que la cruz, como en
+     la referencia: el canto es una banda y las divisiones internas un filete. */
+  .marca-agua-cabezote__perfil,
+  .marca-agua-cabezote__cruz {
+    fill: none;
+    stroke: #c2c8d0;
+    stroke-linejoin: round;
+  }
+
+  .marca-agua-cabezote__perfil {
+    stroke-width: 4.2;
+  }
+
+  .marca-agua-cabezote__cruz {
+    stroke-width: 3;
+  }
+
+  .destellos-marco {
+    position: absolute;
+    z-index: 3;
+    inset:
+      calc(#{$marco-superior} - 8px)
+      calc(#{$marco-lateral} - 12px)
+      calc(#{$marco-inferior} - 8px);
+    display: block;
+    background:
+      radial-gradient(circle 4px at 6% 8px, #fff 0 10%, rgb(255 255 255 / 68%) 28%, rgb(253 219 234 / 42%) 55%, transparent 100%),
+      radial-gradient(circle 4px at 34% 8px, #fff 0 10%, rgb(255 255 255 / 68%) 28%, rgb(253 219 234 / 42%) 55%, transparent 100%),
+      radial-gradient(circle 4px at 67% 8px, #fff 0 10%, rgb(255 255 255 / 68%) 28%, rgb(253 219 234 / 42%) 55%, transparent 100%),
+      radial-gradient(circle 4px at 94% 8px, #fff 0 10%, rgb(255 255 255 / 68%) 28%, rgb(253 219 234 / 42%) 55%, transparent 100%),
+      radial-gradient(circle 4px at 6% calc(100% - 8px), #fff 0 10%, rgb(255 255 255 / 68%) 28%, rgb(253 219 234 / 42%) 55%, transparent 100%),
+      radial-gradient(circle 4px at calc(18% - 3cm) calc(100% - 8px), #fff 0 10%, rgb(255 255 255 / 68%) 28%, rgb(253 219 234 / 42%) 55%, transparent 100%),
+      radial-gradient(circle 2px at 41.5% calc(100% - 8px), rgb(255 255 255 / 86%) 0 14%, rgb(255 255 255 / 72%) 38%, rgb(253 219 234 / 42%) 68%, transparent 100%),
+      radial-gradient(circle 2px at 58.5% calc(100% - 8px), rgb(255 255 255 / 86%) 0 14%, rgb(255 255 255 / 72%) 38%, rgb(253 219 234 / 42%) 68%, transparent 100%),
+      radial-gradient(circle 4px at calc(92% - 2cm) calc(100% - 8px), #fff 0 10%, rgb(255 255 255 / 68%) 28%, rgb(253 219 234 / 42%) 55%, transparent 100%),
+      radial-gradient(ellipse 88px 11px at 54px 8px, rgb(242 13 35 / 74%) 0%, rgb(242 13 35 / 40%) 36%, rgb(242 13 35 / 14%) 62%, transparent 84%),
+      radial-gradient(ellipse 88px 11px at calc(100% - 54px) 8px, rgb(242 13 35 / 74%) 0%, rgb(242 13 35 / 40%) 36%, rgb(242 13 35 / 14%) 62%, transparent 84%),
+      radial-gradient(ellipse 88px 11px at 54px calc(100% - 8px), rgb(242 13 35 / 76%) 0%, rgb(242 13 35 / 42%) 36%, rgb(242 13 35 / 14%) 62%, transparent 84%),
+      radial-gradient(ellipse 88px 11px at calc(100% - 54px) calc(100% - 8px), rgb(242 13 35 / 76%) 0%, rgb(242 13 35 / 42%) 36%, rgb(242 13 35 / 14%) 62%, transparent 84%),
+      radial-gradient(ellipse 25px 25px at 22px 19px, rgb(242 13 35 / 72%) 0%, rgb(242 13 35 / 36%) 42%, transparent 78%),
+      radial-gradient(ellipse 25px 25px at calc(100% - 22px) 19px, rgb(242 13 35 / 72%) 0%, rgb(242 13 35 / 36%) 42%, transparent 78%),
+      radial-gradient(ellipse 25px 25px at 22px calc(100% - 19px), rgb(242 13 35 / 72%) 0%, rgb(242 13 35 / 36%) 42%, transparent 78%),
+      radial-gradient(ellipse 25px 25px at calc(100% - 22px) calc(100% - 19px), rgb(242 13 35 / 72%) 0%, rgb(242 13 35 / 36%) 42%, transparent 78%),
+      radial-gradient(ellipse 48px 10px at 6% 8px, rgb(253 219 234 / 84%) 0%, rgb(250 178 194 / 76%) 14%, rgb(247 105 127 / 66%) 27%, rgb(242 13 35 / 54%) 42%, rgb(242 13 35 / 32%) 58%, rgb(242 13 35 / 14%) 74%, transparent 90%),
+      radial-gradient(ellipse 60px 11px at 34% 8px, rgb(253 219 234 / 82%) 0%, rgb(250 178 194 / 74%) 14%, rgb(247 105 127 / 64%) 27%, rgb(242 13 35 / 52%) 42%, rgb(242 13 35 / 30%) 58%, rgb(242 13 35 / 13%) 74%, transparent 90%),
+      radial-gradient(ellipse 54px 10px at 67% 8px, rgb(253 219 234 / 84%) 0%, rgb(250 178 194 / 76%) 14%, rgb(247 105 127 / 66%) 27%, rgb(242 13 35 / 54%) 42%, rgb(242 13 35 / 32%) 58%, rgb(242 13 35 / 14%) 74%, transparent 90%),
+      radial-gradient(ellipse 50px 10px at 94% 8px, rgb(253 219 234 / 86%) 0%, rgb(250 178 194 / 78%) 14%, rgb(247 105 127 / 68%) 27%, rgb(242 13 35 / 56%) 42%, rgb(242 13 35 / 34%) 58%, rgb(242 13 35 / 15%) 74%, transparent 90%),
+      radial-gradient(ellipse 54px 11px at 6% calc(100% - 8px), rgb(253 219 234 / 86%) 0%, rgb(250 178 194 / 78%) 14%, rgb(247 105 127 / 68%) 28%, rgb(242 13 35 / 56%) 43%, rgb(242 13 35 / 34%) 59%, rgb(242 13 35 / 15%) 75%, transparent 91%),
+      radial-gradient(ellipse 68px 11px at calc(18% - 3cm) calc(100% - 8px), rgb(253 219 234 / 82%) 0%, rgb(250 178 194 / 74%) 14%, rgb(247 105 127 / 64%) 27%, rgb(242 13 35 / 52%) 42%, rgb(242 13 35 / 30%) 58%, rgb(242 13 35 / 13%) 74%, transparent 90%),
+      radial-gradient(ellipse 10px 18px at 41.5% calc(100% - 8px), rgb(253 219 234 / 60%) 0%, rgb(250 178 194 / 52%) 18%, rgb(247 105 127 / 44%) 36%, rgb(242 13 35 / 34%) 54%, rgb(242 13 35 / 22%) 70%, rgb(242 13 35 / 9%) 84%, transparent 100%),
+      radial-gradient(ellipse 10px 18px at 58.5% calc(100% - 8px), rgb(253 219 234 / 60%) 0%, rgb(250 178 194 / 52%) 18%, rgb(247 105 127 / 44%) 36%, rgb(242 13 35 / 34%) 54%, rgb(242 13 35 / 22%) 70%, rgb(242 13 35 / 9%) 84%, transparent 100%),
+      radial-gradient(ellipse 54px 11px at calc(92% - 2cm) calc(100% - 8px), rgb(253 219 234 / 84%) 0%, rgb(250 178 194 / 76%) 14%, rgb(247 105 127 / 66%) 27%, rgb(242 13 35 / 54%) 42%, rgb(242 13 35 / 32%) 58%, rgb(242 13 35 / 14%) 74%, transparent 90%),
+      radial-gradient(ellipse 9px 48px at 12px 50%, #fff 0 2%, #fddbea 7%, #f20d23 20%, rgb(242 13 35 / 58%) 44%, transparent 76%),
+      radial-gradient(ellipse 24px 66px at 12px 50%, rgb(242 13 35 / 52%) 0%, rgb(242 13 35 / 30%) 30%, rgb(242 13 35 / 12%) 56%, transparent 82%),
+      radial-gradient(ellipse 9px 48px at calc(100% - 12px) 50%, #fff 0 2%, #fddbea 7%, #f20d23 20%, rgb(242 13 35 / 58%) 44%, transparent 76%),
+      radial-gradient(ellipse 24px 66px at calc(100% - 12px) 50%, rgb(242 13 35 / 52%) 0%, rgb(242 13 35 / 30%) 30%, rgb(242 13 35 / 12%) 56%, transparent 82%);
+    pointer-events: none;
+    animation: pulso-destellos 5s ease-in-out infinite;
+
+    &::before {
+      position: absolute;
+      bottom: -1px;
+      left: calc(18% - 3cm);
+      width: calc(32% + 3cm);
+      height: 22px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgb(253 219 234 / 12%) 10%,
+        rgb(242 13 35 / 18%) 24%,
+        rgb(242 13 35 / 16%) 50%,
+        rgb(242 13 35 / 12%) 76%,
+        transparent 100%
+      );
+      content: '';
+      filter: blur(.8px);
+      mask-image: linear-gradient(180deg, transparent 0%, rgb(0 0 0 / 45%) 26%, #000 48%, #000 52%, rgb(0 0 0 / 45%) 74%, transparent 100%);
+    }
+
+    /* Granulado de micro-destellos sobre las dos lineas horizontales. En la
+       referencia son irregulares, asi que cada linea lleva dos repeticiones de
+       periodos primos entre si (61/83 arriba, 19/31 abajo): al no coincidir,
+       el ojo no encuentra el patron y el punteado no se lee como una rejilla.
+       La mascara los apaga en los extremos para no invadir los chaflanes. */
+    &::after {
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent 0 14px,
+          rgb(255 255 255 / 58%) 14px 16px,
+          transparent 16px 61px
+        ) 0 7px / 100% 2px no-repeat,
+        repeating-linear-gradient(
+          90deg,
+          transparent 0 31px,
+          rgb(253 219 234 / 42%) 31px 32px,
+          transparent 32px 83px
+        ) 0 7px / 100% 2px no-repeat,
+        repeating-linear-gradient(
+          90deg,
+          transparent 0 7px,
+          rgb(255 255 255 / 52%) 7px 9px,
+          transparent 9px 19px
+        ) 0 calc(100% - 9px) / 100% 2px no-repeat,
+        repeating-linear-gradient(
+          90deg,
+          transparent 0 12px,
+          rgb(253 219 234 / 40%) 12px 13px,
+          transparent 13px 31px
+        ) 0 calc(100% - 9px) / 100% 2px no-repeat;
+      content: '';
+      pointer-events: none;
+      mask-image: linear-gradient(90deg, transparent 0, #000 3%, #000 97%, transparent 100%);
+    }
+  }
+
+  .resplandor-continuo-laterales {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    transform-origin: center;
+    animation: respiracion-resplandor-cabezote 8s ease-in-out infinite;
+
+    path {
+      fill: none;
+      stroke: #fff;
+      stroke-width: 1.6px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+      filter:
+        drop-shadow(0 0 1px #fff)
+        drop-shadow(0 0 3px #fddbea)
+        drop-shadow(0 0 6px #f20d23)
+        drop-shadow(0 0 11px rgb(242 13 35 / 82%));
+    }
+
+    .resplandor-horizontal-izquierdo {
+      stroke: url('#degradado-resplandor-izquierdo');
+    }
+
+    .resplandor-horizontal-derecho {
+      stroke: url('#degradado-resplandor-derecho');
+    }
+
+    .resplandor-inferior-izquierdo {
+      stroke: url('#degradado-resplandor-inferior-izquierdo');
+    }
+
+    .resplandor-inferior-derecho {
+      stroke: url('#degradado-resplandor-inferior-derecho');
+    }
+
+    .resplandor-inferior-izquierdo,
+    .resplandor-inferior-derecho {
+      stroke-width: 1.6px;
+      filter:
+        drop-shadow(0 0 1px #fff)
+        drop-shadow(0 0 3px #fddbea)
+        drop-shadow(0 0 6px #f20d23)
+        drop-shadow(0 0 11px rgb(242 13 35 / 82%));
+    }
+  }
+
+  .adorno-superior {
+    position: absolute;
+    z-index: 4;
+    top: calc(#{$marco-superior} - 4px);
+    left: 50%;
+    display: flex;
+    width: clamp(300px, 30vw, 600px);
+    height: 40px;
+    transform: translateX(-50%);
+    pointer-events: none;
+    /* negro puro: con un negro rojizo el rectangulo del adorno se recortaba
+       contra el interior del marco */
+    background: #000;
+    /* Sus dos cantos verticales cortaban en seco el resplandor de la capa de
+       destellos, que pasa por debajo: este rectangulo va en z-index 4 y aquella
+       en 3. Con la mascara el negro nace y muere desvanecido, asi que el halo
+       entra y sale sin canto. */
+    mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    /* medido en la referencia: estas lineas son casi blancas (236,203,204),
+       no el rosa medio del resto del marco */
+    .linea-adorno {
+      fill: none;
+      stroke: #edc7c4;
+      stroke-width: 3px;
+      stroke-linecap: square;
+      vector-effect: non-scaling-stroke;
+      filter:
+        drop-shadow(0 0 1.4px rgb(242 13 35 / 62%))
+        drop-shadow(0 0 3.4px rgb(242 13 35 / 30%));
+    }
+
+    .linea-exterior-adorno {
+      /* Reduccion acumulada de 0.2mm para igualar la barra precedente. */
+      stroke-width: 3.244px;
+      /* 0.2mm mas abajo para empatar visualmente con los oblicuos. */
+      transform: translateY(-0.05mm);
+    }
+
+    /* Las tres barras que tocan los galones comparten su nucleo claro y su
+       halo carmin para que el cambio de una geometria a otra sea imperceptible. */
+    .linea-exterior-adorno,
+    .linea-conexion-oblicuos {
+      stroke: #f3b6c3;
+      filter:
+        drop-shadow(0 0 .8px rgb(255 60 110 / 92%))
+        drop-shadow(0 0 1.8px rgb(214 16 74 / 92%))
+        drop-shadow(0 0 3.4px rgb(242 13 35 / 58%))
+        drop-shadow(0 0 6px rgb(242 13 35 / 26%));
+    }
+
+    .linea-exterior-adorno {
+      filter:
+        drop-shadow(0 0 .6px rgb(255 60 110 / 70%))
+        drop-shadow(0 0 1.4px rgb(214 16 74 / 58%))
+        drop-shadow(0 0 2.8px rgb(242 13 35 / 34%));
+    }
+
+    /* Remate redondo en las dos barras exteriores: con el cuadrado que heredan
+       de .linea-adorno, el canto del trazo se sumaba al corte del degradado. */
+    .linea-exterior-izquierda,
+    .linea-exterior-derecha {
+      stroke-linecap: round;
+    }
+
+    .linea-exterior-izquierda {
+      stroke: url('#degradado-barra-exterior-izquierda');
+    }
+
+    .linea-exterior-derecha {
+      stroke: url('#degradado-barra-exterior-derecha');
+    }
+
+    /* el cierre se apaga hacia arriba en lugar de ser un trazo rojo uniforme:
+       asi el brillo queda concentrado en la barra inferior */
+    .cierre-central {
+      stroke: url('#degradado-cierre-central');
+      stroke-width: 3px;
+      filter: none;
+    }
+
+    /* nucleo blanco puro con halo rojo cenido: en la referencia las barras son
+       nitidas, no un rosa difuminado */
+    .trazos-oblicuos {
+      fill: #edc7c4;
+      transform: translateY(-0.25mm);
+      /* el halo tira a carmin, no a rosa claro: medido entre barras en la
+         referencia da rgb(205 23 81), con el verde muy bajo */
+      filter:
+        drop-shadow(0 0 .8px rgb(255 60 110 / 92%))
+        drop-shadow(0 0 1.8px rgb(214 16 74 / 92%))
+        drop-shadow(0 0 3.4px rgb(242 13 35 / 58%))
+        drop-shadow(0 0 6px rgb(242 13 35 / 26%));
+    }
+
+    .halo-punto-central {
+      fill: url('#degradado-punto-barra-central');
+      opacity: .82;
+      filter:
+        drop-shadow(0 -2px 3px rgb(253 219 234 / 52%))
+        drop-shadow(0 -5px 7px rgb(242 13 35 / 48%));
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: pulso-halo-central 5s ease-in-out infinite;
+    }
+
+    .nucleo-punto-central {
+      fill: rgb(255 255 255 / 86%);
+      opacity: .68;
+      filter:
+        drop-shadow(0 0 1px rgb(255 255 255 / 72%))
+        drop-shadow(0 0 3px rgb(253 219 234 / 42%));
+      animation: pulso-nucleo-central 5s ease-in-out infinite;
+    }
+  }
+
+  .oblicuas-logo {
+    position: absolute;
+    z-index: 5;
+    right: calc(clamp(22px, 2.2vw, 44px) + 1cm);
+    bottom: calc(#{$marco-inferior} + 1mm);
+    display: block;
+    width: calc(47px + 2mm);
+    height: 8px;
+    pointer-events: none;
+
+    &::before {
+      position: absolute;
+      z-index: -1;
+      top: -6px;
+      right: -18px;
+      bottom: -11px;
+      left: -18px;
+      background: radial-gradient(
+        ellipse at 50% 58%,
+        rgb(253 219 234 / 45%) 0%,
+        rgb(242 13 35 / 42%) 28%,
+        rgb(242 13 35 / 20%) 52%,
+        rgb(242 13 35 / 8%) 70%,
+        transparent 88%
+      );
+      content: '';
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      fill: #fddbea;
+      filter:
+        drop-shadow(0 0 1px rgb(255 255 255 / 78%))
+        drop-shadow(0 0 3px rgb(253 219 234 / 70%))
+        drop-shadow(0 0 6px rgb(242 13 35 / 64%))
+        drop-shadow(0 4px 9px rgb(242 13 35 / 50%));
+    }
+  }
+
+  /* segundo perfil, 9px por dentro del marco principal */
+  .marco-interno {
+    position: absolute;
+    z-index: 1;
+    inset:
+      calc(#{$marco-superior} + 9px)
+      calc(#{$marco-lateral} + 9px)
+      calc(#{$marco-inferior} + 9px);
+    display: block;
+    pointer-events: none;
+
+    &::before,
+    &::after {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        #edb9bb 0%,
+        #dc9295 22%,
+        #d37a7c 50%,
+        #dc9295 78%,
+        #edb9bb 100%
+      );
+      content: '';
+      animation: pulso-puntos-internos 5s ease-in-out infinite;
+    }
+
+    &::before {
+      clip-path: polygon(
+        15px 0,
+        16px 0,
+        1px 15px,
+        1px calc(100% - 15px),
+        16px 100%,
+        15px 100%,
+        0 calc(100% - 15px),
+        0 15px
+      );
+    }
+
+    &::after {
+      clip-path: polygon(
+        calc(100% - 15px) 0,
+        calc(100% - 16px) 0,
+        calc(100% - 1px) 15px,
+        calc(100% - 1px) calc(100% - 15px),
+        calc(100% - 16px) 100%,
+        calc(100% - 15px) 100%,
+        100% calc(100% - 15px),
+        100% 15px
+      );
+    }
+  }
+
+  .horizontales-internas {
+    position: absolute;
+    z-index: 1;
+    top: calc(#{$marco-superior} + 9px);
+    bottom: calc(#{$marco-inferior} + 9px);
+    display: block;
+    width: clamp(110px, 18vw, 320px);
+    pointer-events: none;
+
+    &::before,
+    &::after {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff 0 24%, #fddbea 52%, rgb(242 13 35 / 42%) 76%, transparent 100%);
+      box-shadow:
+        0 0 3px rgb(253 219 234 / 94%),
+        0 0 6px rgb(242 13 35 / 76%),
+        0 0 10px rgb(242 13 35 / 48%),
+        0 0 14px rgb(242 13 35 / 24%);
+      content: '';
+    }
+
+    &::before {
+      top: -2px;
+    }
+
+    &::after {
+      bottom: -2px;
+    }
+  }
+
+  .horizontales-internas-izquierda {
+    left: calc(#{$marco-lateral} + 24px);
+    background:
+      linear-gradient(90deg, #edb9bb 0%, #d37a7c 6%, #7a3d41 12%, #301517 18%, #0c0506 24%, #000 30%, #000 100%) top left / 100% 1px no-repeat,
+      linear-gradient(90deg, #edb9bb 0%, #d37a7c 6%, #7a3d41 12%, #301517 18%, #0c0506 24%, #000 30%, #000 100%) bottom left / 100% 1px no-repeat;
+
+    &::before {
+      left: 6%;
+      transform: translateX(-50%);
+    }
+
+    &::after {
+      left: 6%;
+      transform: translateX(-50%);
+    }
+
+    .punto-superior-adicional {
+      position: absolute;
+      top: -2px;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff 0 24%, #fddbea 52%, rgb(242 13 35 / 42%) 76%, transparent 100%);
+      box-shadow:
+        0 0 2px rgb(253 219 234 / 68%),
+        0 0 4px rgb(242 13 35 / 44%),
+        0 0 7px rgb(242 13 35 / 20%);
+      transform: translateX(-50%);
+      animation: pulso-puntos-internos 5s ease-in-out infinite;
+    }
+
+    .punto-superior-adicional-uno {
+      left: 18%;
+    }
+
+    .punto-superior-adicional-dos {
+      left: 26%;
+      opacity: .5;
+    }
+  }
+
+  .horizontales-internas-derecha {
+    right: calc(#{$marco-lateral} + 24px);
+    background:
+      linear-gradient(270deg, #edb9bb 0%, #d37a7c 6%, #7a3d41 12%, #301517 18%, #0c0506 24%, #000 30%, #000 100%) top right / 100% 1px no-repeat,
+      linear-gradient(270deg, #edb9bb 0%, #d37a7c 6%, #7a3d41 12%, #301517 18%, #0c0506 24%, #000 30%, #000 100%) bottom right / 100% 1px no-repeat;
+
+    &::before {
+      right: 8%;
+      transform: translateX(50%);
+    }
+
+    &::after {
+      right: 6%;
+      transform: translateX(50%);
+    }
+  }
+
+  app-datos-usuario-conectado {
+    position: relative;
+    z-index: 3;
+    color: #fff;
+  }
+}
+
+/* Respiracion lenta del halo: permanece tenue durante un instante antes de
+   recuperar gradualmente toda su luminosidad, sin producir un parpadeo. */
+@keyframes respiracion-resplandor-cabezote {
+  0%,
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+
+  42%,
+  58% {
+    opacity: .08;
+    filter: brightness(.45);
+  }
+}
+
+@keyframes pulso-destellos {
+  0%,
+  52%,
+  100% {
+    opacity: .82;
+    filter: brightness(1) blur(0);
+  }
+
+  72% {
+    opacity: 1;
+    filter:
+      brightness(1.5)
+      blur(1.4px)
+      drop-shadow(0 0 8px rgb(242 13 35 / 62%));
+  }
+}
+
+@keyframes pulso-puntos-internos {
+  0%,
+  52%,
+  100% {
+    filter: brightness(1) drop-shadow(0 0 0 rgb(242 13 35 / 0%));
+  }
+
+  72% {
+    filter:
+      brightness(1.5)
+      drop-shadow(0 0 7px rgb(253 219 234 / 72%))
+      drop-shadow(0 0 12px rgb(242 13 35 / 76%));
+  }
+}
+
+@keyframes pulso-halo-central {
+  0%,
+  52%,
+  100% {
+    opacity: .72;
+    transform: scale(1);
+  }
+
+  72% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes pulso-nucleo-central {
+  0%,
+  52%,
+  100% {
+    opacity: .68;
+  }
+
+  72% {
+    opacity: 1;
+  }
+}
+
+/* El panel del titulo se detiene por completo pero no se apaga: conserva sus
+   capas, su marco y un brillo estatico equilibrado sobre el contorno. */
+@media (prefers-reduced-motion: reduce) {
+  .titulo-sistema__recorrido,
+  .titulo-sistema__recorrido--inf,
+  .titulo-sistema__fogonazo,
+  .titulo-sistema__chevron,
+  .titulo-sistema__central-glow,
+  .titulo-sistema__brillos-internos,
+  .titulo-sistema__inner-lighting,
+  .titulo-sistema__triangular-reflection {
+    animation: none;
+  }
+
+  /* Los segmentos se quedan como un filo continuo y tenue: la composicion
+     completa sigue a la vista, solo deja de recorrerla nada. */
+  .titulo-sistema__recorrido,
+  .titulo-sistema__recorrido--inf {
+    stroke-dasharray: none;
+    stroke: rgb(255 73 108 / 26%);
+  }
+
+  .titulo-sistema__fogonazo { opacity: .8; }
+  .titulo-sistema__chevron { opacity: .92; }
+}
+
+/* Pulso de los ocho focos laterales del marco interno. Solo varia la
+   opacidad, y como maximo un 18 %, para que su maximo siga siendo el mismo
+   de los focos centrales. Dos cadencias alternas para que no latan a la vez. */
+.titulo-sistema-foco-lateral {
+  animation: titulo-sistema-central-breath 4.8s ease-in-out infinite;
+}
+
+.titulo-sistema-foco-lateral--alterno {
+  animation-duration: 4.8s;
+  animation-delay: 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .titulo-sistema-foco-lateral { animation: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cabezote-futurista {
+    .destellos-marco,
+    .horizontales-internas::before,
+    .horizontales-internas::after,
+    .punto-superior-adicional,
+    .halo-punto-central,
+    .nucleo-punto-central,
+    .resplandor-continuo-laterales {
+      animation: none;
+    }
+  }
+}
+
+/* Antes de que la marca alcance la fecha, ambas pasan a franjas verticales
+   independientes: fecha arriba, marca abajo y escudo en la columna derecha. */
+@media (max-width: 1200px) {
+  .cabezote-futurista {
+    height: clamp(164px, 17vw, 190px);
+  }
+
+  .cabezote-futurista .adorno-superior {
+    display: none;
+  }
+
+  /* El resplandor deja de venir del SVG lateral y pasa a salir del propio
+     hexagono. Ese SVG lleva preserveAspectRatio="none": sus esquinas se empinan
+     hasta 75 grados al estrechar la ventana, asi que por mucho que se recorten
+     nunca coinciden con el chaflan de 45 grados, solo quedan paralelas. El
+     borde del marco, en cambio, ES el hexagono, de modo que su halo sigue el
+     esquinero exacto. Hereda la misma respiracion que tenia el SVG. */
+  .cabezote-futurista .resplandor-continuo-laterales {
+    display: none;
+  }
+
+  .cabezote-futurista::before {
+    filter:
+      drop-shadow(0 0 2px #fff)
+      drop-shadow(0 0 5px #d37a7c)
+      drop-shadow(0 0 10px rgb(211 122 124 / 72%))
+      drop-shadow(0 0 16px rgb(242 13 35 / 46%));
+    animation: respiracion-resplandor-cabezote 8s ease-in-out infinite;
+  }
+
+
+  .informacion-cabezote {
+    /* Con padding, no con top ni transform: mueve el contenido dentro de la
+       caja en vez de la caja entera. */
+    /* Sin fondo negro aqui: eran tres capas superpuestas que tapaban lo que
+       hubiera detras. */
+    padding-top: 2.9mm;
+    isolation: isolate;
+
+    /* Velo negro fuera: desbordaba la caja y pisaba la barra superior. */
+    &::before {
+      display: none;
+    }
+  }
+
+  .fecha-login {
+    position: relative;
+    z-index: 3;
+    display: block;
+    border: 0;
+    padding-bottom: 3px;
+    box-shadow: none;
+    text-decoration: none;
+  }
+
+  /* Riel inferior y pepitas restituidos: la linea blanca venia del border-top
+     de .usuario, en datos-usuario-conectado. El ::before sigue oculto porque es
+     la horizontal superior, que si cruzaba tras el texto. */
+  .horizontales-internas-izquierda {
+    background:
+      linear-gradient(90deg, #edb9bb 0%, #d37a7c 6%, #7a3d41 12%, #301517 18%, #0c0506 24%, #000 30%, #000 100%) bottom left / 100% 1px no-repeat;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  /* El panel es mucho mas bajo que el bloque de dos lineas que habia antes,
+     asi que conserva el centrado vertical en vez de colgar del borde
+     inferior, y sigue pegado al canto izquierdo del logo. Las medidas no se
+     repiten aqui: los clamp() de la regla base ya decrecen con el ancho. */
+  .contenedor-logo {
+    /* En escritorio el desplazamiento compensa el lienzo transparente del
+       PNG; en responsive empujaba el contenido visible contra el marco. */
+    --logo-desplaz-x: 0px;
+  }
+
+  .marca {
+    /* La referencia mide 326 de ancho. Con 30vw el panel caia en 288 px en
+       una pantalla de 960 y el dibujo quedaba en 279. Con 34vw esa misma
+       pantalla llega al tope de 326, o sea 316 de dibujo, que es el objetivo,
+       y por debajo baja de forma proporcional hasta el minimo de 300. */
+    --titulo-sistema-ancho: clamp(300px, 34vw, 326px);
+
+    top: auto;
+    right: auto;
+    bottom: clamp(8px, 1.2vw, 14px);
+    left: clamp(40px, 3.2vw, 64px);
+    transform: none;
+  }
+
+  .titulo-sistema__titulo-html {
+    font-size: clamp(24px, 2.5vw, 30px);
+  }
+
+  /* Con sesion iniciada la franja superior no es solo la fecha: crece hasta
+     77px (fecha + separacion + bloque de usuario, cuyo avatar mide 52px). La
+     marca deja de anclarse al fondo y pasa a colgar de esa franja, y el
+     cabezote suma la altura que ese bloque anade. */
+  .cabezote-futurista:has(app-datos-usuario-conectado) {
+    height: clamp(226px, calc(17vw + 34px), 238px);
+  }
+}
+
+/* En pantallas angostas la fecha puede ocupar dos lineas, pero conserva una
+   caja propia que termina antes de la columna reservada para el escudo. */
+@media (max-width: 760px) {
+  .cabezote {
+    --escudo-derecha: clamp(24px, 5vw, 38px);
+    --escudo-ancho: clamp(100px, 24vw, 132px);
+  }
+
+  .cabezote-futurista {
+    height: clamp(174px, 28vw, 190px);
+  }
+
+  .informacion-cabezote {
+    top: clamp(30px, 6vw, 40px);
+    right: calc(var(--escudo-derecha) + var(--escudo-ancho) + 12px);
+    left: clamp(30px, 5vw, 40px);
+  }
+
+  .fecha-login {
+    font-size: clamp(.7rem, 2.2vw, .9rem);
+    line-height: 1.3;
+    white-space: normal;
+  }
+
+  /* Aqui el panel si necesita encogerse por debajo del suelo de los clamp():
+     la banda libre entre el margen izquierdo y el logo ya es estrecha. */
+  .marca {
+    --titulo-sistema-ancho: clamp(200px, 46vw, 250px);
+    --titulo-sistema-panel-separacion: clamp(10px, 2vw, 16px);
+
+    right: auto;
+    left: clamp(30px, 5vw, 40px);
+  }
+
+  .titulo-sistema__titulo-html {
+    font-size: clamp(20px, 4.8vw, 25px);
+    letter-spacing: .1em;
+  }
+
+  /* aqui el avatar baja a 42px pero la fecha puede ocupar dos lineas */
+  .cabezote-futurista:has(app-datos-usuario-conectado) {
+    height: clamp(214px, calc(28vw + 44px), 244px);
+  }
+}
+
+@media (max-width: 420px) {
+  .cabezote {
+    /* El dibujo visible desborda el centro de su lienzo PNG hacia la derecha;
+       este margen evita que toque o atraviese el marco en telefonos. */
+    --escudo-derecha: 48px;
+    --escudo-ancho: 88px;
+  }
+
+  .cabezote-futurista {
+    height: 184px;
+  }
+
+  .informacion-cabezote {
+    right: 118px;
+    left: 26px;
+  }
+
+  .marca {
+    --titulo-sistema-ancho: clamp(180px, 48vw, 202px);
+    --titulo-sistema-panel-separacion: 8px;
+
+    right: auto;
+    bottom: 12px;
+    left: 26px;
+  }
+
+  .titulo-sistema__titulo-html {
+    font-size: 19px;
+  }
+
+  .fecha-login {
+    font-size: .68rem;
+  }
+
+  .cabezote-futurista:has(app-datos-usuario-conectado) {
+    height: 248px;
+  }
+}

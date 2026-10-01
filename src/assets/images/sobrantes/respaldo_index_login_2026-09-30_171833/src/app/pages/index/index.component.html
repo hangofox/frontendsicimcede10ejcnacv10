@@ -1,0 +1,11 @@
+<div class="aplicacion">
+  <app-cabezote></app-cabezote>
+  @if (menuVisible()) {
+    <app-menu-principal-horizontal-superior
+      [mostrarTodasOpciones]="menuCompleto()"
+    ></app-menu-principal-horizontal-superior>
+  }
+  <main class="contenido">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -1,7 +1,9 @@
 <div class="aplicacion-recuperacion">
-  <app-cabezote [mostrarUsuario]="false"></app-cabezote>
 
   <main>
+    <div class="fondo-login" aria-hidden="true"></div>
+    <app-fecha-acceso></app-fecha-acceso>
+    <app-login-logo class="marca-login"></app-login-logo>
     <section class="division-recuperacion">
       <div class="consola">
 
@@ -75,11 +77,14 @@
             <path d="M366 82 L392 82 M504 82 L530 82" />
           </g>
 
+          <!-- A pedido se quitaron los tramos horizontales (x 72-106 y
+               790-824, en y=166 y y=254), igual que en el login; quedan solo
+               los verticales. -->
           <g class="marca-esquina">
-            <path d="M72 166 L72 200 M72 166 L106 166" />
-            <path d="M824 166 L824 200 M824 166 L790 166" />
-            <path d="M72 254 L72 220 M72 254 L106 254" />
-            <path d="M824 254 L824 220 M824 254 L790 254" />
+            <path d="M72 166 L72 200" />
+            <path d="M824 166 L824 200" />
+            <path d="M72 254 L72 220" />
+            <path d="M824 254 L824 220" />
           </g>
 
           <!-- recorrido luminoso por el riel exterior -->
@@ -174,6 +179,8 @@
 
       </div>
     </section>
+
+    <app-login-pinon class="titulo-login"></app-login-pinon>
 
     <section class="division-pie-pagina">
       <app-pie-pagina></app-pie-pagina>

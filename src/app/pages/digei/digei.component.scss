@@ -636,12 +636,9 @@
 @media (max-width: 600px) {
   .digei-futurista {
     min-width: 0;
-    /* Mismo alto que el cuerpo de Inicio (.inicio-futurista) en celular,
-       cuyo alto lo manda el escudo: min(56.2vw, 421px) de ancho con
-       proporcion 1405/1017 = 1,3815, mas 204px de placa, bienvenida y
-       margenes (medido en Chrome a 540, 580 y 600px). Si cambia el ancho
-       del escudo en inicio.component.scss, actualizarlo aqui. */
-    min-height: calc(min(56.2vw, 421px) * 1.3815 + 204px);
+    /* Sin alto minimo: el cuerpo mide solo lo que ocupan placa y pinones,
+       para que la pagina quepa sin barra vertical (se probo igualarlo al
+       alto de Inicio y alargaba la pagina, porque aqui si va el menu). */
   }
 
   /* Los pinones solo ocupan el 56 % del ancho del lienzo 1020: en celular
@@ -668,9 +665,6 @@
 
 @media (max-width: 520px) {
   .digei-futurista {
-    /* Inicio aqui: escudo de min(88.6vw, 367px), mas 200px (medido en
-       Chrome a 360, 375, 390 y 412px). */
-    min-height: calc(min(88.6vw, 367px) * 1.3815 + 200px);
     padding-inline: 10px;
   }
 

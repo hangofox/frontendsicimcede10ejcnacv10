@@ -1,0 +1,209 @@
+:host {
+  display: block;
+  position: relative;
+  isolation: isolate;
+}
+
+.pinon-imagen {
+  display: block;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: pinon-resplandor 4.8s ease-in-out infinite;
+}
+
+.pinon-titulo {
+  position: absolute;
+  z-index: 3;
+  inset: 0 25%;
+  display: grid;
+  place-items: center;
+  padding-inline-start: .1em;
+  color: #f4f5f7;
+  font-family: Bahnschrift, "Arial Narrow", Arial, sans-serif;
+  font-size: clamp(16px, 2.3vw, 34px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: .1em;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateY(.5mm);
+  background: linear-gradient(180deg, #fff 0%, #f8f8f8 25%, #b8bbc0 55%, #fff 75%, #858a91 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1.2px 1px #000) drop-shadow(0 0 1.4px rgb(189 0 40 / 38%));
+}
+
+.pinon-efectos {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.pinon-dientes {
+  fill: none;
+  stroke: url(#pinon-trazo);
+  stroke-width: 1.1;
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 4;
+  /* Linea de brillo alargada: 72 % del contorno (antes 34, 48 y 60 %). */
+  stroke-dasharray: 72 28;
+  animation: pinon-recorrido 6.4s linear infinite;
+}
+
+.pinon-dientes-halo {
+  fill: none;
+  stroke: #ff1738;
+  stroke-width: 3.8;
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 4;
+  /* El halo acompana a la linea: 80 % (antes 42, 56 y 68 %). */
+  stroke-dasharray: 80 20;
+  opacity: .34;
+  filter: none;
+  animation: pinon-recorrido 6.4s linear infinite;
+}
+
+.pinon-chevron {
+  fill: none;
+  /* Brillo mas intenso (antes trazo #ff496c de 2px y halos de 2px y 7px):
+     trazo mas claro y grueso con tres halos, el blanco interior mas fuerte. */
+  stroke: #ff8aa0;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  filter:
+    drop-shadow(0 0 2px #fff)
+    drop-shadow(0 0 5px rgb(255 120 150 / 95%))
+    drop-shadow(0 0 11px rgb(242 11 61 / 100%));
+  animation: pinon-chevron-pulso 2.6s ease-in-out infinite;
+}
+
+/* ---- Destellos intermitentes ---------------------------------------
+   Mismo efecto que .logo-chispa del hexagono del logo (login-logo):
+   punto blanco con halo rosa que se enciende y se apaga suavemente. */
+.pinon-chispas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  transition: filter .3s ease;
+
+  /* Tamano 6,4 % / 4,2 % (se probo 8,5 % / 5,5 % y 7,2 % / 4,8 %), halo
+     suave y ritmo al 55 % de --d para que la frecuencia
+     se note mas. */
+  i {
+    position: absolute;
+    top: var(--y);
+    left: var(--x);
+    width: 6.4%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background:
+      radial-gradient(closest-side,
+        #fff 0%,
+        #fff 14%,
+        #ffb3c0 34%,
+        rgb(255 23 56 / 45%) 62%,
+        transparent 100%);
+    box-shadow: 0 0 6px 1px rgb(255 40 80 / 48%);
+    filter: blur(.3px);
+    will-change: transform, opacity;
+    animation: pinon-destello calc(var(--d) * .55) ease-in-out var(--r) infinite;
+  }
+
+  i.menor {
+    width: 4.2%;
+  }
+}
+
+/* Encima del texto SICIM (z-index 3). */
+.pinon-chispas--sobre-texto {
+  z-index: 4;
+}
+
+/* Mas contraste entre apagado y encendido, y mayor crecimiento. */
+@keyframes pinon-destello {
+  0%, 100% { opacity: .12; transform: translate(-50%, -50%) scale(.6); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* ---- Placas plateadas interactivas ---------------------------------
+   Capa recortada con la silueta de las ocho placas del aro. En reposo no
+   se ve; al pasar el cursor (o tocar) las placas se aclaran y una banda
+   de luz las recorre en bucle. Los destellos tambien se avivan. */
+.pinon-placas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    linear-gradient(115deg,
+      transparent 36%,
+      rgb(255 255 255 / 35%) 43%,
+      #fff 50%,
+      rgb(255 255 255 / 35%) 57%,
+      transparent 64%) 150% 0 / 300% 100% no-repeat,
+    rgb(232 236 242 / 55%);
+  mask: url('../../../assets/images/imagen_pinon_titulo_sistema_01_placas.png') center / contain no-repeat;
+  -webkit-mask: url('../../../assets/images/imagen_pinon_titulo_sistema_01_placas.png') center / contain no-repeat;
+  transition: opacity .3s ease;
+}
+
+:host(:hover) .pinon-placas,
+:host(:active) .pinon-placas {
+  opacity: 1;
+  animation: pinon-placas-barrido 1.8s linear infinite;
+}
+
+:host(:hover) .pinon-chispas,
+:host(:active) .pinon-chispas {
+  filter: brightness(1.35) saturate(1.1);
+}
+
+@keyframes pinon-placas-barrido {
+  from { background-position: 150% 0, 0 0; }
+  to { background-position: -50% 0, 0 0; }
+}
+
+/* El punto bajo sube de .18 a .4 para que el brillo no se pierda entre
+   pulsos; el pico se aviva con brightness. */
+@keyframes pinon-chevron-pulso {
+  0%, 64%, 100% { opacity: .4; }
+  80% { opacity: 1; stroke: #ffd0da; }
+}
+
+@keyframes pinon-recorrido {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -100; }
+}
+
+@keyframes pinon-resplandor {
+  0%, 100% { filter: drop-shadow(0 0 2px rgb(255 23 56 / 35%)); }
+  50% { filter: drop-shadow(0 0 7px rgb(255 23 56 / 62%)) brightness(1.04); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pinon-imagen,
+  .pinon-chevron,
+  .pinon-chispas i,
+  :host(:hover) .pinon-placas,
+  :host(:active) .pinon-placas {
+    animation: none;
+  }
+
+  /* Se conservan los destellos con brillo estatico, como en el logo. */
+  .pinon-chispas i { opacity: .6; transform: translate(-50%, -50%) scale(.95); }
+}

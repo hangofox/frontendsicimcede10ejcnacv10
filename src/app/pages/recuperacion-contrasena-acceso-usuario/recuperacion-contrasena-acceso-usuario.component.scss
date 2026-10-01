@@ -1,3 +1,5 @@
+@use '../login/acceso-layout';
+
 /* ==========================================================================
    Recuperacion de contraseña — mismo lenguaje visual que el cuadro de ACCESO.
    Lienzo base 896 x 420; toda medida en cqw (1cqw = 1% del ancho del cuadro),
@@ -950,3 +952,5 @@ a:focus-visible {
     font-size: 13px;
   }
 }
+
+@include acceso-layout.distribucion;

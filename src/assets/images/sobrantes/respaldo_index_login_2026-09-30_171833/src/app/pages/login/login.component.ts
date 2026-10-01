@@ -5,15 +5,13 @@ import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { TokensAutorizacionesService } from '../../services/tokens-autorizaciones/tokens-autorizaciones.service';
 import { UsuariosService } from '../../services/panel-control/usuarios/usuarios.service';
-import { LoginLogoComponent } from './login-logo.component';
-import { LoginPinonComponent } from './login-pinon.component';
-import { FechaAccesoComponent } from './fecha-acceso.component';
+import { CabezoteComponent } from '../cabezote/cabezote.component';
 import { PiePaginaComponent } from '../pie-pagina/pie-pagina.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, RouterLink, LoginLogoComponent, LoginPinonComponent, FechaAccesoComponent, PiePaginaComponent],
+  imports: [FormsModule, RouterLink, CabezoteComponent, PiePaginaComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

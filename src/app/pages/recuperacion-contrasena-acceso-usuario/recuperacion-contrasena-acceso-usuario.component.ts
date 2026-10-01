@@ -3,13 +3,15 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { UsuariosI } from '../../interfaces/panel-control/usuarios/usuarios.interface';
 import { UsuariosService } from '../../services/panel-control/usuarios/usuarios.service';
-import { CabezoteComponent } from '../cabezote/cabezote.component';
+import { LoginLogoComponent } from '../login/login-logo.component';
+import { LoginPinonComponent } from '../login/login-pinon.component';
+import { FechaAccesoComponent } from '../login/fecha-acceso.component';
 import { PiePaginaComponent } from '../pie-pagina/pie-pagina.component';
 
 @Component({
   selector: 'app-recuperacion-contrasena-acceso-usuario',
   standalone: true,
-  imports: [FormsModule, RouterLink, CabezoteComponent, PiePaginaComponent],
+  imports: [FormsModule, RouterLink, LoginLogoComponent, LoginPinonComponent, FechaAccesoComponent, PiePaginaComponent],
   templateUrl: './recuperacion-contrasena-acceso-usuario.component.html',
   styleUrl: './recuperacion-contrasena-acceso-usuario.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

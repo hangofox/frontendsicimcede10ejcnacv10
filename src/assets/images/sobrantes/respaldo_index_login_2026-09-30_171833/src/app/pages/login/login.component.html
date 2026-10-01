@@ -1,9 +1,7 @@
 <div class="aplicacion-login">
+  <app-cabezote [mostrarUsuario]="false"></app-cabezote>
 
   <main>
-    <div class="fondo-login" aria-hidden="true"></div>
-    <app-fecha-acceso></app-fecha-acceso>
-    <app-login-logo class="marca-login"></app-login-logo>
     <section class="division-login">
       <div class="consola">
 
@@ -94,13 +92,11 @@
             <path d="M800 74 L768 42 L682 42 L664 60 L610 60" />
             <path d="M112 92 L140 64 L206 64 L222 80 L268 80" />
             <path d="M784 92 L756 64 L690 64 L674 80 L628 80" />
-            <!-- Se quitaron a pedido las cuatro verticales superiores sueltas
-                 (x=90 y 106 a la izquierda, 806 y 790 a la derecha, y 118-176):
-                 quedaban sobre las diagonales, encima de los paneles de
-                 usuario/contrasena y de codigo de verificacion, sin conectar
-                 con nada. -->
+            <path d="M90 118 L90 168 M806 118 L806 168" />
+            <path d="M106 138 L106 176 M790 138 L790 176" />
             <path d="M96 402 L128 434 L214 434 L232 416 L286 416" />
             <path d="M800 402 L768 434 L682 434 L664 416 L610 416" />
+            <path d="M90 359 L90 309 M806 359 L806 309" />
             <!-- Segunda escalera del hombro inferior y su par de verticales.
                  Faltaban: arriba el hombro lo forman cuatro piezas por lado
                  (dos escaleras y dos verticales) y abajo solo estaban la
@@ -108,23 +104,9 @@
                  y x=806 quedaban sueltas, sin esquinero que las uniera con
                  las horizontales. Son el espejo exacto de las de arriba
                  sobre el eje y=477-y, la misma regla que ya usan las demas. -->
-            <!-- Antes subia cruzando el riel interno (la linea brillante que
-                 llega a la punta del recuadro de recuperacion). Ahora va
-                 siempre POR DENTRO de ese riel, 14 unidades por encima y
-                 paralela a el: arranca bajo la esquina del panel (y=349),
-                 baja con su diagonal, sigue en y=395 sobre su horizontal
-                 (y=405), sube con su diagonal ((223,405)-(241,387) a la
-                 izquierda, (651,405)-(633,387) a la derecha) y termina en
-                 y=377, por encima de la union con la punta y antes de tocar
-                 el recuadro. Sin ningun cruce. (A pedido se fue subiendo:
-                 primero iba por fuera en 412/394, 410/390 y 408/388.) -->
-            <!-- Tramo final recortado a pedido (antes llegaba a x=258 y 616). -->
-            <path d="M118 349 L164 395 L219 395 L237 377 L249 377" />
-            <path d="M778 349 L732 395 L655 395 L637 377 L625 377" />
-            <!-- Se quitaron a pedido las cuatro verticales cortas inferiores
-                 (x=90 y 106 a la izquierda, 806 y 779 a la derecha), que
-                 quedaban paralelas a la altura de las cajas de contrasena y
-                 de codigo de verificacion. -->
+            <path d="M112 384 L140 412 L206 412 L222 396 L268 396" />
+            <path d="M784 384 L756 412 L690 412 L674 396 L628 396" />
+            <path d="M106 339 L106 301 M790 339 L790 301" />
           </g>
 
           <!-- === reflejos metalicos cortos === -->
@@ -171,13 +153,11 @@
           </g>
 
           <!-- === marcas de esquina === -->
-          <!-- A pedido se quitaron los tramos horizontales (x 72-106 y
-               790-824, en y=166 y y=311); quedan solo los verticales. -->
           <g class="marca-esquina">
-            <path d="M72 166 L72 200" />
-            <path d="M824 166 L824 200" />
-            <path d="M72 311 L72 277" />
-            <path d="M824 311 L824 277" />
+            <path d="M72 166 L72 200 M72 166 L106 166" />
+            <path d="M824 166 L824 200 M824 166 L790 166" />
+            <path d="M72 311 L72 277 M72 311 L106 311" />
+            <path d="M824 311 L824 277 M824 311 L790 311" />
           </g>
 
           <!-- === recorrido luminoso animado: estela ancha y tenue por detras
@@ -244,10 +224,15 @@
           <path class="riel-recuperacion"
             d="M281 357 L593 357 L609 381.5 L593 406 L281 406 L265 381.5 Z" />
 
-          <!-- Sin union entre el riel interno y las puntas del recuadro de
-               recuperacion: a pedido se quitaron las dos curvas que unian
-               (249,387) con (265,381.5) y (625,387) con (609,381.5). El riel
-               luminoso termina antes de cada punta, sin tocarla. -->
+          <!-- Esquineros que cierran la horizontal inferior: el riel interno
+               termina en (249,387) y (625,387), y los vertices del recuadro de
+               recuperacion estan en (265,381.5) y (609,381.5). Sin estos dos
+               tramos el rojo quedaba cortado a ambos lados del recuadro. La
+               curva Q redondea la union en vez de dejar un vertice en pico. -->
+          <path class="riel-recuperacion riel-union"
+            d="M249 387 Q259 387 265 381.5" />
+          <path class="riel-recuperacion riel-union"
+            d="M625 387 Q615 387 609 381.5" />
         </svg>
 
         <form (ngSubmit)="ingresar()" #formLogin="ngForm" novalidate>
@@ -390,8 +375,6 @@
         </form>
       </div>
     </section>
-
-    <app-login-pinon class="titulo-login"></app-login-pinon>
 
     <section class="division-pie-pagina">
       <app-pie-pagina></app-pie-pagina>

@@ -1,0 +1,96 @@
+import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
+
+export const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
+  { path: 'login', loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent), title: 'Acceso | SICIM' },
+  {
+    path: 'recuperacion-contrasena-acceso-usuario',
+    loadComponent: () => import('./pages/recuperacion-contrasena-acceso-usuario/recuperacion-contrasena-acceso-usuario.component').then(m => m.RecuperacionContrasenaAccesoUsuarioComponent),
+    title: 'Recuperación de contraseña | SICIM'
+  },
+  {
+    path: 'seguimiento-olvido-contrasena',
+    loadComponent: () => import('./pages/seguimiento-olvido-contrasena/seguimiento-olvido-contrasena.component').then(m => m.SeguimientoOlvidoContrasenaComponent),
+    title: 'Seguimiento de contraseña | SICIM'
+  },
+  {
+    path: '',
+    loadComponent: () => import('./pages/index/index.component').then(m => m.IndexComponent),
+    canActivate: [authGuard],
+    children: [
+      { path: 'inicio', loadComponent: () => import('./pages/inicio/inicio.component').then(m => m.InicioComponent), title: 'Inicio | SICIM' },
+      {
+        path: 'digei',
+        children: [
+          { path: '', loadComponent: () => import('./pages/digei/digei.component').then(m => m.DigeiComponent), title: 'DIGEI | SICIM' },
+          { path: 'consolidaciones', loadComponent: () => import('./pages/digei/consolidaciones/consolidaciones.component').then(m => m.ConsolidacionesComponent), title: 'Consolidaciones | SICIM' },
+          { path: 'construcciones-mantenimientos', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/construcciones-mantenimientos.component').then(m => m.ConstruccionesMantenimientosComponent), title: 'Construcciones y mantenimientos | SICIM' },
+          { path: 'gestion-riesgo', loadComponent: () => import('./pages/digei/gestion-riesgo/gestion-riesgo.component').then(m => m.GestionRiesgoComponent), title: 'Gestión del riesgo | SICIM' },
+          { path: 'gestion-ambiental', loadComponent: () => import('./pages/digei/gestion-ambiental/gestion-ambiental.component').then(m => m.GestionAmbientalComponent), title: 'Gestión ambiental | SICIM' },
+          { path: 'geomatica-topografia', loadComponent: () => import('./pages/digei/geomatica-topografia/geomatica-topografia.component').then(m => m.GeomaticaTopografiaComponent), title: 'Geomática y topografía | SICIM' },
+          {
+            //INFRAESTRUCTURAS ES UN SUBMODULO DE FINCA RAIZ, TANTO EN CARPETAS COMO EN NAVEGACION.
+            path: 'finca-raiz',
+            children: [
+              { path: '', loadComponent: () => import('./pages/digei/finca-raiz/finca-raiz.component').then(m => m.FincaRaizComponent), title: 'Finca Raíz | SICIM' },
+              { path: 'infraestructuras/listado-infraestructuras', loadComponent: () => import('./pages/digei/finca-raiz/infraestructuras/listado-infraestructuras/listado-infraestructuras.component').then(m => m.ListadoInfraestructurasComponent), title: 'Infraestructuras | SICIM' },
+              { path: 'terrenos/listado-terrenos', loadComponent: () => import('./pages/digei/finca-raiz/terrenos/listado-terrenos/listado-terrenos.component').then(m => m.ListadoTerrenosComponent), title: 'Terrenos | SICIM' },
+              { path: 'comodatos/listado-comodatos', loadComponent: () => import('./pages/digei/finca-raiz/comodatos/listado-comodatos/listado-comodatos.component').then(m => m.ListadoComodatosComponent), title: 'Comodatos | SICIM' },
+              { path: 'infraestructuras-arrendadas/listado-infraestructuras-arrendadas', loadComponent: () => import('./pages/digei/finca-raiz/infraestructuras-arrendadas/listado-infraestructuras-arrendadas/listado-infraestructuras-arrendadas.component').then(m => m.ListadoInfraestructurasArrendadasComponent), title: 'Infraestructuras arrendadas | SICIM' },
+              { path: 'deshboards-estadisticas', loadComponent: () => import('./pages/digei/finca-raiz/deshboards-estadisticas/deshboards-estadisticas.component').then(m => m.DeshboardsEstadisticasComponent), title: 'Dashboards y estadísticas | SICIM' },
+              { path: 'infraestructuras/estadisticas-infraestructuras', redirectTo: 'deshboards-estadisticas', pathMatch: 'full' },
+              { path: 'terrenos/estadisticas-terrenos', redirectTo: 'deshboards-estadisticas', pathMatch: 'full' },
+              { path: 'infraestructuras', redirectTo: 'infraestructuras/listado-infraestructuras', pathMatch: 'full' },
+              { path: 'terrenos', redirectTo: 'terrenos/listado-terrenos', pathMatch: 'full' },
+              { path: 'comodatos', redirectTo: 'comodatos/listado-comodatos', pathMatch: 'full' },
+              { path: 'infraestructuras-arrendadas', redirectTo: 'infraestructuras-arrendadas/listado-infraestructuras-arrendadas', pathMatch: 'full' }
+            ]
+          },
+          //SOLICITUDES DE INFRAESTRUCTURAS CUELGA DIRECTAMENTE DE DIGEI, COMO SU CARPETA.
+          { path: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', loadComponent: () => import('./pages/digei/solicitudes-infraestructuras/listado-solicitudes-infraestructuras/listado-solicitudes-infraestructuras.component').then(m => m.ListadoSolicitudesInfraestructurasComponent), title: 'Solicitudes de infraestructuras | SICIM' },
+          { path: 'solicitudes-infraestructuras', redirectTo: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', pathMatch: 'full' }
+        ]
+      },
+      { path: 'dinco', loadComponent: () => import('./pages/dinco/dinco.component').then(m => m.DincoComponent), title: 'DINCO | SICIM' },
+      { path: 'diesp', loadComponent: () => import('./pages/diesp/diesp.component').then(m => m.DiespComponent), title: 'DIESP | SICIM' },
+      {
+        path: 'dipli',
+        children: [
+          { path: '', loadComponent: () => import('./pages/dipli/dipli.component').then(m => m.DipliComponent), title: 'DIPLI | SICIM' },
+          { path: 'piscinas-infraestructuras/listado-piscinas-infraestructuras', loadComponent: () => import('./pages/dipli/piscinas-infraestructuras/listado-piscinas-infraestructuras/listado-piscinas-infraestructuras.component').then(m => m.ListadoPiscinasInfraestructurasComponent), title: 'Piscinas | SICIM' },
+          { path: 'piscinas-infraestructuras', redirectTo: 'piscinas-infraestructuras/listado-piscinas-infraestructuras', pathMatch: 'full' }
+        ]
+      },
+      {
+        path: 'panel-control',
+        children: [
+          { path: '', loadComponent: () => import('./pages/panel-control/panel-control.component').then(m => m.PanelControlComponent), title: 'Panel de control | SICIM' },
+          { path: 'unidades-militares/listado-unidades-militares', loadComponent: () => import('./pages/panel-control/unidades-militares/listado-unidades-militares/listado-unidades-militares.component').then(m => m.ListadoUnidadesMilitaresComponent), title: 'Unidades militares | SICIM' },
+          { path: 'sociedades-unidades-centralizadoras/listado-sociedades-unidades-centralizadoras', loadComponent: () => import('./pages/panel-control/sociedades-unidades-centralizadoras/listado-sociedades-unidades-centralizadoras/listado-sociedades-unidades-centralizadoras.component').then(m => m.ListadoSociedadesUnidadesCentralizadorasComponent), title: 'Sociedades de unidades centralizadoras | SICIM' },
+          { path: 'unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos', loadComponent: () => import('./pages/panel-control/unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos.component').then(m => m.ListadoUnidadesMilitaresRealizMttosComponent), title: 'Unidad militares realizadoras de mantenimientos | SICIM' },
+          { path: 'oficinas/listado-oficinas', loadComponent: () => import('./pages/panel-control/oficinas/listado-oficinas/listado-oficinas.component').then(m => m.ListadoOficinasComponent), title: 'Oficinas | SICIM' },
+          { path: 'responsables/listado-responsables', loadComponent: () => import('./pages/panel-control/responsables/listado-responsables/listado-responsables.component').then(m => m.ListadoResponsablesComponent), title: 'Responsables | SICIM' },
+          { path: 'proveedores-productos-servicios/listado-proveedores-productos-servicios', loadComponent: () => import('./pages/panel-control/proveedores-productos-servicios/listado-proveedores-productos-servicios/listado-proveedores-productos-servicios.component').then(m => m.ListadoProveedoresProductosServiciosComponent), title: 'Proveedores de productos y/o servicios | SICIM' },
+          { path: 'historial-proveedores-productos-servicios/listado-historial-proveedores-productos-servicios', loadComponent: () => import('./pages/panel-control/historial-proveedores-productos-servicios/listado-historial-proveedores-productos-servicios/listado-historial-proveedores-productos-servicios.component').then(m => m.ListadoHistorialProveedoresProductosServiciosComponent), title: 'Historial de proveedores de productos y/o servicios | SICIM' },
+          { path: 'parametros-sistema', loadComponent: () => import('./pages/panel-control/parametros-sistema/parametros-sistema.component').then(m => m.ParametrosSistemaComponent), title: 'Parámetros del sistema | SICIM' },
+          { path: 'historial-integrantes-documentos/listado-historial-integrantes-documentos', loadComponent: () => import('./pages/panel-control/historial-integrantes-documentos/listado-historial-integrantes-documentos/listado-historial-integrantes-documentos.component').then(m => m.ListadoHistorialIntegrantesDocumentosComponent), title: 'Historial de integrantes de documentos | SICIM' },
+          { path: 'quimicos-piscinas/listado-quimicos-piscinas', loadComponent: () => import('./pages/panel-control/quimicos-piscinas/listado-quimicos-piscinas/listado-quimicos-piscinas.component').then(m => m.ListadoQuimicosPiscinasComponent), title: 'Químicos de piscinas | SICIM' },
+          { path: 'mi-perfil', loadComponent: () => import('./pages/panel-control/mi-perfil/mi-perfil.component').then(m => m.MiPerfilComponent), title: 'Mi perfil | SICIM' },
+          { path: 'usuarios/listado-usuarios', loadComponent: () => import('./pages/panel-control/usuarios/listado-usuarios/listado-usuarios.component').then(m => m.ListadoUsuariosComponent), title: 'Usuarios | SICIM' },
+          { path: 'unidades-militares', redirectTo: 'unidades-militares/listado-unidades-militares', pathMatch: 'full' },
+          { path: 'sociedades-unidades-centralizadoras', redirectTo: 'sociedades-unidades-centralizadoras/listado-sociedades-unidades-centralizadoras', pathMatch: 'full' },
+          { path: 'unidades-militares-realiz-mttos', redirectTo: 'unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos', pathMatch: 'full' },
+          { path: 'oficinas', redirectTo: 'oficinas/listado-oficinas', pathMatch: 'full' },
+          { path: 'responsables', redirectTo: 'responsables/listado-responsables', pathMatch: 'full' },
+          { path: 'proveedores-productos-servicios', redirectTo: 'proveedores-productos-servicios/listado-proveedores-productos-servicios', pathMatch: 'full' },
+          { path: 'historial-proveedores-productos-servicios', redirectTo: 'historial-proveedores-productos-servicios/listado-historial-proveedores-productos-servicios', pathMatch: 'full' },
+          { path: 'historial-integrantes-documentos', redirectTo: 'historial-integrantes-documentos/listado-historial-integrantes-documentos', pathMatch: 'full' },
+          { path: 'quimicos-piscinas', redirectTo: 'quimicos-piscinas/listado-quimicos-piscinas', pathMatch: 'full' },
+          { path: 'usuarios', redirectTo: 'usuarios/listado-usuarios', pathMatch: 'full' }
+        ]
+      }
+    ]
+  },
+  { path: '**', loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.NotFoundComponent), title: 'Página no encontrada | SICIM' }
+];
