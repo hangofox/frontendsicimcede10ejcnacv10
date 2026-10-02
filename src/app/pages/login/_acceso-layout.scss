@@ -24,12 +24,15 @@ main {
 .division-login .consola, .division-recuperacion .consola { transform: scaleY(.89); transform-origin: top center; }
 .marca-login { position: absolute; z-index: 2; right: 6.7%; top: .5%; width: 14.66%; height: 30%; }
 .titulo-login {
+  // Desplazamiento extra hacia abajo del pinon; se descuenta tambien del
+  // espacio libre para que nunca se salga por el borde inferior.
+  --pinon-bajada: calc(6dvh + .5mm);
   position: absolute;
   z-index: 1;
   left: 25%;
-  top: calc(2.6dvh + min(26.62vw, 477px) + 12px);
+  top: calc(2.6dvh + min(26.62vw, 477px) + 12px + var(--pinon-bajada));
   // Solo el pinon se adapta al espacio libre bajo el cuadro original.
-  width: min(14.6611vw, max(0px, calc((97.4dvh - min(26.62vw, 477px) - 28px) * .7330556)));
+  width: min(14.6611vw, max(0px, calc((97.4dvh - min(26.62vw, 477px) - 28px - var(--pinon-bajada)) * .7330556)));
   aspect-ratio: 1;
   transform: translateX(-50%);
 }

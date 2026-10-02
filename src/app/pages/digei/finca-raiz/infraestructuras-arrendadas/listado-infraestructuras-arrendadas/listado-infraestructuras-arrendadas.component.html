@@ -1,9 +1,9 @@
-<h2 class="page-title">Infraestructuras Arrendadas</h2>
+<h2 class="page-title">ARRIENDOS</h2>
 <app-semaforo-contadores [total]="totalRegistros" [estados]="estadosUsoContadores" />
 
 <section class="page-card panel-terrenos" [formGroup]="form">
   <div class="barra-acciones">
-    <input type="text" formControlName="keyword" placeholder="Buscar infraestructura arrendada" (keyup.enter)="buscar()">
+    <input type="text" formControlName="keyword" placeholder="Buscar arriendo" (keyup.enter)="buscar()">
     <button type="button" class="btn-sicim btn-buscar" (click)="buscar()">Buscar</button>
     <select formControlName="unidadMilitar" (change)="buscar()">
       <option value="">TODAS LAS UNIDADES MILITARES</option>
@@ -17,7 +17,7 @@
         <option [value]="tipo.idTipoEstructuraInfraestructuraArrendada">{{ tipo.nombreTipoEstructuraInfraestructuraArrendada }}</option>
       }
     </select>
-    <button type="button" class="btn-sicim btn-nuevo" (click)="abrir('guardar')">Nueva Infraestructura Arrendada</button>
+    <button type="button" class="btn-sicim btn-nuevo" (click)="abrir('guardar')">Nuevo Arriendo</button>
   </div>
 
   <div class="tabla-contenedor">
@@ -34,7 +34,7 @@
             <td><span [class]="'badge-estado ' + claseEstadoUso(infraestructura.estadoUsoInfraestructuraArrendada)">{{ infraestructura.estadoUsoInfraestructuraArrendada }}</span></td>
             <td>
               <div class="acciones-celda">
-                <button type="button" class="btn-accion btn-ver" title="Ver" aria-label="Ver infraestructura arrendada" (click)="ver(infraestructura)">
+                <button type="button" class="btn-accion btn-ver" title="Ver" aria-label="Ver arriendo" (click)="ver(infraestructura)">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 </button>
                 <button type="button" class="btn-accion btn-editar" title="Modificar" (click)="abrir('modificar', infraestructura)">
@@ -47,7 +47,7 @@
             </td>
           </tr>
         } @empty {
-          <tr><td colspan="7" class="tabla-vacia">No se encontraron infraestructuras arrendadas.</td></tr>
+          <tr><td colspan="7" class="tabla-vacia">No se encontraron arriendos.</td></tr>
         }
       </tbody>
     </table>
@@ -60,9 +60,9 @@
 </section>
 
 @if (modalEdicion) {
-  <div class="modal-overlay" (click)="cerrar()"><div class="modal-caja" (click)="$event.stopPropagation()"><div class="modal-header"><h3>Infraestructura arrendada</h3><button type="button" class="modal-cerrar" (click)="cerrar()">×</button></div><div class="modal-cuerpo"><app-add-upd-del-infraestructura-arrendada [modo]="modo" [data]="seleccionado" [unidades]="unidades" [proveedores]="proveedores" [tipos]="tipos" (cerrarModal)="cerrar()" (guardar)="guardar($event)" (eliminar)="eliminar($event)" /></div></div></div>
+  <div class="modal-overlay" (click)="cerrar()"><div class="modal-caja" (click)="$event.stopPropagation()"><div class="modal-header"><h3>{{ modo === 'guardar' ? 'Nuevo Arriendo' : modo === 'modificar' ? 'Modificar Arriendo' : 'Eliminar Arriendo' }}</h3><button type="button" class="modal-cerrar" (click)="cerrar()">×</button></div><div class="modal-cuerpo"><app-add-upd-del-infraestructura-arrendada [modo]="modo" [data]="seleccionado" [unidades]="unidades" [proveedores]="proveedores" [tipos]="tipos" (cerrarModal)="cerrar()" (guardar)="guardar($event)" (eliminar)="eliminar($event)" /></div></div></div>
 }
 @if (modalVista) {
-  <div class="modal-overlay" (click)="cerrar()"><div class="modal-caja" (click)="$event.stopPropagation()"><div class="modal-header"><h3>Detalle</h3><button type="button" class="modal-cerrar" (click)="cerrar()">×</button></div><div class="modal-cuerpo"><app-vista-infraestructura-arrendada [data]="seleccionado" (cerrarModal)="cerrar()" /></div></div></div>
+  <div class="modal-overlay" (click)="cerrar()"><div class="modal-caja" (click)="$event.stopPropagation()"><div class="modal-header"><h3>Detalle del Arriendo</h3><button type="button" class="modal-cerrar" (click)="cerrar()">×</button></div><div class="modal-cuerpo"><app-vista-infraestructura-arrendada [data]="seleccionado" (cerrarModal)="cerrar()" /></div></div></div>
 }
 @if (mensaje) { <div class="toast-global" [class.toast-exito]="mensajeTipo === 'exito'" [class.toast-error]="mensajeTipo === 'error'">{{ mensaje }}</div> }
