@@ -13,10 +13,12 @@ main {
   position: absolute;
   // Fondo de lado a lado, sin franjas exteriores ni degradados en los bordes.
   inset: 0;
-  opacity: .66;
+  // Brillo completo, igual que la imagen original en un editor.
+  opacity: 1;
   pointer-events: none;
-  background-image: url('../../../assets/images/imagen_fondo_cuerpo_index_01.png');
+  background-image: url('../../../assets/images/imagen_fondo_cuerpo_index_01.png?v=20261005c');
   background-repeat: no-repeat;
+  // Imagen completa ajustada al ancho y alto de la pantalla.
   background-size: 100% 100%;
   background-position: center;
 }

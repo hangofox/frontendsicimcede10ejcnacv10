@@ -284,11 +284,16 @@
 }
 
 /* =====================================================================
-   Panal de cinco ranuras en patron simetrico 2-1-2
+   Panal de seis ranuras 2-2-2 (referencia finca_raiz_01.png)
+   Rejilla de cinco medias columnas: las filas 1 y 3 ocupan las columnas
+   2-3 y 4-5, y la fila 2 las columnas 1-2 y 3-4, de modo que queda
+   corrida exactamente medio hexagono a la izquierda.
    ===================================================================== */
 
 .fr-panal {
-  --fr-ranura: clamp(124px, 21vw, 240px);
+  /* Ademas del ancho, se limita por el alto de la ventana: con tres filas
+     el panal mide unas 2,5 veces el alto de una pieza. */
+  --fr-ranura: clamp(110px, min(20vw, 25dvh), 240px);
   /* Los hexagonos miden 272x300, asi que su alto no es igual al ancho. */
   --fr-alto: calc(var(--fr-ranura) * 300 / 272);
   /* Mismo solape proporcional de geomatica-topografia: conserva iguales
@@ -300,7 +305,7 @@
   /* Se centra en el espacio libre a la derecha de los piñones. */
   margin-inline: auto;
   display: grid;
-  grid-template-columns: repeat(2, var(--fr-ranura));
+  grid-template-columns: repeat(5, calc(var(--fr-ranura) / 2));
   justify-content: center;
   /* Sin separacion de columna: en un panal el desplazamiento entre filas
      es exactamente medio hexagono. Cualquier hueco aqui lo ensancha y
@@ -347,7 +352,8 @@
 
 .fr-ranura--arrendadas .fr-ranura__pieza {
   background-image: url('../../../../assets/images/imagen_hexagono_infraestructuras_arrendadas_01.png');
-  background-position: calc(50% + 0.1mm) calc(50% - 0.3mm);
+  /* Sin desplazamiento vertical: queda a la misma altura que Comodatos. */
+  background-position: calc(50% + 0.1mm) 50%;
 }
 
 .fr-ranura--comodatos .fr-ranura__pieza {
@@ -359,28 +365,39 @@
   background-position: calc(50% + 0.4mm) calc(50% - 0.2mm);
 }
 
-.fr-ranura--terrenos {
-  grid-column: 1;
+.fr-ranura--invasiones .fr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_invasiones_01.png');
 }
 
+/* Fila 1 */
 .fr-ranura--infraestructura {
-  grid-column: 2;
+  grid-area: 1 / 2 / 2 / 4;
   transform: translateX(0.2mm);
 }
 
+.fr-ranura--terrenos {
+  grid-area: 1 / 4 / 2 / 6;
+}
+
+/* Fila 2: medio hexagono a la izquierda */
 .fr-ranura--arrendadas {
-  grid-column: 1 / -1;
-  justify-self: center;
-  margin-top: calc(var(--fr-solape) - 0.2mm);
+  grid-area: 2 / 1 / 3 / 3;
+  margin-top: var(--fr-solape);
 }
 
 .fr-ranura--comodatos {
-  grid-column: 1;
+  grid-area: 2 / 3 / 3 / 5;
+  margin-top: var(--fr-solape);
+}
+
+/* Fila 3: alineada con la fila 1 */
+.fr-ranura--invasiones {
+  grid-area: 3 / 2 / 4 / 4;
   margin-top: var(--fr-solape);
 }
 
 .fr-ranura--dashboards {
-  grid-column: 2;
+  grid-area: 3 / 4 / 4 / 6;
   margin-top: var(--fr-solape);
 }
 

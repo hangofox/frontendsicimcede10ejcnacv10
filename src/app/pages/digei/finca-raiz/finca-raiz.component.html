@@ -30,21 +30,21 @@
       </div>
     </div>
 
-    <!-- Panal simetrico 2-1-2, con la misma geometria de geomatica-topografia. -->
-    <!-- Panal 2-1-2, mismo reparto que geomatica-topografia. Terrenos e
-         Infraestructuras navegan; las otras tres se realzan al pasar el
-         cursor pero todavia no llevan a ningun sitio. -->
+    <!-- Panal 2-2-2 segun la referencia finca_raiz_01.png: la fila del medio
+         va corrida medio hexagono a la izquierda. Orden de lectura:
+         Infraestructuras, Terrenos / Arrendadas, Comodatos / Invasiones,
+         Dashboards. Invasiones todavia no lleva a ningun sitio. -->
     <div class="fr-panal">
-      <article class="fr-ranura fr-ranura--terrenos">
-        <a class="fr-ranura__pieza fr-ranura__pieza--enlace"
-           routerLink="/digei/finca-raiz/terrenos/listado-terrenos"
-           aria-label="Terrenos"></a>
-      </article>
-
       <article class="fr-ranura fr-ranura--infraestructura">
         <a class="fr-ranura__pieza fr-ranura__pieza--enlace"
            routerLink="/digei/finca-raiz/infraestructuras/listado-infraestructuras"
            aria-label="Infraestructuras"></a>
+      </article>
+
+      <article class="fr-ranura fr-ranura--terrenos">
+        <a class="fr-ranura__pieza fr-ranura__pieza--enlace"
+           routerLink="/digei/finca-raiz/terrenos/listado-terrenos"
+           aria-label="Terrenos"></a>
       </article>
 
       <article class="fr-ranura fr-ranura--arrendadas">
@@ -57,6 +57,10 @@
         <a class="fr-ranura__pieza fr-ranura__pieza--enlace"
            routerLink="/digei/finca-raiz/comodatos/listado-comodatos"
            aria-label="Comodatos"></a>
+      </article>
+
+      <article class="fr-ranura fr-ranura--invasiones">
+        <span class="fr-ranura__pieza" role="img" aria-label="Invasiones"></span>
       </article>
 
       <article class="fr-ranura fr-ranura--dashboards">
