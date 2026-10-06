@@ -430,15 +430,40 @@
 
   .gt-escena {
     margin-left: 0;
+    /* Pinones del tamano de digei en pantalla pequena (alli la unidad vale
+       0,847px: 864px de escena x 0,0980392 %), pero solo hasta donde el
+       panal siga cabiendo a su lado. Si no, toman el ancho que queda libre
+       (ventana - relleno 2x18 - separacion - panal de 2 piezas - 20px de
+       margen para la barra), para que el panal no baje ni los pinones se
+       centren. Nunca por debajo del minimo de .55px que ya tenian. */
+    --gt-u: max(.55px, min(.847px,
+      calc((100vw - 36px - max(10px, 2.4vw) - 2.3 * clamp(104px, 22vw, 176px) - 20px) / 303.6)));
   }
 
   .options-cluster {
-    --gt-ranura: clamp(104px, 22vw, 176px);
+    /* x 1,15: panal un 15 % mas grande. */
+    --gt-ranura: calc(clamp(104px, 22vw, 176px) * 1.15);
   }
 }
 
 @media (max-width: 600px) {
   .geomatica-topografia {
     padding: 14px 12px;
+  }
+
+  /* Como digei en celular (unidad = escena x 0,0980392 % x 1,52), con el
+     mismo tope: el panal tiene que seguir cabiendo al lado. Aqui el
+     relleno lateral es de 12px por lado. */
+  .gt-escena {
+    --gt-u: max(.55px, min(calc((100vw - 36px) * .0014902),
+      calc((100vw - 24px - max(10px, 2.4vw) - 2.3 * clamp(104px, 22vw, 176px) - 20px) / 303.6)));
+  }
+}
+
+/* Digei reduce su relleno lateral a 10px por debajo de 520px. */
+@media (max-width: 520px) {
+  .gt-escena {
+    --gt-u: max(.55px, min(calc((100vw - 20px) * .0014902),
+      calc((100vw - 24px - max(10px, 2.4vw) - 2.3 * clamp(104px, 22vw, 176px) - 20px) / 303.6)));
   }
 }
