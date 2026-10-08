@@ -1,4 +1,4 @@
-<h2 class="page-title">Solicitudes de Infraestructuras</h2>
+<h2 class="page-title">Solicitudes de Construcción y Mantenimiento</h2>
 <app-semaforo-contadores [total]="totalRegistros" />
 
 <section class="page-card panel-solicitudes-infraestructuras" [formGroup]="solicitudesInfraestructurasForm" aria-labelledby="titulo-solicitudes-infraestructuras">
@@ -172,7 +172,7 @@
           </tr>
         } @empty {
           <tr>
-            <td colspan="14" class="tabla-vacia">No se encontraron solicitudes de infraestructuras con los filtros aplicados.</td>
+            <td colspan="14" class="tabla-vacia">No se encontraron solicitudes de construcción y mantenimiento con los filtros aplicados.</td>
           </tr>
         }
       </tbody>
@@ -189,7 +189,7 @@
         <option value="25">25</option>
         <option value="50">50</option>
       </select>
-      <span class="paginacion-total">{{ totalRegistros }} solicitudes de infraestructuras en total</span>
+      <span class="paginacion-total">{{ totalRegistros }} solicitudes de construcción y mantenimiento en total</span>
     </div>
     <div class="paginacion-controles">
       <button type="button" class="btn-pag" [disabled]="paginaActual === 0" (click)="cambiarPagina(paginaActual - 1)">
@@ -210,9 +210,9 @@
     <div class="modal-caja" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>
-          @if (modalModo === 'guardar') { Nueva solicitud de infraestructura }
-          @if (modalModo === 'modificar') { Modificar solicitud de infraestructura }
-          @if (modalModo === 'eliminar') { Eliminar solicitud de infraestructura }
+          @if (modalModo === 'guardar') { Nueva solicitud de construcción y mantenimiento }
+          @if (modalModo === 'modificar') { Modificación de solicitud de construcción y mantenimiento }
+          @if (modalModo === 'eliminar') { Eliminación de solicitud de construcción y mantenimiento }
         </h3>
         <button type="button" class="modal-cerrar" (click)="cerrarModalAddUpdDel()" aria-label="Cerrar">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -239,7 +239,7 @@
   <div class="modal-overlay" (click)="cerrarModalVista()">
     <div class="modal-caja" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h3>Detalle de la solicitud de infraestructura</h3>
+        <h3>Detalle de la solicitud de construcción y mantenimiento</h3>
         <button type="button" class="modal-cerrar" (click)="cerrarModalVista()" aria-label="Cerrar">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
@@ -256,7 +256,7 @@
   <div class="modal-overlay" (click)="cerrarModalIntegrantes()">
     <div class="modal-caja" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h3>Integrantes de la solicitud de infraestructura</h3>
+        <h3>Integrantes de solicitud de construcción y mantenimiento</h3>
         <button type="button" class="modal-cerrar" (click)="cerrarModalIntegrantes()" aria-label="Cerrar">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>

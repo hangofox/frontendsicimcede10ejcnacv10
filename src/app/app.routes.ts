@@ -25,7 +25,15 @@ export const routes: Routes = [
         children: [
           { path: '', loadComponent: () => import('./pages/digei/digei.component').then(m => m.DigeiComponent), title: 'DIGEI | SICIM' },
           { path: 'consolidaciones', loadComponent: () => import('./pages/digei/consolidaciones/consolidaciones.component').then(m => m.ConsolidacionesComponent), title: 'Consolidaciones | SICIM' },
-          { path: 'construcciones-mantenimientos', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/construcciones-mantenimientos.component').then(m => m.ConstruccionesMantenimientosComponent), title: 'Construcciones y mantenimientos | SICIM' },
+          {
+            //SOLICITUDES DE INFRAESTRUCTURAS ES UN SUBMODULO DE CONSTRUCCIONES Y MANTENIMIENTOS, TANTO EN CARPETAS COMO EN NAVEGACION.
+            path: 'construcciones-mantenimientos',
+            children: [
+              { path: '', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/construcciones-mantenimientos.component').then(m => m.ConstruccionesMantenimientosComponent), title: 'Construcciones y mantenimientos | SICIM' },
+              { path: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-infraestructuras/listado-solicitudes-infraestructuras/listado-solicitudes-infraestructuras.component').then(m => m.ListadoSolicitudesInfraestructurasComponent), title: 'Solicitudes de construcción y mantenimiento | SICIM' },
+              { path: 'solicitudes-infraestructuras', redirectTo: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', pathMatch: 'full' }
+            ]
+          },
           { path: 'gestion-riesgo', loadComponent: () => import('./pages/digei/gestion-riesgo/gestion-riesgo.component').then(m => m.GestionRiesgoComponent), title: 'Gestión del riesgo | SICIM' },
           { path: 'gestion-ambiental', loadComponent: () => import('./pages/digei/gestion-ambiental/gestion-ambiental.component').then(m => m.GestionAmbientalComponent), title: 'Gestión ambiental | SICIM' },
           { path: 'geomatica-topografia', loadComponent: () => import('./pages/digei/geomatica-topografia/geomatica-topografia.component').then(m => m.GeomaticaTopografiaComponent), title: 'Geomática y topografía | SICIM' },
@@ -47,9 +55,9 @@ export const routes: Routes = [
               { path: 'infraestructuras-arrendadas', redirectTo: 'infraestructuras-arrendadas/listado-infraestructuras-arrendadas', pathMatch: 'full' }
             ]
           },
-          //SOLICITUDES DE INFRAESTRUCTURAS CUELGA DIRECTAMENTE DE DIGEI, COMO SU CARPETA.
-          { path: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', loadComponent: () => import('./pages/digei/solicitudes-infraestructuras/listado-solicitudes-infraestructuras/listado-solicitudes-infraestructuras.component').then(m => m.ListadoSolicitudesInfraestructurasComponent), title: 'Solicitudes de infraestructuras | SICIM' },
-          { path: 'solicitudes-infraestructuras', redirectTo: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', pathMatch: 'full' }
+          //LAS DIRECCIONES ANTERIORES DE SOLICITUDES (COLGABAN DIRECTAMENTE DE DIGEI) LLEVAN A SU NUEVA UBICACION.
+          { path: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', redirectTo: 'construcciones-mantenimientos/solicitudes-infraestructuras/listado-solicitudes-infraestructuras', pathMatch: 'full' },
+          { path: 'solicitudes-infraestructuras', redirectTo: 'construcciones-mantenimientos/solicitudes-infraestructuras/listado-solicitudes-infraestructuras', pathMatch: 'full' }
         ]
       },
       { path: 'dinco', loadComponent: () => import('./pages/dinco/dinco.component').then(m => m.DincoComponent), title: 'DINCO | SICIM' },

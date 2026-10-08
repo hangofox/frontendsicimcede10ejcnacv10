@@ -2,23 +2,23 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
-import { SolicitudesInfraestructurasI } from '../../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
-import { UnidadesMilitaresI } from '../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
-import { TiposSolicitudesInfraestructurasI } from '../../../../interfaces/digei/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.interface';
-import { InfraestructurasI } from '../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
-import { GRUPOS_NIVEL_INTEGRANTES_DOCUMENTOS_SOLIC_INFRAEST, IntegrantesDocumentosSolicInfraestI, NIVELES_JERARQUIA_UNIDAD_MILITAR } from '../../../../interfaces/digei/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.interface';
+import { SolicitudesInfraestructurasI } from '../../../../../interfaces/digei/construcciones-mantenimientos/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
+import { UnidadesMilitaresI } from '../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
+import { TiposSolicitudesInfraestructurasI } from '../../../../../interfaces/digei/construcciones-mantenimientos/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.interface';
+import { InfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
+import { GRUPOS_NIVEL_INTEGRANTES_DOCUMENTOS_SOLIC_INFRAEST, IntegrantesDocumentosSolicInfraestI, NIVELES_JERARQUIA_UNIDAD_MILITAR } from '../../../../../interfaces/digei/construcciones-mantenimientos/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.interface';
 
-import { SolicitudesInfraestructurasService } from '../../../../services/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.service';
-import { UnidadesMilitaresService } from '../../../../services/panel-control/unidades-militares/unidades-militares.service';
-import { TiposSolicitudesInfraestructurasService } from '../../../../services/digei/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.service';
-import { InfraestructurasService } from '../../../../services/digei/finca-raiz/infraestructuras/infraestructuras.service';
-import { IntegrantesDocumentosSolicInfraestService } from '../../../../services/digei/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.service';
-import { SpinnerService } from '../../../../services/spinner/spinner.service';
+import { SolicitudesInfraestructurasService } from '../../../../../services/digei/construcciones-mantenimientos/solicitudes-infraestructuras/solicitudes-infraestructuras.service';
+import { UnidadesMilitaresService } from '../../../../../services/panel-control/unidades-militares/unidades-militares.service';
+import { TiposSolicitudesInfraestructurasService } from '../../../../../services/digei/construcciones-mantenimientos/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.service';
+import { InfraestructurasService } from '../../../../../services/digei/finca-raiz/infraestructuras/infraestructuras.service';
+import { IntegrantesDocumentosSolicInfraestService } from '../../../../../services/digei/construcciones-mantenimientos/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.service';
+import { SpinnerService } from '../../../../../services/spinner/spinner.service';
 
 import { AddUpdDelSolicitudInfraestructuraComponent } from '../add-upd-del-solicitud-infraestructura/add-upd-del-solicitud-infraestructura.component';
 import { VistaSolicitudInfraestructuraComponent } from '../vista-solicitud-infraestructura/vista-solicitud-infraestructura.component';
 import { ListadoIntegrantesDocumentosSolicInfraestComponent } from '../integrantes-documentos-solic-infraest/listado-integrantes-documentos-solic-infraest/listado-integrantes-documentos-solic-infraest.component';
-import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 
 @Component({
   selector: 'app-listado-solicitudes-infraestructuras',

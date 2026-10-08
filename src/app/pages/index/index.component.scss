@@ -34,7 +34,8 @@
 .contenido:has(> app-inicio),
 .contenido:has(> app-digei),
 .contenido:has(> app-finca-raiz),
-.contenido:has(> app-geomatica-topografia) {
+.contenido:has(> app-geomatica-topografia),
+.contenido:has(> app-construcciones-mantenimientos) {
   padding: 0;
   background: #020203;
 }

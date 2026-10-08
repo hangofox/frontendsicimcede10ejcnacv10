@@ -1,1 +1,500 @@
-@use '../consolidaciones/consolidaciones.component';
+/* Mismos piñones de finca-raiz (prefijo fr- -> cm-): DIGEI engranado con
+   Construcciones y Mantenimientos, con la geometría y el tamaño de digei.
+   El panal se agregará después. */
+:host {
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  flex: 1 1 auto;
+  align-self: stretch;
+  background: #020203 url('../../../../assets/images/imagen_fondo_cuerpo_construcciones_y_mantenimientos_01.png') center / 100% 100% no-repeat;
+}
+
+/* El componente administra su propio fondo desde :host, igual que digei
+   e inicio. Aquí solo va el contenido, sin ningún fondo encima. */
+.construcciones-mantenimientos {
+  box-sizing: border-box;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  padding: clamp(18px, 2vw, 30px);
+  color: #fff;
+  background: none;
+}
+
+/* Contenedor transparente del cuerpo. Dos zonas: piñones a la izquierda
+   y panal a la derecha. Con flex-wrap el panal baja en pantallas
+   estrechas en lugar de provocar desplazamiento horizontal. */
+.construcciones-mantenimientos__cuerpo {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(10px, 2.4vw, 54px);
+  background: none;
+}
+
+/* =====================================================================
+   Piñones. Valores tomados del componente digei sin alterarlo:
+     anillo DIGEI  = --digei-d-central     230 ud, horario, 60 s
+     anillo Constr = --digei-d-satelite 181.13 ud, antihorario, 48 s
+     distancia entre centros = --digei-radio 196 ud
+     fase de engrane = 7deg, la misma de los seis satélites
+   La relación 181,13/230 = 78,75 % no es estética: es la que hace que
+   30 y 24 dientes del mismo paso engranen. Se respeta antes que el
+   85-92 % orientativo, tal y como pide el propio encargo.
+   ===================================================================== */
+
+.cm-escena {
+  /* Unidad común. A 1024 px vale 1 px, así que el piñón DIGEI mide
+     230 px y el de Construcciones 181 px. */
+  --cm-u: clamp(.55px, .0977vw, 1.18px);
+
+  --cm-d-digei: 230;
+  --cm-d-construcciones: 181.13;
+  --cm-radio: 196;
+  /* Tapa el piñón interno y queda a ras del círculo dorado del medio:
+     el mismo valor de .digei-escena (antes 110). */
+  --cm-contenido-digei: 150.35;
+  /* Medallon que cubre la banda purpura del anillo: el mismo valor de
+     .digei-pinon[data-posicion="superior-derecha"], que es el pinon de
+     Construcciones y Mantenimientos en digei. */
+  --cm-contenido-construcciones: 150.36;
+  --cm-giro-digei: 60s;
+  --cm-giro-construcciones: 48s;
+
+  /* Dirección de Construcciones respecto a DIGEI: 60 grados abajo-derecha,
+     la misma composición de finca-raiz. */
+  --cm-fx: .5;
+  --cm-fy: .8660254;
+
+  position: relative;
+  flex: 0 0 auto;
+  /* El centro del piñón DIGEI se alinea con el centro de la opción DIGEI
+     del menú superior. Esa opción es la 2ª de una rejilla de 7,10fr y
+     ocupa de 0,92fr a 1,84fr, así que su centro cae en el 19,437 % del
+     ancho de la ventana. Se descuenta el padding del cuerpo y el radio
+     del piñón (115 ud) para saber cuánto hay que separarlo del borde.
+     Al ir en vw, la alineación se mantiene a cualquier resolución. */
+  margin-left: max(0px, calc(19.437vw - clamp(18px, 2vw, 30px) - var(--cm-u) * 115));
+  /* Caja justa del par: 303,6 x 375,3 ud. */
+  width: calc(var(--cm-u) * 303.6);
+  height: calc(var(--cm-u) * 375.3);
+}
+
+.cm-engranajes {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---- Piñón: tres capas -------------------------------------------
+   1. .cm-pinon           contenedor de posición, NO gira
+   2. .cm-pinon__rotor    anillo dentado, gira
+   3. .cm-pinon__medallon ilustración, hermana del rotor, fija
+   ------------------------------------------------------------------ */
+
+.cm-pinon {
+  position: absolute;
+  /* La posición usa left/top y márgenes negativos, nunca transform, para
+     que el giro del rotor no pueda sobrescribirla. */
+  width: var(--cm-d);
+  height: var(--cm-d);
+  margin-left: calc(var(--cm-d) / -2);
+  margin-top: calc(var(--cm-d) / -2);
+}
+
+.cm-pinon__rotor {
+  position: absolute;
+  inset: 0;
+  /* El dibujo no está centrado en su PNG: se corrige el eje de giro
+     para que el anillo no bascule al rotar. */
+  transform-origin:
+    calc(50% + var(--cm-u) * var(--cm-rotor-x, 0))
+    calc(50% + var(--cm-u) * var(--cm-rotor-y, 0));
+  will-change: transform;
+}
+
+.cm-pinon__anillo,
+.cm-pinon__medallon-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: center / contain no-repeat;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Mismo patrón que .digei-pinon__contenido y .digei-pinon__enlace: el
+   centrado se hace con left/top al 50 % y márgenes negativos de media
+   caja, NUNCA con transform. Así esta capa no lleva ningún transform
+   propio y el scale del zoom, que va en la imagen interior, no puede
+   entrar en conflicto ni desplazar el centro.
+   backface-visibility promueve el medallón a su propia capa: sin eso el
+   navegador lo vuelve a rasterizar en cada fotograma del anillo vecino y
+   aparece un temblor de subpíxel en el centro. */
+.cm-pinon__medallon {
+  position: absolute;
+  top: calc(50% + var(--cm-u) * var(--cm-contenido-y, 0)
+    + var(--cm-contenido-ajuste-y, 0px));
+  left: calc(50% + var(--cm-u) * var(--cm-contenido-x, 0)
+    + var(--cm-contenido-ajuste-x, 0px));
+  z-index: 2;
+  display: block;
+  width: var(--cm-contenido);
+  height: var(--cm-contenido);
+  margin-left: calc(var(--cm-contenido) / -2);
+  margin-top: calc(var(--cm-contenido) / -2);
+  line-height: 0;
+  image-rendering: auto;
+  backface-visibility: hidden;
+}
+
+/* ---- Piñón DIGEI --------------------------------------------------- */
+
+.cm-pinon--digei {
+  --cm-d: calc(var(--cm-u) * var(--cm-d-digei));
+  /* Ajuste fino a ojo copiado de digei: +0,4 mm de diámetro y bajada de
+     0,2 mm tapan la línea negra que asomaba a las 06:00. */
+  --cm-contenido: calc(var(--cm-u) * var(--cm-contenido-digei) + .4mm);
+  --cm-contenido-ajuste-y: .2mm;
+  /* El círculo dorado del medio NO es concéntrico con los dientes: está
+     6,3 px más arriba en el PNG 482. El eje va en el centro de los
+     dientes (240,85 ; 240,80) para que engranen exacto, y
+     .cm-pinon__anillo--interior superpone una copia del PNG bajada 6,3 px
+     para que el dorado quede concéntrico. Mismos valores que
+     .digei-pinon--central. */
+  --cm-rotor-x: -.072;
+  --cm-rotor-y: -.095;
+  --cm-ajuste-x: .072;
+  --cm-ajuste-y: .095;
+  /* El círculo visible del PNG 600x600 del medallón está en
+     (299,24 ; 300,76): se descuenta ese desvío para que caiga sobre el eje. */
+  --cm-contenido-x: .118;
+  --cm-contenido-y: -.285;
+
+  left: calc(var(--cm-u) * (115 + var(--cm-ajuste-x)));
+  top: calc(var(--cm-u) * (115 + var(--cm-ajuste-y)));
+  z-index: 1;
+}
+
+.cm-pinon--digei .cm-pinon__rotor {
+  animation: cm-giro-horario var(--cm-giro-digei) linear infinite;
+}
+
+.cm-pinon--digei .cm-pinon__anillo {
+  background-image: url('../../../../assets/images/imagen_anillo_pinon_central_01.png');
+}
+
+/* Copia interior trasladada (0,46 ; 6,34) px de 482: lleva el centro del
+   dorado al de los dientes. La máscara se centra en el dorado y funde
+   entre 166 y 182 px, dentro de la banda púrpura, así la unión no se ve.
+   Igual que .digei-pinon__anillo--interior. */
+.cm-pinon--digei .cm-pinon__anillo--interior {
+  position: absolute;
+  inset: 0;
+  transform: translate(.0954%, 1.3154%);
+  mask: radial-gradient(ellipse 50% 50% at 49.873% 48.643%, #000 68.9%, transparent 75.5%);
+  -webkit-mask: radial-gradient(ellipse 50% 50% at 49.873% 48.643%, #000 68.9%, transparent 75.5%);
+}
+
+.cm-pinon--digei .cm-pinon__medallon-img {
+  background-image: url('../../../../assets/images/imagen_circulo_proceso_digei_01.png');
+}
+
+/* ---- Piñón Construcciones y Mantenimientos -------------------------- */
+
+.cm-pinon--construcciones {
+  --cm-d: calc(var(--cm-u) * var(--cm-d-construcciones));
+  /* Mismo aumento del medallón que en digei (allí 2,2 mm; antes 1,6 mm =
+     5 ud), expresado en ud para que escale con el resto. */
+  --cm-contenido: calc(var(--cm-u) * (var(--cm-contenido-construcciones) + 6.9));
+  /* Eje del anillo externo en el centro de sus dientes (engrane exacto);
+     .cm-pinon__anillo--interior superpone una copia del PNG bajada 1,55 px
+     para que la banda purpura, que no es concentrica con los dientes,
+     no cabecee alrededor del medallon. Copiado de .digei-pinon--satelite;
+     el medallon (PNG centrado) va sobre el eje. */
+  --cm-rotor-x: -.038;
+  --cm-rotor-y: .169;
+  --cm-ajuste-x: .038;
+  --cm-ajuste-y: -.169;
+  --cm-contenido-x: -.038;
+  --cm-contenido-y: .169;
+  /* Fase de engrane: la misma de los seis satélites de digei. */
+  --cm-fase: 7deg;
+
+  left: calc(var(--cm-u) * (115 + var(--cm-radio) * var(--cm-fx) + var(--cm-ajuste-x)));
+  top: calc(var(--cm-u) * (115 + var(--cm-radio) * var(--cm-fy) + var(--cm-ajuste-y)));
+  z-index: 2;
+}
+
+.cm-pinon--construcciones .cm-pinon__rotor {
+  animation: cm-giro-antihorario var(--cm-giro-construcciones) linear infinite;
+}
+
+.cm-pinon--construcciones .cm-pinon__anillo {
+  background-image: url('../../../../assets/images/imagen_anillo_pinon_externo_01.png');
+}
+
+/* Copia interior trasladada (0,17 ; 1,55) px de 482: lleva el centro de
+   la banda púrpura al de los dientes. Funde entre 205,5 y 212 px, sobre
+   el aro dorado liso previo a los dientes. Igual que en digei. */
+.cm-pinon--construcciones .cm-pinon__anillo--interior {
+  position: absolute;
+  inset: 0;
+  transform: translate(.0353%, .3216%);
+  mask: radial-gradient(ellipse 50% 50% at 49.944% 49.772%, #000 85.27%, transparent 87.97%);
+  -webkit-mask: radial-gradient(ellipse 50% 50% at 49.944% 49.772%, #000 85.27%, transparent 87.97%);
+}
+
+.cm-pinon--construcciones .cm-pinon__medallon-img {
+  background-image: url('../../../../assets/images/imagen_circulo_construcciones_y_mantenimientos_01.png');
+}
+
+/* ---- Enlace y zoom del medallón DIGEI ------------------------------ */
+
+.cm-pinon__medallon--enlace {
+  cursor: pointer;
+  border-radius: 50%;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cm-pinon__medallon--enlace .cm-pinon__medallon-img {
+  transform: scale(1);
+  transform-origin: center;
+  transition: transform .26s cubic-bezier(.2, .75, .25, 1);
+}
+
+.cm-pinon__medallon--enlace:hover .cm-pinon__medallon-img,
+.cm-pinon__medallon--enlace:focus-visible .cm-pinon__medallon-img {
+  /* El circulo visible del medallon llena el 95,4 % de su caja, no el
+     100 %, asi que a escala 1 su radio es de 110,0 px del PNG del anillo
+     y no de 115,3. Ademas la circunferencia dorada no es redonda: su
+     radio va de 150 a 158,8 px (ovalidad 2,08 px). Por eso a 1,40
+     (153,9 px) quedaba cubierta en unos puntos y descubierta en otros.
+     1,46 da 160,6 px, que supera el radio maximo del dorado con 1,8 px
+     de margen, asi que lo tapa por igual en todo el contorno. */
+  transform: scale(1.46);
+}
+
+.cm-pinon__medallon--enlace:focus-visible {
+  outline: 2px solid #fff3a8;
+  outline-offset: 3px;
+}
+
+/* =====================================================================
+   Panal de cuatro ranuras 2-2 (referencia
+   construcciones_y_mantenimientos_futurista_01.png).
+   La caja mide lo mismo que .fr-panal de finca-raiz (2,5 piezas de ancho y
+   3 filas solapadas de alto) para que los piñones queden en la misma
+   posición; las dos filas van centradas en vertical dentro de ella.
+   Rejilla de cinco medias columnas: la fila 1 ocupa las columnas 1-2 y
+   3-4, y la fila 2 las columnas 2-3 y 4-5, de modo que queda corrida
+   exactamente medio hexagono a la derecha.
+   ===================================================================== */
+
+.cm-panal {
+  --cm-ranura: clamp(110px, min(20vw, 25dvh), 240px);
+  /* Los hexagonos miden 272x300, asi que su alto no es igual al ancho. */
+  --cm-alto: calc(var(--cm-ranura) * 300 / 272);
+  /* Mismo solape proporcional de finca-raiz. */
+  --cm-solape: calc(var(--cm-alto) * -.237);
+  /* Separaciones ajustadas a ojo con piezas de 235 px (1 mm vertical y
+     0,3 mm entre medias columnas), expresadas como fraccion de la pieza
+     para que en pantalla pequena se reduzcan en la misma proporcion:
+     3,7795 / 235 = ,016083 y 1,1339 / 235 = ,004825. */
+  --cm-sep-y: calc(var(--cm-ranura) * .016083);
+  --cm-sep-x: calc(var(--cm-ranura) * .004825);
+
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  margin-inline: auto;
+  width: calc(var(--cm-ranura) * 2.5);
+  /* Fila 1 completa + filas 2 y 3 subidas un 23,7 % cada una. */
+  height: calc(var(--cm-alto) * (1 + 2 * (1 - .237)));
+  display: grid;
+  grid-template-columns: repeat(5, calc(var(--cm-ranura) / 2));
+  justify-content: center;
+  align-content: center;
+  /* Separacion entre medias columnas (0,3 mm con piezas de 235 px): los
+     vecinos de una misma fila quedan el doble de separados, porque cada
+     pieza abarca dos medias columnas, y la fila de abajo sigue exactamente
+     centrada entre las dos de arriba. La caja conserva su ancho para que
+     los piñones no se muevan. */
+  column-gap: var(--cm-sep-x);
+}
+
+.cm-ranura {
+  box-sizing: border-box;
+  width: var(--cm-ranura);
+  /* Proporcion nativa del PNG: no se deforma. */
+  aspect-ratio: 272 / 300;
+  align-self: start;
+  display: block;
+  margin: 0;
+  background: none;
+}
+
+.cm-ranura__pieza {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: center / contain no-repeat;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.cm-ranura--solicitudes .cm-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_solicitudes_infraestructuras_01.png');
+}
+
+.cm-ranura--avales .cm-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_avales_solicitudes_infraestructuras_01.png');
+}
+
+.cm-ranura--dashboards .cm-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_dashboards_estadisticas_solicitudes_infraestructuras_01.png');
+}
+
+.cm-ranura--estadisticas .cm-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_estadisticas_solicitudes_infraestructuras_01.png');
+}
+
+/* Fila 1 */
+.cm-ranura--solicitudes {
+  grid-area: 1 / 1 / 2 / 3;
+}
+
+.cm-ranura--avales {
+  grid-area: 1 / 3 / 2 / 5;
+}
+
+/* Fila 2: medio hexagono a la derecha. La separacion vertical con la fila 1
+   es la medida en finca-raiz entre sus filas 1 y 2: alli la pieza Terrenos
+   alarga 1 mm la fila de arriba (height 100% + 1,2 mm con margin-top
+   -0,2 mm), asi que la fila 2 queda --cm-sep-y (1 mm a 235 px) mas abajo
+   que el solape puro. */
+.cm-ranura--dashboards {
+  grid-area: 2 / 2 / 3 / 4;
+  margin-top: calc(var(--cm-solape) + var(--cm-sep-y));
+}
+
+.cm-ranura--estadisticas {
+  grid-area: 2 / 4 / 3 / 6;
+  margin-top: calc(var(--cm-solape) + var(--cm-sep-y));
+}
+
+/* Zoom igual que finca-raiz: lo llevan las cuatro piezas. */
+.cm-ranura__pieza {
+  transition: transform .24s cubic-bezier(.2, .75, .25, 1), filter .24s ease;
+}
+
+.cm-ranura__pieza:hover,
+.cm-ranura__pieza--enlace:focus-visible {
+  transform: scale(1.06);
+  filter: brightness(1.08) drop-shadow(0 0 10px rgb(255 190 25 / 45%));
+}
+
+/* El cursor de mano y el foco de teclado son solo de las que navegan: las
+   demas se realzan, pero no llevan a ningun sitio y no deben aparentar que
+   si. Igual que finca-raiz. */
+.cm-ranura__pieza--enlace {
+  cursor: pointer;
+}
+
+.cm-ranura__pieza--enlace:focus-visible {
+  outline: 2px solid #fff3a8;
+  outline-offset: 2px;
+}
+
+/* =====================================================================
+   Animación. Mismas curvas y sentidos que digei; los nombres son
+   propios porque los @keyframes de aquel componente no se cargan en
+   esta página.
+   ===================================================================== */
+
+@keyframes cm-giro-horario {
+  from { transform: rotate(var(--cm-fase, 0deg)); }
+  to { transform: rotate(calc(var(--cm-fase, 0deg) + 360deg)); }
+}
+
+@keyframes cm-giro-antihorario {
+  from { transform: rotate(var(--cm-fase, 0deg)); }
+  to { transform: rotate(calc(var(--cm-fase, 0deg) - 360deg)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cm-pinon__rotor {
+    animation: none;
+    transform: rotate(var(--cm-fase, 0deg));
+  }
+
+  .cm-pinon__medallon--enlace .cm-pinon__medallon-img,
+  .cm-ranura__pieza {
+    transition: none;
+  }
+
+  .cm-ranura__pieza:hover,
+  .cm-ranura__pieza--enlace:focus-visible {
+    transform: none;
+  }
+}
+
+/* =====================================================================
+   Responsive
+   ===================================================================== */
+
+/* Por debajo de este ancho el panal ya no cabe al lado de los piñones:
+   baja completo y conserva su composición. */
+@media (max-width: 900px) {
+  .construcciones-mantenimientos__cuerpo {
+    align-content: center;
+    justify-content: center;
+    padding-block: clamp(8px, 1.5vw, 20px);
+  }
+
+  .cm-escena {
+    margin-left: 0;
+    /* Pinones del tamano de digei en pantalla pequena (alli la unidad vale
+       0,847px: 864px de escena x 0,0980392 %), pero solo hasta donde el
+       panal siga cabiendo a su lado. Si no, toman el ancho que queda libre
+       (ventana - relleno 2x18 - separacion - panal (mismo ancho que el de 2 piezas de geomatica) - 20px de
+       margen para la barra), para que el panal no baje ni los pinones se
+       centren. Nunca por debajo del minimo de .55px que ya tenian. */
+    --cm-u: max(.55px, min(.847px,
+      calc((100vw - 36px - max(10px, 2.4vw) - 2.3 * clamp(104px, 22vw, 176px) - 20px) / 303.6)));
+  }
+
+  /* Mismo tamano que .fr-panal de finca-raiz en este rango. */
+  .cm-panal {
+    --cm-ranura: calc(clamp(104px, 22vw, 176px) * .92);
+  }
+}
+
+@media (max-width: 600px) {
+  .construcciones-mantenimientos {
+    padding: 14px 12px;
+  }
+
+  /* Como digei en celular (unidad = escena x 0,0980392 % x 1,52), con el
+     mismo tope: el panal tiene que seguir cabiendo al lado. Aqui el
+     relleno lateral es de 12px por lado. */
+  .cm-escena {
+    --cm-u: max(.55px, min(calc((100vw - 36px) * .0014902),
+      calc((100vw - 24px - max(10px, 2.4vw) - 2.3 * clamp(104px, 22vw, 176px) - 20px) / 303.6)));
+  }
+}
+
+/* Digei reduce su relleno lateral a 10px por debajo de 520px. */
+@media (max-width: 520px) {
+  .cm-escena {
+    --cm-u: max(.55px, min(calc((100vw - 20px) * .0014902),
+      calc((100vw - 24px - max(10px, 2.4vw) - 2.3 * clamp(104px, 22vw, 176px) - 20px) / 303.6)));
+  }
+}

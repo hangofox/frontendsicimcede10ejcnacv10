@@ -2,15 +2,15 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { GRUPOS_NIVEL_INTEGRANTES_DOCUMENTOS_SOLIC_INFRAEST, IntegrantesDocumentosSolicInfraestI, NIVELES_JERARQUIA_UNIDAD_MILITAR, RolIntegranteDocumentosSolicInfraestI } from '../../../../../interfaces/digei/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.interface';
-import { SolicitudesInfraestructurasI } from '../../../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
-import { CargosIntegrantesDocumentosI } from '../../../../../interfaces/panel-control/cargos-integrantes-documentos/cargos-integrantes-documentos.interface';
-import { HistorialIntegrantesDocumentosI } from '../../../../../interfaces/panel-control/historial-integrantes-documentos/historial-integrantes-documentos.interface';
+import { GRUPOS_NIVEL_INTEGRANTES_DOCUMENTOS_SOLIC_INFRAEST, IntegrantesDocumentosSolicInfraestI, NIVELES_JERARQUIA_UNIDAD_MILITAR, RolIntegranteDocumentosSolicInfraestI } from '../../../../../../interfaces/digei/construcciones-mantenimientos/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.interface';
+import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/construcciones-mantenimientos/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
+import { CargosIntegrantesDocumentosI } from '../../../../../../interfaces/panel-control/cargos-integrantes-documentos/cargos-integrantes-documentos.interface';
+import { HistorialIntegrantesDocumentosI } from '../../../../../../interfaces/panel-control/historial-integrantes-documentos/historial-integrantes-documentos.interface';
 
-import { IntegrantesDocumentosSolicInfraestService } from '../../../../../services/digei/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.service';
-import { CargosIntegrantesDocumentosService } from '../../../../../services/panel-control/cargos-integrantes-documentos/cargos-integrantes-documentos.service';
-import { HistorialIntegrantesDocumentosService } from '../../../../../services/panel-control/historial-integrantes-documentos/historial-integrantes-documentos.service';
-import { SpinnerService } from '../../../../../services/spinner/spinner.service';
+import { IntegrantesDocumentosSolicInfraestService } from '../../../../../../services/digei/construcciones-mantenimientos/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.service';
+import { CargosIntegrantesDocumentosService } from '../../../../../../services/panel-control/cargos-integrantes-documentos/cargos-integrantes-documentos.service';
+import { HistorialIntegrantesDocumentosService } from '../../../../../../services/panel-control/historial-integrantes-documentos/historial-integrantes-documentos.service';
+import { SpinnerService } from '../../../../../../services/spinner/spinner.service';
 
 import { AddUpdDelIntegranteDocumentosSolicInfraestComponent } from '../add-upd-del-integrante-documentos-solic-infraest/add-upd-del-integrante-documentos-solic-infraest.component';
 import { VistaIntegranteDocumentosSolicInfraestComponent } from '../vista-integrante-documentos-solic-infraest/vista-integrante-documentos-solic-infraest.component';

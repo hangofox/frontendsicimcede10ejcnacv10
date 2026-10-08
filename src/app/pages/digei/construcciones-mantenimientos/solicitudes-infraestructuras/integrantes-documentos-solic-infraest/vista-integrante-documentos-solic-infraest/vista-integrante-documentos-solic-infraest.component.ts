@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { IntegrantesDocumentosSolicInfraestI, ROLES_INTEGRANTES_DOCUMENTOS_SOLIC_INFRAEST } from '../../../../../interfaces/digei/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.interface';
+import { IntegrantesDocumentosSolicInfraestI, ROLES_INTEGRANTES_DOCUMENTOS_SOLIC_INFRAEST } from '../../../../../../interfaces/digei/construcciones-mantenimientos/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.interface';
 
 @Component({
   selector: 'app-vista-integrante-documentos-solic-infraest',

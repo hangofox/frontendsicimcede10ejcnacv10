@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { ResponseSolicitudInfraestructuraDTO } from '../../../interfaces/digei/solicitudes-infraestructuras/responseSolicitudInfraestructuraDTO.interface';
-import { SolicitudesInfraestructurasI, SolicitudesInfraestructurasMsj } from '../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
+import { ResponseSolicitudInfraestructuraDTO } from '../../../../interfaces/digei/construcciones-mantenimientos/solicitudes-infraestructuras/responseSolicitudInfraestructuraDTO.interface';
+import { SolicitudesInfraestructurasI, SolicitudesInfraestructurasMsj } from '../../../../interfaces/digei/construcciones-mantenimientos/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
 
 @Injectable({
   providedIn: 'root'

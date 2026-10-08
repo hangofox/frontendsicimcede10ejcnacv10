@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
-import { IntegrantesDocumentosSolicInfraestI, RolIntegranteDocumentosSolicInfraestI, ROLES_INTEGRANTES_DOCUMENTOS_SOLIC_INFRAEST } from '../../../../../interfaces/digei/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.interface';
-import { SolicitudesInfraestructurasI } from '../../../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
+import { IntegrantesDocumentosSolicInfraestI, RolIntegranteDocumentosSolicInfraestI, ROLES_INTEGRANTES_DOCUMENTOS_SOLIC_INFRAEST } from '../../../../../../interfaces/digei/construcciones-mantenimientos/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.interface';
+import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/construcciones-mantenimientos/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
 
 @Component({
   selector: 'app-add-upd-del-integrante-documentos-solic-infraest',

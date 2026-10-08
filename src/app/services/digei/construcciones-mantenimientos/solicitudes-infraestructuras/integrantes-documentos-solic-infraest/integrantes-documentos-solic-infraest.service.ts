@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { ResponseIntegrantesDocumentosSolicInfraestDTO } from '../../../../interfaces/digei/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/responseIntegrantesDocumentosSolicInfraestDTO.interface';
-import { IntegrantesDocumentosSolicInfraestI, IntegrantesDocumentosSolicInfraestMsj } from '../../../../interfaces/digei/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.interface';
+import { ResponseIntegrantesDocumentosSolicInfraestDTO } from '../../../../../interfaces/digei/construcciones-mantenimientos/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/responseIntegrantesDocumentosSolicInfraestDTO.interface';
+import { IntegrantesDocumentosSolicInfraestI, IntegrantesDocumentosSolicInfraestMsj } from '../../../../../interfaces/digei/construcciones-mantenimientos/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.interface';
 
 @Injectable({
   providedIn: 'root'

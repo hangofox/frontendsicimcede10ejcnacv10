@@ -1,3 +1,58 @@
-<section class="cuerpo-modulo" aria-labelledby="titulo-construcciones-mantenimientos">
-  <h1 id="titulo-construcciones-mantenimientos">CONSTRUCCIONES Y MANTENIMIENTOS</h1>
+<section class="construcciones-mantenimientos" aria-label="Construcciones y Mantenimientos">
+  <div class="construcciones-mantenimientos__cuerpo">
+    <div class="cm-escena">
+      <div class="cm-engranajes">
+        <div class="cm-pinon cm-pinon--digei">
+          <div class="cm-pinon__rotor" aria-hidden="true">
+            <span class="cm-pinon__anillo"></span>
+            <!-- Copia de la parte interior del mismo PNG, recentrada sobre los dientes. -->
+            <span class="cm-pinon__anillo cm-pinon__anillo--interior"></span>
+          </div>
+          <a
+            class="cm-pinon__medallon cm-pinon__medallon--enlace"
+            routerLink="/digei"
+            aria-label="Ir al módulo DIGEI"
+          >
+            <span class="cm-pinon__medallon-img" aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <div class="cm-pinon cm-pinon--construcciones">
+          <div class="cm-pinon__rotor" aria-hidden="true">
+            <span class="cm-pinon__anillo"></span>
+            <!-- Copia interior del mismo PNG, recentrada sobre los dientes. -->
+            <span class="cm-pinon__anillo cm-pinon__anillo--interior"></span>
+          </div>
+          <span class="cm-pinon__medallon" role="img" aria-label="Construcciones y Mantenimientos">
+            <span class="cm-pinon__medallon-img" aria-hidden="true"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panal 2-2 segun la referencia construcciones_y_mantenimientos_futurista_01:
+         la fila de abajo va corrida medio hexagono a la derecha. Ocupa la
+         misma caja del panal de finca-raiz para que los piñones queden en la
+         misma posición. Solicitudes navega; las otras tres se realzan al pasar el
+         cursor pero todavia no llevan a ningun sitio. -->
+    <div class="cm-panal">
+      <article class="cm-ranura cm-ranura--solicitudes">
+        <a class="cm-ranura__pieza cm-ranura__pieza--enlace"
+           routerLink="/digei/construcciones-mantenimientos/solicitudes-infraestructuras/listado-solicitudes-infraestructuras"
+           aria-label="Solicitudes de construcción y mantenimiento"></a>
+      </article>
+
+      <article class="cm-ranura cm-ranura--avales">
+        <span class="cm-ranura__pieza" role="img" aria-label="Avales de construcción y mantenimiento"></span>
+      </article>
+
+      <article class="cm-ranura cm-ranura--dashboards">
+        <span class="cm-ranura__pieza" role="img" aria-label="Dashboards de construcción y mantenimiento"></span>
+      </article>
+
+      <article class="cm-ranura cm-ranura--estadisticas">
+        <span class="cm-ranura__pieza" role="img" aria-label="Estadísticas de construcción y mantenimiento"></span>
+      </article>
+    </div>
+  </div>
 </section>
