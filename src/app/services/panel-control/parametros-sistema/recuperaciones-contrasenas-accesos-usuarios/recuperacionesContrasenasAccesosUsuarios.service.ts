@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ResponseRecuperacionContrasenaAccesoUsuarioDTO } from '../../../../interfaces/panel-control/parametros-sistema/recuperaciones-contrasenas-accesos-usuarios/responseRecuperacionContrasenaAccesoUsuarioDTO.interface';
-import { RecuperacionesContrasenasAccesosUsuariosI, RecuperacionesContrasenasAccesosUsuariosMsj } from '../../../../interfaces/panel-control/parametros-sistema/recuperaciones-contrasenas-accesos-usuarios/recuperacionesContrasenasAccesosUsuarios.interface';
+import { EnvioCodigoActivacionRecuperacionContrasenaI, EnvioCodigoActivacionRecuperacionContrasenaMsj, RecuperacionesContrasenasAccesosUsuariosI, RecuperacionesContrasenasAccesosUsuariosMsj } from '../../../../interfaces/panel-control/parametros-sistema/recuperaciones-contrasenas-accesos-usuarios/recuperacionesContrasenasAccesosUsuarios.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +83,12 @@ export class RecuperacionesContrasenasAccesosUsuariosService {
   //VACÍA (ELIMINA) TODOS LOS CÓDIGOS DE RECUPERACIÓN PREVIOS DE UN USUARIO ANTES DE GENERARLE UNO NUEVO:
   toEmptyRecoveriesPasswordsAccessUsersbyIdUsuario(idUsuario: number): Observable<RecuperacionesContrasenasAccesosUsuariosMsj> {
     return this.http.delete<RecuperacionesContrasenasAccesosUsuariosMsj>(`${this.baseUrl}/recuperacionesContrasenasAccesosUsuarios/vaciar/${idUsuario}`);
+  }
+  
+  //ENVÍA EL CÓDIGO DE ACTIVACIÓN AL CORREO ELEGIDO (ENDPOINT PÚBLICO). EL BACKEND GENERA EL CÓDIGO, GUARDA LA
+  //RECUPERACIÓN, REEMPLAZA LAS ETIQUETAS DE LA PLANTILLA Y ENVÍA EL CORREO; AL NAVEGADOR SOLO VUELVE EL MENSAJE.
+  sendActivationCodePasswordRecovery(envio: EnvioCodigoActivacionRecuperacionContrasenaI): Observable<EnvioCodigoActivacionRecuperacionContrasenaMsj> {
+    return this.http.post<EnvioCodigoActivacionRecuperacionContrasenaMsj>(`${this.baseUrl}/recuperacionesContrasenasAccesosUsuarios/enviarCodigoActivacion`, envio);
   }
 
 }

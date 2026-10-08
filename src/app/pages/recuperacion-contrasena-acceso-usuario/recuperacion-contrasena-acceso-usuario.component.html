@@ -140,34 +140,57 @@
           </span>
         </header>
 
-        <form (ngSubmit)="buscarUsuario()" #formRecuperacion="ngForm" novalidate class="panel">
-          <p class="indicacion">Digite su número de documento de identificación.</p>
+        <!-- El recuadro cambia de contenido en tres pasos: documento, eleccion del
+             correo y confirmacion del envio. Todo va en la misma posicion del marco. -->
+        @if (!usuarioEncontrado) {
+          <form (ngSubmit)="buscarUsuario()" #formRecuperacion="ngForm" novalidate class="panel">
+            <p class="indicacion">Digite su número de documento de identificación.</p>
 
-          <label for="numeroDocumento">
-            <svg class="ico" viewBox="3.7 3.7 17.2 17.2" aria-hidden="true" focusable="false">
-              <rect x="4.2" y="6" width="15.6" height="12" rx="1.8" />
-              <circle cx="9.4" cy="11" r="1.9" />
-              <path d="M6.2 15.4c0-1.7 1.4-2.6 3.2-2.6s3.2.9 3.2 2.6M14.6 10.4h3.4M14.6 13.4h3.4" />
-            </svg>
-            <span>Número de documento</span>
-          </label>
-          <input id="numeroDocumento" name="numeroDocumento" [(ngModel)]="numeroDocumentoIdentificacion" required
-            inputmode="numeric" autocomplete="off" maxlength="20" placeholder="Ej. 1234567890">
+            <label for="numeroDocumento">
+              <svg class="ico" viewBox="3.7 3.7 17.2 17.2" aria-hidden="true" focusable="false">
+                <rect x="4.2" y="6" width="15.6" height="12" rx="1.8" />
+                <circle cx="9.4" cy="11" r="1.9" />
+                <path d="M6.2 15.4c0-1.7 1.4-2.6 3.2-2.6s3.2.9 3.2 2.6M14.6 10.4h3.4M14.6 13.4h3.4" />
+              </svg>
+              <span>Número de documento</span>
+            </label>
+            <input id="numeroDocumento" name="numeroDocumento" [(ngModel)]="numeroDocumentoIdentificacion" required
+              inputmode="numeric" autocomplete="off" maxlength="20" placeholder="Ej. 1234567890">
 
-          <button type="submit" [disabled]="formRecuperacion.invalid || cargando">
-            <span class="continuar-texto">{{ cargando ? 'Buscando' : 'Continuar' }}</span>
-          </button>
-        </form>
+            <button type="submit" [disabled]="formRecuperacion.invalid || cargando">
+              <span class="continuar-texto">{{ cargando ? 'Buscando' : 'Continuar' }}</span>
+            </button>
+          </form>
+        } @else if (!codigoEnviado) {
+          <form (ngSubmit)="enviarCodigoActivacion()" novalidate class="panel">
+            <p class="indicacion">
+              {{ usuarioEncontrado.nombresUsuario }} {{ usuarioEncontrado.primerApellidoUsuario }},
+              elija el correo al que se enviará el código de activación.
+            </p>
+
+            @for (opcion of mediosEnvioDisponibles; track opcion.medio) {
+              <label class="medio-envio">
+                <input type="radio" name="medioEnvio" [value]="opcion.medio" [(ngModel)]="medioEnvio">
+                <span>{{ opcion.etiqueta }}: {{ opcion.correo }}</span>
+              </label>
+            } @empty {
+              <p class="indicacion">
+                No tiene correos electrónicos registrados. Comuníquese con la Mesa de Ayuda.
+              </p>
+            }
+
+            <button type="submit" [disabled]="!medioEnvio || enviandoCodigo">
+              <span class="continuar-texto">{{ enviandoCodigo ? 'Enviando' : 'Enviar código' }}</span>
+            </button>
+          </form>
+        } @else {
+          <div class="panel" role="status">
+            <p class="indicacion">{{ mensajeEnvio }} Revise su bandeja de entrada.</p>
+          </div>
+        }
 
         @if (mensajeError) {
           <p class="mensaje-error" role="alert">{{ mensajeError }}</p>
-        }
-
-        @if (usuarioEncontrado) {
-          <p class="confirmacion" role="status">
-            Usuario encontrado: {{ usuarioEncontrado.nombresUsuario }} {{ usuarioEncontrado.primerApellidoUsuario }}.
-            Continúe con el envío del código de activación.
-          </p>
         }
 
         <div class="volver">

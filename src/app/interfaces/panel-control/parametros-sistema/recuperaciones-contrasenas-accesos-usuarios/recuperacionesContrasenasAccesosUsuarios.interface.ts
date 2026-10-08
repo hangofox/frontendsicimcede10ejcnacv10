@@ -11,3 +11,18 @@ export interface RecuperacionesContrasenasAccesosUsuariosI {
 export interface RecuperacionesContrasenasAccesosUsuariosMsj {
     mensaje: string;
 }
+
+//MEDIOS POR LOS QUE SE PUEDE ENVIAR EL CÓDIGO DE ACTIVACIÓN (MISMOS VALORES QUE ESPERA EL BACKEND):
+export type MedioEnvioCodigoActivacion = 'CORREO ELECTRONICO INSTITUCIONAL' | 'CORREO ELECTRONICO PERSONAL';
+
+//PETICIÓN PÚBLICA DE ENVÍO DEL CÓDIGO DE ACTIVACIÓN: SOLO VIAJAN EL ID DEL USUARIO Y EL MEDIO.
+//EL CÓDIGO, LAS ETIQUETAS *[NUMDOCIDSICIM]* Y *[CODACTIVAUSICIM]* Y LOS DATOS SMTP LOS RESUELVE EL BACKEND.
+export interface EnvioCodigoActivacionRecuperacionContrasenaI {
+    idUsuario: number;
+    medioEnvio: MedioEnvioCodigoActivacion;
+}
+
+export interface EnvioCodigoActivacionRecuperacionContrasenaMsj {
+    mensaje: string;
+    banderaexito: boolean;
+}

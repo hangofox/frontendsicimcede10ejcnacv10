@@ -471,6 +471,29 @@ input.ng-touched.ng-invalid {
   box-shadow: 0 0 0 1px rgb(200 23 43 / 65%);
 }
 
+/* Opciones de correo para enviar el codigo de activacion: texto mas pequeno
+   que las etiquetas del formulario y radio nativo, sin el estilo de caja de
+   los campos de texto (que se aplica a todo input). */
+.medio-envio {
+  font-size: 1.3cqw;
+  line-height: 1.2;
+  cursor: pointer;
+
+  input[type="radio"] {
+    flex: 0 0 auto;
+    width: 1.5cqw;
+    height: 1.5cqw;
+    min-width: 12px;
+    min-height: 12px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    accent-color: var(--login-neon);
+    cursor: pointer;
+  }
+}
+
 /* ==========================================================================
    Boton Continuar — mismo tratamiento que el LOGIN
    ========================================================================== */
