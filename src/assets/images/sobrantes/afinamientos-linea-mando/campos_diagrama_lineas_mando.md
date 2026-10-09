@@ -49,6 +49,7 @@ Cada propiedad de las cuatro interfaces existentes aparece una vez en el diagram
 | SOLICITUD_INFRAESTRUCTURA | fechaHMSModificacionSolicitudInfraestructura | fecha_hms_modificacion_solicitud_infraestructura |
 
 La solicitud agrega id_linea_mando como nueva FK. Las cuatro entidades propuestas se muestran completas en el PNG.
+Se mantienen PK y FK. Los controles de duplicados de versiones, unidades, órdenes y puestos se realizan en el backend, sin restricciones adicionales de unicidad en este modelo.
 HISTORIAL_INTEGRANTE_DOCUMENTO es paramétrica: no existe FK desde solicitudes ni desde INTEGRANTE_SOLICITUD hacia ella. Los datos personales y la firma se conservan como copia histórica independiente.
 Las referencias FK* pertenecen a catálogos fuera del ámbito de líneas de mando y se identifican explícitamente al pie del diagrama.
 No se infieren tipos Oracle ni nulabilidad de las propiedades TypeScript. El DDL de las tablas existentes debe verificarse antes de implementar.

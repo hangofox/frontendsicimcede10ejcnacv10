@@ -128,25 +128,21 @@ $route=@(
  '       nombre',
  '       estado',
  '       vigente_desde',
- '       vigente_hasta [opcional]',
- 'UQ (id_unidad_origen, version)'
+ '       vigente_hasta [opcional]'
 )
 $stage=@(
  'PK  id_etapa',
  'FK  id_linea_mando',
  'FK  id_unidad_militar',
  '       orden_etapa',
- '       nombre_etapa',
- 'UQ (id_linea_mando, orden_etapa)',
- 'UQ (id_linea_mando, id_unidad_militar)'
+ '       nombre_etapa'
 )
 $position=@(
  'PK  id_cargo_etapa',
  'FK  id_etapa',
  'FK  id_cargo_integrante_documentos',
  '       orden_firma',
- '       obligatorio',
- 'UQ (id_etapa, orden_firma)'
+ '       obligatorio'
 )
 $member=@(
  'PK  id_integrante_solicitud',
@@ -159,13 +155,12 @@ $member=@(
  '       cargo_texto',
  '       unidad_nombre',
  '       firma_archivo_versionado',
- '       fecha_registro',
- 'UQ (id_solicitud_infraestructura, id_cargo_etapa)'
+ '       fecha_registro'
 )
 Rect 0 0 5100 200 '#142D47'
 Text 'SICIM | Líneas de mando configurables' 100 30 57 '#FFFFFF' $true
 Text 'Diagrama entidad-relación con patas de gallina | Todos los campos del modelo propuesto, uno por fila' 103 111 33 '#D1E2F4'
-Text 'PK: clave primaria     FK: clave foránea     UQ: combinación única     FK*: referencia externa detallada al pie' 100 231 29
+Text 'PK: clave primaria     FK: clave foránea     FK*: referencia externa detallada al pie' 100 231 29
 Cardinality 1800 254 1900 254 'one-one' '#243449'; Text 'Uno (1)' 1860 231 29
 Cardinality 2110 254 2210 254 'zero-one' '#243449'; Text 'Cero o uno (0..1)' 2170 231 29
 Cardinality 2610 254 2710 254 'zero-many' '#243449'; Text 'Cero o muchos (0..N)' 2670 231 29
@@ -187,13 +182,13 @@ Edge @(2550,2320,2550,2500) 'Integrantes de la solicitud' 2580 2390 '#A46023'
 Edge @(4280,1790,4280,2380,3400,2380,3400,2770,3270,2770) 'Puesto ocupado en esta version de ruta' 3660 2325 '#167D75'
 
 Table 'UNIDAD_MILITAR' 'Existente | 7 campos de la interfaz' 100 400 540 '#28618D' $unit 'El nivel clasifica la unidad; no determina su ruta.'
-Table 'LINEA_MANDO' 'Nueva | 7 campos y 1 restricción de unicidad' 1830 400 580 '#167D75' $route 'FK id_unidad_origen referencia UNIDAD_MILITAR.'
-Table 'ETAPA_LINEA_MANDO' 'Nueva | 5 campos y 2 restricciones de unicidad' 3560 400 540 '#167D75' $stage 'Etapa 1: unidad solicitante. Orden positivo y sin repetidos.'
+Table 'LINEA_MANDO' 'Nueva | 7 campos' 1830 400 580 '#167D75' $route 'FK id_unidad_origen referencia UNIDAD_MILITAR.'
+Table 'ETAPA_LINEA_MANDO' 'Nueva | 5 campos' 3560 400 540 '#167D75' $stage 'Etapa 1: unidad solicitante. El backend valida orden y duplicados.'
 Table 'CARGO_INTEGRANTE_DOCUMENTO' 'Existente | 2 campos de la interfaz' 100 1300 310 '#28618D' $cargo 'Catálogo de cargos reutilizable en cualquier etapa.'
 Table 'SOLICITUD_INFRAESTRUCTURA' 'Adaptar | 17 campos actuales y 1 FK nueva' 1830 1300 1020 '#A46023' $request 'Conservar todos los campos actuales; agregar id_linea_mando.'
-Table 'CARGO_ETAPA_LINEA' 'Nueva | 5 campos y 1 restricción de unicidad' 3560 1300 490 '#167D75' $position 'Un registro por puesto de participación de la etapa.'
+Table 'CARGO_ETAPA_LINEA' 'Nueva | 5 campos' 3560 1300 490 '#167D75' $position 'Un registro por puesto de participación de la etapa.'
 Table 'HISTORIAL_INTEGRANTE_DOCUMENTO' 'Paramétrica | 17 campos de la interfaz' 100 2500 980 '#28618D' $history 'Sin relación con solicitudes ni con INTEGRANTE_SOLICITUD.'
-Table 'INTEGRANTE_SOLICITUD' 'Detalle normalizado | 11 campos y 1 restricción de unicidad' 1830 2500 800 '#A46023' $member 'Datos y firma copiados; sin FK al historial paramétrico.'
+Table 'INTEGRANTE_SOLICITUD' 'Detalle normalizado | 11 campos' 1830 2500 800 '#A46023' $member 'Datos y firma copiados; sin FK al historial paramétrico.'
 
 Rect 3560 2520 1440 930 '#E4EDF5'
 Text 'REFERENCIAS EXTERNAS (FK*)' 3590 2545 34 '#142D47' $true
@@ -202,7 +197,7 @@ Text 'Sus entidades pertenecen a otros catálogos del sistema:' 3590 2644 29
 Text "SOLICITUD_INFRAESTRUCTURA.id_tipo_solicitud_infraestructura`n  referencia TIPOS_SOLICITUDES_INFRAESTRUCTURAS`n  clave id_tipo_solicitud_infraestructura" 3590 2715 27
 Text "SOLICITUD_INFRAESTRUCTURA.id_infraestructura`n  referencia INFRAESTRUCTURAS`n  clave id_infraestructura" 3590 2860 27
 Text "HISTORIAL_INTEGRANTE_DOCUMENTO.id_tipo_documento_identificacion`n  referencia TIPOS_DOCUMENTOS_IDENTIFICACION`n  clave id_tipo_documento_identificacion" 3590 3005 27
-Text 'INTEGRIDAD E HISTÓRICO' 3590 3170 32 '#142D47' $true
+Text 'VALIDACIONES DEL BACKEND E HISTÓRICO' 3590 3170 32 '#142D47' $true
 Text "La ruta debe corresponder a la unidad solicitante.`nEl puesto del integrante debe pertenecer a esa ruta.`nLa persona seleccionada debe corresponder a la unidad y cargo.`nCongelar ruta, datos personales y archivo de firma al emitir.`nEvitar vigencias superpuestas para la misma unidad origen." 3590 3220 28
 
 Text 'ALCANCE Y FUENTE DE LOS CAMPOS' 100 3540 33 '#142D47' $true
@@ -210,6 +205,7 @@ Text 'Las 4 entidades existentes muestran todas las propiedades de sus interface
 Text 'Las 4 entidades propuestas desglosan todos sus campos. Los seis datos de cada puesto antiguo se conservan en el detalle normalizado.' 100 3648 29
 Text 'Nombres lógicos en snake_case derivados de las interfaces. El nombre físico, tipo Oracle y nulabilidad requieren contrastarse con el DDL real.' 100 3696 29
 Text 'Las patas de gallina indican 0..N registros mientras se configura; publicar una ruta exige etapas y puestos completos. No se modificó el sistema.' 100 3744 29
+Text 'El backend controla duplicados de versiones por unidad, unidades y órdenes por ruta, órdenes de firma por etapa e integrantes por solicitud y puesto.' 100 3790 29
 
 Rect 100 3840 4900 260 '#FFFFFF'
 Text 'EJEMPLOS DE CONFIGURACIÓN | Orden indicado por el usuario' 132 3862 34 '#142D47' $true
@@ -229,6 +225,7 @@ $mappingHeader=@(
 $mappingFooter=@(
  '',
  'La solicitud agrega id_linea_mando como nueva FK. Las cuatro entidades propuestas se muestran completas en el PNG.',
+ 'Se mantienen PK y FK. Los controles de duplicados de versiones, unidades, órdenes y puestos se realizan en el backend, sin restricciones adicionales de unicidad en este modelo.',
  'HISTORIAL_INTEGRANTE_DOCUMENTO es paramétrica: no existe FK desde solicitudes ni desde INTEGRANTE_SOLICITUD hacia ella. Los datos personales y la firma se conservan como copia histórica independiente.',
  'Las referencias FK* pertenecen a catálogos fuera del ámbito de líneas de mando y se identifican explícitamente al pie del diagrama.',
  'No se infieren tipos Oracle ni nulabilidad de las propiedades TypeScript. El DDL de las tablas existentes debe verificarse antes de implementar.'

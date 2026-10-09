@@ -140,52 +140,27 @@
           </span>
         </header>
 
-        <!-- El recuadro cambia de contenido en tres pasos: documento, eleccion del
-             correo y confirmacion del envio. Todo va en la misma posicion del marco. -->
-        @if (!usuarioEncontrado) {
-          <form (ngSubmit)="buscarUsuario()" #formRecuperacion="ngForm" novalidate class="panel">
-            <p class="indicacion">Digite su número de documento de identificación.</p>
+        <!-- Paso 2: codigo recibido por correo y nueva contrasena. El paso 1
+             (documento y envio del codigo) es seguimiento-olvido-contrasena. -->
+        @if (!mensajeExito) {
+          <form (ngSubmit)="restablecerContrasenaAccesoUsuario()" novalidate class="panel panel-restablecer">
+            <p class="indicacion">Digite el código que recibió por correo y su nueva contraseña.</p>
 
-            <label for="numeroDocumento">
-              <svg class="ico" viewBox="3.7 3.7 17.2 17.2" aria-hidden="true" focusable="false">
-                <rect x="4.2" y="6" width="15.6" height="12" rx="1.8" />
-                <circle cx="9.4" cy="11" r="1.9" />
-                <path d="M6.2 15.4c0-1.7 1.4-2.6 3.2-2.6s3.2.9 3.2 2.6M14.6 10.4h3.4M14.6 13.4h3.4" />
-              </svg>
-              <span>Número de documento</span>
-            </label>
-            <input id="numeroDocumento" name="numeroDocumento" [(ngModel)]="numeroDocumentoIdentificacion" required
-              inputmode="numeric" autocomplete="off" maxlength="20" placeholder="Ej. 1234567890">
+            <input id="codigoActivacion" name="codigoActivacion" [(ngModel)]="codigoActivacion" required
+              inputmode="numeric" autocomplete="one-time-code" maxlength="10"
+              placeholder="Código de activación" aria-label="Código de activación">
+            <input id="passwordUsuario1" name="passwordUsuario1" type="password" [(ngModel)]="passwordUsuario1" required
+              autocomplete="new-password" placeholder="Nueva contraseña" aria-label="Nueva contraseña">
+            <input id="passwordUsuario2" name="passwordUsuario2" type="password" [(ngModel)]="passwordUsuario2" required
+              autocomplete="new-password" placeholder="Confirmar contraseña" aria-label="Confirmar contraseña">
 
-            <button type="submit" [disabled]="formRecuperacion.invalid || cargando">
-              <span class="continuar-texto">{{ cargando ? 'Buscando' : 'Continuar' }}</span>
-            </button>
-          </form>
-        } @else if (!codigoEnviado) {
-          <form (ngSubmit)="enviarCodigoActivacion()" novalidate class="panel">
-            <p class="indicacion">
-              {{ usuarioEncontrado.nombresUsuario }} {{ usuarioEncontrado.primerApellidoUsuario }},
-              elija el correo al que se enviará el código de activación.
-            </p>
-
-            @for (opcion of mediosEnvioDisponibles; track opcion.medio) {
-              <label class="medio-envio">
-                <input type="radio" name="medioEnvio" [value]="opcion.medio" [(ngModel)]="medioEnvio">
-                <span>{{ opcion.etiqueta }}: {{ opcion.correo }}</span>
-              </label>
-            } @empty {
-              <p class="indicacion">
-                No tiene correos electrónicos registrados. Comuníquese con la Mesa de Ayuda.
-              </p>
-            }
-
-            <button type="submit" [disabled]="!medioEnvio || enviandoCodigo">
-              <span class="continuar-texto">{{ enviandoCodigo ? 'Enviando' : 'Enviar código' }}</span>
+            <button type="submit" [disabled]="!codigoActivacion || !passwordUsuario1 || !passwordUsuario2 || cargando">
+              <span class="continuar-texto">{{ cargando ? 'Guardando' : 'Restablecer' }}</span>
             </button>
           </form>
         } @else {
           <div class="panel" role="status">
-            <p class="indicacion">{{ mensajeEnvio }} Revise su bandeja de entrada.</p>
+            <p class="indicacion">{{ mensajeExito }} En un momento volverá al login.</p>
           </div>
         }
 

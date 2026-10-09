@@ -494,6 +494,30 @@ input.ng-touched.ng-invalid {
   }
 }
 
+/* Paso 2: tres campos (codigo y contrasena dos veces) dentro del mismo
+   recuadro que en el paso 1 tiene uno solo. Sin etiquetas visibles (el texto
+   va en el placeholder y en aria-label) y con campos algo mas bajos, para que
+   quepan sin desbordar el recuadro. */
+.panel-restablecer {
+  gap: .55cqw;
+
+  input {
+    height: 3.2cqw;
+  }
+
+  button {
+    margin-top: .2cqw;
+  }
+}
+
+/* En celular los campos usan alto fijo en px (39px en el resto de la pantalla);
+   la altura compacta en cqw los dejaria demasiado bajos. */
+@media (max-width: 720px) {
+  .panel-restablecer input {
+    height: 36px;
+  }
+}
+
 /* ==========================================================================
    Boton Continuar — mismo tratamiento que el LOGIN
    ========================================================================== */
@@ -857,6 +881,7 @@ a:focus-visible {
   .encabezado,
   .panel,
   .confirmacion,
+  .mensaje-error,
   .volver {
     position: relative;
     z-index: 1;

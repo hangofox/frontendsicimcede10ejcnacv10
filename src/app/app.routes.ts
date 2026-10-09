@@ -7,12 +7,12 @@ export const routes: Routes = [
   {
     path: 'recuperacion-contrasena-acceso-usuario',
     loadComponent: () => import('./pages/recuperacion-contrasena-acceso-usuario/recuperacion-contrasena-acceso-usuario.component').then(m => m.RecuperacionContrasenaAccesoUsuarioComponent),
-    title: 'Recuperación de contraseña | SICIM'
+    title: 'Restablecer contraseña | SICIM'
   },
   {
     path: 'seguimiento-olvido-contrasena',
     loadComponent: () => import('./pages/seguimiento-olvido-contrasena/seguimiento-olvido-contrasena.component').then(m => m.SeguimientoOlvidoContrasenaComponent),
-    title: 'Seguimiento de contraseña | SICIM'
+    title: 'Recuperación de contraseña | SICIM'
   },
   {
     path: '',

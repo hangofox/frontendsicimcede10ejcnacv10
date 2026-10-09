@@ -81,6 +81,12 @@ export class UsuariosService {
   }
   
   //MODIFICAR CONTRASEÑA.
+  //RECUPERACIÓN DE CONTRASEÑA CON CÓDIGO DE ACTIVACIÓN (ENDPOINT PÚBLICO). EL BACKEND VALIDA QUE EL CÓDIGO SEA DE ESE
+  //USUARIO, ESTÉ VIGENTE Y PENDIENTE DE USO; CAMBIA LA CONTRASEÑA Y MARCA EL CÓDIGO COMO USADO.
+  recoverPasswordAccessUserbyActivationCode(codigoActivacion: string, idUsuario: number, passwordUsuario: string): Observable<UsuariosMsj> {
+     return this.http.put<UsuariosMsj>(`${this.baseUrl}/usuarios/recuperacionContrasena/${codigoActivacion}/${idUsuario}/${passwordUsuario}`, null);
+  }
+
   updatePassword(idUsuario: number, passwordUsuario: String): Observable<UsuariosMsj> {
      return this.http.put<UsuariosMsj>(`${this.baseUrl}/usuarios/actualizarPassword/${idUsuario}/${passwordUsuario}`, null);
   }

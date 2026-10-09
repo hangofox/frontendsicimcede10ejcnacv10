@@ -1,15 +1,15 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { UsuariosI } from '../../interfaces/panel-control/usuarios/usuarios.interface';
+import { Router, RouterLink } from '@angular/router';
 import { UsuariosService } from '../../services/panel-control/usuarios/usuarios.service';
-import { MedioEnvioCodigoActivacion } from '../../interfaces/panel-control/parametros-sistema/recuperaciones-contrasenas-accesos-usuarios/recuperacionesContrasenasAccesosUsuarios.interface';
 import { RecuperacionesContrasenasAccesosUsuariosService } from '../../services/panel-control/parametros-sistema/recuperaciones-contrasenas-accesos-usuarios/recuperacionesContrasenasAccesosUsuarios.service';
 import { LoginLogoComponent } from '../login/login-logo.component';
 import { LoginPinonComponent } from '../login/login-pinon.component';
 import { FechaAccesoComponent } from '../login/fecha-acceso.component';
 import { PiePaginaComponent } from '../pie-pagina/pie-pagina.component';
 
+//PASO 2 DE LA RECUPERACIÓN (MISMO PATRÓN DEL FRONTEND SIGEPS): EL USUARIO DIGITA EL CÓDIGO DE ACTIVACIÓN QUE
+//RECIBIÓ POR CORREO Y SU NUEVA CONTRASEÑA. EL PASO 1 ES SeguimientoOlvidoContrasenaComponent.
 @Component({
   selector: 'app-recuperacion-contrasena-acceso-usuario',
   standalone: true,
@@ -18,130 +18,138 @@ import { PiePaginaComponent } from '../pie-pagina/pie-pagina.component';
   styleUrl: './recuperacion-contrasena-acceso-usuario.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RecuperacionContrasenaAccesoUsuarioComponent {
-  numeroDocumentoIdentificacion = '';
-  usuarioEncontrado: UsuariosI | null = null;
+export class RecuperacionContrasenaAccesoUsuarioComponent implements OnInit {
+  idUsuarioRecibido = 0;
+  numeroDocumentoIdentificacionUsuarioRecibido = '';
+
+  codigoActivacion = '';
+  passwordUsuario1 = '';
+  passwordUsuario2 = '';
+
   mensajeError = '';
+  mensajeExito = '';
   cargando = false;
 
-  //ENVÍO DEL CÓDIGO DE ACTIVACIÓN:
-  medioEnvio: MedioEnvioCodigoActivacion | '' = '';
-  enviandoCodigo = false;
-  codigoEnviado = false;
-  mensajeEnvio = '';
-
   constructor(
+    private readonly router: Router,
     private readonly usuariosService: UsuariosService,
     private readonly recuperacionesService: RecuperacionesContrasenasAccesosUsuariosService,
     private readonly changeDetectorRef: ChangeDetectorRef
   ) {}
 
-  //CORREOS DEL USUARIO ENCONTRADO QUE PUEDEN RECIBIR EL CÓDIGO, ENMASCARADOS PARA MOSTRARLOS.
-  get mediosEnvioDisponibles(): { medio: MedioEnvioCodigoActivacion; etiqueta: string; correo: string }[] {
-    const usuario = this.usuarioEncontrado;
-    if (!usuario) return [];
-    const medios: { medio: MedioEnvioCodigoActivacion; etiqueta: string; correo: string }[] = [];
-    const institucional = String(usuario.correoElectronicoInstitucionalUsuario ?? '').trim();
-    const personal = String(usuario.correoElectronicoPersonalUsuario ?? '').trim();
-    if (institucional) medios.push({ medio: 'CORREO ELECTRONICO INSTITUCIONAL', etiqueta: 'Correo institucional', correo: this.enmascararCorreo(institucional) });
-    if (personal) medios.push({ medio: 'CORREO ELECTRONICO PERSONAL', etiqueta: 'Correo personal', correo: this.enmascararCorreo(personal) });
-    return medios;
+  ngOnInit(): void {
+    //DATOS GUARDADOS POR EL PASO ANTERIOR (SeguimientoOlvidoContrasenaComponent) AL ENVIAR EL CÓDIGO:
+    this.idUsuarioRecibido = Number(sessionStorage.getItem('idUsuarioEnviado') || 0);
+    this.numeroDocumentoIdentificacionUsuarioRecibido = sessionStorage.getItem('numeroDocumentoIdentificacionUsuarioEnviado') || '';
+
+    //SI ENTRAN DIRECTO A ESTA PÁGINA (POR EJEMPLO ESCRIBIENDO LA URL) SIN HABER PEDIDO EL CÓDIGO, VUELVEN AL PASO 1:
+    if (!this.idUsuarioRecibido || !this.numeroDocumentoIdentificacionUsuarioRecibido) {
+      this.router.navigate(['/seguimiento-olvido-contrasena']);
+    }
   }
 
-  //MUESTRA SOLO LAS DOS PRIMERAS LETRAS DEL USUARIO DEL CORREO Y EL DOMINIO (EJ. he*****@ejercito.mil.co).
-  private enmascararCorreo(correo: string): string {
-    const arroba = correo.indexOf('@');
-    if (arroba < 1) return '*****';
-    return correo.slice(0, Math.min(2, arroba)) + '*****' + correo.slice(arroba);
+  //ENCRIPTA LA CONTRASEÑA CON EL MISMO ESQUEMA DEL LOGIN (BASE64 APLICADO 10 VECES) QUE ESPERA EL BACKEND:
+  private obtenerPasswordUsuarioEncriptado(passwordUsuarioDesencriptado: string): string {
+    let passwordUsuarioEncriptado = passwordUsuarioDesencriptado;
+    for (let i = 0; i < 10; i++) {
+      passwordUsuarioEncriptado = btoa(passwordUsuarioEncriptado);
+    }
+    return passwordUsuarioEncriptado;
   }
 
-  //BUSCA AL USUARIO POR NÚMERO DE DOCUMENTO DE IDENTIFICACIÓN PARA INICIAR LA RECUPERACIÓN.
-  //MISMO PATRÓN QUE EL PROYECTO DE REFERENCIA: LA RECUPERACIÓN NO PARTE DEL NICKNAME SINO
-  //DEL DOCUMENTO, Y AL ENCONTRARLO SE DEJAN LOS DATOS EN sessionStorage PARA EL PASO SIGUIENTE.
-  buscarUsuario(): void {
+  //CONVIERTE LA FECHA DEL BACKEND A Date (null SI NO SE PUEDE LEER):
+  private aFecha(valor: unknown): Date | null {
+    if (!valor) return null;
+    const fecha = new Date(String(valor));
+    return isNaN(fecha.getTime()) ? null : fecha;
+  }
+
+  private terminarConError(mensaje: string): void {
+    this.mensajeError = mensaje;
+    this.cargando = false;
+    this.changeDetectorRef.markForCheck();
+  }
+
+  //RESTABLECE LA CONTRASEÑA DE ACCESO DEL USUARIO CON EL CÓDIGO DE ACTIVACIÓN RECIBIDO POR CORREO:
+  restablecerContrasenaAccesoUsuario(): void {
     this.mensajeError = '';
-    this.usuarioEncontrado = null;
-    this.medioEnvio = '';
-    this.codigoEnviado = false;
-    this.mensajeEnvio = '';
+    this.mensajeExito = '';
 
-    const numeroDocumento = this.numeroDocumentoIdentificacion.trim();
-
-    if (!numeroDocumento) {
-      this.mensajeError = 'Digite el número de documento de identificación.';
+    const codigoActivacionDigitado = this.codigoActivacion.trim().toUpperCase();
+    if (!codigoActivacionDigitado || !this.passwordUsuario1 || !this.passwordUsuario2) {
+      this.mensajeError = 'Digite el código de activación y la nueva contraseña dos veces.';
       return;
     }
 
-    if (!/^\d+$/.test(numeroDocumento)) {
-      this.mensajeError = 'El número de documento de identificación solo admite dígitos.';
+    //LAS DOS CONTRASEÑAS DEBEN COINCIDIR:
+    if (this.passwordUsuario1 !== this.passwordUsuario2) {
+      this.mensajeError = 'La contraseña y la confirmación de contraseña no coinciden.';
+      return;
+    }
+
+    //POLÍTICA DE SEGURIDAD: MÍNIMO 8 CARACTERES, AL MENOS UNA MAYÚSCULA Y LETRAS Y NÚMEROS:
+    const regexPoliticaSeguridad = /^(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
+    if (!regexPoliticaSeguridad.test(this.passwordUsuario1)) {
+      this.mensajeError = 'La contraseña debe tener mínimo 8 caracteres, incluir al menos una letra mayúscula y contener letras y números.';
       return;
     }
 
     this.cargando = true;
 
-    this.usuariosService.getRecoveryPasswordAccessUserbyNumeroDocumentoIdentificacion(numeroDocumento).subscribe({
+    //SE CONSULTA EL CÓDIGO PARA DAR UN MENSAJE CLARO ANTES DE INTENTAR EL CAMBIO. LA VALIDACIÓN QUE CUENTA LA HACE
+    //EL BACKEND AL CAMBIAR LA CONTRASEÑA (MISMO USUARIO, VIGENCIA Y ESTADO), PORQUE LA DEL NAVEGADOR SE PUEDE SALTAR:
+    this.recuperacionesService.getRecoveryPasswordAccessUserbyCodigoActivacion(codigoActivacionDigitado).subscribe({
       next: respuesta => {
-        this.cargando = false;
+        const recuperacion = respuesta.recuperacionContrasenaAccesoUsuarioDTO;
 
-        if (respuesta.mensaje === 'Registro consultado con éxito.' && respuesta.usuarioDTO) {
-          this.usuarioEncontrado = respuesta.usuarioDTO;
-          //SI SOLO TIENE UN CORREO REGISTRADO, QUEDA ELEGIDO DE UNA VEZ:
-          const medios = this.mediosEnvioDisponibles;
-          this.medioEnvio = medios.length === 1 ? medios[0].medio : '';
-          //DATOS QUE CONSUME EL PASO SIGUIENTE (CÓDIGO DE ACTIVACIÓN Y NUEVA CONTRASEÑA):
-          sessionStorage.setItem('idUsuarioEnviado', String(respuesta.usuarioDTO.idUsuario ?? ''));
-          sessionStorage.setItem('numeroDocumentoIdentificacionUsuarioEnviado', numeroDocumento);
-        } else {
-          //MENSAJE DE NEGOCIO DEVUELTO POR EL BACKEND:
-          this.mensajeError = respuesta.mensaje || 'No existe un usuario con ese número de documento de identificación.';
+        if (respuesta.mensaje !== 'Registro consultado con éxito.' || !recuperacion) {
+          this.terminarConError('El código de activación digitado no es válido.');
+          return;
         }
 
-        //OnPush: la respuesta llega fuera de un evento de la vista, hay que marcarla para revisión.
-        this.changeDetectorRef.markForCheck();
-      },
-      error: error => {
-        console.error('ERROR AL CONSULTAR EL USUARIO PARA LA RECUPERACIÓN DE CONTRASEÑA: ', error);
-        this.mensajeError = (error.status === 404)
-          ? 'No existe un usuario con ese número de documento de identificación.'
-          : 'Error de comunicación con el servidor. Inténtalo de nuevo.';
-        this.cargando = false;
-        this.changeDetectorRef.markForCheck();
-      }
-    });
-  }
-
-  //PIDE AL BACKEND QUE ENVÍE EL CÓDIGO DE ACTIVACIÓN AL CORREO ELEGIDO. EL BACKEND GENERA EL CÓDIGO, GUARDA LA
-  //RECUPERACIÓN Y REEMPLAZA EN LA PLANTILLA HTML LAS ETIQUETAS *[NUMDOCIDSICIM]* (NÚMERO DE DOCUMENTO) Y
-  //*[CODACTIVAUSICIM]* (CÓDIGO DE ACTIVACIÓN) ANTES DE ENVIAR EL CORREO.
-  enviarCodigoActivacion(): void {
-    this.mensajeError = '';
-    this.mensajeEnvio = '';
-
-    const idUsuario = Number(this.usuarioEncontrado?.idUsuario);
-    if (!idUsuario || !this.medioEnvio) {
-      this.mensajeError = 'Seleccione el correo electrónico al que se enviará el código de activación.';
-      return;
-    }
-
-    this.enviandoCodigo = true;
-
-    this.recuperacionesService.sendActivationCodePasswordRecovery({ idUsuario, medioEnvio: this.medioEnvio }).subscribe({
-      next: respuesta => {
-        this.enviandoCodigo = false;
-        if (respuesta.banderaexito) {
-          this.codigoEnviado = true;
-          this.mensajeEnvio = respuesta.mensaje;
-        } else {
-          //MENSAJE DE NEGOCIO DEVUELTO POR EL BACKEND (SIN CORREO, SIN PARÁMETROS, FALLA SMTP...):
-          this.mensajeError = respuesta.mensaje || 'No es posible enviar el código de activación.';
+        //EL CÓDIGO DEBE SER DEL MISMO USUARIO QUE INICIÓ LA RECUPERACIÓN:
+        if (Number(recuperacion.usuarioDTO?.idUsuario) !== this.idUsuarioRecibido) {
+          this.terminarConError('El código de activación digitado no es válido.');
+          return;
         }
-        this.changeDetectorRef.markForCheck();
+
+        if (recuperacion.estadoUsoCodigoActivacionContrasenaAccesoUsuario === 'USADO') {
+          this.terminarConError('El código de activación ya fue usado.');
+          return;
+        }
+
+        const fechaExpiracion = this.aFecha(recuperacion.fechaHMSExpCodActivContrasenaAccesoUsuario);
+        if (recuperacion.estadoUsoCodigoActivacionContrasenaAccesoUsuario === 'EXPIRADO' || (fechaExpiracion !== null && fechaExpiracion < new Date())) {
+          this.terminarConError('El código de activación ya expiró.');
+          return;
+        }
+
+        //CÓDIGO VÁLIDO: EL BACKEND VUELVE A VALIDARLO, CAMBIA LA CONTRASEÑA Y LO MARCA COMO USADO:
+        const passwordEncriptado = this.obtenerPasswordUsuarioEncriptado(this.passwordUsuario1);
+        this.usuariosService.recoverPasswordAccessUserbyActivationCode(codigoActivacionDigitado, this.idUsuarioRecibido, passwordEncriptado).subscribe({
+          next: respuestaPassword => {
+            if (respuestaPassword.mensaje === 'Acceso de usuario recuperado con éxito. Se actualizó la contraseña de acceso.') {
+              this.mensajeExito = respuestaPassword.mensaje;
+              this.cargando = false;
+              this.changeDetectorRef.markForCheck();
+
+              //SE LIMPIA LA SESIÓN Y SE REDIRIGE AL LOGIN DESPUÉS DE 3 SEGUNDOS:
+              sessionStorage.removeItem('idUsuarioEnviado');
+              sessionStorage.removeItem('numeroDocumentoIdentificacionUsuarioEnviado');
+              setTimeout(() => this.router.navigate(['/login']), 3000);
+            } else {
+              this.terminarConError(respuestaPassword.mensaje || 'No fue posible actualizar la contraseña de acceso.');
+            }
+          },
+          error: err => {
+            console.error('ERROR AL ACTUALIZAR LA CONTRASEÑA DE ACCESO: ', err);
+            this.terminarConError('Error de comunicación con el servidor. Inténtalo de nuevo.');
+          }
+        });
       },
-      error: error => {
-        console.error('ERROR AL ENVIAR EL CÓDIGO DE ACTIVACIÓN DE RECUPERACIÓN DE CONTRASEÑA: ', error);
-        this.mensajeError = 'Error de comunicación con el servidor. Inténtalo de nuevo.';
-        this.enviandoCodigo = false;
-        this.changeDetectorRef.markForCheck();
+      error: err => {
+        console.error('ERROR AL CONSULTAR EL CÓDIGO DE ACTIVACIÓN: ', err);
+        this.terminarConError('El código de activación digitado no es válido.');
       }
     });
   }

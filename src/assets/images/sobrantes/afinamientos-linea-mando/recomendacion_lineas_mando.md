@@ -62,22 +62,24 @@ La relación con CARGO_ETAPA_LINEA permite conocer a qué etapa, unidad y puesto
 
 Se recomienda copiar los datos de presentación de la persona, unidad y firma en el detalle y congelarlos al confirmar/emitir el documento. Un documento ya emitido no debe tomar el nombre, grado o firma «actual» del catálogo al volver a generarse. El archivo de firma también debe conservarse: reutilizar una ruta cuyo contenido se sobrescribe no preserva el histórico.
 
-La restricción única `(id_solicitud_infraestructura, id_cargo_etapa)` supone un participante por puesto en cada solicitud. Si posteriormente se requieren varias revisiones del documento o sustituciones después de su emisión, se deberá añadir una versión documental o una tabla de eventos; no sobrescribir el registro histórico.
+El backend valida que exista un solo participante por puesto en cada solicitud, comprobando `id_solicitud_infraestructura` e `id_cargo_etapa`. No se declara una restricción de unicidad para esa combinación. Si posteriormente se requieren varias revisiones del documento o sustituciones después de su emisión, se deberá añadir una versión documental o una tabla de eventos; no sobrescribir el registro histórico.
 
 Una imagen de firma almacenada no representa por sí sola un evento de aprobación. Si se requiere controlar avales, deben registrarse además el usuario, fecha, decisión y observación en un historial de actuaciones, separado de los datos impresos del firmante.
 
 ## Reglas de integridad
 
+El modelo conserva las PK y FK. Por definición del usuario, los controles de no repetición de combinaciones se realizan en el backend; no se proponen restricciones UQ para este caso.
+
 1. Todas las referencias del diagrama deben convertirse en claves foráneas. En el DDL suministrado no aparece una FK para `id_solicitud_infraestructura`; hay que comprobar si está declarada por separado.
-2. Usar unicidad para `(id_unidad_origen, version)` en LINEA_MANDO; `(id_linea_mando, orden_etapa)` y `(id_linea_mando, id_unidad_militar)` en ETAPA_LINEA_MANDO; y `(id_etapa, orden_firma)` en CARGO_ETAPA_LINEA.
+2. Validar en el backend que no se repita una versión por unidad de origen en LINEA_MANDO; una unidad o un orden dentro de la misma línea en ETAPA_LINEA_MANDO; un orden de firma dentro de la misma etapa en CARGO_ETAPA_LINEA; ni un participante para el mismo puesto y solicitud en INTEGRANTE_SOLICITUD. Estas comprobaciones no generan restricciones adicionales de unicidad en las tablas.
 3. Validar que los órdenes sean positivos, que no existan saltos al publicar y que la primera etapa sea la unidad de origen. No se permiten unidades repetidas en este modelo de ruta secuencial sin ciclos.
-4. Impedir vigencias superpuestas de rutas publicadas para la misma unidad de origen. Esta validación debe considerar operaciones concurrentes; un índice único sobre la versión no evita por sí solo el solapamiento temporal.
-5. Al asignar la ruta a una solicitud, comprobar que su unidad de origen coincida con la solicitante. Al registrar un integrante, comprobar que su puesto pertenezca a esa misma versión de ruta. Las FK individuales no garantizan estas coincidencias: deben reforzarse con claves compuestas o validación transaccional en el backend.
+4. Impedir en el backend vigencias superpuestas de rutas publicadas para la misma unidad de origen. Ejecutar las comprobaciones y escrituras de forma transaccional, coordinando operaciones concurrentes sobre la misma configuración.
+5. Al asignar la ruta a una solicitud, comprobar en el backend que su unidad de origen coincida con la solicitante. Al registrar un integrante, comprobar que su puesto pertenezca a esa misma versión de ruta. Las FK individuales garantizan la existencia de los registros referenciados; las coincidencias entre ellos se validan transaccionalmente en el backend.
 6. Si se usa el catálogo paramétrico para completar los datos, comprobar en ese momento que la persona corresponda a la unidad y cargo del puesto y sea válida para la fecha aplicable. Copiar los datos personales y conservar el archivo de firma de forma independiente, sin FK al historial. Los cambios posteriores del catálogo no modifican la solicitud.
 7. Congelar la versión de ruta utilizada; los cambios de estructura generan una versión nueva. No recalcular automáticamente las rutas de solicitudes existentes a partir de la configuración vigente.
 8. Conservar los catálogos referenciados por solicitudes históricas; usar estados de inactividad en lugar de borrados en cascada.
 
-El alcance inicial es una ruta secuencial por unidad para solicitudes de infraestructura. Si una misma unidad tiene recorridos diferentes por tipo de solicitud, añadir ese ámbito a LINEA_MANDO y a las reglas de selección, unicidad y vigencia. Si se requieren ramas paralelas o decisiones condicionales, el modelo debe ampliarse con transiciones entre etapas.
+El alcance inicial es una ruta secuencial por unidad para solicitudes de infraestructura. Si una misma unidad tiene recorridos diferentes por tipo de solicitud, añadir ese ámbito a LINEA_MANDO y a las reglas de selección, control de duplicados y vigencia del backend. Si se requieren ramas paralelas o decisiones condicionales, el modelo debe ampliarse con transiciones entre etapas.
 
 ## Migración recomendada
 
