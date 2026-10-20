@@ -3,6 +3,8 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HistorialProveedoresProductosServiciosI } from '../../../../interfaces/panel-control/historial-proveedores-productos-servicios/historial-proveedores-productos-servicios.interface';
 import { HistorialProveedoresProductosServiciosService } from '../../../../services/panel-control/historial-proveedores-productos-servicios/historial-proveedores-productos-servicios.service';
+import { UnidadesMilitaresI } from '../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
+import { UnidadesMilitaresService } from '../../../../services/panel-control/unidades-militares/unidades-militares.service';
 import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 import { AddUpdDelHistorialProveedorProductoServicioComponent } from '../add-upd-del-historial-proveedor-producto-servicio/add-upd-del-historial-proveedor-producto-servicio.component';
 import { VistaHistorialProveedorProductoServicioComponent } from '../vista-historial-proveedor-producto-servicio/vista-historial-proveedor-producto-servicio.component';
@@ -16,7 +18,9 @@ import { VistaHistorialProveedorProductoServicioComponent } from '../vista-histo
 })
 export class ListadoHistorialProveedoresProductosServiciosComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
-  form = this.fb.group({ keyword: [''], cantidad: ['10'] });
+  form = this.fb.group({ keyword: [''], cboxSiglaoAcronimoUnidadMilitarSeleccionado: [''], cantidad: ['10'] });
+  //CATÁLOGO DE UNIDADES MILITARES CARGADO DESDE EL BACKEND (COMBO DE FILTRO, MISMO PATRÓN QUE ListadoOficinasComponent):
+  unidadesMilitares: UnidadesMilitaresI[] = [];
   registros: HistorialProveedoresProductosServiciosI[] = [];
   total = 0;
   pagina = 0;
@@ -29,21 +33,34 @@ export class ListadoHistorialProveedoresProductosServiciosComponent implements O
 
   constructor(
     private readonly service: HistorialProveedoresProductosServiciosService,
+    private readonly unidadesMilitaresService: UnidadesMilitaresService,
     private readonly cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit(): void { this.listar(); }
+  ngOnInit(): void { this.cargarUnidadesMilitares(); this.listar(); }
+
+  //CARGA EL CATÁLOGO DE UNIDADES MILITARES DESDE EL BACKEND (COMBO DE FILTRO):
+  private cargarUnidadesMilitares(): void {
+    this.unidadesMilitaresService.findAllMilitaryUnits(undefined, undefined, 'nombreUnidadMilitar', 'ASC').subscribe({
+      next: unidadesMilitares => {
+        this.unidadesMilitares = unidadesMilitares;
+        this.cdr.markForCheck();
+      },
+      error: err => console.error('ERROR AL CARGAR UNIDADES MILITARES: ', err)
+    });
+  }
 
   //EL HISTORIAL NO TIENE COLUMNA DE ESTADO NI EN LA TABLA DE ORACLE NI EN HistorialProveedorProductoOServicioDTO,
   //ASÍ QUE AQUÍ SOLO SE LISTA LA PÁGINA Y SE CUENTA EL TOTAL FILTRADO — MISMO PATRÓN QUE
   //ListadoHistorialIntegrantesDocumentosComponent:
   listar(): void {
     const keyword = this.form.value.keyword?.trim() || undefined;
-    this.service.findAllProductOrServiceProviderHistoriesPag(this.pagina, this.cantidad, undefined, keyword, 'idHistorialProveedorProductoOServicio', 'ASC').subscribe(registros => {
+    const siglaoAcronimoUnidadMilitar = this.form.value.cboxSiglaoAcronimoUnidadMilitarSeleccionado || undefined;
+    this.service.findAllProductOrServiceProviderHistoriesPag(this.pagina, this.cantidad, undefined, keyword, siglaoAcronimoUnidadMilitar, 'idHistorialProveedorProductoOServicio', 'ASC').subscribe(registros => {
       this.registros = registros;
       this.cdr.markForCheck();
     });
-    this.service.findCountTotalRegisters(undefined, keyword).subscribe(total => {
+    this.service.findCountTotalRegisters(undefined, keyword, siglaoAcronimoUnidadMilitar).subscribe(total => {
       this.total = total;
       this.cdr.markForCheck();
     });

@@ -14,9 +14,16 @@ export interface OperacionFotoUnidadMilitar {
   archivo?: File;
 }
 
+//RENOMBRADO DE LA CARPETA DE ALMACENAMIENTO DE LA UNIDAD MILITAR (SOLO EN MODO MODIFICAR, CUANDO CAMBIA LA SIGLA):
+export interface OperacionCarpetaUnidadMilitar {
+  carpetaAnterior: string;
+  carpetaNueva: string;
+}
+
 export interface GuardadoUnidadMilitarEvent {
   unidadMilitar: UnidadesMilitaresI;
   operacionFoto: OperacionFotoUnidadMilitar | null;
+  operacionCarpeta: OperacionCarpetaUnidadMilitar | null;
 }
 
 //DATOS SIMULADOS DE UNIDADES MILITARES SIATH (CATÁLOGO EXTERNO — SOLO SE USAN PARA PRECARGAR EL FORMULARIO EN
@@ -32,6 +39,24 @@ const SIATH_UNIDADES_MILITARES_SIMULADAS: SiathUnidadMilitarSimuladaI[] = [
   { idSiath: 1, codigoSiath: 'SIATH-020', nombre: 'BATALLÓN DE POLICÍA MILITAR No. 10', siglaoAcronimo: 'BAPOM10' },
   { idSiath: 2, codigoSiath: 'SIATH-021', nombre: 'ESCUELA DE ARTILLERÍA', siglaoAcronimo: 'ESART' },
   { idSiath: 3, codigoSiath: 'SIATH-022', nombre: 'GRUPO DE CABALLERÍA MECANIZADO No. 10', siglaoAcronimo: 'GMC10' }
+];
+
+// NIVELES USADOS EN lineas_de_mando_ejc_nacional_2022.txt.
+export const NIVELES_UNIDADES_MILITARES: readonly string[] = [
+  'BATALLON',
+  'BRIGADA',
+  'CENTRAL ADMINISTRATIVA Y CONTABLE',
+  'COMANDO',
+  'DEPARTAMENTO',
+  'DIRECCION',
+  'DISTRITO MILITAR',
+  'DIVISION',
+  'ESTABLECIMIENTO DE SANIDAD MILITAR',
+  'FUERZA DE TAREA',
+  'GRUPO',
+  'JEFATURA',
+  'UNIDAD TACTICA',
+  'ZONA DE RECLUTAMIENTO'
 ];
 
 @Component({
@@ -63,9 +88,13 @@ export class AddUpdDelUnidadMilitarComponent implements OnChanges, OnDestroy {
   nombreArchivoFotoUnidadMilitar = '';
   fotoExistenteEliminada = false;
 
+  //NOMBRE DE LA CARPETA DE ALMACENAMIENTO YA GUARDADO EN BASE DE DATOS (SE COMPARA CON EL NUEVO AL MODIFICAR):
+  nombreCarpetaAlmacenamientoAlmacenada = '';
+
   //BÚSQUEDA DE UNIDAD MILITAR SIATH (SOLO EN MODO GUARDAR) — CAMPO DE TEXTO QUE FILTRA EL CATÁLOGO SIMULADO
   //MIENTRAS SE ESCRIBE (IGUAL QUE EL p-dropdown CON [filter]="true" DEL PROYECTO DE REFERENCIA, SIN PRIMENG):
   readonly siathUnidadesMilitares = SIATH_UNIDADES_MILITARES_SIMULADAS;
+  readonly nivelesUnidadesMilitares = NIVELES_UNIDADES_MILITARES;
   terminoBusquedaSiathUnidadMilitar = '';
   siathUnidadMilitarSeleccionada: SiathUnidadMilitarSimuladaI | null = null;
   mostrarSugerenciasSiathUnidadMilitar = false;
@@ -107,6 +136,7 @@ export class AddUpdDelUnidadMilitarComponent implements OnChanges, OnDestroy {
       this.isSelectedFileUnidadMilitar = false;
       this.nombreArchivoFotoUnidadMilitar = String(this.unidadMilitarData?.nombreArchivoFotoLogExtoFmtUnidadMilitar || '').trim();
       this.fotoExistenteEliminada = false;
+      this.nombreCarpetaAlmacenamientoAlmacenada = this.normalizarNombreCarpeta(this.unidadMilitarData?.nombreCarpetaAlmacenamientoUnidadMilitar);
       this.terminoBusquedaSiathUnidadMilitar = '';
       this.siathUnidadMilitarSeleccionada = null;
       this.mostrarSugerenciasSiathUnidadMilitar = false;
@@ -121,6 +151,8 @@ export class AddUpdDelUnidadMilitarComponent implements OnChanges, OnDestroy {
     this.unidadesMilitaresService.getMilitaryUnitbyId(idUnidadMilitar).subscribe({
       next: ({ unidadMilitarDTO }) => {
         this.nombreArchivoFotoUnidadMilitar = String(unidadMilitarDTO?.nombreArchivoFotoLogExtoFmtUnidadMilitar || '').trim();
+        const carpetaAlmacenada = this.normalizarNombreCarpeta(unidadMilitarDTO?.nombreCarpetaAlmacenamientoUnidadMilitar);
+        if (carpetaAlmacenada) this.nombreCarpetaAlmacenamientoAlmacenada = carpetaAlmacenada;
         this.changeDetectorRef.markForCheck();
         if (this.nombreArchivoFotoUnidadMilitar) this.resolverPreviewFoto(this.nombreArchivoFotoUnidadMilitar);
       },
@@ -162,12 +194,15 @@ export class AddUpdDelUnidadMilitarComponent implements OnChanges, OnDestroy {
 
   private initForm(): void {
     const unidadMilitar = this.unidadMilitarData;
+    const nivelUnidadMilitar = unidadMilitar?.nivelUnidadMilitar === 'DISPENSARIO'
+      ? 'ESTABLECIMIENTO DE SANIDAD MILITAR'
+      : unidadMilitar?.nivelUnidadMilitar ?? '';
     this.unidadesMilitaresForm = this.formBuilder.group({
       idUnidadMilitar: [unidadMilitar?.idUnidadMilitar ?? null],
       codigoUnidadMilitar: [unidadMilitar?.codigoUnidadMilitar ?? '', Validators.required],
       nombreUnidadMilitar: [unidadMilitar?.nombreUnidadMilitar ?? '', Validators.required],
       siglaoAcronimoUnidadMilitar: [unidadMilitar?.siglaoAcronimoUnidadMilitar ?? '', Validators.required],
-      nivelUnidadMilitar: [unidadMilitar?.nivelUnidadMilitar ?? '', Validators.required]
+      nivelUnidadMilitar: [nivelUnidadMilitar, Validators.required]
     });
     if (this.banderaCrudEliminar) {
       this.unidadesMilitaresForm.disable();
@@ -295,16 +330,31 @@ export class AddUpdDelUnidadMilitarComponent implements OnChanges, OnDestroy {
       operacionFoto = { tipo: 'eliminar', nombreAnterior, nombreNuevo: '' };
     }
 
+    const nombreCarpetaNueva = this.normalizarNombreCarpeta(String(valoresFormulario.siglaoAcronimoUnidadMilitar).toUpperCase());
+
+    //SI EN MODO MODIFICAR CAMBIA EL NOMBRE DE LA CARPETA, EL LISTADO LA RENOMBRA EN CADA SUBCARPETA DE ARCHIVOS_SICIM
+    //(RESPONSABLES, HISTORIAL DE INTEGRANTES, ALTAS Y BAJAS DE EQUIPOS INGENIEROS) DESPUÉS DE MODIFICAR EL REGISTRO:
+    const operacionCarpeta: OperacionCarpetaUnidadMilitar | null =
+      valoresFormulario.idUnidadMilitar && this.nombreCarpetaAlmacenamientoAlmacenada && nombreCarpetaNueva
+        && this.nombreCarpetaAlmacenamientoAlmacenada !== nombreCarpetaNueva
+        ? { carpetaAnterior: this.nombreCarpetaAlmacenamientoAlmacenada, carpetaNueva: nombreCarpetaNueva }
+        : null;
+
     const unidadMilitar: UnidadesMilitaresI = {
       idUnidadMilitar: valoresFormulario.idUnidadMilitar ?? undefined,
       codigoUnidadMilitar: valoresFormulario.codigoUnidadMilitar,
       nombreUnidadMilitar: valoresFormulario.nombreUnidadMilitar,
       siglaoAcronimoUnidadMilitar: valoresFormulario.siglaoAcronimoUnidadMilitar,
       nombreArchivoFotoLogExtoFmtUnidadMilitar: nombreArchivoFoto,
-      nombreCarpetaAlmacenamientoUnidadMilitar: String(valoresFormulario.siglaoAcronimoUnidadMilitar).toUpperCase(),
+      nombreCarpetaAlmacenamientoUnidadMilitar: nombreCarpetaNueva,
       nivelUnidadMilitar: valoresFormulario.nivelUnidadMilitar
     };
-    this.guardar.emit({ unidadMilitar, operacionFoto });
+    this.guardar.emit({ unidadMilitar, operacionFoto, operacionCarpeta });
+  }
+
+  //QUITA ESPACIOS Y BARRAS AL INICIO/FINAL (LOS REGISTROS MIGRADOS PUEDEN TRAER "SIGLA/" COMO EN EL PROYECTO DE REFERENCIA):
+  private normalizarNombreCarpeta(nombreCarpeta: unknown): string {
+    return String(nombreCarpeta ?? '').trim().replace(/^[\\/]+|[\\/]+$/g, '');
   }
 
   private obtenerIdUnidadMilitarEncriptado(idUnidadMilitar: number): string {

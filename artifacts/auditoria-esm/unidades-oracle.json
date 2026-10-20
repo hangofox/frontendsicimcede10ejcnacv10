@@ -1,0 +1,86 @@
+[
+    {
+        "id":  1,
+        "codigo":  "NO APLICA1",
+        "nombre":  "TODAS LAS UNIDADES MILITARES.",
+        "sigla":  "TODAS LAS UNIDADES MILITARES",
+        "nivel":  "0"
+    },
+    {
+        "id":  2,
+        "codigo":  "NO APLICA2",
+        "nombre":  "OTRA UNIDAD MILITAR U ORGANIZACION.",
+        "sigla":  "OTRA UNIDAD MILITAR U ORGANIZACION",
+        "nivel":  "0"
+    },
+    {
+        "id":  3,
+        "codigo":  "COD01",
+        "nombre":  "BAJAS DE EQUIPOS Y PERSONAL.",
+        "sigla":  "BAJASEQYPERS",
+        "nivel":  "0"
+    },
+    {
+        "id":  4,
+        "codigo":  "COD02",
+        "nombre":  "COMANDO DE APOYO OPERACIONAL DE COMUNICACIONES Y CIBERDEFENSA.",
+        "sigla":  "CAOCC",
+        "nivel":  "JEFATURA"
+    },
+    {
+        "id":  5,
+        "codigo":  "COD03",
+        "nombre":  "COMANDO DE LA BRIGADA DE INTEROPERABILIDAD DE COMUNICACIONES, COMPUTACIÓN Y CIBERDEFENSA.",
+        "sigla":  "CBRICC",
+        "nivel":  "BRIGADA"
+    },
+    {
+        "id":  6,
+        "codigo":  "COD04",
+        "nombre":  "BATALLON DE INTEROPERABILIDAD DE COMUNICACIONES Y COMPUTACIÓN.",
+        "sigla":  "BAICC",
+        "nivel":  "BATALLON"
+    },
+    {
+        "id":  7,
+        "codigo":  "COD05",
+        "nombre":  "BATALLON DE CIBERDEFENSA Y CIBERSEGURIDAD",
+        "sigla":  "BACCI",
+        "nivel":  "BATALLON"
+    },
+    {
+        "id":  8,
+        "codigo":  "COD06",
+        "nombre":  "COMANDO DE LA QUINTA DIVISION.",
+        "sigla":  "CDIV05",
+        "nivel":  "DIVISION"
+    },
+    {
+        "id":  9,
+        "codigo":  "COD07",
+        "nombre":  "COMANDO DE LA SEXTA BRIGADA.",
+        "sigla":  "CBR06",
+        "nivel":  "BRIGADA"
+    },
+    {
+        "id":  10,
+        "codigo":  "COD08",
+        "nombre":  "BATALLON DE APOYO Y SERVICIOS PARA EL COMBATE NO. 6 \"FRANCISCO ANTONIO ZEA\".",
+        "sigla":  "BASPC06",
+        "nivel":  "BATALLON"
+    },
+    {
+        "id":  11,
+        "codigo":  "COD09",
+        "nombre":  "DISPENSARIO MEDICO DE LA SEXTA BRIGADA.",
+        "sigla":  "DISMEDBR06",
+        "nivel":  "DISPENSARIO"
+    },
+    {
+        "id":  12,
+        "codigo":  "COD10",
+        "nombre":  "BATALLON DE APOYO Y SERVICIOS PARA EL COMBATE NO. 27 \"SIMONA DE LA LUZ DUQUE DE ALZATE\".",
+        "sigla":  "BASPC27",
+        "nivel":  "BATALLON"
+    }
+]

@@ -15,14 +15,14 @@ export class HistorialProveedoresProductosServiciosService {
   constructor(private readonly http: HttpClient) {}
 
   //CONTADORES DE REGISTROS FILTRADOS.
-  findCountTotalRegisters(idHistorialProveedorProductoOServicio?: number, keyword?: string): Observable<number> {
-    const params = this.buildParams(idHistorialProveedorProductoOServicio, keyword);
+  findCountTotalRegisters(idHistorialProveedorProductoOServicio?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string): Observable<number> {
+    const params = this.buildParams(idHistorialProveedorProductoOServicio, keyword, siglaoAcronimoUnidadMilitar);
     return this.http.get<number>(`${this.baseUrl}/historialesProveedoresProductosOServicios/count`, { params });
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllProductOrServiceProviderHistories(idHistorialProveedorProductoOServicio?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<HistorialProveedoresProductosServiciosI[]> {
-    let params = this.buildParams(idHistorialProveedorProductoOServicio, keyword)
+  findAllProductOrServiceProviderHistories(idHistorialProveedorProductoOServicio?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<HistorialProveedoresProductosServiciosI[]> {
+    let params = this.buildParams(idHistorialProveedorProductoOServicio, keyword, siglaoAcronimoUnidadMilitar)
       .set('orderMode', orderMode);
     if (orderBy) params = params.set('orderBy', orderBy);
 
@@ -33,8 +33,8 @@ export class HistorialProveedoresProductosServiciosService {
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllProductOrServiceProviderHistoriesPag(page: number = 0, size: number = 10, idHistorialProveedorProductoOServicio?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<HistorialProveedoresProductosServiciosI[]> {
-    let params = this.buildParams(idHistorialProveedorProductoOServicio, keyword)
+  findAllProductOrServiceProviderHistoriesPag(page: number = 0, size: number = 10, idHistorialProveedorProductoOServicio?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<HistorialProveedoresProductosServiciosI[]> {
+    let params = this.buildParams(idHistorialProveedorProductoOServicio, keyword, siglaoAcronimoUnidadMilitar)
       .set('page', page.toString())
       .set('size', size.toString())
       .set('orderMode', orderMode);
@@ -84,12 +84,13 @@ export class HistorialProveedoresProductosServiciosService {
   }
 
   //CONSTRUYE LOS PARÁMETROS OPCIONALES COMPARTIDOS POR LOS ENDPOINTS DE CONSULTA.
-  private buildParams(idHistorialProveedorProductoOServicio?: number, keyword?: string): HttpParams {
+  private buildParams(idHistorialProveedorProductoOServicio?: number, keyword?: string, siglaoAcronimoUnidadMilitar?: string): HttpParams {
     let params = new HttpParams();
     if (idHistorialProveedorProductoOServicio !== undefined) {
       params = params.set('idHistorialProveedorProductoOServicio', idHistorialProveedorProductoOServicio.toString());
     }
     if (keyword) params = params.set('keyword', keyword);
+    if (siglaoAcronimoUnidadMilitar) params = params.set('siglaoAcronimoUnidadMilitar', siglaoAcronimoUnidadMilitar);
     return params;
   }
 }

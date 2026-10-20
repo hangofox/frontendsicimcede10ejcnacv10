@@ -17,7 +17,9 @@ public class HistorialIntegranteDocumentosDTO {
     private Long idHistorialIntegranteDocumentos;
     private String numRegHistorialIntegranteDocumentos;
     private String gradoIntegranteDocumentos;
-    private String nombresYApellidosIntegranteDocumentos;
+    private String nombresIntegranteDocumentos;
+    private String primerApellidoIntegranteDocumentos;
+    private String segundoApellidoIntegranteDocumentos;
     private String cargoIntegranteDocumentos;
     private String numeroDocumentoIdentificacionIntegranteDocumentos;
     private String nombreArchivoFotoFirmaIntegranteDocumentos;

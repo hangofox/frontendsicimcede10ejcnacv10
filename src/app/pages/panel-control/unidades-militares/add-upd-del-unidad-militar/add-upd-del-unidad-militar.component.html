@@ -66,13 +66,7 @@
           <label>Nivel (*)</label>
           <select formControlName="nivelUnidadMilitar">
             <option value="">-- Seleccione --</option>
-            <option value="DISPENSARIO">DISPENSARIO</option>
-            <option value="BATALLON">BATALLON</option>
-            <option value="BRIGADA">BRIGADA</option>
-            <option value="DIVISION">DIVISION</option>
-            <option value="DEPARTAMENTO">DEPARTAMENTO</option>
-            <option value="JEFATURA">JEFATURA</option>
-            <option value="COMANDO">COMANDO</option>
+            <option *ngFor="let nivel of nivelesUnidadesMilitares" [value]="nivel">{{ nivel }}</option>
           </select>
         </div>
         <div class="form-group">

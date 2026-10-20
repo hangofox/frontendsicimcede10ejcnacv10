@@ -33,8 +33,9 @@ public class HistorialProveedorProductoOServicioController {
     @GetMapping("/historialesProveedoresProductosOServicios/count")//DECLARACIÓN DEL MAPEO DEL CRUD CONTAR REGISTROS.
     public ResponseEntity<Long> contarTotalRegistros(
             @RequestParam(required = false) Long idHistorialProveedorProductoOServicio,
-            @RequestParam(required = false) String keyword) {
-        return new ResponseEntity<>(historialProveedorProductoOServicioService.contarTotalRegistros(idHistorialProveedorProductoOServicio, keyword), HttpStatus.OK);
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String siglaoAcronimoUnidadMilitar) {
+        return new ResponseEntity<>(historialProveedorProductoOServicioService.contarTotalRegistros(idHistorialProveedorProductoOServicio, keyword, siglaoAcronimoUnidadMilitar), HttpStatus.OK);
     }
     
     //ENDPOINT LISTAR TODOS LOS HISTORIALES PROVEEDORES PRODUCTOS O SERVICIOS SIN PAGINACIÓN (PARA SELECTS DEL FRONTEND):
@@ -42,9 +43,10 @@ public class HistorialProveedorProductoOServicioController {
     public ResponseEntity<List<HistorialProveedorProductoOServicioDTO>> listarHistorialesProveedoresProductosOServiciosLista(
             @RequestParam(required = false) Long idHistorialProveedorProductoOServicio,
             @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String siglaoAcronimoUnidadMilitar,
             @RequestParam(required = false) String orderBy,
             @RequestParam(required = false, defaultValue = "ASC") String orderMode) {
-        return new ResponseEntity<>(historialProveedorProductoOServicioService.listarHistorialesProveedoresProductosOServicios(idHistorialProveedorProductoOServicio, keyword, orderBy, orderMode), HttpStatus.OK);
+        return new ResponseEntity<>(historialProveedorProductoOServicioService.listarHistorialesProveedoresProductosOServicios(idHistorialProveedorProductoOServicio, keyword, siglaoAcronimoUnidadMilitar, orderBy, orderMode), HttpStatus.OK);
     }
     
     //ENDPOINT ÚNICO PARA LISTAR/FILTRAR/ORDENAR/PAGINAR HISTORIALES PROVEEDORES PRODUCTOS O SERVICIOS CON QUERY PARAMS:
@@ -52,12 +54,13 @@ public class HistorialProveedorProductoOServicioController {
     public ResponseEntity<Slice<HistorialProveedorProductoOServicioDTO>> listarHistorialesProveedoresProductosOServiciosListaPag(
             @RequestParam(required = false) Long idHistorialProveedorProductoOServicio,
             @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String siglaoAcronimoUnidadMilitar,
             @RequestParam(required = false) String orderBy,
             @RequestParam(required = false, defaultValue = "ASC") String orderMode,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return new ResponseEntity<>(historialProveedorProductoOServicioService.listarHistorialesProveedoresProductosOServiciosPag(pageable, idHistorialProveedorProductoOServicio, keyword, orderBy, orderMode), HttpStatus.OK);
+        return new ResponseEntity<>(historialProveedorProductoOServicioService.listarHistorialesProveedoresProductosOServiciosPag(pageable, idHistorialProveedorProductoOServicio, keyword, siglaoAcronimoUnidadMilitar, orderBy, orderMode), HttpStatus.OK);
     }
     
     //CREAR REGISTRO:

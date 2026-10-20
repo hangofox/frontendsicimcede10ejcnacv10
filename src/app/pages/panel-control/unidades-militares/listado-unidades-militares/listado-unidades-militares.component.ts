@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import { UnidadesMilitaresI } from '../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
 
@@ -263,7 +264,16 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
     if (!unidadMilitar.idUnidadMilitar && operacionFoto?.tipo === 'subir') {
       const unidadSinFoto = { ...unidadMilitar, nombreArchivoFotoLogExtoFmtUnidadMilitar: '' };
       this.unidadesMilitaresService.addMilitaryUnit(unidadSinFoto).subscribe({
-        next: (respuesta) => this.completarFotoUnidadCreada(evento, respuesta.mensaje || 'Unidad militar creada correctamente.'),
+        next: (respuesta) => {
+          //SIN ESTA VALIDACIÓN, UNA SIGLA REPETIDA CONSULTARÍA LA UNIDAD YA EXISTENTE Y LE REEMPLAZARÍA EL LOGOTIPO:
+          if (respuesta.banderaexito === false) {
+            this.reportarErrorGuardado({ error: respuesta }, 'Error al crear la unidad militar.');
+            return;
+          }
+          const mensaje = respuesta.mensaje || 'Unidad militar creada correctamente.';
+          this.sincronizarCarpetasUnidadMilitar(String(unidadMilitar.nombreCarpetaAlmacenamientoUnidadMilitar), null, (advertencia) =>
+            this.completarFotoUnidadCreada(evento, advertencia ? `${mensaje} ${advertencia}` : mensaje, advertencia ? 'error' : 'exito'));
+        },
         error: (err) => this.reportarErrorGuardado(err, 'Error al crear la unidad militar.')
       });
       return;
@@ -281,26 +291,47 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
   }
 
   private guardarRegistroUnidad(evento: GuardadoUnidadMilitarEvent, rutaBasePreSubida?: string): void {
-    const { unidadMilitar, operacionFoto } = evento;
+    const { unidadMilitar, operacionFoto, operacionCarpeta } = evento;
     if (unidadMilitar.idUnidadMilitar) {
+      const revertirFotoPreSubida = () => {
+        if (rutaBasePreSubida && operacionFoto?.tipo === 'subir' && operacionFoto.nombreAnterior !== operacionFoto.nombreNuevo) {
+          this.gestionArchivosService.deleteFile({ filePath: rutaBasePreSubida + operacionFoto.nombreNuevo }).subscribe({ error: () => {} });
+        }
+      };
       this.unidadesMilitaresService.updateMilitaryUnit(unidadMilitar).subscribe({
-        next: (respuesta) => this.procesarFotoUnidadDespuesDeGuardar(operacionFoto, respuesta.mensaje || 'Unidad militar modificada correctamente.'),
-        error: (err) => {
-          if (rutaBasePreSubida && operacionFoto?.tipo === 'subir' && operacionFoto.nombreAnterior !== operacionFoto.nombreNuevo) {
-            this.gestionArchivosService.deleteFile({ filePath: rutaBasePreSubida + operacionFoto.nombreNuevo }).subscribe({ error: () => {} });
+        next: (respuesta) => {
+          //EL BACKEND DEVUELVE HTTP 200 CON banderaexito=false CUANDO NO MODIFICA (NOMBRE, SIGLA O CÓDIGO REPETIDO):
+          if (respuesta.banderaexito === false) {
+            revertirFotoPreSubida();
+            this.reportarErrorGuardado({ error: respuesta }, 'Error al modificar la unidad militar.');
+            return;
           }
+          const mensaje = respuesta.mensaje || 'Unidad militar modificada correctamente.';
+          this.sincronizarCarpetasUnidadMilitar(String(unidadMilitar.nombreCarpetaAlmacenamientoUnidadMilitar), operacionCarpeta?.carpetaAnterior ?? null, (advertencia) =>
+            this.procesarFotoUnidadDespuesDeGuardar(operacionFoto, advertencia ? `${mensaje} ${advertencia}` : mensaje, advertencia ? 'error' : 'exito'));
+        },
+        error: (err) => {
+          revertirFotoPreSubida();
           this.reportarErrorGuardado(err, 'Error al modificar la unidad militar.');
         }
       });
     } else {
       this.unidadesMilitaresService.addMilitaryUnit(unidadMilitar).subscribe({
-        next: (respuesta) => this.finalizarGuardado(respuesta.mensaje || 'Unidad militar creada correctamente.'),
+        next: (respuesta) => {
+          if (respuesta.banderaexito === false) {
+            this.reportarErrorGuardado({ error: respuesta }, 'Error al crear la unidad militar.');
+            return;
+          }
+          const mensaje = respuesta.mensaje || 'Unidad militar creada correctamente.';
+          this.sincronizarCarpetasUnidadMilitar(String(unidadMilitar.nombreCarpetaAlmacenamientoUnidadMilitar), null, (advertencia) =>
+            this.finalizarGuardado(advertencia ? `${mensaje} ${advertencia}` : mensaje, advertencia ? 'error' : 'exito'));
+        },
         error: (err) => this.reportarErrorGuardado(err, 'Error al crear la unidad militar.')
       });
     }
   }
 
-  private completarFotoUnidadCreada(evento: GuardadoUnidadMilitarEvent, mensaje: string): void {
+  private completarFotoUnidadCreada(evento: GuardadoUnidadMilitarEvent, mensaje: string, tipoToast: 'exito' | 'error' = 'exito'): void {
     const sigla = String(evento.unidadMilitar.siglaoAcronimoUnidadMilitar).trim();
     this.unidadesMilitaresService.getMilitaryUnitbySiglaoAcronimo(sigla).subscribe({
       next: ({ unidadMilitarDTO }) => {
@@ -310,7 +341,7 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
         this.obtenerRutaBaseFotos((rutaBase) => {
           this.gestionArchivosService.uploadFile(evento.operacionFoto!.archivo!, rutaBase + nombre).subscribe({
             next: () => this.unidadesMilitaresService.updateMilitaryUnit({ ...unidadMilitarDTO, nombreArchivoFotoLogExtoFmtUnidadMilitar: nombre }).subscribe({
-              next: () => this.finalizarGuardado(mensaje),
+              next: () => this.finalizarGuardado(mensaje, tipoToast),
               error: (err) => {
                 this.gestionArchivosService.deleteFile({ filePath: rutaBase + nombre }).subscribe({ error: () => {} });
                 this.reportarErrorGuardado(err, 'La unidad militar fue creada, pero no se pudo asociar el logotipo.');
@@ -324,16 +355,80 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
     });
   }
 
-  private procesarFotoUnidadDespuesDeGuardar(operacion: GuardadoUnidadMilitarEvent['operacionFoto'], mensaje: string): void {
+  //DEJA LA CARPETA DE LA UNIDAD MILITAR EN CADA SUBCARPETA DE ARCHIVOS_SICIM QUE SE ORGANIZA POR UNIDAD MILITAR
+  //(RESPONSABLES, HISTORIAL DE INTEGRANTES, ALTAS Y BAJAS DE EQUIPOS INGENIEROS):
+  //- SI CAMBIÓ EL NOMBRE (carpetaAnterior), PRIMERO LA RENOMBRA (COMO onRenameFolderMilitaryUnit DEL PROYECTO DE REFERENCIA).
+  //- SI NO HUBO QUE RENOMBRAR O EL RENOMBRADO FALLÓ (P. EJ. LA CARPETA ANTERIOR NO EXISTÍA), LA CREA (COMO
+  //  onCreateFolderMilitaryUnitInSavedMode). EL BACKEND USA Files.createDirectories, ASÍ QUE CREAR UNA CARPETA QUE
+  //  YA EXISTE NO FALLA NI BORRA SU CONTENIDO.
+  //UNA SUBCARPETA QUE FALLE NO DETIENE LAS DEMÁS; AL TERMINAR SE LLAMA continuar CON UNA ADVERTENCIA SI ALGUNA FALLÓ:
+  private sincronizarCarpetasUnidadMilitar(carpetaActual: string, carpetaAnterior: string | null, continuar: (advertencia?: string) => void): void {
+    const carpetaNueva = carpetaActual.trim().replace(/^[\\/]+|[\\/]+$/g, '');
+    if (!carpetaNueva) {
+      continuar();
+      return;
+    }
+    this.parametrosSistemaService.getSystemParameterbyId(1).subscribe({
+      next: ({ parametrosSistemaDTO }) => {
+        const rutaPrincipal = String(parametrosSistemaDTO.rutaDestinoCarpetaPrincipalServidorAplicaciones).trim();
+        const subcarpetas: { etiqueta: string; ruta: String }[] = [
+          { etiqueta: 'Responsables', ruta: parametrosSistemaDTO.rutaDestinoArchivosResponsables },
+          { etiqueta: 'Historial de integrantes de documentos', ruta: parametrosSistemaDTO.rutaDestinoArchivosHistorialIntegrantesDocumentos },
+          { etiqueta: 'Altas de equipos ingenieros', ruta: parametrosSistemaDTO.rutaDestinoArchivosAltasEquiposIngenieros },
+          { etiqueta: 'Bajas de equipos ingenieros', ruta: parametrosSistemaDTO.rutaDestinoArchivosBajasEquiposIngenieros }
+        ];
+        const sincronizados = subcarpetas
+          .filter(({ ruta }) => String(ruta || '').trim())
+          .map(({ etiqueta, ruta }) => {
+            const rutaBase = rutaPrincipal + String(ruta).trim();
+            const baseNormalizada = /[\\/]$/.test(rutaBase) ? rutaBase : `${rutaBase}/`;
+            const crearCarpeta$ = this.gestionArchivosService.createFolder({ folderPath: baseNormalizada + carpetaNueva }).pipe(
+              map(() => null),
+              catchError((err) => {
+                console.error(`ERROR AL CREAR LA CARPETA DE LA UNIDAD MILITAR EN ${etiqueta.toUpperCase()}: `, err);
+                return of(etiqueta);
+              })
+            );
+            if (!carpetaAnterior || carpetaAnterior === carpetaNueva) return crearCarpeta$;
+            return this.gestionArchivosService.renameFolder({
+              oldPath: baseNormalizada + carpetaAnterior,
+              newPath: baseNormalizada + carpetaNueva
+            }).pipe(
+              map(() => null),
+              catchError((err) => {
+                console.warn(`NO SE RENOMBRÓ LA CARPETA "${carpetaAnterior}" EN ${etiqueta.toUpperCase()} (PROBABLEMENTE NO EXISTÍA); SE CREA "${carpetaNueva}": `, err);
+                return crearCarpeta$;
+              })
+            );
+          });
+        if (!sincronizados.length) {
+          continuar();
+          return;
+        }
+        forkJoin(sincronizados).subscribe((fallidas) => {
+          const etiquetasFallidas = fallidas.filter((etiqueta): etiqueta is string => !!etiqueta);
+          continuar(etiquetasFallidas.length
+            ? `Advertencia: no se pudo crear o renombrar la carpeta "${carpetaNueva}" en: ${etiquetasFallidas.join(', ')}.`
+            : undefined);
+        });
+      },
+      error: (err) => {
+        console.error('ERROR AL OBTENER LOS PARÁMETROS DEL SISTEMA PARA CREAR O RENOMBRAR CARPETAS: ', err);
+        continuar(`Advertencia: no se pudieron crear o renombrar las carpetas de la unidad militar "${carpetaNueva}".`);
+      }
+    });
+  }
+
+  private procesarFotoUnidadDespuesDeGuardar(operacion: GuardadoUnidadMilitarEvent['operacionFoto'], mensaje: string, tipoToast: 'exito' | 'error' = 'exito'): void {
     if (!operacion || (operacion.tipo === 'subir' && (!operacion.nombreAnterior || operacion.nombreAnterior === operacion.nombreNuevo))) {
-      this.finalizarGuardado(mensaje);
+      this.finalizarGuardado(mensaje, tipoToast);
       return;
     }
     this.obtenerRutaBaseFotos((rutaBase) => this.gestionArchivosService.deleteFile({ filePath: rutaBase + operacion.nombreAnterior }).subscribe({
-      next: () => this.finalizarGuardado(mensaje),
+      next: () => this.finalizarGuardado(mensaje, tipoToast),
       error: (err) => {
         console.error('ERROR AL ELIMINAR EL LOGOTIPO ANTERIOR: ', err);
-        this.finalizarGuardado(mensaje);
+        this.finalizarGuardado(mensaje, tipoToast);
       }
     }));
   }
@@ -352,8 +447,8 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
     return valor;
   }
 
-  private finalizarGuardado(mensaje: string): void {
-    this.mostrarToast('exito', mensaje);
+  private finalizarGuardado(mensaje: string, tipoToast: 'exito' | 'error' = 'exito'): void {
+    this.mostrarToast(tipoToast, mensaje);
     this.accionListar();
     this.cerrarModalAddUpdDel();
   }

@@ -1,0 +1,21 @@
+@if (data; as x) {
+  <div class="vista-historial">
+    <h3>{{ x.gradoIntegranteSolicitudInfraestructura }} {{ x.nombresIntegranteSolicitudInfraestructura }} {{ x.primerApellidoIntegranteSolicitudInfraestructura }} {{ x.segundoApellidoIntegranteSolicitudInfraestructura }}</h3>
+    <div class="vista-seccion">
+      <div class="datos-grid">
+        <div class="dato-grupo"><span class="dato-label">Número de registro</span><span>{{ x.numRegHistorialIntegranteSolicitudInfraestructura }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Solicitud</span><span>{{ x.solicitudInfraestructuraDTO.codigoRadicadoSolicitudInfraestructura }} — {{ x.solicitudInfraestructuraDTO.nombreSolicitudInfraestructura }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Unidad militar de la solicitud</span><span>{{ x.solicitudInfraestructuraDTO.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Unidad militar del integrante</span><span>{{ x.unidadMilitarDTO.siglaoAcronimoUnidadMilitar || '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Grado</span><span>{{ x.gradoIntegranteSolicitudInfraestructura || '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Nombres</span><span>{{ x.nombresIntegranteSolicitudInfraestructura || '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Apellidos</span><span>{{ x.primerApellidoIntegranteSolicitudInfraestructura }} {{ x.segundoApellidoIntegranteSolicitudInfraestructura }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Cargo</span><span>{{ x.cargoIntegranteSolicitudInfraestructura || '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Archivo foto/firma</span><span>{{ x.nombreArchivoFotoFirmaIntegranteSolicitudInfraestructura || '-' }}</span></div>
+      </div>
+    </div>
+    <div class="vista-acciones">
+      <button type="button" class="btn-sicim btn-secundario" (click)="cerrarModal.emit()">Cerrar</button>
+    </div>
+  </div>
+}

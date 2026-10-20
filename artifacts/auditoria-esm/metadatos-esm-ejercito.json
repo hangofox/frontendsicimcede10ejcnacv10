@@ -1,0 +1,796 @@
+{
+  "id" : "fgfq-enis",
+  "name" : "ESTABLECIMIENTOS DE SANIDAD MILITAR DEL EJÉRCITO NACIONAL",
+  "assetType" : "dataset",
+  "attribution" : "Ejército Nacional de Colombia, Bogotá D.C.",
+  "attributionLink" : "https://www.ejercito.mil.co",
+  "averageRating" : 0,
+  "category" : "Salud y Protección Social",
+  "createdAt" : 1479739903,
+  "description" : "LISTADO ESTABLECIMIENTOS DE SANIDAD MILITAR DEL EJÉRCITO NACIONAL",
+  "diciBackend" : false,
+  "displayType" : "table",
+  "downloadCount" : 3572,
+  "hideFromCatalog" : false,
+  "hideFromDataJson" : false,
+  "licenseId" : "CC_40_BY_SA",
+  "locked" : false,
+  "newBackend" : true,
+  "numberOfComments" : 0,
+  "oid" : 38650062,
+  "provenance" : "official",
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1657213483,
+  "publicationGroup" : 13914146,
+  "publicationStage" : "published",
+  "rowsUpdatedAt" : 1657213469,
+  "tableId" : 18771379,
+  "totalTimesRated" : 0,
+  "viewCount" : 30955,
+  "viewLastModified" : 1779132092,
+  "viewType" : "tabular",
+  "approvals" : [ {
+    "reviewedAt" : 1614870635,
+    "reviewedAutomatically" : false,
+    "state" : "approved",
+    "submissionId" : 4815985,
+    "submissionObject" : "public_audience_request",
+    "submissionOutcome" : "change_audience",
+    "submittedAt" : 1614863676,
+    "targetAudience" : "public",
+    "workflowId" : 2188,
+    "reviewer" : {
+      "id" : "r4qn-dwdd",
+      "displayName" : "Ministerio de Tecnologías de la Información y las Comunicaciones - Datos Abiertos"
+    },
+    "submissionDetails" : {
+      "permissionType" : "read"
+    },
+    "submissionOutcomeApplication" : {
+      "endedAt" : 1614870636,
+      "failureCount" : 0,
+      "startedAt" : 1614870635,
+      "status" : "success"
+    },
+    "submitter" : {
+      "id" : "q4vg-dx4x",
+      "displayName" : "EJÉRCITO NACIONAL"
+    }
+  } ],
+  "clientContext" : {
+    "clientContextVariables" : [ ],
+    "inheritedVariables" : { }
+  },
+  "columns" : [ {
+    "id" : 562895006,
+    "name" : "NOMBRE ESTABLECIMIENTO DE SANIDAD MILITAR",
+    "dataTypeName" : "text",
+    "fieldName" : "nombre_establecimiento_de_sanidad_militar",
+    "position" : 1,
+    "renderTypeName" : "text",
+    "tableColumnId" : 40591023,
+    "width" : 592,
+    "cachedContents" : {
+      "non_null" : "122",
+      "largest" : "OFICINA MEDICINA LABORAL EJÉRCITO NACIONAL",
+      "null" : "0",
+      "top" : [ {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLÓN DE INGENIEROS No. 14 \"BATALLA DE CALIBIO\"",
+        "count" : "1"
+      }, {
+        "item" : "DISPENSARIO MÉDICO DE TOLEMAIDA",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLÓN DE INFANTERÍA No. 13 \"GENERAL CUSTODIO GARCÍA ROVIRA\"",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLON DE INFANTERIA MECANIZADA No. 06 CARTAGENA",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLÓN DE INFANTERÍA No. 29 \"GR GERMAN OCAMPO HERRERA\"",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLÓN DE A.S.P.C. No.12 \" GENERAL FERNANDO SERRANO\"",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLÓN DE INGENIEROS No. 3\" CORONEL AGUSTIN CODAZZI\"",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLÓN ESPECIAL ENERGÉTICO Y VÍAL NO. 5 \"GR. JUAN JOSÉ REYES PATRIA\"",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLÓN DE A.S.P.C NO.  23  \" GENERAL RAMON OSPINA\"",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLÓN DE INFANTERÍA No. 3 “BATALLA DE BÁRBULA”",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR GRUPO DE CABALLERÍA BLINDADO MEDIANO \"GENERAL GUSTAVO MATAMOROS D' COSTA\"",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLÓN DE ARTILLERÍA No. 5 ANTONIO GALAN",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLÓN DE ALTA MONTAÑA No- 2 \"GENERAL SANTOS GUTIERREZ PRIETO\"",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLON DE INSTRUCCIÓN, ENTRENAMIENTO Y REENTRENAMIENTO No 10 \"JUAN BAUTISTA PEY DE ANDRADE”",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR SATÉLITE LOS LIBERTADORES",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLÓN DE INFANTERÍA No. 23 VENCEDORES",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLÓN DE ARTILLERÍA No. 8 SAN MATEO",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLÓN DE INFANTERÍA No. 37 GUARDIA PRESIDENCIAL",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLÓN DE INFANTERÍA AEROTRASPORTADO\"RIFLES\"",
+        "count" : "1"
+      }, {
+        "item" : "ESTABLECIMIENTO DE SANIDAD MILITAR BATALLÓN DE ALTA MONTAÑA No. 3 \"RODRIGO LLOREDA CAICEDO\"",
+        "count" : "1"
+      } ],
+      "smallest" : "ASOCIACIÓN COLOMBIANA DE OFICIALES RETIRADOS",
+      "count" : "122",
+      "cardinality" : "122"
+    },
+    "format" : { }
+  }, {
+    "id" : 562895007,
+    "name" : "SIGLA",
+    "dataTypeName" : "text",
+    "fieldName" : "sigla",
+    "position" : 2,
+    "renderTypeName" : "text",
+    "tableColumnId" : 40591024,
+    "width" : 160,
+    "cachedContents" : {
+      "non_null" : "120",
+      "largest" : "MELAB",
+      "null" : "2",
+      "top" : [ {
+        "item" : "ESM BIRNO 44",
+        "count" : "1"
+      }, {
+        "item" : "ESM FUDRA",
+        "count" : "1"
+      }, {
+        "item" : "DMTOL",
+        "count" : "1"
+      }, {
+        "item" : "ESM BRCNA",
+        "count" : "1"
+      }, {
+        "item" : "ESM BITER 13",
+        "count" : "1"
+      }, {
+        "item" : "ESM BICAM 24",
+        "count" : "1"
+      }, {
+        "item" : "DMBUG",
+        "count" : "1"
+      }, {
+        "item" : "ESM EMSUB",
+        "count" : "1"
+      }, {
+        "item" : "ESM BAEEV-8",
+        "count" : "1"
+      }, {
+        "item" : "ESM DISMEG",
+        "count" : "1"
+      }, {
+        "item" : "ESM DMGEM",
+        "count" : "1"
+      }, {
+        "item" : "ESM BISUC",
+        "count" : "1"
+      }, {
+        "item" : "ESM BIREY",
+        "count" : "1"
+      }, {
+        "item" : "DMMED",
+        "count" : "1"
+      }, {
+        "item" : "ESM BIROV",
+        "count" : "1"
+      }, {
+        "item" : "ESM BIPAT",
+        "count" : "1"
+      }, {
+        "item" : "ESM BASER 9",
+        "count" : "1"
+      }, {
+        "item" : "ESM BIMAG",
+        "count" : "1"
+      }, {
+        "item" : "DMSOC",
+        "count" : "1"
+      }, {
+        "item" : "ESM BASER 23",
+        "count" : "1"
+      } ],
+      "smallest" : "CACSA",
+      "count" : "122",
+      "cardinality" : "122"
+    },
+    "format" : { }
+  }, {
+    "id" : 562895008,
+    "name" : "NIVEL DE ATENCIÓN",
+    "dataTypeName" : "text",
+    "fieldName" : "nivel_de_atenci_n",
+    "position" : 3,
+    "renderTypeName" : "text",
+    "tableColumnId" : 40591025,
+    "width" : 304,
+    "cachedContents" : {
+      "non_null" : "122",
+      "largest" : "UBAM",
+      "null" : "0",
+      "top" : [ {
+        "item" : "ENFERMERIA",
+        "count" : "53"
+      }, {
+        "item" : "UBAM",
+        "count" : "32"
+      }, {
+        "item" : "NIVEL I",
+        "count" : "28"
+      }, {
+        "item" : "NIVEL II",
+        "count" : "8"
+      }, {
+        "item" : "CENTRO ATENCIÓN",
+        "count" : "1"
+      } ],
+      "smallest" : "CENTRO ATENCIÓN",
+      "count" : "122",
+      "cardinality" : "122"
+    },
+    "format" : { }
+  }, {
+    "id" : 562895009,
+    "name" : "DIRECCIÓN",
+    "dataTypeName" : "text",
+    "fieldName" : "direcci_n",
+    "position" : 4,
+    "renderTypeName" : "text",
+    "tableColumnId" : 40591026,
+    "width" : 208,
+    "cachedContents" : {
+      "non_null" : "122",
+      "largest" : "VIA CUPIAGUA",
+      "null" : "0",
+      "top" : [ {
+        "item" : "KILOMETRO 2 VIA TURBO",
+        "count" : "2"
+      }, {
+        "item" : "CALLE 8 A - CALAMAR",
+        "count" : "1"
+      }, {
+        "item" : "VIA AL AEROPUERTO",
+        "count" : "1"
+      }, {
+        "item" : "LA URIBE",
+        "count" : "1"
+      }, {
+        "item" : "FINCA SAN CARLOS",
+        "count" : "1"
+      }, {
+        "item" : "AVENIDA QUEBRADA SECA No 33 A-207",
+        "count" : "1"
+      }, {
+        "item" : "VIA ACAPURITA KILOMETRO 4 BARRIO OBAPO",
+        "count" : "1"
+      }, {
+        "item" : "KM 3 VÍA ARMENIA",
+        "count" : "1"
+      }, {
+        "item" : "VEREDA EL DESTINO KM8 VIA SAN JUAN DE SUMAPAZ",
+        "count" : "1"
+      }, {
+        "item" : "AV LA POPA KM 1 VÍA LA MESA",
+        "count" : "1"
+      }, {
+        "item" : "KM. 3 VÍA PUERTO ASÍS- VILLA GARZÓN",
+        "count" : "1"
+      }, {
+        "item" : "AV CARACAS NO 9-52",
+        "count" : "1"
+      }, {
+        "item" : "CALLE 5  NUM. 83-00 CANTÓN MILITAR PICHINCHA",
+        "count" : "1"
+      }, {
+        "item" : "KM 5 VIA LA CRUZADA",
+        "count" : "1"
+      }, {
+        "item" : "KM 1 VIA TOCA",
+        "count" : "1"
+      }, {
+        "item" : "CRA. 46 #20C - 1, PUENTE ARANDA",
+        "count" : "1"
+      }, {
+        "item" : "Km 7 VIA MIRAFLORES",
+        "count" : "1"
+      }, {
+        "item" : "VEREDA BARRANCON",
+        "count" : "1"
+      }, {
+        "item" : "Calle 106  # 7-35",
+        "count" : "1"
+      }, {
+        "item" : "CALLE 44B No. 57 A - 76",
+        "count" : "1"
+      } ],
+      "smallest" : "AV 1 SAN RAFAEL VIA EL PORTICO",
+      "count" : "122",
+      "cardinality" : "122"
+    },
+    "format" : { }
+  }, {
+    "id" : 562895010,
+    "name" : "UBICACIÓN ",
+    "dataTypeName" : "location",
+    "fieldName" : "ubicaci_n",
+    "position" : 5,
+    "renderTypeName" : "location",
+    "tableColumnId" : 40591027,
+    "width" : 220,
+    "format" : { }
+  }, {
+    "id" : 562895011,
+    "name" : "CIUDAD",
+    "dataTypeName" : "text",
+    "description" : "",
+    "fieldName" : "ciudad",
+    "position" : 6,
+    "renderTypeName" : "text",
+    "tableColumnId" : 40591028,
+    "width" : 172,
+    "cachedContents" : {
+      "non_null" : "122",
+      "largest" : "ZARZAL",
+      "null" : "0",
+      "top" : [ {
+        "item" : "BOGOTÁ D.C.",
+        "count" : "19"
+      }, {
+        "item" : "MEDELLÍN",
+        "count" : "4"
+      }, {
+        "item" : "SAN JOSÉ DEL GUAVIARE",
+        "count" : "2"
+      }, {
+        "item" : "PASTO",
+        "count" : "2"
+      }, {
+        "item" : "GIRARDOT",
+        "count" : "2"
+      }, {
+        "item" : "NILO",
+        "count" : "2"
+      }, {
+        "item" : "SARAVENA",
+        "count" : "1"
+      }, {
+        "item" : "TIBÚ",
+        "count" : "1"
+      }, {
+        "item" : "SOCORRO",
+        "count" : "1"
+      }, {
+        "item" : "SANTANA",
+        "count" : "1"
+      }, {
+        "item" : "PUERTO CARREÑO",
+        "count" : "1"
+      }, {
+        "item" : "CANTIMPLORA",
+        "count" : "1"
+      }, {
+        "item" : "ANDES",
+        "count" : "1"
+      }, {
+        "item" : "TUNJA",
+        "count" : "1"
+      }, {
+        "item" : "LA URIBE",
+        "count" : "1"
+      }, {
+        "item" : "NEIVA",
+        "count" : "1"
+      }, {
+        "item" : "PUERTO BOYACÁ",
+        "count" : "1"
+      }, {
+        "item" : "ALBANIA",
+        "count" : "1"
+      }, {
+        "item" : "VILLAVICENCIO",
+        "count" : "1"
+      }, {
+        "item" : "TIERRA ALTA",
+        "count" : "1"
+      } ],
+      "smallest" : "AGUAZUL",
+      "count" : "122",
+      "cardinality" : "122"
+    },
+    "format" : { }
+  }, {
+    "id" : 562895020,
+    "name" : "DEPARTAMENTO",
+    "dataTypeName" : "text",
+    "description" : "",
+    "fieldName" : "departamento",
+    "position" : 7,
+    "renderTypeName" : "text",
+    "tableColumnId" : 142897326,
+    "cachedContents" : {
+      "non_null" : "122",
+      "largest" : "VICHADA",
+      "null" : "0",
+      "top" : [ {
+        "item" : "BOGOTÁ D.C.",
+        "count" : "19"
+      }, {
+        "item" : "ANTIOQUIA",
+        "count" : "14"
+      }, {
+        "item" : "CUNDINAMARCA",
+        "count" : "6"
+      }, {
+        "item" : "VALLE DEL CAUCA",
+        "count" : "6"
+      }, {
+        "item" : "BOYACÁ",
+        "count" : "5"
+      }, {
+        "item" : "PUTUMAYO",
+        "count" : "5"
+      }, {
+        "item" : "CAQUETÁ",
+        "count" : "5"
+      }, {
+        "item" : "SANTANDER",
+        "count" : "5"
+      }, {
+        "item" : "NORTE DE SANTANDER",
+        "count" : "5"
+      }, {
+        "item" : "META",
+        "count" : "5"
+      }, {
+        "item" : "TOLIMA",
+        "count" : "4"
+      }, {
+        "item" : "ARAUCA",
+        "count" : "4"
+      }, {
+        "item" : "HUILA",
+        "count" : "3"
+      }, {
+        "item" : "CASANARE",
+        "count" : "3"
+      }, {
+        "item" : "GUAJIRA",
+        "count" : "3"
+      }, {
+        "item" : "NARIÑO",
+        "count" : "3"
+      }, {
+        "item" : "GUAVIARE",
+        "count" : "3"
+      }, {
+        "item" : "QUÍNDIO",
+        "count" : "3"
+      }, {
+        "item" : "CESAR",
+        "count" : "2"
+      }, {
+        "item" : "VICHADA",
+        "count" : "2"
+      } ],
+      "smallest" : "AMAZONAS",
+      "count" : "122",
+      "cardinality" : "122"
+    },
+    "format" : { }
+  }, {
+    "id" : 562895015,
+    "name" : "TELÉFONO",
+    "dataTypeName" : "text",
+    "description" : "",
+    "fieldName" : "tel_fono",
+    "position" : 9,
+    "renderTypeName" : "text",
+    "tableColumnId" : 40591029,
+    "width" : 196,
+    "cachedContents" : {
+      "non_null" : "81",
+      "largest" : "Presencial",
+      "null" : "41",
+      "top" : [ {
+        "item" : "7320200",
+        "count" : "4"
+      }, {
+        "item" : "6053854052",
+        "count" : "3"
+      }, {
+        "item" : "320 2597833",
+        "count" : "3"
+      }, {
+        "item" : "6012137518",
+        "count" : "2"
+      }, {
+        "item" : "3133973723",
+        "count" : "2"
+      }, {
+        "item" : "3217808484",
+        "count" : "2"
+      }, {
+        "item" : "3015566302",
+        "count" : "1"
+      }, {
+        "item" : "3355088",
+        "count" : "1"
+      }, {
+        "item" : "8335526",
+        "count" : "1"
+      }, {
+        "item" : "3137805332",
+        "count" : "1"
+      }, {
+        "item" : "3053228930",
+        "count" : "1"
+      }, {
+        "item" : "6970711",
+        "count" : "1"
+      }, {
+        "item" : "6349890",
+        "count" : "1"
+      }, {
+        "item" : "4468019",
+        "count" : "1"
+      }, {
+        "item" : "3183206369",
+        "count" : "1"
+      }, {
+        "item" : "8417834",
+        "count" : "1"
+      }, {
+        "item" : "5927551",
+        "count" : "1"
+      }, {
+        "item" : "3135048479",
+        "count" : "1"
+      }, {
+        "item" : "628248",
+        "count" : "1"
+      }, {
+        "item" : "2373240/2368194",
+        "count" : "1"
+      } ],
+      "smallest" : "094 4531899",
+      "count" : "122",
+      "cardinality" : "122"
+    },
+    "format" : { }
+  }, {
+    "id" : 562895017,
+    "name" : "TELÉFONO CENTRAL DE CITAS ",
+    "dataTypeName" : "text",
+    "description" : "",
+    "fieldName" : "tel_fono_central_de_citas",
+    "position" : 10,
+    "renderTypeName" : "text",
+    "tableColumnId" : 40591030,
+    "width" : 412,
+    "cachedContents" : {
+      "non_null" : "122",
+      "largest" : "Presencial",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Presencial",
+        "count" : "68"
+      }, {
+        "item" : "7944222",
+        "count" : "6"
+      }, {
+        "item" : "7320200",
+        "count" : "5"
+      }, {
+        "item" : "6818930",
+        "count" : "3"
+      }, {
+        "item" : "8680080",
+        "count" : "3"
+      }, {
+        "item" : "7460450",
+        "count" : "3"
+      }, {
+        "item" : "8360020",
+        "count" : "3"
+      }, {
+        "item" : "6910741",
+        "count" : "2"
+      }, {
+        "item" : "3107643099",
+        "count" : "2"
+      }, {
+        "item" : "3160070",
+        "count" : "2"
+      }, {
+        "item" : "3135601079",
+        "count" : "1"
+      }, {
+        "item" : "6082760131",
+        "count" : "1"
+      }, {
+        "item" : "7200719",
+        "count" : "1"
+      }, {
+        "item" : "3186408396",
+        "count" : "1"
+      }, {
+        "item" : "68158670",
+        "count" : "1"
+      }, {
+        "item" : "2373240-3217052659",
+        "count" : "1"
+      }, {
+        "item" : "4368600",
+        "count" : "1"
+      }, {
+        "item" : "3217808484",
+        "count" : "1"
+      }, {
+        "item" : "2040051",
+        "count" : "1"
+      }, {
+        "item" : "3226945190",
+        "count" : "1"
+      } ],
+      "smallest" : "2040051",
+      "count" : "122",
+      "cardinality" : "122"
+    },
+    "format" : { }
+  }, {
+    "id" : 562895019,
+    "name" : "HORARIO DE ATENCIÓN",
+    "dataTypeName" : "text",
+    "description" : "",
+    "fieldName" : "horario_de_atenci_n",
+    "position" : 11,
+    "renderTypeName" : "text",
+    "tableColumnId" : 40591031,
+    "width" : 328,
+    "cachedContents" : {
+      "non_null" : "122",
+      "largest" : "urgencias: 24 Horas Consulta externa 07:00 a 12:00 y 14:00-17:00 horas",
+      "null" : "0",
+      "top" : [ {
+        "item" : "lunes a viernes de 07:00-17:00 horas",
+        "count" : "11"
+      }, {
+        "item" : "Lunes a viernes 7:00 a 17:00 horas",
+        "count" : "10"
+      }, {
+        "item" : "lunes a Viernes de 7:00 a 17:00",
+        "count" : "6"
+      }, {
+        "item" : "Lunes a Viernes de 7:00 a 17:00 horas",
+        "count" : "4"
+      }, {
+        "item" : "lunes a Viernes 7:00 a17:00 horas",
+        "count" : "4"
+      }, {
+        "item" : "Lunes a Viernes de 07:00 a 17:00 horas",
+        "count" : "4"
+      }, {
+        "item" : "lunes a viernes de 07:00 a 17:00 horas",
+        "count" : "3"
+      }, {
+        "item" : "Prioritaria 24 horas Consulta externa de 7:00 a 19:00 horas",
+        "count" : "3"
+      }, {
+        "item" : "Lunes a viernes 07:00-17:00 horas",
+        "count" : "3"
+      }, {
+        "item" : "lunes a viernes 07:00-16:00 horas",
+        "count" : "3"
+      }, {
+        "item" : "lunes a viernes 7:00 A 17:00 horas",
+        "count" : "2"
+      }, {
+        "item" : "Lunes a viernes de 07:00-17:00 horas",
+        "count" : "2"
+      }, {
+        "item" : "Lunes a Viernes de 07:00 a 16:00 horas",
+        "count" : "2"
+      }, {
+        "item" : "lunes a viernes 14:00 -17:00 horas",
+        "count" : "1"
+      }, {
+        "item" : "lunes a viernes 07:00 am -11:00 am",
+        "count" : "1"
+      }, {
+        "item" : "urgencias: 24 Horas Consulta externa 07:00 a 12:00 y 14:00-17:00 horas",
+        "count" : "1"
+      }, {
+        "item" : "lunes a viernes de 07:00 a 19:00",
+        "count" : "1"
+      }, {
+        "item" : "lunes a viernes de 7:00 a16:00 horasSábados de 7:00 a 15:00 horas cada 15 días",
+        "count" : "1"
+      }, {
+        "item" : "Lunes a viernes de 06:00-18:00 horas",
+        "count" : "1"
+      }, {
+        "item" : "Lunes a viernes de 07:00-18:00 horas",
+        "count" : "1"
+      } ],
+      "smallest" : "24 HORAS",
+      "count" : "122",
+      "cardinality" : "122"
+    },
+    "format" : { }
+  } ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "license" : {
+    "name" : "Creative Commons Attribution | Share Alike 4.0 International",
+    "logoUrl" : "images/licenses/cc30bysa.png",
+    "termsLink" : "http://creativecommons.org/licenses/by-sa/4.0/legalcode"
+  },
+  "metadata" : {
+    "custom_fields" : {
+      "Información de la Entidad" : {
+        "Municipio" : "Bogotá D.C.",
+        "Nombre de la Entidad" : "Ejército Nacional de Colombia, Bogotá D.C.",
+        "DIVIPOLA Municipio" : "11001",
+        "Orden" : "Nacional",
+        "Sector" : "Defensa",
+        "Departamento" : "Bogotá D.C."
+      },
+      "Información de Datos" : {
+        "Cobertura Geográfica" : "Nacional",
+        "Idioma" : "Español",
+        "Frecuencia de Actualización" : "Semestral"
+      }
+    }
+  },
+  "owner" : {
+    "id" : "q4vg-dx4x",
+    "displayName" : "EJÉRCITO NACIONAL",
+    "profileImageUrlLarge" : "/api/users/q4vg-dx4x/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/q4vg-dx4x/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/q4vg-dx4x/profile_images/TINY",
+    "screenName" : "EJÉRCITO NACIONAL",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "query" : { },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "q4vg-dx4x",
+    "displayName" : "EJÉRCITO NACIONAL",
+    "profileImageUrlLarge" : "/api/users/q4vg-dx4x/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/q4vg-dx4x/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/q4vg-dx4x/profile_images/TINY",
+    "screenName" : "EJÉRCITO NACIONAL",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "tags" : [ "hospitales", "dispensarios", "enfermerías", "sanidad", "militar" ],
+  "flags" : [ "default", "ownerMayBeContacted", "restorable", "restorePossibleForType" ]
+}

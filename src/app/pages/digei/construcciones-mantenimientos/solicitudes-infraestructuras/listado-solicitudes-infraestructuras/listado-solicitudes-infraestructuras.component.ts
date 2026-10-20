@@ -6,24 +6,24 @@ import { SolicitudesInfraestructurasI } from '../../../../../interfaces/digei/co
 import { UnidadesMilitaresI } from '../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
 import { TiposSolicitudesInfraestructurasI } from '../../../../../interfaces/digei/construcciones-mantenimientos/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.interface';
 import { InfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
-import { GRUPOS_NIVEL_INTEGRANTES_DOCUMENTOS_SOLIC_INFRAEST, IntegrantesDocumentosSolicInfraestI, NIVELES_JERARQUIA_UNIDAD_MILITAR } from '../../../../../interfaces/digei/construcciones-mantenimientos/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.interface';
 
 import { SolicitudesInfraestructurasService } from '../../../../../services/digei/construcciones-mantenimientos/solicitudes-infraestructuras/solicitudes-infraestructuras.service';
 import { UnidadesMilitaresService } from '../../../../../services/panel-control/unidades-militares/unidades-militares.service';
 import { TiposSolicitudesInfraestructurasService } from '../../../../../services/digei/construcciones-mantenimientos/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.service';
 import { InfraestructurasService } from '../../../../../services/digei/finca-raiz/infraestructuras/infraestructuras.service';
-import { IntegrantesDocumentosSolicInfraestService } from '../../../../../services/digei/construcciones-mantenimientos/solicitudes-infraestructuras/integrantes-documentos-solic-infraest/integrantes-documentos-solic-infraest.service';
+import { HistorialIntegrantesSolicInfraestService } from '../../../../../services/digei/construcciones-mantenimientos/solicitudes-infraestructuras/historial-integrantes-solic-infraest/historial-integrantes-solic-infraest.service';
+import { LineasMandosUnidadesMilitaresSolicInfraestService } from '../../../../../services/panel-control/lineas-mandos-unid-mil-solic-infraest/lineas-mandos-unid-mil-solic-infraest.service';
 import { SpinnerService } from '../../../../../services/spinner/spinner.service';
 
 import { AddUpdDelSolicitudInfraestructuraComponent } from '../add-upd-del-solicitud-infraestructura/add-upd-del-solicitud-infraestructura.component';
 import { VistaSolicitudInfraestructuraComponent } from '../vista-solicitud-infraestructura/vista-solicitud-infraestructura.component';
-import { ListadoIntegrantesDocumentosSolicInfraestComponent } from '../integrantes-documentos-solic-infraest/listado-integrantes-documentos-solic-infraest/listado-integrantes-documentos-solic-infraest.component';
+import { ListadoHistorialIntegrantesSolicInfraestComponent } from '../historial-integrantes-solic-infraest/listado-historial-integrantes-solic-infraest/listado-historial-integrantes-solic-infraest.component';
 import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 
 @Component({
   selector: 'app-listado-solicitudes-infraestructuras',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelSolicitudInfraestructuraComponent, VistaSolicitudInfraestructuraComponent, ListadoIntegrantesDocumentosSolicInfraestComponent, SemaforoContadoresComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelSolicitudInfraestructuraComponent, VistaSolicitudInfraestructuraComponent, ListadoHistorialIntegrantesSolicInfraestComponent, SemaforoContadoresComponent],
   templateUrl: './listado-solicitudes-infraestructuras.component.html',
   styleUrl: './listado-solicitudes-infraestructuras.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -35,9 +35,12 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
   tiposSolicitudesInfraestructuras: TiposSolicitudesInfraestructurasI[] = [];
   infraestructuras: InfraestructurasI[] = [];
 
-  //REGISTROS DE INTEGRANTES DE CADA SOLICITUD (COMITÉ COMPLETO), INDEXADOS POR idSolicitudInfraestructura, PARA
-  //SABER SI CADA NIVEL YA TIENE TODAS SUS FIRMAS ADJUNTADAS Y ASÍ DECIDIR SI SE MUESTRA CHULO O X EN LA TABLA:
-  private integrantesPorSolicitud = new Map<number, IntegrantesDocumentosSolicInfraestI>();
+  //PASOS (SIGLAS) DE CADA LÍNEA DE MANDO DE SOLICITUDES DE INFRAESTRUCTURAS, INDEXADOS POR LA PRIMERA SIGLA DE LA LÍNEA
+  //(LA QUE VA ANTES DEL PRIMER "->", QUE ES LA UNIDAD MILITAR QUE CREA LA SOLICITUD). EJ. "CAOCC" → [CAOCC, JEMOP, SECEJ, COEJC]:
+  private pasosLineaMandoPorSigla = new Map<string, string[]>();
+
+  //SIGLAS DE LAS UNIDADES MILITARES QUE YA TIENEN INTEGRANTE REGISTRADO EN EL HISTORIAL DE CADA SOLICITUD (PASOS ILUMINADOS):
+  private siglasConIntegrantePorSolicitud = new Map<number, Set<string>>();
 
   //PÁGINA ACTUAL DE SOLICITUDES DE INFRAESTRUCTURAS TRAÍDA DEL BACKEND (YA PAGINADA POR EL SERVIDOR, NO SE RECORTA EN EL CLIENTE):
   solicitudesInfraestructuras: SolicitudesInfraestructurasI[] = [];
@@ -55,7 +58,7 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
   modalModo: 'guardar' | 'modificar' | 'eliminar' = 'guardar';
   solicitudInfraestructuraSeleccionada: SolicitudesInfraestructurasI | null = null;
 
-  //ESTADO DEL MODAL DE INTEGRANTES DE LA SOLICITUD (COMITÉ ASOCIADO A LA SOLICITUD SELECCIONADA):
+  //ESTADO DEL MODAL DEL HISTORIAL DE INTEGRANTES DE LA SOLICITUD (ASOCIADO A LA SOLICITUD SELECCIONADA):
   modalIntegrantesVisible = false;
   solicitudInfraestructuraParaIntegrantes: SolicitudesInfraestructurasI | null = null;
 
@@ -71,7 +74,8 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
     private unidadesMilitaresService: UnidadesMilitaresService,
     private tiposSolicitudesInfraestructurasService: TiposSolicitudesInfraestructurasService,
     private infraestructurasService: InfraestructurasService,
-    private integrantesDocumentosSolicInfraestService: IntegrantesDocumentosSolicInfraestService,
+    private historialIntegrantesSolicInfraestService: HistorialIntegrantesSolicInfraestService,
+    private lineasMandosUnidadesMilitaresSolicInfraestService: LineasMandosUnidadesMilitaresSolicInfraestService,
     private spinnerService: SpinnerService
   ) {
     this.solicitudesInfraestructurasForm = this.formBuilder.group({
@@ -85,25 +89,56 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
     this.cargarUnidadesMilitares();
     this.cargarTiposSolicitudesInfraestructuras();
     this.cargarInfraestructuras();
-    this.cargarIntegrantesDocumentosSolicInfraest();
+    this.cargarLineasMandoSolicInfraest();
+    this.cargarHistorialIntegrantesSolicInfraest();
     this.accionListar();
   }
 
-  //CARGA TODOS LOS REGISTROS DE INTEGRANTES DE SOLICITUDES DE INFRAESTRUCTURAS Y LOS INDEXA POR
-  //idSolicitudInfraestructura, PARA PODER DETERMINAR SI CADA NIVEL DE CADA SOLICITUD YA TIENE TODAS SUS FIRMAS:
-  private cargarIntegrantesDocumentosSolicInfraest(): void {
-    this.integrantesDocumentosSolicInfraestService.findAllInfrastructureRequestDocumentMembers()
+  //CARGA TODAS LAS LÍNEAS DE MANDO DE SOLICITUDES DE INFRAESTRUCTURAS Y LAS INDEXA POR SU PRIMERA SIGLA (ANTES DEL PRIMER "->"):
+  private cargarLineasMandoSolicInfraest(): void {
+    this.lineasMandosUnidadesMilitaresSolicInfraestService.findAllInfrastructureRequestMilitaryUnitChainsOfCommand()
       .subscribe({
-        next: (integrantes) => {
-          this.integrantesPorSolicitud = new Map(
-            integrantes
-              .filter(i => i.solicitudInfraestructuraDTO?.idSolicitudInfraestructura !== undefined)
-              .map(i => [i.solicitudInfraestructuraDTO.idSolicitudInfraestructura as number, i])
-          );
+        next: (lineasMando) => {
+          const pasosPorSigla = new Map<string, string[]>();
+          lineasMando.forEach(lineaMando => {
+            const pasos = String(lineaMando.lineaMandoUnidadMilitarSolicInfraest || '')
+              .split('->')
+              .map(paso => this.normalizarTexto(paso))
+              .filter(paso => !!paso);
+            if (pasos.length) pasosPorSigla.set(pasos[0], pasos);
+          });
+          this.pasosLineaMandoPorSigla = pasosPorSigla;
           this.changeDetectorRef.markForCheck();
         },
-        error: (err) => console.error('ERROR AL CARGAR INTEGRANTES DE SOLICITUDES DE INFRAESTRUCTURAS: ', err)
+        error: (err) => console.error('ERROR AL CARGAR LÍNEAS DE MANDO DE SOLICITUDES DE INFRAESTRUCTURAS: ', err)
       });
+  }
+
+  //CARGA TODO EL HISTORIAL DE INTEGRANTES DE SOLICITUDES DE INFRAESTRUCTURAS Y AGRUPA POR SOLICITUD LAS SIGLAS DE LAS
+  //UNIDADES MILITARES QUE YA TIENEN INTEGRANTE (unidadMilitarDTO DE CADA REGISTRO), PARA ILUMINAR LOS PASOS DE CADA LÍNEA DE MANDO:
+  private cargarHistorialIntegrantesSolicInfraest(): void {
+    this.historialIntegrantesSolicInfraestService.findAllInfrastructureRequestMemberHistories()
+      .subscribe({
+        next: (historiales) => {
+          const siglasPorSolicitud = new Map<number, Set<string>>();
+          historiales.forEach(historial => {
+            const idSolicitudInfraestructura = historial.solicitudInfraestructuraDTO?.idSolicitudInfraestructura;
+            const sigla = this.normalizarTexto(historial.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar);
+            if (idSolicitudInfraestructura === undefined || !sigla) return;
+            const siglas = siglasPorSolicitud.get(idSolicitudInfraestructura) ?? new Set<string>();
+            siglas.add(sigla);
+            siglasPorSolicitud.set(idSolicitudInfraestructura, siglas);
+          });
+          this.siglasConIntegrantePorSolicitud = siglasPorSolicitud;
+          this.changeDetectorRef.markForCheck();
+        },
+        error: (err) => console.error('ERROR AL CARGAR EL HISTORIAL DE INTEGRANTES DE SOLICITUDES DE INFRAESTRUCTURAS: ', err)
+      });
+  }
+
+  //PASA EL TEXTO A MAYÚSCULA, LE QUITA LAS TILDES Y DEJA UN SOLO ESPACIO ENTRE PALABRAS (EJ. "Jemop " → "JEMOP"):
+  private normalizarTexto(texto: unknown): string {
+    return String(texto ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase().replace(/\s+/g, ' ').trim();
   }
 
   //CARGA EL CATÁLOGO DE UNIDADES MILITARES DESDE EL BACKEND (COMBO DE FILTRO Y COMBO DEL FORMULARIO):
@@ -197,32 +232,15 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
     this.accionListar();
   }
 
-  //DETERMINA SI LA COLUMNA DE CHULEO (DISPENSARIO/BATALLON/BRIGADA/DIVISION/JEFATURA) APLICA PARA UNA SOLICITUD:
-  //EL CHULEO EMPIEZA EN LA COLUMNA CORRESPONDIENTE AL NIVEL DE LA UNIDAD MILITAR DE LA SOLICITUD Y CONTINÚA HACIA
-  //LOS NIVELES SUPERIORES; LAS COLUMNAS DE NIVELES INFERIORES AL DE LA UNIDAD MILITAR DE ORIGEN NO APLICAN:
-  aplicaChuleoNivel(solicitudInfraestructura: SolicitudesInfraestructurasI, nivelColumna: string): boolean {
-    const nivelUnidadMilitar = String(solicitudInfraestructura.unidadMilitarDTO?.nivelUnidadMilitar || '').toUpperCase().trim();
-    const indiceUnidadMilitar = NIVELES_JERARQUIA_UNIDAD_MILITAR.indexOf(nivelUnidadMilitar);
-    const indiceColumna = NIVELES_JERARQUIA_UNIDAD_MILITAR.indexOf(nivelColumna);
-    if (indiceUnidadMilitar === -1 || indiceColumna === -1) return false;
-    return indiceColumna >= indiceUnidadMilitar;
-  }
-
-  //DEVUELVE EL ESTADO DE LA COLUMNA DE CHULEO PARA UNA SOLICITUD: "no-aplica" SI EL NIVEL NO APLICA SEGÚN EL NIVEL
-  //DE LA UNIDAD MILITAR DE LA SOLICITUD; "chulo" SI APLICA Y YA ESTÁN ADJUNTADOS TODOS LOS INTEGRANTES DE ESE
-  //NIVEL (O SI EL NIVEL NO TIENE ROLES DE COMITÉ PROPIOS, COMO DISPENSARIO Y COMANDO); "x" SI APLICA PERO AÚN
-  //FALTA ADJUNTAR ALGUNO DE LOS INTEGRANTES DE ESE NIVEL:
-  obtenerEstadoNivelListado(solicitudInfraestructura: SolicitudesInfraestructurasI, nivelColumna: string): 'chulo' | 'x' | 'no-aplica' {
-    if (!this.aplicaChuleoNivel(solicitudInfraestructura, nivelColumna)) return 'no-aplica';
-
-    const grupo = GRUPOS_NIVEL_INTEGRANTES_DOCUMENTOS_SOLIC_INFRAEST.find(g => g.nivel === nivelColumna);
-    if (!grupo) return 'chulo';
-
+  //DEVUELVE LOS PASOS DE LA LÍNEA DE MANDO DE LA SOLICITUD (LA LÍNEA CUYA PRIMERA SIGLA ES LA DE LA UNIDAD MILITAR QUE
+  //CREÓ LA SOLICITUD), MARCANDO COMO "aprobado" (ILUMINADO) CADA PASO CUYA UNIDAD MILITAR YA TIENE INTEGRANTE EN EL
+  //HISTORIAL DE LA SOLICITUD. SI LA UNIDAD NO TIENE LÍNEA DE MANDO REGISTRADA DEVUELVE UNA LISTA VACÍA:
+  obtenerPasosLineaMando(solicitudInfraestructura: SolicitudesInfraestructurasI): { sigla: string; aprobado: boolean }[] {
+    const sigla = this.normalizarTexto(solicitudInfraestructura.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar);
+    const pasos = this.pasosLineaMandoPorSigla.get(sigla) ?? [];
     const idSolicitudInfraestructura = solicitudInfraestructura.idSolicitudInfraestructura;
-    const registro = idSolicitudInfraestructura !== undefined ? this.integrantesPorSolicitud.get(idSolicitudInfraestructura) : undefined;
-    const registroAny = registro as any;
-    const completo = !!registro && grupo.roles.every(rol => !!(registroAny[`nombres${rol.clave}`] || registroAny[`grado${rol.clave}`]));
-    return completo ? 'chulo' : 'x';
+    const siglasConIntegrante = idSolicitudInfraestructura !== undefined ? this.siglasConIntegrantePorSolicitud.get(idSolicitudInfraestructura) : undefined;
+    return pasos.map(paso => ({ sigla: paso, aprobado: !!siglasConIntegrante?.has(paso) }));
   }
 
   //ABRE EL MODAL DE CREAR / MODIFICAR / ELIMINAR, MOSTRANDO PRIMERO EL SPINNER GLOBAL DEL PIÑÓN GIRATORIO
@@ -254,7 +272,7 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
     this.solicitudInfraestructuraSeleccionada = null;
   }
 
-  //ABRE EL MODAL CON EL LISTADO DE INTEGRANTES DEL COMITÉ ASOCIADO A LA SOLICITUD DE INFRAESTRUCTURA SELECCIONADA:
+  //ABRE EL MODAL CON EL HISTORIAL DE INTEGRANTES ASOCIADO A LA SOLICITUD DE INFRAESTRUCTURA SELECCIONADA:
   abrirModalIntegrantes(solicitudInfraestructura: SolicitudesInfraestructurasI): void {
     this.spinnerService.showBeforeOpening(() => {
       this.solicitudInfraestructuraParaIntegrantes = solicitudInfraestructura;
@@ -266,9 +284,9 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
   cerrarModalIntegrantes(): void {
     this.modalIntegrantesVisible = false;
     this.solicitudInfraestructuraParaIntegrantes = null;
-    //VUELVE A CARGAR LOS INTEGRANTES POR SI SE ADJUNTÓ, MODIFICÓ O ELIMINÓ ALGO MIENTRAS EL MODAL ESTUVO ABIERTO,
-    //PARA QUE LAS COLUMNAS DE CHULEO/X DE LA TABLA QUEDEN ACTUALIZADAS:
-    this.cargarIntegrantesDocumentosSolicInfraest();
+    //VUELVE A CARGAR EL HISTORIAL DE INTEGRANTES POR SI SE AGREGÓ, MODIFICÓ O ELIMINÓ ALGO MIENTRAS EL MODAL ESTUVO
+    //ABIERTO, PARA QUE LAS COLUMNAS DE CHULEO/X DE LA TABLA QUEDEN ACTUALIZADAS:
+    this.cargarHistorialIntegrantesSolicInfraest();
   }
 
   //RECIBE LA SOLICITUD DE INFRAESTRUCTURA NUEVA O MODIFICADA DESDE EL MODAL Y LA ENVÍA AL BACKEND (POST SI ES NUEVA, PUT SI YA TIENE ID):

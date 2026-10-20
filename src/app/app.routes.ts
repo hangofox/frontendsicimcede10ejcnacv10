@@ -75,6 +75,7 @@ export const routes: Routes = [
         children: [
           { path: '', loadComponent: () => import('./pages/panel-control/panel-control.component').then(m => m.PanelControlComponent), title: 'Panel de control | SICIM' },
           { path: 'unidades-militares/listado-unidades-militares', loadComponent: () => import('./pages/panel-control/unidades-militares/listado-unidades-militares/listado-unidades-militares.component').then(m => m.ListadoUnidadesMilitaresComponent), title: 'Unidades militares | SICIM' },
+          { path: 'lineas-mandos-unid-mil-solic-infraest/listado-lineas-mandos-unid-mil-solic-infraest', loadComponent: () => import('./pages/panel-control/lineas-mandos-unid-mil-solic-infraest/listado-lineas-mandos-unid-mil-solic-infraest/listado-lineas-mandos-unid-mil-solic-infraest.component').then(m => m.ListadoLineasMandosUnidMilSolicInfraestComponent), title: 'Líneas de mando de solicitudes de infraestructuras | SICIM' },
           { path: 'sociedades-unidades-centralizadoras/listado-sociedades-unidades-centralizadoras', loadComponent: () => import('./pages/panel-control/sociedades-unidades-centralizadoras/listado-sociedades-unidades-centralizadoras/listado-sociedades-unidades-centralizadoras.component').then(m => m.ListadoSociedadesUnidadesCentralizadorasComponent), title: 'Sociedades de unidades centralizadoras | SICIM' },
           { path: 'unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos', loadComponent: () => import('./pages/panel-control/unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos.component').then(m => m.ListadoUnidadesMilitaresRealizMttosComponent), title: 'Unidad militares realizadoras de mantenimientos | SICIM' },
           { path: 'oficinas/listado-oficinas', loadComponent: () => import('./pages/panel-control/oficinas/listado-oficinas/listado-oficinas.component').then(m => m.ListadoOficinasComponent), title: 'Oficinas | SICIM' },
@@ -87,6 +88,7 @@ export const routes: Routes = [
           { path: 'mi-perfil', loadComponent: () => import('./pages/panel-control/mi-perfil/mi-perfil.component').then(m => m.MiPerfilComponent), title: 'Mi perfil | SICIM' },
           { path: 'usuarios/listado-usuarios', loadComponent: () => import('./pages/panel-control/usuarios/listado-usuarios/listado-usuarios.component').then(m => m.ListadoUsuariosComponent), title: 'Usuarios | SICIM' },
           { path: 'unidades-militares', redirectTo: 'unidades-militares/listado-unidades-militares', pathMatch: 'full' },
+          { path: 'lineas-mandos-unid-mil-solic-infraest', redirectTo: 'lineas-mandos-unid-mil-solic-infraest/listado-lineas-mandos-unid-mil-solic-infraest', pathMatch: 'full' },
           { path: 'sociedades-unidades-centralizadoras', redirectTo: 'sociedades-unidades-centralizadoras/listado-sociedades-unidades-centralizadoras', pathMatch: 'full' },
           { path: 'unidades-militares-realiz-mttos', redirectTo: 'unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos', pathMatch: 'full' },
           { path: 'oficinas', redirectTo: 'oficinas/listado-oficinas', pathMatch: 'full' },

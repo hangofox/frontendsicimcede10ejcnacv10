@@ -111,22 +111,49 @@
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: rgba(0, 0, 0, .02); }
 
-    .th-check { text-align: center; }
+    .th-linea-mando { text-align: left; }
   }
 }
 
-.celda-check {
-  text-align: center !important;
-  color: #16a34a;
+//LÍNEA DE MANDO DE LA SOLICITUD: CADA PASO ES UNA SIGLA; LOS PASOS CON INTEGRANTE EN EL HISTORIAL SE ILUMINAN EN VERDE
+//Y LOS PENDIENTES QUEDAN EN GRIS:
+.celda-linea-mando { text-align: left !important; }
 
-  svg { display: inline-block; vertical-align: middle; }
+.linea-mando {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
 }
 
-.celda-no-aplica-icono {
-  display: inline-block;
-  vertical-align: middle;
+.paso-linea-mando {
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--sicim-soft);
+  background: #f3f4f6;
   color: var(--sicim-gray);
-  opacity: .5;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &.paso-aprobado {
+    border-color: #16a34a;
+    background: #16a34a;
+    color: #fff;
+    box-shadow: 0 0 6px rgba(22, 163, 74, .45);
+  }
+}
+
+.flecha-linea-mando {
+  color: var(--sicim-gray);
+  font-size: 12px;
+}
+
+.sin-linea-mando {
+  color: var(--sicim-gray);
+  font-size: 12px;
+  font-style: italic;
 }
 
 .tabla-vacia {

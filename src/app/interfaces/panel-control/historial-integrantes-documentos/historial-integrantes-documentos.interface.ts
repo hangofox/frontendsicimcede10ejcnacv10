@@ -7,7 +7,9 @@ export interface HistorialIntegrantesDocumentosI {
     numRegHistorialIntegranteDocumentos: String;
     unidadMilitarDTO: UnidadesMilitaresI;
     gradoIntegranteDocumentos: String;
-    nombresYApellidosIntegranteDocumentos: String;
+    nombresIntegranteDocumentos: String;
+    primerApellidoIntegranteDocumentos: String;
+    segundoApellidoIntegranteDocumentos: String;
     cargoIntegranteDocumentos: String;
     tipoDocumentoIdentificacionDTO: TiposDocumentosIdentificacionI;
     numeroDocumentoIdentificacionIntegranteDocumentos: String;
