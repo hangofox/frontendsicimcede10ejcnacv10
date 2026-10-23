@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { AddUpdDelHistorialIntegranteSolicInfraestComponent } from './add-upd-del-historial-integrante-solic-infraest.component';
+import { AddUpdDelHistorialIntegranteSolicInfraestComponent } from './add-upd-del-hist-integ-solic-inf.component';
 
 describe('AddUpdDelHistorialIntegranteSolicInfraestComponent', () => {
   it('debe crearse', async () => {

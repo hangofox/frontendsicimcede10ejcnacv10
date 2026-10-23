@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ListadoHistorialIntegrantesSolicInfraestComponent } from './listado-historial-integrantes-solic-infraest.component';
+import { ListadoHistorialIntegrantesSolicInfraestComponent } from './listado-hist-integ-solic-inf.component';
 
 describe('ListadoHistorialIntegrantesSolicInfraestComponent', () => {
   it('debe crearse', async () => {

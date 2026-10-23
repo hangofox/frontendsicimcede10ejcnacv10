@@ -29,11 +29,11 @@ export interface GrupoFinalAlternativoLineaMando {
 }
 
 @Component({
-  selector: 'app-add-upd-del-historial-integrante-solic-infraest',
+  selector: 'app-add-upd-del-hist-integ-solic-inf',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './add-upd-del-historial-integrante-solic-infraest.component.html',
-  styleUrl: './add-upd-del-historial-integrante-solic-infraest.component.scss'
+  templateUrl: './add-upd-del-hist-integ-solic-inf.component.html',
+  styleUrl: './add-upd-del-hist-integ-solic-inf.component.scss'
 })
 export class AddUpdDelHistorialIntegranteSolicInfraestComponent implements OnChanges, OnInit {
   @Input() modo: 'guardar' | 'modificar' | 'eliminar' = 'guardar';

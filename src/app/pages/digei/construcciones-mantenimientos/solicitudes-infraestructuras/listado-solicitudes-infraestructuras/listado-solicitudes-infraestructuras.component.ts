@@ -19,7 +19,7 @@ import { SpinnerService } from '../../../../../services/spinner/spinner.service'
 
 import { AddUpdDelSolicitudInfraestructuraComponent } from '../add-upd-del-solicitud-infraestructura/add-upd-del-solicitud-infraestructura.component';
 import { VistaSolicitudInfraestructuraComponent } from '../vista-solicitud-infraestructura/vista-solicitud-infraestructura.component';
-import { ListadoHistorialIntegrantesSolicInfraestComponent } from '../historial-integrantes-solic-infraest/listado-historial-integrantes-solic-infraest/listado-historial-integrantes-solic-infraest.component';
+import { ListadoHistorialIntegrantesSolicInfraestComponent } from '../historial-integrantes-solic-infraest/listado-hist-integ-solic-inf/listado-hist-integ-solic-inf.component';
 import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 import { OrdenarPorSiglaPipe } from '../../../../../shared/pipes/ordenar-por-sigla.pipe';
 import { EstructuraLineaMando, analizarLineaMando, obtenerIndicesFinalesVigentes } from '../../../../../shared/lineas-mando/linea-mando.util';

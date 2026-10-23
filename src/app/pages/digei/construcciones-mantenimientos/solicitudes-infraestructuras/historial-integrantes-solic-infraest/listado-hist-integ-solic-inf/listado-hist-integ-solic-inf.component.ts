@@ -6,16 +6,16 @@ import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei
 import { HistorialIntegrantesSolicInfraestService } from '../../../../../../services/digei/construcciones-mantenimientos/solicitudes-infraestructuras/historial-integrantes-solic-infraest/historial-integrantes-solic-infraest.service';
 import { LineasMandosUnidadesMilitaresService } from '../../../../../../services/panel-control/lineas-mandos-unidades-militares/lineas-mandos-unidades-militares.service';
 import { SemaforoContadoresComponent } from '../../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
-import { AddUpdDelHistorialIntegranteSolicInfraestComponent, GrupoFinalAlternativoLineaMando, OpcionPasoLineaMando } from '../add-upd-del-historial-integrante-solic-infraest/add-upd-del-historial-integrante-solic-infraest.component';
-import { VistaHistorialIntegranteSolicInfraestComponent } from '../vista-historial-integrante-solic-infraest/vista-historial-integrante-solic-infraest.component';
+import { AddUpdDelHistorialIntegranteSolicInfraestComponent, GrupoFinalAlternativoLineaMando, OpcionPasoLineaMando } from '../add-upd-del-hist-integ-solic-inf/add-upd-del-hist-integ-solic-inf.component';
+import { VistaHistorialIntegranteSolicInfraestComponent } from '../vista-hist-integ-solic-inf/vista-hist-integ-solic-inf.component';
 import { EstructuraLineaMando, analizarLineaMando, obtenerIndicesFinalesVigentes, obtenerPasosUnicosLineaMando } from '../../../../../../shared/lineas-mando/linea-mando.util';
 
 @Component({
-  selector: 'app-listado-historial-integrantes-solic-infraest',
+  selector: 'app-listado-hist-integ-solic-inf',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, SemaforoContadoresComponent, AddUpdDelHistorialIntegranteSolicInfraestComponent, VistaHistorialIntegranteSolicInfraestComponent],
-  templateUrl: './listado-historial-integrantes-solic-infraest.component.html',
-  styleUrl: './listado-historial-integrantes-solic-infraest.component.scss'
+  templateUrl: './listado-hist-integ-solic-inf.component.html',
+  styleUrl: './listado-hist-integ-solic-inf.component.scss'
 })
 export class ListadoHistorialIntegrantesSolicInfraestComponent implements OnChanges {
   //SOLICITUD DE INFRAESTRUCTURA DESDE LA QUE SE ABRE EL HISTORIAL (MODAL DEL LISTADO DE SOLICITUDES); SOLO SE LISTAN

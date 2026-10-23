@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { VistaHistorialIntegranteSolicInfraestComponent } from './vista-historial-integrante-solic-infraest.component';
+import { VistaHistorialIntegranteSolicInfraestComponent } from './vista-hist-integ-solic-inf.component';
 
 describe('VistaHistorialIntegranteSolicInfraestComponent', () => {
   it('debe crearse', async () => {
