@@ -20,12 +20,13 @@ import { TerrenosService } from '../../../../services/digei/finca-raiz/terrenos/
 import { SpinnerService } from '../../../../services/spinner/spinner.service';
 
 import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { OrdenarPorSiglaPipe } from '../../../../shared/pipes/ordenar-por-sigla.pipe';
 import { ListadoHistorialQuimicosPiscinasInfraestComponent } from '../historial-quimicos-piscinas-infraest/listado-historial-quimicos-piscinas-infraest/listado-historial-quimicos-piscinas-infraest.component';
 
 @Component({
   selector: 'app-listado-piscinas-infraestructuras',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SemaforoContadoresComponent, ListadoHistorialQuimicosPiscinasInfraestComponent],
+  imports: [CommonModule, ReactiveFormsModule, SemaforoContadoresComponent, OrdenarPorSiglaPipe, ListadoHistorialQuimicosPiscinasInfraestComponent],
   templateUrl: './listado-piscinas-infraestructuras.component.html',
   styleUrl: './listado-piscinas-infraestructuras.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

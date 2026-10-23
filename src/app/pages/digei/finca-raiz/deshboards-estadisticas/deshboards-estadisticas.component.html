@@ -21,7 +21,7 @@
     } @else {
       <select formControlName="unidad" (change)="cargarEstadisticas()" aria-label="Filtrar por unidad militar">
         <option value="">TODAS LAS UNIDADES MILITARES</option>
-        @for (unidad of unidadesMilitares; track unidad.idUnidadMilitar) {
+        @for (unidad of unidadesMilitares | ordenarPorSigla; track unidad.idUnidadMilitar) {
           <option [value]="unidad.siglaoAcronimoUnidadMilitar">{{ unidad.siglaoAcronimoUnidadMilitar }} - {{ unidad.nombreUnidadMilitar }}</option>
         }
       </select>

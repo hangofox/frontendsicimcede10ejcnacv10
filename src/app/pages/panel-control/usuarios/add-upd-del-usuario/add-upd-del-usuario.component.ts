@@ -181,7 +181,7 @@ export class AddUpdDelUsuarioComponent implements OnChanges, OnDestroy {
   }
 
   //BÚSQUEDA DE GRADO SIATH (COMBO BOX CON CAMPO DE TEXTO) — MIENTRAS SE ESCRIBE, SE FILTRA POR LA DESCRIPCIÓN O LA
-  //SIGLA (MÁS FÁCIL DE ENCONTRAR EL GRADO), PERO UNA VEZ SELECCIONADO, EL CAMPO QUEDA BLOQUEADO MOSTRANDO LA SIGLA
+  //SIGLA O ACRÓNIMO (MÁS FÁCIL DE ENCONTRAR EL GRADO), PERO UNA VEZ SELECCIONADO, EL CAMPO QUEDA BLOQUEADO MOSTRANDO LA SIGLA O ACRÓNIMO
   //O ACRÓNIMO (nombreGradoSiath, EJ. "SV"), NO LA DESCRIPCIÓN — IGUAL QUE PortalSiadmecEjcNacionalV20, DONDE
   //onSiathGradeChange GUARDA label2 (nombreGradoSiath) EN ctextGradoUsuario Y ESE ES EL CAMPO QUE SE MUESTRA
   //BLOQUEADO (readonly) UNA VEZ SELECCIONADO, NO EL cboxGradoUsuarioSeleccionado (label1/descripción) QUE SOLO SE
@@ -368,7 +368,7 @@ export class AddUpdDelUsuarioComponent implements OnChanges, OnDestroy {
       ciudadOrigenUsuario: empleado.ciudadOrigen
     });
 
-    //EL GRADO DEL EMPLEADO SE SINCRONIZA CON EL BUSCADOR DE GRADO SIATH: SI SU SIGLA EXISTE EN EL CATÁLOGO REAL
+    //EL GRADO DEL EMPLEADO SE SINCRONIZA CON EL BUSCADOR DE GRADO SIATH: SI SU SIGLA O ACRÓNIMO EXISTE EN EL CATÁLOGO REAL
     //YA CARGADO, QUEDA BLOQUEADO IGUAL QUE SI SE HUBIERA SELECCIONADO A MANO; SI NO, SE MUESTRA TAL CUAL:
     this.gradoBusquedaSeleccionado = this.gradosSiath.find(grado => String(grado.nombreGradoSiath) === empleado.grado) ?? null;
     this.terminoBusquedaGrado = empleado.grado;

@@ -8,8 +8,8 @@
     <label class="form-group"><span class="campo-etiqueta">Estado (*)</span><select formControlName="estado" required><option>ACTIVO</option><option>INACTIVO</option></select></label>
   </div></section>
   <div class="form-acciones">
-    <button type="button" class="btn-sicim btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>
-    @if (modo === 'eliminar') { <button type="button" class="btn-sicim btn-peligro" (click)="confirmar()">Eliminar</button> }
-    @else { <button type="submit" class="btn-sicim btn-primario" [disabled]="form.invalid">{{ modo === 'modificar' ? 'Modificar' : 'Guardar' }}</button> }
+    <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>
+    @if (modo === 'eliminar') { <button type="button" class="btn-titulo-sistema btn-peligro" (click)="confirmar()">Eliminar</button> }
+    @else { <button type="submit" class="btn-titulo-sistema btn-primario" [disabled]="form.invalid">{{ modo === 'modificar' ? 'Modificar' : 'Guardar' }}</button> }
   </div>
 </form>

@@ -16,24 +16,27 @@
   gap: 10px;
   flex-wrap: wrap;
 
-  input[type="text"] {
+  input[type="text"],
+  select {
     padding: 9px 12px;
     border: 1px solid var(--sicim-border);
     border-radius: 4px;
     font-size: 14px;
     color: var(--sicim-black);
     background: var(--sicim-white);
-    flex: 1;
-    min-width: 220px;
 
     &:focus {
       outline: none;
       border-color: var(--sicim-focus);
     }
   }
+
+  input[type="text"] { flex: 1; min-width: 220px; }
+  //COMBO DE NIVELES DE LA UNIDAD MILITAR:
+  select { min-width: 200px; }
 }
 
-.btn-sicim {
+.btn-titulo-sistema {
   display: inline-flex;
   align-items: center;
   gap: 7px;

@@ -2,8 +2,8 @@
   <div class="historial-contexto"><strong>{{ infraestructura.denominacionInfraestructura }}</strong><span>Total de registros: {{ totalRegistros }}</span></div>
   <div class="barra-acciones">
     <input type="text" formControlName="palabraClave" placeholder="Buscar por número, nombre, centro de costo u oficina..." (keyup.enter)="buscar()">
-    <button type="button" class="btn-sicim btn-buscar" (click)="buscar()">Buscar</button>
-    <button type="button" class="btn-sicim btn-nuevo" (click)="abrirCrud('guardar')">Nuevo Químico</button>
+    <button type="button" class="btn-titulo-sistema btn-buscar" (click)="buscar()">Buscar</button>
+    <button type="button" class="btn-titulo-sistema btn-nuevo" (click)="abrirCrud('guardar')">Nuevo Químico</button>
   </div>
   <div class="tabla-contenedor"><table><thead><tr><th>#</th><th>Número de registro</th><th>Nombre</th><th>Oficina</th><th>Centro de costo</th><th>Acciones</th></tr></thead><tbody>
     @for (historial of historiales; track historial.idHistorialQuimicoPiscinaInfraest; let i = $index) {

@@ -5,10 +5,11 @@ import { HistorialProveedoresProductosServiciosI } from '../../../../../interfac
 import { InfraestructurasArrendadasI, TipoEstructuraInfraestructuraArrendadaI } from '../../../../../interfaces/digei/finca-raiz/infraestructuras-arrendadas/infraestructuras-arrendadas.interface';
 import { UnidadesMilitaresI } from '../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
 import { BuscadorUbicacionComponent } from '../../../../../shared/components/buscador-ubicacion/buscador-ubicacion.component';
+import { OrdenarPorSiglaPipe } from '../../../../../shared/pipes/ordenar-por-sigla.pipe';
 import { UnidadesMedidasI } from '../../../../../interfaces/unidades-medidas/unidades-medidas.interface';
 import { UnidadesMedidasService } from '../../../../../services/unidades-medidas/unidades-medidas.service';
 
-@Component({ selector: 'app-add-upd-del-infraestructura-arrendada', standalone: true, imports: [CommonModule, ReactiveFormsModule, BuscadorUbicacionComponent], templateUrl: './add-upd-del-infraestructura-arrendada.component.html', styleUrl: './add-upd-del-infraestructura-arrendada.component.scss' })
+@Component({ selector: 'app-add-upd-del-infraestructura-arrendada', standalone: true, imports: [CommonModule, ReactiveFormsModule, BuscadorUbicacionComponent, OrdenarPorSiglaPipe], templateUrl: './add-upd-del-infraestructura-arrendada.component.html', styleUrl: './add-upd-del-infraestructura-arrendada.component.scss' })
 export class AddUpdDelInfraestructuraArrendadaComponent implements OnChanges {
   @Input() modo: 'guardar'|'modificar'|'eliminar' = 'guardar';
   @Input() data: InfraestructurasArrendadasI|null = null;

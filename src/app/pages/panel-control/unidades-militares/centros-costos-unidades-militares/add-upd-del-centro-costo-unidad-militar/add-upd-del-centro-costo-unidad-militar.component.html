@@ -8,8 +8,8 @@
     </div>
   </div>
   <div class="form-acciones">
-    <button type="button" class="btn-sicim btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>
-    @if (modo !== 'eliminar') { <button type="submit" class="btn-sicim btn-primario" [disabled]="form.invalid">{{ modo === 'guardar' ? 'Guardar' : 'Modificar' }}</button> }
-    @else { <button type="button" class="btn-sicim btn-peligro" (click)="confirmarEliminar()">Eliminar</button> }
+    <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>
+    @if (modo !== 'eliminar') { <button type="submit" class="btn-titulo-sistema btn-primario" [disabled]="form.invalid">{{ modo === 'guardar' ? 'Guardar' : 'Modificar' }}</button> }
+    @else { <button type="button" class="btn-titulo-sistema btn-peligro" (click)="confirmarEliminar()">Eliminar</button> }
   </div>
 </form>

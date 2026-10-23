@@ -31,7 +31,10 @@ export const routes: Routes = [
             children: [
               { path: '', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/construcciones-mantenimientos.component').then(m => m.ConstruccionesMantenimientosComponent), title: 'Construcciones y mantenimientos | SICIM' },
               { path: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-infraestructuras/listado-solicitudes-infraestructuras/listado-solicitudes-infraestructuras.component').then(m => m.ListadoSolicitudesInfraestructurasComponent), title: 'Solicitudes de construcción y mantenimiento | SICIM' },
-              { path: 'solicitudes-infraestructuras', redirectTo: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', pathMatch: 'full' }
+              { path: 'solicitudes-infraestructuras', redirectTo: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', pathMatch: 'full' },
+              //SOLICITUDES DE INFRAESTRUCTURAS AVALADAS (EN ESTADO ASIGNACION, APROBACION O RECHAZADO): "AVALES DE CONSTRUCCIÓN Y MANTENIMIENTO" DEL PANEL.
+              { path: 'solicitudes-infraestructuras-avaladas/listado-solicitudes-infraestructuras-avaladas', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-infraestructuras-avaladas/listado-solicitudes-infraestructuras-avaladas/listado-solicitudes-infraestructuras-avaladas.component').then(m => m.ListadoSolicitudesInfraestructurasAvaladasComponent), title: 'Avales de construcción y mantenimiento | SICIM' },
+              { path: 'solicitudes-infraestructuras-avaladas', redirectTo: 'solicitudes-infraestructuras-avaladas/listado-solicitudes-infraestructuras-avaladas', pathMatch: 'full' }
             ]
           },
           { path: 'gestion-riesgo', loadComponent: () => import('./pages/digei/gestion-riesgo/gestion-riesgo.component').then(m => m.GestionRiesgoComponent), title: 'Gestión del riesgo | SICIM' },
@@ -75,7 +78,7 @@ export const routes: Routes = [
         children: [
           { path: '', loadComponent: () => import('./pages/panel-control/panel-control.component').then(m => m.PanelControlComponent), title: 'Panel de control | SICIM' },
           { path: 'unidades-militares/listado-unidades-militares', loadComponent: () => import('./pages/panel-control/unidades-militares/listado-unidades-militares/listado-unidades-militares.component').then(m => m.ListadoUnidadesMilitaresComponent), title: 'Unidades militares | SICIM' },
-          { path: 'lineas-mandos-unid-mil-solic-infraest/listado-lineas-mandos-unid-mil-solic-infraest', loadComponent: () => import('./pages/panel-control/lineas-mandos-unid-mil-solic-infraest/listado-lineas-mandos-unid-mil-solic-infraest/listado-lineas-mandos-unid-mil-solic-infraest.component').then(m => m.ListadoLineasMandosUnidMilSolicInfraestComponent), title: 'Líneas de mando de solicitudes de infraestructuras | SICIM' },
+          { path: 'lineas-mandos-unidades-militares/listado-lineas-mandos-unidades-militares', loadComponent: () => import('./pages/panel-control/lineas-mandos-unidades-militares/listado-lineas-mandos-unidades-militares/listado-lineas-mandos-unidades-militares.component').then(m => m.ListadoLineasMandosUnidadesMilitaresComponent), title: 'Líneas de mando de unidades militares | SICIM' },
           { path: 'sociedades-unidades-centralizadoras/listado-sociedades-unidades-centralizadoras', loadComponent: () => import('./pages/panel-control/sociedades-unidades-centralizadoras/listado-sociedades-unidades-centralizadoras/listado-sociedades-unidades-centralizadoras.component').then(m => m.ListadoSociedadesUnidadesCentralizadorasComponent), title: 'Sociedades de unidades centralizadoras | SICIM' },
           { path: 'unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos', loadComponent: () => import('./pages/panel-control/unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos.component').then(m => m.ListadoUnidadesMilitaresRealizMttosComponent), title: 'Unidad militares realizadoras de mantenimientos | SICIM' },
           { path: 'oficinas/listado-oficinas', loadComponent: () => import('./pages/panel-control/oficinas/listado-oficinas/listado-oficinas.component').then(m => m.ListadoOficinasComponent), title: 'Oficinas | SICIM' },
@@ -88,7 +91,7 @@ export const routes: Routes = [
           { path: 'mi-perfil', loadComponent: () => import('./pages/panel-control/mi-perfil/mi-perfil.component').then(m => m.MiPerfilComponent), title: 'Mi perfil | SICIM' },
           { path: 'usuarios/listado-usuarios', loadComponent: () => import('./pages/panel-control/usuarios/listado-usuarios/listado-usuarios.component').then(m => m.ListadoUsuariosComponent), title: 'Usuarios | SICIM' },
           { path: 'unidades-militares', redirectTo: 'unidades-militares/listado-unidades-militares', pathMatch: 'full' },
-          { path: 'lineas-mandos-unid-mil-solic-infraest', redirectTo: 'lineas-mandos-unid-mil-solic-infraest/listado-lineas-mandos-unid-mil-solic-infraest', pathMatch: 'full' },
+          { path: 'lineas-mandos-unidades-militares', redirectTo: 'lineas-mandos-unidades-militares/listado-lineas-mandos-unidades-militares', pathMatch: 'full' },
           { path: 'sociedades-unidades-centralizadoras', redirectTo: 'sociedades-unidades-centralizadoras/listado-sociedades-unidades-centralizadoras', pathMatch: 'full' },
           { path: 'unidades-militares-realiz-mttos', redirectTo: 'unidades-militares-realiz-mttos/listado-unidades-militares-realiz-mttos', pathMatch: 'full' },
           { path: 'oficinas', redirectTo: 'oficinas/listado-oficinas', pathMatch: 'full' },

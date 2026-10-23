@@ -4,10 +4,10 @@
 <section class="page-card panel-terrenos" [formGroup]="form">
   <div class="barra-acciones">
     <input type="text" formControlName="keyword" placeholder="Buscar arriendo" (keyup.enter)="buscar()">
-    <button type="button" class="btn-sicim btn-buscar" (click)="buscar()">Buscar</button>
+    <button type="button" class="btn-titulo-sistema btn-buscar" (click)="buscar()">Buscar</button>
     <select formControlName="unidadMilitar" (change)="buscar()">
       <option value="">TODAS LAS UNIDADES MILITARES</option>
-      @for (unidad of unidades; track unidad.idUnidadMilitar) {
+      @for (unidad of unidades | ordenarPorSigla; track unidad.idUnidadMilitar) {
         <option [value]="unidad.siglaoAcronimoUnidadMilitar">{{ unidad.siglaoAcronimoUnidadMilitar }}</option>
       }
     </select>
@@ -17,7 +17,7 @@
         <option [value]="tipo.idTipoEstructuraInfraestructuraArrendada">{{ tipo.nombreTipoEstructuraInfraestructuraArrendada }}</option>
       }
     </select>
-    <button type="button" class="btn-sicim btn-nuevo" (click)="abrir('guardar')">Nuevo Arriendo</button>
+    <button type="button" class="btn-titulo-sistema btn-nuevo" (click)="abrir('guardar')">Nuevo Arriendo</button>
   </div>
 
   <div class="tabla-contenedor">

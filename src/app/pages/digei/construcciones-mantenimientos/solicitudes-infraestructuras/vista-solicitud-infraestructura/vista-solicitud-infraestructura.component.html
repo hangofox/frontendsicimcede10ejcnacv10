@@ -91,11 +91,15 @@
         <span class="dato-label">Fecha de modificación</span>
         <span class="dato-valor">{{ solicitudInfraestructura.fechaHMSModificacionSolicitudInfraestructura || 'Sin modificaciones' }}</span>
       </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Estado de la solicitud</span>
+        <span class="dato-valor">{{ solicitudInfraestructura.estadoSolicitudInfraestructura || 'Sin estado' }}</span>
+      </div>
     </div>
   </div>
 
   <div class="vista-acciones">
-    <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cerrar</button>
+    <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cerrar</button>
   </div>
 
 </div>

@@ -2,8 +2,8 @@
   <div class="contexto"><strong>{{ unidadMilitar.nombreUnidadMilitar }}</strong><span>Total de registros: {{ totalRegistros }}</span></div>
   <div class="barra-acciones">
     <input type="text" formControlName="palabraClave" placeholder="Buscar centro de costo..." (keyup.enter)="buscar()">
-    <button type="button" class="btn-sicim btn-buscar" (click)="buscar()">Buscar</button>
-    <button type="button" class="btn-sicim btn-nuevo" (click)="abrirCrud('guardar')">Nuevo Centro de Costo</button>
+    <button type="button" class="btn-titulo-sistema btn-buscar" (click)="buscar()">Buscar</button>
+    <button type="button" class="btn-titulo-sistema btn-nuevo" (click)="abrirCrud('guardar')">Nuevo Centro de Costo</button>
   </div>
   <div class="tabla-contenedor"><table><thead><tr><th>#</th><th>Centro de costo</th><th>Unidad militar</th><th>Acciones</th></tr></thead><tbody>
     @for (item of centrosCostos; track item.idCentroCostoUnidadMilitar; let i = $index) {

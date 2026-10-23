@@ -5,12 +5,12 @@
     <input type="text" formControlName="keyword" placeholder="Buscar terreno" (keyup.enter)="buscar()">
     <select formControlName="unidad">
       <option value="">Todas las unidades militares</option>
-      @for (unidad of unidadesMilitares; track unidad.idUnidadMilitar) {
+      @for (unidad of unidadesMilitares | ordenarPorSigla; track unidad.idUnidadMilitar) {
         <option [value]="unidad.siglaoAcronimoUnidadMilitar">{{ unidad.siglaoAcronimoUnidadMilitar }} - {{ unidad.nombreUnidadMilitar }}</option>
       }
     </select>
-    <button type="button" class="btn-sicim btn-buscar" (click)="buscar()">Buscar</button>
-    <button type="button" class="btn-sicim btn-nuevo" (click)="abrirEdicion('guardar')">Nuevo Terreno</button>
+    <button type="button" class="btn-titulo-sistema btn-buscar" (click)="buscar()">Buscar</button>
+    <button type="button" class="btn-titulo-sistema btn-nuevo" (click)="abrirEdicion('guardar')">Nuevo Terreno</button>
   </div>
 
   <div class="tabla-contenedor">

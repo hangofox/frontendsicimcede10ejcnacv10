@@ -15,19 +15,27 @@
       placeholder="Buscar por número de registro, nombres, apellidos o cargo..."
       (keyup.enter)="buscar()">
 
-    <button type="button" class="btn-sicim btn-buscar" (click)="buscar()">
+    <button type="button" class="btn-titulo-sistema btn-buscar" (click)="buscar()">
       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       Buscar
     </button>
 
     <select formControlName="cboxSiglaoAcronimoUnidadMilitarSeleccionado" (change)="buscar()">
       <option value="">TODAS LAS UNIDADES MILITARES</option>
-      @for (paso of pasosLineaMando; track paso; let i = $index) {
-        <option [value]="paso">{{ i + 1 }}. {{ paso }}</option>
+      <!-- UNIDADES MILITARES DEL TRAMO COMÚN Y, AGRUPADAS, LAS DE LOS FINALES ALTERNATIVOS VIGENTES (CUANDO LA SOLICITUD TOMA UN CAMINO, SOLO ESE) -->
+      @for (opcion of opcionesTramoComunFiltro; track opcion.valor) {
+        <option [value]="opcion.valor">{{ opcion.numero }}. {{ opcion.siglaoAcronimo }}</option>
+      }
+      @for (grupo of gruposFinalesFiltro; track grupo.numeroFinal) {
+        <optgroup [label]="grupo.etiqueta">
+          @for (opcion of grupo.opciones; track opcion.valor) {
+            <option [value]="opcion.valor">{{ opcion.numero }}. {{ opcion.siglaoAcronimo }} (final {{ grupo.numeroFinal }})</option>
+          }
+        </optgroup>
       }
     </select>
 
-    <button type="button" class="btn-sicim btn-nuevo" (click)="abrir('guardar')">
+    <button type="button" class="btn-titulo-sistema btn-nuevo" (click)="abrir('guardar')">
       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       Nuevo Integrante al Historial de la Solicitud
     </button>
@@ -49,7 +57,7 @@
       </thead>
       <tbody>
         @for (historial of registros; track historial.idHistorialIntegranteSolicitudInfraestructura; let i = $index) {
-          <tr>
+          <tr class="fila-unidad" [ngClass]="claseColorUnidad(historial.unidadMilitarDTO.siglaoAcronimoUnidadMilitar)">
             <td>{{ i + 1 + (pagina * cantidad) }}</td>
             <td>{{ historial.numRegHistorialIntegranteSolicitudInfraestructura }}</td>
             <td>{{ historial.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</td>
@@ -123,6 +131,8 @@
           [solicitudInfraestructura]="solicitudInfraestructura"
           [cargosRegistrados]="cargosRegistrados"
           [pasosLineaMando]="pasosLineaMando"
+          [estructuraLineaMando]="estructuraLineaMando"
+          [registrosSolicitud]="registrosSolicitud"
           (cerrarModal)="cerrar()"
           (guardar)="guardar($event)"
           (eliminar)="eliminar($event)">

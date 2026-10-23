@@ -172,7 +172,7 @@ export class AddUpdDelHistorialIntegranteDocumentosComponent implements OnChange
   }
 
   //BÚSQUEDA DE GRADO SIATH (COMBO BOX CON CAMPO DE TEXTO) — MIENTRAS SE ESCRIBE, SE FILTRA POR LA DESCRIPCIÓN O LA
-  //SIGLA; UNA VEZ SELECCIONADO, EL CAMPO QUEDA BLOQUEADO MOSTRANDO LA SIGLA O ACRÓNIMO (nombreGradoSiath) — MISMO
+  //SIGLA O ACRÓNIMO; UNA VEZ SELECCIONADO, EL CAMPO QUEDA BLOQUEADO MOSTRANDO LA SIGLA O ACRÓNIMO (nombreGradoSiath) — MISMO
   //PATRÓN QUE AddUpdDelUsuarioComponent:
   terminoBusquedaGrado = '';
   gradoBusquedaSeleccionado: GradosSiathI | null = null;
@@ -265,7 +265,7 @@ export class AddUpdDelHistorialIntegranteDocumentosComponent implements OnChange
           escalafonAntiguedadIntegranteDocumentos: responsable.escalafonAntiguedadResponsable
         });
 
-        //EL GRADO DEL RESPONSABLE SE SINCRONIZA CON EL BUSCADOR DE GRADO SIATH: SI SU SIGLA EXISTE EN EL CATÁLOGO
+        //EL GRADO DEL RESPONSABLE SE SINCRONIZA CON EL BUSCADOR DE GRADO SIATH: SI SU SIGLA O ACRÓNIMO EXISTE EN EL CATÁLOGO
         //REAL YA CARGADO, QUEDA BLOQUEADO IGUAL QUE SI SE HUBIERA SELECCIONADO A MANO; SI NO, SE MUESTRA TAL CUAL:
         const gradoResponsable = String(responsable.gradoResponsable ?? '');
         this.gradoBusquedaSeleccionado = this.gradosSiath.find(grado => String(grado.nombreGradoSiath) === gradoResponsable) ?? null;

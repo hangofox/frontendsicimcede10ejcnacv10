@@ -13,11 +13,12 @@ import { EstadosTerrenosI } from '../../../../../interfaces/digei/finca-raiz/est
 import { AddUpdDelTerrenoComponent } from '../add-upd-del-terreno/add-upd-del-terreno.component';
 import { VistaTerrenoComponent } from '../vista-terreno/vista-terreno.component';
 import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { OrdenarPorSiglaPipe } from '../../../../../shared/pipes/ordenar-por-sigla.pipe';
 
 @Component({
   selector: 'app-listado-terrenos',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelTerrenoComponent, VistaTerrenoComponent, SemaforoContadoresComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelTerrenoComponent, VistaTerrenoComponent, SemaforoContadoresComponent, OrdenarPorSiglaPipe],
   templateUrl: './listado-terrenos.component.html',
   styleUrl: './listado-terrenos.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -10,5 +10,5 @@ export interface UnidadesMilitaresI {
 
 export interface UnidadesMilitaresMsj {
     mensaje: string;
-    banderaexito?: boolean;//EL BACKEND RESPONDE HTTP 200 AUNQUE NO MODIFIQUE (EJ. SIGLA REPETIDA); ESTA BANDERA LO INDICA.
+    banderaexito?: boolean;//EL BACKEND RESPONDE HTTP 200 AUNQUE NO MODIFIQUE (EJ. SIGLA O ACRÓNIMO REPETIDA); ESTA BANDERA LO INDICA.
 }

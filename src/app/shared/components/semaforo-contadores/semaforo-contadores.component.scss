@@ -67,6 +67,13 @@
 .semaforo-patrimonial { color: #8b5a16; }
 .semaforo-reserva { color: #16833a; }
 .semaforo-neutral { color: #6b7280; }
+//ESTADOS DE LAS SOLICITUDES DE INFRAESTRUCTURAS (MISMOS COLORES DE LA COLUMNA "ESTADO" DEL LISTADO DE SOLICITUDES):
+.semaforo-creacion { color: #6b7280; }
+.semaforo-verificacion { color: #0369a1; }
+.semaforo-validacion { color: #1d4ed8; }
+.semaforo-asignacion { color: #6d28d9; }
+.semaforo-aprobacion { color: #16833a; }
+.semaforo-rechazado { color: #c32c32; }
 
 @media (max-width: 560px) {
   .semaforo-item {

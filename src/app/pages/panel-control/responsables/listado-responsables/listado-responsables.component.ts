@@ -21,11 +21,12 @@ import { GestionArchivosService } from '../../../../services/gestion-archivos/ge
 import { AddUpdDelResponsableComponent, GuardadoResponsableEvent, OperacionFotoResponsable } from '../add-upd-del-responsable/add-upd-del-responsable.component';
 import { VistaResponsableComponent } from '../vista-responsable/vista-responsable.component';
 import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { OrdenarPorSiglaPipe } from '../../../../shared/pipes/ordenar-por-sigla.pipe';
 
 @Component({
   selector: 'app-listado-responsables',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelResponsableComponent, VistaResponsableComponent, SemaforoContadoresComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelResponsableComponent, VistaResponsableComponent, SemaforoContadoresComponent, OrdenarPorSiglaPipe],
   templateUrl: './listado-responsables.component.html',
   styleUrl: './listado-responsables.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

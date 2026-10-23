@@ -4,10 +4,11 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HistorialIntegrantesSolicInfraestI, HistorialIntegrantesSolicInfraestMsj } from '../../../../../../interfaces/digei/construcciones-mantenimientos/solicitudes-infraestructuras/historial-integrantes-solic-infraest/historial-integrantes-solic-infraest.interface';
 import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/construcciones-mantenimientos/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
 import { HistorialIntegrantesSolicInfraestService } from '../../../../../../services/digei/construcciones-mantenimientos/solicitudes-infraestructuras/historial-integrantes-solic-infraest/historial-integrantes-solic-infraest.service';
-import { LineasMandosUnidadesMilitaresSolicInfraestService } from '../../../../../../services/panel-control/lineas-mandos-unid-mil-solic-infraest/lineas-mandos-unid-mil-solic-infraest.service';
+import { LineasMandosUnidadesMilitaresService } from '../../../../../../services/panel-control/lineas-mandos-unidades-militares/lineas-mandos-unidades-militares.service';
 import { SemaforoContadoresComponent } from '../../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
-import { AddUpdDelHistorialIntegranteSolicInfraestComponent } from '../add-upd-del-historial-integrante-solic-infraest/add-upd-del-historial-integrante-solic-infraest.component';
+import { AddUpdDelHistorialIntegranteSolicInfraestComponent, GrupoFinalAlternativoLineaMando, OpcionPasoLineaMando } from '../add-upd-del-historial-integrante-solic-infraest/add-upd-del-historial-integrante-solic-infraest.component';
 import { VistaHistorialIntegranteSolicInfraestComponent } from '../vista-historial-integrante-solic-infraest/vista-historial-integrante-solic-infraest.component';
+import { EstructuraLineaMando, analizarLineaMando, obtenerIndicesFinalesVigentes, obtenerPasosUnicosLineaMando } from '../../../../../../shared/lineas-mando/linea-mando.util';
 
 @Component({
   selector: 'app-listado-historial-integrantes-solic-infraest',
@@ -23,14 +24,71 @@ export class ListadoHistorialIntegrantesSolicInfraestComponent implements OnChan
 
   private readonly fb = inject(FormBuilder);
   form = this.fb.group({ keyword: [''], cboxSiglaoAcronimoUnidadMilitarSeleccionado: [''], cantidad: ['10'] });
-  //PASOS (SIGLAS DE UNIDADES MILITARES) DE LA LÍNEA DE MANDO DE LA SOLICITUD, EJ. [CAOCC, JEMOP, SECEJ, COEJC]. SE USAN EN
+  //PASOS (SIGLAS O ACRÓNIMOS DE UNIDADES MILITARES) DE LA LÍNEA DE MANDO DE LA SOLICITUD, EJ. [CAOCC, JEMOP, SECEJ, COEJC]. SE USAN EN
   //EL COMBO DE FILTRO POR UNIDAD MILITAR DEL INTEGRANTE Y SE PASAN AL FORMULARIO (AddUpdDelHistorialIntegranteSolicInfraestComponent).
-  //SI LA UNIDAD DE LA SOLICITUD NO TIENE LÍNEA DE MANDO REGISTRADA, SOLO CONTIENE LA PROPIA UNIDAD DE LA SOLICITUD:
+  //SI LA UNIDAD MILITAR DE LA SOLICITUD NO TIENE LÍNEA DE MANDO REGISTRADA, SOLO CONTIENE LA PROPIA UNIDAD MILITAR DE LA SOLICITUD:
   pasosLineaMando: string[] = [];
+  //TRAMO COMÚN Y FINALES ALTERNATIVOS DE LA LÍNEA DE MANDO DE LA SOLICITUD; EL FORMULARIO LOS USA PARA AGRUPAR EN SU COMBO
+  //LAS UNIDADES MILITARES DE CADA FINAL ALTERNATIVO (CAMINO). ES null SI LA UNIDAD MILITAR NO TIENE LÍNEA DE MANDO REGISTRADA:
+  estructuraLineaMando: EstructuraLineaMando | null = null;
   registros: HistorialIntegrantesSolicInfraestI[] = [];
-  //CARGOS YA REGISTRADOS POR UNIDAD MILITAR EN TODA LA SOLICITUD (NO SOLO EN LA PÁGINA ACTUAL), COMO CLAVES "SIGLA|CARGO",
+  //CARGOS YA REGISTRADOS POR UNIDAD MILITAR EN TODA LA SOLICITUD (NO SOLO EN LA PÁGINA ACTUAL), COMO CLAVES "SIGLA O ACRÓNIMO|CARGO",
   //PARA AVISAR EN EL FORMULARIO SI SE REPITE UN CARGO DE LA MISMA UNIDAD MILITAR:
   cargosRegistrados: string[] = [];
+  //TODOS LOS REGISTROS DEL HISTORIAL DE LA SOLICITUD (SIN FILTROS NI PAGINACIÓN), QUE SE PASAN AL FORMULARIO PARA OCULTAR LAS
+  //UNIDADES MILITARES DE LA LÍNEA DE MANDO QUE YA TIENEN REGISTRADOS TODOS SUS INTEGRANTES PREDETERMINADOS:
+  registrosSolicitud: HistorialIntegrantesSolicInfraestI[] = [];
+
+  //PALETA DE COLORES PARA DIFERENCIAR EN LA TABLA LOS INTEGRANTES DE CADA UNIDAD MILITAR (EL COLOR DE CADA UNIDAD MILITAR SE ASIGNA
+  //SEGÚN SU POSICIÓN EN LA LÍNEA DE MANDO DE LA SOLICITUD, ASÍ ES EL MISMO EN TODAS LAS PÁGINAS):
+  private static readonly TOTAL_COLORES_UNIDAD = 8;
+
+  //DEVUELVE LA CLASE DE COLOR ("unidad-color-N") DE LA UNIDAD MILITAR DEL INTEGRANTE. SI LA UNIDAD MILITAR NO ESTÁ EN LA LÍNEA DE
+  //MANDO, SE CALCULA UN COLOR FIJO A PARTIR DE SU SIGLA O ACRÓNIMO:
+  claseColorUnidad(siglaoAcronimo: unknown): string {
+    const siglaoAcronimoUnidad = String(siglaoAcronimo ?? '').trim().toUpperCase();
+    if (!siglaoAcronimoUnidad) return '';
+    const posicion = this.pasosLineaMando.indexOf(siglaoAcronimoUnidad);
+    const indice = posicion >= 0
+      ? posicion
+      : [...siglaoAcronimoUnidad].reduce((suma, letra) => suma + letra.charCodeAt(0), 0);
+    return `unidad-color-${indice % ListadoHistorialIntegrantesSolicInfraestComponent.TOTAL_COLORES_UNIDAD}`;
+  }
+
+  //SIGLAS O ACRÓNIMOS (EN MAYÚSCULA) DE LAS UNIDADES MILITARES QUE YA TIENEN INTEGRANTES REGISTRADOS EN EL HISTORIAL DE LA SOLICITUD:
+  private get siglasoAcronimosConIntegrantes(): Set<string> {
+    return new Set(this.registrosSolicitud.map(registro => String(registro.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar ?? '').trim().toUpperCase()));
+  }
+
+  //UNIDADES MILITARES DEL TRAMO COMÚN EN EL COMBO DE FILTRO (SI LA LÍNEA NO TIENE FINALES ALTERNATIVOS, SON TODAS SUS UNIDADES MILITARES):
+  get opcionesTramoComunFiltro(): OpcionPasoLineaMando[] {
+    const tramoComun = this.estructuraLineaMando?.finalesAlternativos.length ? this.estructuraLineaMando.tramoComun : this.pasosLineaMando;
+    return tramoComun.map((siglaoAcronimo, indice) => ({ valor: siglaoAcronimo, siglaoAcronimo, numero: indice + 1, numeroFinal: null }));
+  }
+
+  //UN GRUPO POR CADA FINAL ALTERNATIVO VIGENTE EN EL COMBO DE FILTRO: MIENTRAS LA SOLICITUD NO TENGA INTEGRANTES EN NINGÚN
+  //FINAL SE MUESTRAN TODOS; CUANDO YA LOS TIENE, SOLO EL CAMINO TOMADO (IGUAL QUE EN EL FORMULARIO Y EN LA LÍNEA DE MANDO DEL
+  //LISTADO DE SOLICITUDES). EL VALOR LLEVA EL NÚMERO DEL FINAL ("F2|CEDE10") PORQUE UNA UNIDAD MILITAR PUEDE ESTAR EN VARIOS FINALES:
+  get gruposFinalesFiltro(): GrupoFinalAlternativoLineaMando[] {
+    const estructura = this.estructuraLineaMando;
+    if (!estructura?.finalesAlternativos.length) return [];
+    const totalTramoComun = estructura.tramoComun.length;
+    return obtenerIndicesFinalesVigentes(estructura, this.siglasoAcronimosConIntegrantes).map(indice => {
+      const final = estructura.finalesAlternativos[indice];
+      const numeroFinal = indice + 1;
+      return {
+        numeroFinal,
+        etiqueta: `Final alternativo ${numeroFinal}: ${final.join(' → ')}`,
+        opciones: final.map((siglaoAcronimo, posicion) => ({ valor: `F${numeroFinal}|${siglaoAcronimo}`, siglaoAcronimo, numero: totalTramoComun + posicion + 1, numeroFinal }))
+      };
+    });
+  }
+
+  //SIGLA O ACRÓNIMO DE LA UNIDAD MILITAR ELEGIDA EN EL COMBO DE FILTRO (SIN EL NÚMERO DEL FINAL ALTERNATIVO), PARA ENVIARLA AL BACKEND:
+  private get siglaoAcronimoFiltro(): string | undefined {
+    const valor = String(this.form.value.cboxSiglaoAcronimoUnidadMilitarSeleccionado || '');
+    return (valor.includes('|') ? valor.slice(valor.indexOf('|') + 1) : valor) || undefined;
+  }
   total = 0;
   pagina = 0;
   cantidad = 10;
@@ -44,7 +102,7 @@ export class ListadoHistorialIntegrantesSolicInfraestComponent implements OnChan
 
   constructor(
     private readonly service: HistorialIntegrantesSolicInfraestService,
-    private readonly lineasMandosUnidadesMilitaresSolicInfraestService: LineasMandosUnidadesMilitaresSolicInfraestService,
+    private readonly lineasMandosUnidadesMilitaresService: LineasMandosUnidadesMilitaresService,
     private readonly cdr: ChangeDetectorRef
   ) {}
 
@@ -57,16 +115,22 @@ export class ListadoHistorialIntegrantesSolicInfraestComponent implements OnChan
     }
   }
 
-  //CARGA LA LÍNEA DE MANDO DE LA UNIDAD MILITAR DE LA SOLICITUD (LA QUE EMPIEZA CON SU SIGLA ANTES DEL PRIMER "->"):
+  //CARGA LA LÍNEA DE MANDO DE LA UNIDAD MILITAR DE LA SOLICITUD (LA QUE EMPIEZA CON SU SIGLA O ACRÓNIMO ANTES DEL PRIMER "->"). SI TERMINA
+  //EN FINALES ALTERNATIVOS ENTRE CORCHETES, LOS PASOS SON LOS DEL TRAMO COMÚN SEGUIDOS DE LOS DE CADA FINAL, SIN REPETIR:
   private cargarPasosLineaMando(): void {
-    const sigla = String(this.solicitudInfraestructura?.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar || '').trim().toUpperCase();
-    this.pasosLineaMando = sigla ? [sigla] : [];
-    if (!sigla) return;
-    this.lineasMandosUnidadesMilitaresSolicInfraestService.findAllInfrastructureRequestMilitaryUnitChainsOfCommand(undefined, undefined, sigla).subscribe({
+    const siglaoAcronimo = String(this.solicitudInfraestructura?.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar || '').trim().toUpperCase();
+    this.pasosLineaMando = siglaoAcronimo ? [siglaoAcronimo] : [];
+    this.estructuraLineaMando = null;
+    if (!siglaoAcronimo) return;
+    this.lineasMandosUnidadesMilitaresService.findAllMilitaryUnitChainsOfCommand(undefined, undefined, siglaoAcronimo).subscribe({
       next: lineasMando => {
-        const lineaMando = lineasMando.find(linea => String(linea.lineaMandoUnidadMilitarSolicInfraest || '').split('->')[0].trim().toUpperCase() === sigla);
-        const pasos = String(lineaMando?.lineaMandoUnidadMilitarSolicInfraest || '').split('->').map(paso => paso.trim().toUpperCase()).filter(paso => !!paso);
-        if (pasos.length) this.pasosLineaMando = pasos;
+        const lineaMando = lineasMando.find(linea => String(analizarLineaMando(linea.lineaMandoUnidadMilitar).estructura.tramoComun[0] ?? '').toUpperCase() === siglaoAcronimo);
+        const estructura = analizarLineaMando(String(lineaMando?.lineaMandoUnidadMilitar || '').toUpperCase()).estructura;
+        const pasos = obtenerPasosUnicosLineaMando(estructura);
+        if (pasos.length) {
+          this.pasosLineaMando = pasos;
+          this.estructuraLineaMando = estructura;
+        }
         this.cdr.markForCheck();
       },
       error: err => console.error('ERROR AL CARGAR LA LÍNEA DE MANDO DE LA SOLICITUD DE INFRAESTRUCTURA: ', err)
@@ -80,13 +144,15 @@ export class ListadoHistorialIntegrantesSolicInfraestComponent implements OnChan
     const idSolicitudInfraestructura = this.solicitudInfraestructura?.idSolicitudInfraestructura;
     if (!idSolicitudInfraestructura) {
       this.registros = [];
+      this.registrosSolicitud = [];
       this.cargosRegistrados = [];
       this.total = 0;
       return;
     }
     const keyword = this.form.value.keyword?.trim() || undefined;
-    const siglaoAcronimoUnidadMilitar = this.form.value.cboxSiglaoAcronimoUnidadMilitarSeleccionado || undefined;
-    this.service.findAllInfrastructureRequestMemberHistoriesPag(this.pagina, this.cantidad, undefined, idSolicitudInfraestructura, keyword, siglaoAcronimoUnidadMilitar, 'idHistorialIntegranteSolicitudInfraestructura', 'ASC').subscribe(registros => {
+    const siglaoAcronimoUnidadMilitar = this.siglaoAcronimoFiltro;
+    //LOS REGISTROS SE ORDENAN EN EL BACKEND POR LA POSICIÓN DE LA UNIDAD MILITAR EN LA LÍNEA DE MANDO Y, DENTRO DE CADA UNIDAD MILITAR, POR GRADO DE MENOR A MAYOR:
+    this.service.findAllInfrastructureRequestMemberHistoriesPag(this.pagina, this.cantidad, undefined, idSolicitudInfraestructura, keyword, siglaoAcronimoUnidadMilitar, 'lineaMandoYGrado', 'ASC').subscribe(registros => {
       this.registros = registros;
       this.cdr.markForCheck();
     });
@@ -94,13 +160,27 @@ export class ListadoHistorialIntegrantesSolicInfraestComponent implements OnChan
       this.total = total;
       this.cdr.markForCheck();
     });
-    //LOS CARGOS REGISTRADOS SE CONSULTAN SIN EL FILTRO DE UNIDAD MILITAR, PORQUE LA VALIDACIÓN ES SOBRE TODA LA SOLICITUD:
+    //LOS CARGOS Y LOS REGISTROS DE LA SOLICITUD SE CONSULTAN SIN EL FILTRO DE UNIDAD MILITAR, PORQUE LAS VALIDACIONES DEL
+    //FORMULARIO (CARGO REPETIDO E INTEGRANTES PREDETERMINADOS PENDIENTES) SON SOBRE TODA LA SOLICITUD:
     this.service.findAllInfrastructureRequestMemberHistories(undefined, idSolicitudInfraestructura).subscribe(todos => {
+      this.registrosSolicitud = todos;
       this.cargosRegistrados = todos
         .filter(registro => !!String(registro.cargoIntegranteSolicitudInfraestructura || '').trim())
         .map(registro => AddUpdDelHistorialIntegranteSolicInfraestComponent.claveCargoUnidadMilitar(registro.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar, registro.cargoIntegranteSolicitudInfraestructura));
+      this.quitarFiltroDeFinalDescartado();
       this.cdr.markForCheck();
     });
+  }
+
+  //SI LA SOLICITUD TOMÓ OTRO CAMINO Y LA UNIDAD MILITAR DEL FILTRO ERA DE UN FINAL ALTERNATIVO QUE YA NO ESTÁ VIGENTE, SE QUITA EL
+  //FILTRO Y SE VUELVE A LISTAR CON TODAS LAS UNIDADES MILITARES:
+  private quitarFiltroDeFinalDescartado(): void {
+    const valor = String(this.form.value.cboxSiglaoAcronimoUnidadMilitarSeleccionado || '');
+    if (!valor.includes('|')) return;
+    const sigueVigente = this.gruposFinalesFiltro.some(grupo => grupo.opciones.some(opcion => opcion.valor === valor));
+    if (sigueVigente) return;
+    this.form.patchValue({ cboxSiglaoAcronimoUnidadMilitarSeleccionado: '' });
+    this.buscar();
   }
 
   buscar(): void { this.pagina = 0; this.listar(); }

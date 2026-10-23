@@ -12,13 +12,14 @@ import { SpinnerService } from '../../../../services/spinner/spinner.service';
 import { AddUpdDelOficinaComponent } from '../add-upd-del-oficina/add-upd-del-oficina.component';
 import { VistaOficinaComponent } from '../vista-oficina/vista-oficina.component';
 import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { OrdenarPorSiglaPipe } from '../../../../shared/pipes/ordenar-por-sigla.pipe';
 import { CentrosCostosOficinasService } from '../../../../services/panel-control/oficinas/centros-costos-oficinas/centros-costos-oficinas.service';
 import { ListadoCentrosCostosOficinasComponent } from '../centros-costos-oficinas/listado-centros-costos-oficinas/listado-centros-costos-oficinas.component';
 
 @Component({
   selector: 'app-listado-oficinas',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelOficinaComponent, VistaOficinaComponent, SemaforoContadoresComponent, ListadoCentrosCostosOficinasComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelOficinaComponent, VistaOficinaComponent, SemaforoContadoresComponent, OrdenarPorSiglaPipe, ListadoCentrosCostosOficinasComponent],
   templateUrl: './listado-oficinas.component.html',
   styleUrl: './listado-oficinas.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

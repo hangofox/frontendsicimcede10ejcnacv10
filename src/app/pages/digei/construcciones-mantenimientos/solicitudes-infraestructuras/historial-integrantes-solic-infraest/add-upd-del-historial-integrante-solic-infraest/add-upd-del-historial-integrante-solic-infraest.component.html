@@ -5,13 +5,24 @@
 
   @if (modo === 'guardar') {
     <div class="form-seccion form-seccion-busqueda" [formGroup]="busquedaForm">
-      <div class="seccion-titulo">Cargar datos desde el historial de integrantes de documentos</div>
+      <div class="seccion-titulo">Cargar datos desde el historial de integrantes de documentos (solo predeterminados para firmar)</div>
       <div class="form-grid">
         <div class="form-group">
           <label>Unidad militar (paso de la línea de mando)</label>
+          <!-- TODOS LOS PASOS DISPONIBLES: LOS DEL TRAMO COMÚN Y, AGRUPADOS, LOS DE CADA FINAL ALTERNATIVO VIGENTE -->
           <select formControlName="pasoSeleccionado" (change)="onCambioPaso()">
-            @for (paso of pasosLineaMando; track paso; let i = $index) {
-              <option [value]="paso">{{ i + 1 }}. {{ paso }}</option>
+            @if (!busquedaForm.get('pasoSeleccionado')?.value) {
+              <option value="" disabled>{{ debeElegirFinal ? '-- Seleccione la unidad del final alternativo --' : '-- Seleccione --' }}</option>
+            }
+            @for (opcion of opcionesTramoComunDisponibles; track opcion.valor) {
+              <option [value]="opcion.valor">{{ opcion.numero }}. {{ opcion.siglaoAcronimo }}</option>
+            }
+            @for (grupo of gruposFinalesDisponibles; track grupo.numeroFinal) {
+              <optgroup [label]="grupo.etiqueta">
+                @for (opcion of grupo.opciones; track opcion.valor) {
+                  <option [value]="opcion.valor">{{ opcion.numero }}. {{ opcion.siglaoAcronimo }} (final {{ grupo.numeroFinal }})</option>
+                }
+              </optgroup>
             }
           </select>
         </div>
@@ -19,14 +30,14 @@
           <label>Cargo</label>
           <select formControlName="cargoSeleccionado" (change)="onCambioCargo()">
             <option value="">-- Seleccione --</option>
-            @for (cargo of cargosIntegrantesDocumentos; track cargo.idCargoIntegranteDocumentos) {
+            @for (cargo of cargosConIntegrantesPredeterminados; track cargo.idCargoIntegranteDocumentos) {
               <option [value]="cargo.idCargoIntegranteDocumentos">{{ cargo.nombreCargoIntegranteDocumentos }}</option>
             }
           </select>
         </div>
         @if (historialesDelCargo.length) {
           <div class="form-group resultado-integrante">
-            <label>Integrante predeterminado de {{ busquedaForm.get('pasoSeleccionado')?.value }}</label>
+            <label>Integrante predeterminado de {{ siglaoAcronimoPasoSeleccionado }}</label>
             <select formControlName="integranteSeleccionado" (change)="cargarIntegranteSeleccionado()">
               <option value="">-- Seleccione --</option>
               @for (historial of historialesDelCargo; track historial.idHistorialIntegranteDocumentos) {
@@ -59,16 +70,16 @@
         <p class="mensaje-error">El cargo ya está registrado para esta unidad militar en el historial de integrantes de esta solicitud.</p>
       }
       @if (modo !== 'eliminar' && faltanDatosIntegrante) {
-        <p class="mensaje-error">Cargue un integrante del historial de integrantes de documentos que tenga unidad militar y archivo de firma.</p>
+        <p class="mensaje-error">Seleccione un integrante predeterminado para firmar (SI) del historial de integrantes de documentos que tenga unidad militar y archivo de firma.</p>
       }
     </div>
 
     <div class="form-acciones">
-      <button type="button" class="btn-sicim btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>
       @if (modo === 'eliminar') {
-        <button type="button" class="btn-sicim btn-peligro" (click)="confirmar()">Eliminar</button>
+        <button type="button" class="btn-titulo-sistema btn-peligro" (click)="confirmar()">Eliminar</button>
       } @else {
-        <button type="submit" class="btn-sicim btn-primario" [disabled]="form.invalid || cargoRepetido || faltanDatosIntegrante">{{ modo === 'modificar' ? 'Modificar' : 'Guardar' }}</button>
+        <button type="submit" class="btn-titulo-sistema btn-primario" [disabled]="form.invalid || cargoRepetido || faltanDatosIntegrante">{{ modo === 'modificar' ? 'Modificar' : 'Guardar' }}</button>
       }
     </div>
   </form>

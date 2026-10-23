@@ -14,7 +14,7 @@ export interface OperacionFotoUnidadMilitar {
   archivo?: File;
 }
 
-//RENOMBRADO DE LA CARPETA DE ALMACENAMIENTO DE LA UNIDAD MILITAR (SOLO EN MODO MODIFICAR, CUANDO CAMBIA LA SIGLA):
+//RENOMBRADO DE LA CARPETA DE ALMACENAMIENTO DE LA UNIDAD MILITAR (SOLO EN MODO MODIFICAR, CUANDO CAMBIA LA SIGLA O ACRÓNIMO):
 export interface OperacionCarpetaUnidadMilitar {
   carpetaAnterior: string;
   carpetaNueva: string;
@@ -100,7 +100,7 @@ export class AddUpdDelUnidadMilitarComponent implements OnChanges, OnDestroy {
   mostrarSugerenciasSiathUnidadMilitar = false;
   mensajeBusquedaSiathUnidadMilitar = '';
 
-  //LISTA DE SUGERENCIAS FILTRADAS POR NOMBRE O SIGLA A PARTIR DEL TÉRMINO ESCRITO:
+  //LISTA DE SUGERENCIAS FILTRADAS POR NOMBRE O SIGLA O ACRÓNIMO A PARTIR DEL TÉRMINO ESCRITO:
   get siathUnidadesMilitaresFiltradas(): SiathUnidadMilitarSimuladaI[] {
     const termino = this.terminoBusquedaSiathUnidadMilitar.trim().toUpperCase();
     if (!termino) return this.siathUnidadesMilitares;
@@ -235,7 +235,7 @@ export class AddUpdDelUnidadMilitarComponent implements OnChanges, OnDestroy {
     this.mensajeBusquedaSiathUnidadMilitar = '';
   }
 
-  //CARGA LOS DATOS DE LA UNIDAD MILITAR SIATH SELECCIONADA EN EL FORMULARIO (NOMBRE, SIGLA Y CÓDIGO):
+  //CARGA LOS DATOS DE LA UNIDAD MILITAR SIATH SELECCIONADA EN EL FORMULARIO (NOMBRE, SIGLA O ACRÓNIMO Y CÓDIGO):
   cargarInformacionUnidadMilitar(): void {
     this.mensajeBusquedaSiathUnidadMilitar = '';
     if (!this.siathUnidadMilitarSeleccionada) {

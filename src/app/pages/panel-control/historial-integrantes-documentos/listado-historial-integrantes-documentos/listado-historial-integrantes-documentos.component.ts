@@ -21,11 +21,12 @@ import { GestionArchivosService } from '../../../../services/gestion-archivos/ge
 import { AddUpdDelHistorialIntegranteDocumentosComponent, GuardadoHistorialIntegranteDocumentosEvent, OperacionFirmaHistorial } from '../add-upd-del-historial-integrante-documentos/add-upd-del-historial-integrante-documentos.component';
 import { VistaHistorialIntegranteDocumentosComponent } from '../vista-historial-integrante-documentos/vista-historial-integrante-documentos.component';
 import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { OrdenarPorSiglaPipe } from '../../../../shared/pipes/ordenar-por-sigla.pipe';
 
 @Component({
   selector: 'app-listado-historial-integrantes-documentos',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelHistorialIntegranteDocumentosComponent, VistaHistorialIntegranteDocumentosComponent, SemaforoContadoresComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelHistorialIntegranteDocumentosComponent, VistaHistorialIntegranteDocumentosComponent, SemaforoContadoresComponent, OrdenarPorSiglaPipe],
   templateUrl: './listado-historial-integrantes-documentos.component.html',
   styleUrl: './listado-historial-integrantes-documentos.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

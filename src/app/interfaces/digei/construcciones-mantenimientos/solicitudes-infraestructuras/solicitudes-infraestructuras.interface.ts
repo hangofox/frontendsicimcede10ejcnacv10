@@ -20,8 +20,11 @@ export interface SolicitudesInfraestructurasI {
     descripcionImpactoEsperadoInfraestructura: String;
     fechaHMSIngresoSolicitudInfraestructura: String;
     fechaHMSModificacionSolicitudInfraestructura: String;
+    //LO ASIGNA EL BACKEND (CREACION AL CREAR Y LUEGO AUTOMÁTICAMENTE HASTA ASIGNACION SEGÚN LOS INTEGRANTES DEL HISTORIAL); EL FORMULARIO NO LO ENVÍA:
+    estadoSolicitudInfraestructura?: String;
 }
 
 export interface SolicitudesInfraestructurasMsj {
   mensaje: string;
+  banderaexito?: boolean;//EL BACKEND RESPONDE HTTP 200 AUNQUE NO GUARDE (EJ. ESTADO NO PERMITIDO EN UNA SOLICITUD AVALADA); ESTA BANDERA LO INDICA.
 }

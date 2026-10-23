@@ -11,7 +11,7 @@
           <label>NIT, número de documento o nombre</label>
           <input type="text" formControlName="termino" placeholder="Ingrese NIT, documento o nombre..." (keyup.enter)="buscarProveedores()">
         </div>
-        <button type="button" class="btn-sicim btn-primario" [disabled]="buscando" (click)="buscarProveedores()">
+        <button type="button" class="btn-titulo-sistema btn-primario" [disabled]="buscando" (click)="buscarProveedores()">
           {{ buscando ? 'Buscando...' : 'Buscar' }}
         </button>
       </div>
@@ -93,11 +93,11 @@
     </div>
 
     <div class="form-acciones">
-      <button type="button" class="btn-sicim btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>
       @if (modo === 'eliminar') {
-        <button type="button" class="btn-sicim btn-peligro" (click)="confirmar()">Eliminar</button>
+        <button type="button" class="btn-titulo-sistema btn-peligro" (click)="confirmar()">Eliminar</button>
       } @else {
-        <button type="submit" class="btn-sicim btn-primario" [disabled]="form.invalid">{{ modo === 'modificar' ? 'Modificar' : 'Guardar' }}</button>
+        <button type="submit" class="btn-titulo-sistema btn-primario" [disabled]="form.invalid">{{ modo === 'modificar' ? 'Modificar' : 'Guardar' }}</button>
       }
     </div>
   </form>

@@ -1,5 +1,5 @@
 <h2 class="page-title">Solicitudes de Construcción y Mantenimiento</h2>
-<app-semaforo-contadores [total]="totalRegistros" />
+<app-semaforo-contadores [total]="totalRegistros" [estados]="estadosSolicitudContadores" />
 
 <section class="page-card panel-solicitudes-infraestructuras" [formGroup]="solicitudesInfraestructurasForm" aria-labelledby="titulo-solicitudes-infraestructuras">
 
@@ -11,19 +11,19 @@
       placeholder="Buscar por código radicado, nombre o unidad militar..."
       (keyup.enter)="buscar()">
 
-    <button type="button" class="btn-sicim btn-buscar" (click)="buscar()">
+    <button type="button" class="btn-titulo-sistema btn-buscar" (click)="buscar()">
       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       Buscar
     </button>
 
     <select formControlName="cboxSiglaoAcronimoUnidadMilitarSeleccionado" (change)="buscar()">
       <option value="">TODAS LAS UNIDADES MILITARES</option>
-      @for (unidadMilitar of unidadesMilitares; track unidadMilitar.idUnidadMilitar) {
+      @for (unidadMilitar of unidadesMilitares | ordenarPorSigla; track unidadMilitar.idUnidadMilitar) {
         <option [value]="unidadMilitar.siglaoAcronimoUnidadMilitar">{{ unidadMilitar.siglaoAcronimoUnidadMilitar }}</option>
       }
     </select>
 
-    <button type="button" class="btn-sicim btn-nuevo" (click)="abrirModalAddUpdDel('guardar')">
+    <button type="button" class="btn-titulo-sistema btn-nuevo" (click)="abrirModalAddUpdDel('guardar')">
       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       Nueva Solicitud
     </button>
@@ -41,6 +41,7 @@
           <th>Tipo de solicitud</th>
           <th>Fecha de solicitud</th>
           <th class="th-linea-mando">Línea de mando de solicitud de infraestructura</th>
+          <th>Estado</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -54,21 +55,38 @@
             <td>{{ solicitudInfraestructura.tipoSolicitudInfraestructuraDTO.nombreTipoSolicitudInfraestructura }}</td>
             <td>{{ solicitudInfraestructura.fechaHMSSolicitudInfraestructura }}</td>
             <td class="celda-linea-mando">
-              @if (obtenerPasosLineaMando(solicitudInfraestructura); as pasos) {
-                @if (pasos.length) {
-                  <div class="linea-mando" [attr.aria-label]="'Línea de mando de la solicitud'">
-                    @for (paso of pasos; track paso.sigla; let ultimo = $last) {
-                      <span class="paso-linea-mando" [class.paso-aprobado]="paso.aprobado" [title]="paso.aprobado ? paso.sigla + ': con integrante registrado en el historial' : paso.sigla + ': pendiente'">{{ paso.sigla }}</span>
-                      @if (!ultimo) {
+              @if (obtenerLineaMandoSolicitud(solicitudInfraestructura); as lineaMando) {
+                <!-- TRAMO COMÚN DE LA LÍNEA DE MANDO Y, AL FINAL, LOS CAMINOS ALTERNATIVOS APILADOS (UNO POR CADA [ ... ]) -->
+                <div class="linea-mando" [attr.aria-label]="'Línea de mando de la solicitud'">
+                  <div class="tramo-linea-mando">
+                    @for (paso of lineaMando.tramoComun; track $index; let ultimo = $last) {
+                      <span class="paso-linea-mando" [class.paso-aprobado]="paso.aprobado" [title]="paso.aprobado ? paso.siglaoAcronimo + ': con integrante registrado en el historial' : paso.siglaoAcronimo + ': pendiente'">{{ paso.siglaoAcronimo }}</span>
+                      @if (!ultimo || lineaMando.finalesAlternativos.length) {
                         <span class="flecha-linea-mando" aria-hidden="true">→</span>
                       }
                     }
                   </div>
-                } @else {
-                  <span class="sin-linea-mando">Sin línea de mando registrada</span>
-                }
+                  @if (lineaMando.finalesAlternativos.length) {
+                    <div class="finales-linea-mando" [attr.aria-label]="lineaMando.finalesAlternativos.length + ' caminos alternativos'">
+                      @for (final of lineaMando.finalesAlternativos; track $index; let numeroCamino = $index) {
+                        <div class="final-linea-mando" [class.final-en-curso]="final.enCurso" [title]="'Camino ' + (numeroCamino + 1) + (final.enCurso ? ': en curso' : '')">
+                          @for (paso of final.pasos; track $index; let ultimo = $last) {
+                            <span class="paso-linea-mando" [class.paso-aprobado]="paso.aprobado" [title]="paso.aprobado ? paso.siglaoAcronimo + ': con integrante registrado en el historial' : paso.siglaoAcronimo + ': pendiente'">{{ paso.siglaoAcronimo }}</span>
+                            @if (!ultimo) {
+                              <span class="flecha-linea-mando" aria-hidden="true">→</span>
+                            }
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              } @else {
+                <span class="sin-linea-mando">Sin línea de mando registrada</span>
               }
             </td>
+            <!-- ESTADO DE LA SOLICITUD (CREACION, VERIFICACION, VALIDACION, ASIGNACION, APROBACION O RECHAZADO), CON UN COLOR POR ESTADO -->
+            <td><span class="estado-solicitud" [ngClass]="'estado-' + (solicitudInfraestructura.estadoSolicitudInfraestructura || '').toString().toLowerCase()">{{ solicitudInfraestructura.estadoSolicitudInfraestructura || 'SIN ESTADO' }}</span></td>
             <td>
               <div class="acciones-celda">
                 <button type="button" class="btn-accion btn-ver" title="Ver" (click)="abrirModalVista(solicitudInfraestructura)">
@@ -91,7 +109,7 @@
           </tr>
         } @empty {
           <tr>
-            <td colspan="8" class="tabla-vacia">No se encontraron solicitudes de construcción y mantenimiento con los filtros aplicados.</td>
+            <td colspan="9" class="tabla-vacia">No se encontraron solicitudes de construcción y mantenimiento con los filtros aplicados.</td>
           </tr>
         }
       </tbody>

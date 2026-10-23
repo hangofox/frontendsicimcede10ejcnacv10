@@ -119,7 +119,7 @@ export class VistaUsuarioComponent implements OnChanges, OnDestroy {
 
   //MUESTRA LA DESCRIPCIÓN COMPLETA DEL GRADO (NO LA SIGLA/ACRÓNIMO QUE SE GUARDA EN gradoUsuario), BUSCÁNDOLA EN
   //EL CATÁLOGO REAL DE GRADOS SIATH YA CARGADO EN listado-usuarios. SI NO SE ENCUENTRA COINCIDENCIA, SE MUESTRA LA
-  //SIGLA TAL CUAL PARA NO OCULTAR EL DATO:
+  //SIGLA O ACRÓNIMO TAL CUAL PARA NO OCULTAR EL DATO:
   get descripcionGradoUsuario(): string {
     const sigla = String(this.usuarioData?.gradoUsuario ?? '').trim();
     if (!sigla) return 'No registrado';

@@ -25,14 +25,14 @@ export class AddUpdDelUnidadMilitarRealizMttoComponent implements OnChanges {
 
   unidadesMilitaresRealizMttosForm!: FormGroup;
 
-  //BÚSQUEDA DE UNIDAD MILITAR (SOLO EN MODO GUARDAR) — CAMPO DE TEXTO QUE FILTRA EL CATÁLOGO DE UNIDADES
+  //BÚSQUEDA DE UNIDAD MILITAR (SOLO EN MODO GUARDAR) — CAMPO DE TEXTO QUE FILTRA EL CATÁLOGO DE UNIDADES MILITARES
   //MILITARES MIENTRAS SE ESCRIBE (MISMO PATRÓN QUE AddUpdDelUnidadMilitarComponent):
   terminoBusquedaUnidadMilitar = '';
   unidadMilitarBusquedaSeleccionada: UnidadesMilitaresI | null = null;
   mostrarSugerenciasUnidadMilitar = false;
   mensajeBusquedaUnidadMilitar = '';
 
-  //LISTA DE SUGERENCIAS FILTRADAS POR NOMBRE O SIGLA A PARTIR DEL TÉRMINO ESCRITO:
+  //LISTA DE SUGERENCIAS FILTRADAS POR NOMBRE O SIGLA O ACRÓNIMO A PARTIR DEL TÉRMINO ESCRITO:
   get unidadesMilitaresFiltradas(): UnidadesMilitaresI[] {
     const termino = this.terminoBusquedaUnidadMilitar.trim().toUpperCase();
     if (!termino) return this.unidadesMilitares;

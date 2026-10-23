@@ -23,12 +23,13 @@ import { HistorialResponsablesInfraestService } from '../../../../../services/di
 import { AddUpdDelInfraestructuraComponent } from '../add-upd-del-infraestructura/add-upd-del-infraestructura.component';
 import { VistaInfraestructuraComponent } from '../vista-infraestructura/vista-infraestructura.component';
 import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { OrdenarPorSiglaPipe } from '../../../../../shared/pipes/ordenar-por-sigla.pipe';
 import { ListadoAddUpdDelResponsablesInfraestComponent } from '../historial-responsables-infraest/listado-add-upd-del-responsables-infraest/listado-add-upd-del-responsables-infraest.component';
 
 @Component({
   selector: 'app-listado-infraestructuras',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelInfraestructuraComponent, VistaInfraestructuraComponent, SemaforoContadoresComponent, ListadoAddUpdDelResponsablesInfraestComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelInfraestructuraComponent, VistaInfraestructuraComponent, SemaforoContadoresComponent, OrdenarPorSiglaPipe, ListadoAddUpdDelResponsablesInfraestComponent],
   templateUrl: './listado-infraestructuras.component.html',
   styleUrl: './listado-infraestructuras.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

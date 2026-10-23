@@ -12,11 +12,12 @@ import { SpinnerService } from '../../../../services/spinner/spinner.service';
 import { AddUpdDelSociedadUnidadCentralizadoraComponent } from '../add-upd-del-sociedad-unidad-centralizadora/add-upd-del-sociedad-unidad-centralizadora.component';
 import { VistaSociedadUnidadCentralizadoraComponent } from '../vista-sociedad-unidad-centralizadora/vista-sociedad-unidad-centralizadora.component';
 import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { OrdenarPorSiglaPipe } from '../../../../shared/pipes/ordenar-por-sigla.pipe';
 
 @Component({
   selector: 'app-listado-sociedades-unidades-centralizadoras',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelSociedadUnidadCentralizadoraComponent, VistaSociedadUnidadCentralizadoraComponent, SemaforoContadoresComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelSociedadUnidadCentralizadoraComponent, VistaSociedadUnidadCentralizadoraComponent, SemaforoContadoresComponent, OrdenarPorSiglaPipe],
   templateUrl: './listado-sociedades-unidades-centralizadoras.component.html',
   styleUrl: './listado-sociedades-unidades-centralizadoras.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

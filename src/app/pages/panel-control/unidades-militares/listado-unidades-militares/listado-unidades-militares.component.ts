@@ -12,7 +12,7 @@ import { ParametrosSistemaService } from '../../../../services/panel-control/par
 import { GestionArchivosService } from '../../../../services/gestion-archivos/gestion-archivos.service';
 import { CentrosCostosUnidadesMilitaresService } from '../../../../services/panel-control/unidades-militares/centros-costos-unidades-militares/centros-costos-unidades-militares.service';
 
-import { AddUpdDelUnidadMilitarComponent, GuardadoUnidadMilitarEvent } from '../add-upd-del-unidad-militar/add-upd-del-unidad-militar.component';
+import { AddUpdDelUnidadMilitarComponent, GuardadoUnidadMilitarEvent, NIVELES_UNIDADES_MILITARES } from '../add-upd-del-unidad-militar/add-upd-del-unidad-militar.component';
 import { VistaUnidadMilitarComponent } from '../vista-unidad-militar/vista-unidad-militar.component';
 import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 import { ListadoCentrosCostosUnidadesMilitaresComponent } from '../centros-costos-unidades-militares/listado-centros-costos-unidades-militares/listado-centros-costos-unidades-militares.component';
@@ -32,6 +32,9 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
   totalRegistros = 0;
 
   unidadesMilitaresForm: FormGroup;
+
+  //NIVELES DE LAS UNIDADES MILITARES PARA EL COMBO DE FILTRO (MISMA LISTA DEL FORMULARIO add-upd-del-unidad-militar):
+  readonly nivelesUnidadesMilitares = NIVELES_UNIDADES_MILITARES;
 
   //PAGINACIÓN REAL (CONTRA EL BACKEND):
   paginaActual = 0;
@@ -75,6 +78,7 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
   ) {
     this.unidadesMilitaresForm = this.formBuilder.group({
       ctextPalabraClave: new FormControl(''),
+      cboxNivelUnidadMilitarSeleccionado: new FormControl(''),
       cboxTandaNumeroRegistrosporPaginaSeleccionado: new FormControl('10')
     });
   }
@@ -116,6 +120,8 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
     const valoresFormulario = this.unidadesMilitaresForm.value;
     const palabraClave = (valoresFormulario.ctextPalabraClave || '').trim().toUpperCase();
     const keyword: string | undefined = palabraClave || undefined;
+    //NIVEL SELECCIONADO EN EL COMBO (VACÍO = TODOS LOS NIVELES):
+    const nivelUnidadMilitar: string | undefined = valoresFormulario.cboxNivelUnidadMilitarSeleccionado || undefined;
 
     this.unidadesMilitaresService.findAllMilitaryUnitsPag(
       this.paginaActual,
@@ -123,7 +129,8 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
       undefined,
       keyword,
       'idUnidadMilitar',
-      'ASC'
+      'ASC',
+      nivelUnidadMilitar
     ).subscribe({
       next: (data) => {
         this.unidadesMilitares = data;
@@ -133,7 +140,7 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
       error: (err) => console.error('ERROR AL LISTAR UNIDADES MILITARES: ', err)
     });
 
-    this.unidadesMilitaresService.findCountTotalRegisters(undefined, keyword)
+    this.unidadesMilitaresService.findCountTotalRegisters(undefined, keyword, nivelUnidadMilitar)
       .subscribe({
         next: (total) => {
           this.totalRegistros = total;
@@ -265,7 +272,7 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
       const unidadSinFoto = { ...unidadMilitar, nombreArchivoFotoLogExtoFmtUnidadMilitar: '' };
       this.unidadesMilitaresService.addMilitaryUnit(unidadSinFoto).subscribe({
         next: (respuesta) => {
-          //SIN ESTA VALIDACIÓN, UNA SIGLA REPETIDA CONSULTARÍA LA UNIDAD YA EXISTENTE Y LE REEMPLAZARÍA EL LOGOTIPO:
+          //SIN ESTA VALIDACIÓN, UNA SIGLA O ACRÓNIMO REPETIDA CONSULTARÍA LA UNIDAD MILITAR YA EXISTENTE Y LE REEMPLAZARÍA EL LOGOTIPO:
           if (respuesta.banderaexito === false) {
             this.reportarErrorGuardado({ error: respuesta }, 'Error al crear la unidad militar.');
             return;
@@ -300,7 +307,7 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
       };
       this.unidadesMilitaresService.updateMilitaryUnit(unidadMilitar).subscribe({
         next: (respuesta) => {
-          //EL BACKEND DEVUELVE HTTP 200 CON banderaexito=false CUANDO NO MODIFICA (NOMBRE, SIGLA O CÓDIGO REPETIDO):
+          //EL BACKEND DEVUELVE HTTP 200 CON banderaexito=false CUANDO NO MODIFICA (NOMBRE, SIGLA O ACRÓNIMO O CÓDIGO REPETIDO):
           if (respuesta.banderaexito === false) {
             revertirFotoPreSubida();
             this.reportarErrorGuardado({ error: respuesta }, 'Error al modificar la unidad militar.');

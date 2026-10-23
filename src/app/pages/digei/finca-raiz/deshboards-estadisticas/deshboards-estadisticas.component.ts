@@ -12,6 +12,7 @@ import { TerrenosService } from '../../../../services/digei/finca-raiz/terrenos/
 import { UnidadesMilitaresService } from '../../../../services/panel-control/unidades-militares/unidades-militares.service';
 import { etiquetasConectoresPlugin, valoresSobreBarrasPlugin } from '../../../../shared/chartjs/etiquetas-conectores.plugin';
 import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { OrdenarPorSiglaPipe } from '../../../../shared/pipes/ordenar-por-sigla.pipe';
 
 Chart.register(...registerables);
 
@@ -21,7 +22,7 @@ interface EstadoGrafica { etiqueta: string; tono: string; color: string; valor: 
 @Component({
   selector: 'app-deshboards-estadisticas',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SemaforoContadoresComponent],
+  imports: [CommonModule, ReactiveFormsModule, SemaforoContadoresComponent, OrdenarPorSiglaPipe],
   templateUrl: './deshboards-estadisticas.component.html',
   styleUrl: './deshboards-estadisticas.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -19,14 +19,14 @@
 
     <button
       type="button"
-      class="btn-sicim btn-buscar"
+      class="btn-titulo-sistema btn-buscar"
       title="Buscar responsable de la infraestructura."
       [disabled]="consultandoResponsable || !form.getRawValue().numeroDocumentoIdentificacionResponsableConsultado || !!responsableConsultado"
       (click)="consultarPorNumeroDocumentoIdentificacion()">{{ consultandoResponsable ? 'BUSCANDO...' : 'BUSCAR' }}</button>
 
     <button
       type="button"
-      class="btn-sicim btn-secundario"
+      class="btn-titulo-sistema btn-secundario"
       title="Repetir búsqueda."
       [disabled]="!responsableConsultado"
       (click)="limpiarDatosResponsable()">REPETIR</button>
@@ -56,7 +56,7 @@
         </div>
       </div>
       <div class="ficha-responsable-acciones">
-        <button type="button" class="btn-sicim btn-nuevo" (click)="agregarResponsableConsultado()">
+        <button type="button" class="btn-titulo-sistema btn-nuevo" (click)="agregarResponsableConsultado()">
           <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           AGREGAR
         </button>
@@ -67,7 +67,7 @@
   <!-- BÚSQUEDA DENTRO DEL HISTORIAL -->
   <div class="barra-acciones">
     <input type="text" formControlName="palabraClave" placeholder="Buscar por número, documento, grado, nombres o apellidos..." (keyup.enter)="buscar()">
-    <button type="button" class="btn-sicim btn-buscar" (click)="buscar()">Buscar</button>
+    <button type="button" class="btn-titulo-sistema btn-buscar" (click)="buscar()">Buscar</button>
   </div>
 
   <div class="tabla-contenedor"><table><thead><tr><th>#</th><th>Número de registro</th><th>N.° de documento</th><th>Grado, nombres y apellidos</th><th>Predeterminado</th><th>Acciones</th></tr></thead><tbody>
@@ -123,11 +123,11 @@
           </div></div>
 
           <div class="form-acciones">
-            <button type="button" class="btn-sicim btn-secundario" (click)="cerrarCrud()">Cancelar</button>
+            <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarCrud()">Cancelar</button>
             @if (banderaCrudEliminar) {
-              <button type="button" class="btn-sicim btn-peligro" (click)="confirmarEliminar()">Eliminar</button>
+              <button type="button" class="btn-titulo-sistema btn-peligro" (click)="confirmarEliminar()">Eliminar</button>
             } @else {
-              <button type="submit" class="btn-sicim btn-primario" [disabled]="responsablesInfraestForm.invalid">{{ banderaCrudModificar ? 'Modificar' : 'Predeterminar' }}</button>
+              <button type="submit" class="btn-titulo-sistema btn-primario" [disabled]="responsablesInfraestForm.invalid">{{ banderaCrudModificar ? 'Modificar' : 'Predeterminar' }}</button>
             }
           </div>
         </form>

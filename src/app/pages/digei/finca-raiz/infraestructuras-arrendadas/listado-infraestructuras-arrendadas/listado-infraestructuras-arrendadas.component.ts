@@ -9,10 +9,11 @@ import { InfraestructurasArrendadasService } from '../../../../../services/digei
 import { UnidadesMilitaresService } from '../../../../../services/panel-control/unidades-militares/unidades-militares.service';
 import { SpinnerService } from '../../../../../services/spinner/spinner.service';
 import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { OrdenarPorSiglaPipe } from '../../../../../shared/pipes/ordenar-por-sigla.pipe';
 import { AddUpdDelInfraestructuraArrendadaComponent } from '../add-upd-del-infraestructura-arrendada/add-upd-del-infraestructura-arrendada.component';
 import { VistaInfraestructuraArrendadaComponent } from '../vista-infraestructura-arrendada/vista-infraestructura-arrendada.component';
 
-@Component({ selector: 'app-listado-infraestructuras-arrendadas', standalone: true, imports: [CommonModule, ReactiveFormsModule, SemaforoContadoresComponent, AddUpdDelInfraestructuraArrendadaComponent, VistaInfraestructuraArrendadaComponent], templateUrl: './listado-infraestructuras-arrendadas.component.html', styleUrl: './listado-infraestructuras-arrendadas.component.scss' })
+@Component({ selector: 'app-listado-infraestructuras-arrendadas', standalone: true, imports: [CommonModule, ReactiveFormsModule, SemaforoContadoresComponent, AddUpdDelInfraestructuraArrendadaComponent, VistaInfraestructuraArrendadaComponent, OrdenarPorSiglaPipe], templateUrl: './listado-infraestructuras-arrendadas.component.html', styleUrl: './listado-infraestructuras-arrendadas.component.scss' })
 export class ListadoInfraestructurasArrendadasComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   readonly form = this.fb.group({ keyword: [''], unidadMilitar: [''], tipoEstructura: [''], cantidad: ['10'] });

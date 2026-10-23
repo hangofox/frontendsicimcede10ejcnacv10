@@ -96,11 +96,11 @@
     </div>
 
     <div class="form-acciones">
-      <button type="button" class="btn-sicim btn-secundario" (click)="closeModal()">Cancelar</button>
-      <button type="submit" class="btn-sicim btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="proveedoresProductosServiciosForm.invalid">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-titulo-sistema btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="proveedoresProductosServiciosForm.invalid">
         {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
       </button>
-      <button type="button" class="btn-sicim btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+      <button type="button" class="btn-titulo-sistema btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
     </div>
 
   </form>

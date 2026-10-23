@@ -6,13 +6,14 @@ import { HistorialProveedoresProductosServiciosService } from '../../../../servi
 import { UnidadesMilitaresI } from '../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
 import { UnidadesMilitaresService } from '../../../../services/panel-control/unidades-militares/unidades-militares.service';
 import { SemaforoContadoresComponent } from '../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { OrdenarPorSiglaPipe } from '../../../../shared/pipes/ordenar-por-sigla.pipe';
 import { AddUpdDelHistorialProveedorProductoServicioComponent } from '../add-upd-del-historial-proveedor-producto-servicio/add-upd-del-historial-proveedor-producto-servicio.component';
 import { VistaHistorialProveedorProductoServicioComponent } from '../vista-historial-proveedor-producto-servicio/vista-historial-proveedor-producto-servicio.component';
 
 @Component({
   selector: 'app-listado-historial-proveedores-productos-servicios',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SemaforoContadoresComponent, AddUpdDelHistorialProveedorProductoServicioComponent, VistaHistorialProveedorProductoServicioComponent],
+  imports: [CommonModule, ReactiveFormsModule, SemaforoContadoresComponent, OrdenarPorSiglaPipe, AddUpdDelHistorialProveedorProductoServicioComponent, VistaHistorialProveedorProductoServicioComponent],
   templateUrl: './listado-historial-proveedores-productos-servicios.component.html',
   styleUrl: './listado-historial-proveedores-productos-servicios.component.scss'
 })

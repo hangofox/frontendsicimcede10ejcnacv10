@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { SolicitudesInfraestructurasI } from '../../../../../interfaces/digei/construcciones-mantenimientos/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
 import { UnidadesMilitaresI } from '../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
@@ -12,18 +14,32 @@ import { UnidadesMilitaresService } from '../../../../../services/panel-control/
 import { TiposSolicitudesInfraestructurasService } from '../../../../../services/digei/construcciones-mantenimientos/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.service';
 import { InfraestructurasService } from '../../../../../services/digei/finca-raiz/infraestructuras/infraestructuras.service';
 import { HistorialIntegrantesSolicInfraestService } from '../../../../../services/digei/construcciones-mantenimientos/solicitudes-infraestructuras/historial-integrantes-solic-infraest/historial-integrantes-solic-infraest.service';
-import { LineasMandosUnidadesMilitaresSolicInfraestService } from '../../../../../services/panel-control/lineas-mandos-unid-mil-solic-infraest/lineas-mandos-unid-mil-solic-infraest.service';
+import { LineasMandosUnidadesMilitaresService } from '../../../../../services/panel-control/lineas-mandos-unidades-militares/lineas-mandos-unidades-militares.service';
 import { SpinnerService } from '../../../../../services/spinner/spinner.service';
 
 import { AddUpdDelSolicitudInfraestructuraComponent } from '../add-upd-del-solicitud-infraestructura/add-upd-del-solicitud-infraestructura.component';
 import { VistaSolicitudInfraestructuraComponent } from '../vista-solicitud-infraestructura/vista-solicitud-infraestructura.component';
 import { ListadoHistorialIntegrantesSolicInfraestComponent } from '../historial-integrantes-solic-infraest/listado-historial-integrantes-solic-infraest/listado-historial-integrantes-solic-infraest.component';
 import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
+import { OrdenarPorSiglaPipe } from '../../../../../shared/pipes/ordenar-por-sigla.pipe';
+import { EstructuraLineaMando, analizarLineaMando, obtenerIndicesFinalesVigentes } from '../../../../../shared/lineas-mando/linea-mando.util';
+
+//PASO DE LA LÍNEA DE MANDO QUE SE MUESTRA EN LA TABLA; "aprobado" ILUMINA LA UNIDAD MILITAR QUE YA TIENE INTEGRANTE EN EL HISTORIAL:
+export interface PasoLineaMandoSolicitud {
+  siglaoAcronimo: string;
+  aprobado: boolean;
+}
+
+//LÍNEA DE MANDO DE UNA SOLICITUD: TRAMO COMÚN Y, SI LOS HAY, LOS FINALES ALTERNATIVOS (CAMINOS) DONDE TERMINA:
+export interface LineaMandoSolicitud {
+  tramoComun: PasoLineaMandoSolicitud[];
+  finalesAlternativos: { pasos: PasoLineaMandoSolicitud[]; enCurso: boolean }[];
+}
 
 @Component({
   selector: 'app-listado-solicitudes-infraestructuras',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelSolicitudInfraestructuraComponent, VistaSolicitudInfraestructuraComponent, ListadoHistorialIntegrantesSolicInfraestComponent, SemaforoContadoresComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelSolicitudInfraestructuraComponent, VistaSolicitudInfraestructuraComponent, ListadoHistorialIntegrantesSolicInfraestComponent, SemaforoContadoresComponent, OrdenarPorSiglaPipe],
   templateUrl: './listado-solicitudes-infraestructuras.component.html',
   styleUrl: './listado-solicitudes-infraestructuras.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -35,16 +51,32 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
   tiposSolicitudesInfraestructuras: TiposSolicitudesInfraestructurasI[] = [];
   infraestructuras: InfraestructurasI[] = [];
 
-  //PASOS (SIGLAS) DE CADA LÍNEA DE MANDO DE SOLICITUDES DE INFRAESTRUCTURAS, INDEXADOS POR LA PRIMERA SIGLA DE LA LÍNEA
-  //(LA QUE VA ANTES DEL PRIMER "->", QUE ES LA UNIDAD MILITAR QUE CREA LA SOLICITUD). EJ. "CAOCC" → [CAOCC, JEMOP, SECEJ, COEJC]:
-  private pasosLineaMandoPorSigla = new Map<string, string[]>();
+  //TRAMO COMÚN Y FINALES ALTERNATIVOS DE CADA LÍNEA DE MANDO DE UNIDADES MILITARES, INDEXADOS POR LA PRIMERA SIGLA O ACRÓNIMO DE LA LÍNEA
+  //(LA QUE VA ANTES DEL PRIMER "->", QUE ES LA UNIDAD MILITAR QUE CREA LA SOLICITUD). EJ. "BAICC" →
+  //{ tramoComun: [BAICC, BRICC, CAOCC], finalesAlternativos: [[SECEJ, CEDE10], [CEDE10], [JEMGF, COING]] }:
+  private lineasMandoPorSiglaoAcronimo = new Map<string, EstructuraLineaMando>();
+  //SIGLAS O ACRÓNIMOS CUYA LÍNEA DE MANDO YA SE CONSULTÓ (TENGA O NO LÍNEA REGISTRADA) O ESTÁ EN CONSULTA, PARA NO REPETIR LA CONSULTA AL
+  //CAMBIAR DE PÁGINA:
+  private readonly siglasoAcronimosLineaMandoConsultados = new Set<string>();
 
-  //SIGLAS DE LAS UNIDADES MILITARES QUE YA TIENEN INTEGRANTE REGISTRADO EN EL HISTORIAL DE CADA SOLICITUD (PASOS ILUMINADOS):
-  private siglasConIntegrantePorSolicitud = new Map<number, Set<string>>();
+  //SIGLAS O ACRÓNIMOS DE LAS UNIDADES MILITARES QUE YA TIENEN INTEGRANTE REGISTRADO EN EL HISTORIAL DE CADA SOLICITUD (PASOS ILUMINADOS):
+  private siglasoAcronimosConIntegrantePorSolicitud = new Map<number, Set<string>>();
 
   //PÁGINA ACTUAL DE SOLICITUDES DE INFRAESTRUCTURAS TRAÍDA DEL BACKEND (YA PAGINADA POR EL SERVIDOR, NO SE RECORTA EN EL CLIENTE):
   solicitudesInfraestructuras: SolicitudesInfraestructurasI[] = [];
   totalRegistros = 0;
+
+  //ESTADOS DE LAS SOLICITUDES DE INFRAESTRUCTURAS PARA LA SEMAFORIZACIÓN QUE VA AL LADO DEL TOTAL DE REGISTROS (MISMO PATRÓN DE
+  //ListadoInfraestructurasComponent); EL TONO ES EL COLOR DE CADA ESTADO EN SemaforoContadoresComponent:
+  readonly estadosSolicitud = [
+    { etiqueta: 'CREACION', tono: 'creacion' },
+    { etiqueta: 'VERIFICACION', tono: 'verificacion' },
+    { etiqueta: 'VALIDACION', tono: 'validacion' },
+    { etiqueta: 'ASIGNACION', tono: 'asignacion' },
+    { etiqueta: 'APROBACION', tono: 'aprobacion' },
+    { etiqueta: 'RECHAZADO', tono: 'rechazado' }
+  ];
+  estadosSolicitudContadores = this.estadosSolicitud.map(estado => ({ ...estado, valor: 0 }));
 
   solicitudesInfraestructurasForm: FormGroup;
 
@@ -75,7 +107,7 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
     private tiposSolicitudesInfraestructurasService: TiposSolicitudesInfraestructurasService,
     private infraestructurasService: InfraestructurasService,
     private historialIntegrantesSolicInfraestService: HistorialIntegrantesSolicInfraestService,
-    private lineasMandosUnidadesMilitaresSolicInfraestService: LineasMandosUnidadesMilitaresSolicInfraestService,
+    private lineasMandosUnidadesMilitaresService: LineasMandosUnidadesMilitaresService,
     private spinnerService: SpinnerService
   ) {
     this.solicitudesInfraestructurasForm = this.formBuilder.group({
@@ -89,51 +121,65 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
     this.cargarUnidadesMilitares();
     this.cargarTiposSolicitudesInfraestructuras();
     this.cargarInfraestructuras();
-    this.cargarLineasMandoSolicInfraest();
-    this.cargarHistorialIntegrantesSolicInfraest();
     this.accionListar();
   }
 
-  //CARGA TODAS LAS LÍNEAS DE MANDO DE SOLICITUDES DE INFRAESTRUCTURAS Y LAS INDEXA POR SU PRIMERA SIGLA (ANTES DEL PRIMER "->"):
-  private cargarLineasMandoSolicInfraest(): void {
-    this.lineasMandosUnidadesMilitaresSolicInfraestService.findAllInfrastructureRequestMilitaryUnitChainsOfCommand()
-      .subscribe({
-        next: (lineasMando) => {
-          const pasosPorSigla = new Map<string, string[]>();
-          lineasMando.forEach(lineaMando => {
-            const pasos = String(lineaMando.lineaMandoUnidadMilitarSolicInfraest || '')
-              .split('->')
-              .map(paso => this.normalizarTexto(paso))
-              .filter(paso => !!paso);
-            if (pasos.length) pasosPorSigla.set(pasos[0], pasos);
-          });
-          this.pasosLineaMandoPorSigla = pasosPorSigla;
-          this.changeDetectorRef.markForCheck();
-        },
-        error: (err) => console.error('ERROR AL CARGAR LÍNEAS DE MANDO DE SOLICITUDES DE INFRAESTRUCTURAS: ', err)
+  //CARGA LAS LÍNEAS DE MANDO SOLO DE LAS UNIDADES MILITARES DE LAS SOLICITUDES DE LA PÁGINA QUE AÚN NO SE HAN CONSULTADO, UNA
+  //CONSULTA POR UNIDAD MILITAR Y TODAS EN PARALELO (forkJoin); CONSULTAR LAS 466 LÍNEAS TARDABA CERCA DE 3 SEGUNDOS. CADA LÍNEA SE
+  //INDEXA POR SU PRIMERA SIGLA O ACRÓNIMO (ANTES DEL PRIMER "->"), SEPARANDO EL TRAMO COMÚN DE LOS FINALES ALTERNATIVOS ENTRE CORCHETES:
+  private cargarLineasMandosUnidadesMilitares(solicitudesInfraestructuras: SolicitudesInfraestructurasI[]): void {
+    const faltantes = [...new Set(solicitudesInfraestructuras.map(solicitud => this.normalizarTexto(solicitud.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar)))]
+      .filter(siglaoAcronimo => !!siglaoAcronimo && !this.siglasoAcronimosLineaMandoConsultados.has(siglaoAcronimo));
+    if (!faltantes.length) return;
+    faltantes.forEach(siglaoAcronimo => this.siglasoAcronimosLineaMandoConsultados.add(siglaoAcronimo));
+    forkJoin(faltantes.map(siglaoAcronimo =>
+      this.lineasMandosUnidadesMilitaresService.findAllMilitaryUnitChainsOfCommand(undefined, undefined, siglaoAcronimo).pipe(catchError(() => of(null)))
+    )).subscribe(resultados => {
+      resultados.forEach((lineasMando, indice) => {
+        //SI FALLÓ LA CONSULTA DE UNA UNIDAD MILITAR, SE PERMITE VOLVER A CONSULTARLA EN LA SIGUIENTE CARGA DE PÁGINA:
+        if (lineasMando === null) {
+          this.siglasoAcronimosLineaMandoConsultados.delete(faltantes[indice]);
+          console.error('ERROR AL CARGAR LA LÍNEA DE MANDO DE LA UNIDAD MILITAR: ', faltantes[indice]);
+          return;
+        }
+        lineasMando.forEach(lineaMando => {
+          const { estructura } = analizarLineaMando(lineaMando.lineaMandoUnidadMilitar);
+          const tramoComun = estructura.tramoComun.map(paso => this.normalizarTexto(paso)).filter(paso => !!paso);
+          const finalesAlternativos = estructura.finalesAlternativos
+            .map(final => final.map(paso => this.normalizarTexto(paso)).filter(paso => !!paso))
+            .filter(final => final.length > 0);
+          if (tramoComun.length) this.lineasMandoPorSiglaoAcronimo.set(tramoComun[0], { tramoComun, finalesAlternativos });
+        });
       });
+      this.changeDetectorRef.markForCheck();
+    });
   }
 
-  //CARGA TODO EL HISTORIAL DE INTEGRANTES DE SOLICITUDES DE INFRAESTRUCTURAS Y AGRUPA POR SOLICITUD LAS SIGLAS DE LAS
+  //CARGA EL HISTORIAL DE INTEGRANTES SOLO DE LAS SOLICITUDES DE LA PÁGINA, UNA CONSULTA POR SOLICITUD Y TODAS EN PARALELO
+  //(CONSULTAR EL HISTORIAL DE TODAS LAS SOLICITUDES TARDABA CERCA DE 4 SEGUNDOS), Y GUARDA POR SOLICITUD LAS SIGLAS O ACRÓNIMOS DE LAS
   //UNIDADES MILITARES QUE YA TIENEN INTEGRANTE (unidadMilitarDTO DE CADA REGISTRO), PARA ILUMINAR LOS PASOS DE CADA LÍNEA DE MANDO:
-  private cargarHistorialIntegrantesSolicInfraest(): void {
-    this.historialIntegrantesSolicInfraestService.findAllInfrastructureRequestMemberHistories()
-      .subscribe({
-        next: (historiales) => {
-          const siglasPorSolicitud = new Map<number, Set<string>>();
-          historiales.forEach(historial => {
-            const idSolicitudInfraestructura = historial.solicitudInfraestructuraDTO?.idSolicitudInfraestructura;
-            const sigla = this.normalizarTexto(historial.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar);
-            if (idSolicitudInfraestructura === undefined || !sigla) return;
-            const siglas = siglasPorSolicitud.get(idSolicitudInfraestructura) ?? new Set<string>();
-            siglas.add(sigla);
-            siglasPorSolicitud.set(idSolicitudInfraestructura, siglas);
-          });
-          this.siglasConIntegrantePorSolicitud = siglasPorSolicitud;
-          this.changeDetectorRef.markForCheck();
-        },
-        error: (err) => console.error('ERROR AL CARGAR EL HISTORIAL DE INTEGRANTES DE SOLICITUDES DE INFRAESTRUCTURAS: ', err)
+  private cargarHistorialIntegrantesSolicInfraest(solicitudesInfraestructuras: SolicitudesInfraestructurasI[]): void {
+    const idsSolicitudes = solicitudesInfraestructuras
+      .map(solicitud => solicitud.idSolicitudInfraestructura)
+      .filter((idSolicitudInfraestructura): idSolicitudInfraestructura is number => idSolicitudInfraestructura !== undefined);
+    if (!idsSolicitudes.length) return;
+    forkJoin(idsSolicitudes.map(idSolicitudInfraestructura =>
+      this.historialIntegrantesSolicInfraestService.findAllInfrastructureRequestMemberHistories(undefined, idSolicitudInfraestructura).pipe(catchError(() => of(null)))
+    )).subscribe(resultados => {
+      resultados.forEach((historiales, indice) => {
+        if (historiales === null) {
+          console.error('ERROR AL CARGAR EL HISTORIAL DE INTEGRANTES DE LA SOLICITUD DE INFRAESTRUCTURA: ', idsSolicitudes[indice]);
+          return;
+        }
+        const siglasoAcronimos = new Set<string>();
+        historiales.forEach(historial => {
+          const siglaoAcronimo = this.normalizarTexto(historial.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar);
+          if (siglaoAcronimo) siglasoAcronimos.add(siglaoAcronimo);
+        });
+        this.siglasoAcronimosConIntegrantePorSolicitud.set(idsSolicitudes[indice], siglasoAcronimos);
       });
+      this.changeDetectorRef.markForCheck();
+    });
   }
 
   //PASA EL TEXTO A MAYÚSCULA, LE QUITA LAS TILDES Y DEJA UN SOLO ESPACIO ENTRE PALABRAS (EJ. "Jemop " → "JEMOP"):
@@ -201,6 +247,9 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
     ).subscribe({
       next: (data) => {
         this.solicitudesInfraestructuras = data;
+        //CON LA PÁGINA YA CARGADA SE PIDEN SOLO LAS LÍNEAS DE MANDO Y EL HISTORIAL DE INTEGRANTES DE SUS SOLICITUDES:
+        this.cargarLineasMandosUnidadesMilitares(data);
+        this.cargarHistorialIntegrantesSolicInfraest(data);
         this.changeDetectorRef.markForCheck();
       },
       error: (err) => console.error('ERROR AL LISTAR SOLICITUDES DE INFRAESTRUCTURAS: ', err)
@@ -214,6 +263,15 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
         },
         error: (err) => console.error('ERROR AL CONTAR TOTAL DE SOLICITUDES DE INFRAESTRUCTURAS: ', err)
       });
+
+    //TOTAL DE CADA ESTADO CON LOS MISMOS FILTROS DEL LISTADO (UN CONTEO POR ESTADO EN EL BACKEND, TODOS EN PARALELO); SI UN
+    //CONTEO FALLA, ESE ESTADO QUEDA EN CERO:
+    forkJoin(this.estadosSolicitud.map(estado =>
+      this.solicitudesInfraestructurasService.findCountTotalRegisters(undefined, keyword, siglaoAcronimoUnidadMilitar, estado.etiqueta).pipe(catchError(() => of(0)))
+    )).subscribe(totales => {
+      this.estadosSolicitudContadores = this.estadosSolicitud.map((estado, indice) => ({ ...estado, valor: Number(totales[indice]) || 0 }));
+      this.changeDetectorRef.markForCheck();
+    });
   }
 
   calcularTotalPaginas(): number {
@@ -232,15 +290,27 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
     this.accionListar();
   }
 
-  //DEVUELVE LOS PASOS DE LA LÍNEA DE MANDO DE LA SOLICITUD (LA LÍNEA CUYA PRIMERA SIGLA ES LA DE LA UNIDAD MILITAR QUE
-  //CREÓ LA SOLICITUD), MARCANDO COMO "aprobado" (ILUMINADO) CADA PASO CUYA UNIDAD MILITAR YA TIENE INTEGRANTE EN EL
-  //HISTORIAL DE LA SOLICITUD. SI LA UNIDAD NO TIENE LÍNEA DE MANDO REGISTRADA DEVUELVE UNA LISTA VACÍA:
-  obtenerPasosLineaMando(solicitudInfraestructura: SolicitudesInfraestructurasI): { sigla: string; aprobado: boolean }[] {
-    const sigla = this.normalizarTexto(solicitudInfraestructura.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar);
-    const pasos = this.pasosLineaMandoPorSigla.get(sigla) ?? [];
+  //DEVUELVE LA LÍNEA DE MANDO DE LA SOLICITUD (LA LÍNEA CUYA PRIMERA SIGLA O ACRÓNIMO ES LA DE LA UNIDAD MILITAR QUE CREÓ LA SOLICITUD)
+  //CON SU TRAMO COMÚN Y SUS FINALES ALTERNATIVOS, MARCANDO COMO "aprobado" (ILUMINADO) CADA PASO CUYA UNIDAD MILITAR YA TIENE
+  //INTEGRANTE EN EL HISTORIAL DE LA SOLICITUD. LOS FINALES ALTERNATIVOS SOLO SE MUESTRAN MIENTRAS NINGUNA DE SUS UNIDADES MILITARES
+  //MILITARES TIENE INTEGRANTES REGISTRADOS EN LA SOLICITUD; CUANDO YA LOS TIENE, LA SOLICITUD TOMÓ ESE CAMINO Y SE MUESTRA
+  //SEGUIDO DEL TRAMO COMÚN (SI VARIOS FINALES COMPARTEN LAS UNIDADES MILITARES APROBADAS, EJ. CEDE10 EN [JEMPP->CEDE10] Y [CEDE10], SE
+  //DEJAN LOS QUE TIENEN MÁS PASOS APROBADOS, MARCADOS COMO "enCurso"). SI LA UNIDAD MILITAR NO TIENE LÍNEA DE MANDO DEVUELVE null:
+  obtenerLineaMandoSolicitud(solicitudInfraestructura: SolicitudesInfraestructurasI): LineaMandoSolicitud | null {
+    const siglaoAcronimo = this.normalizarTexto(solicitudInfraestructura.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar);
+    const lineaMando = this.lineasMandoPorSiglaoAcronimo.get(siglaoAcronimo);
+    if (!lineaMando) return null;
     const idSolicitudInfraestructura = solicitudInfraestructura.idSolicitudInfraestructura;
-    const siglasConIntegrante = idSolicitudInfraestructura !== undefined ? this.siglasConIntegrantePorSolicitud.get(idSolicitudInfraestructura) : undefined;
-    return pasos.map(paso => ({ sigla: paso, aprobado: !!siglasConIntegrante?.has(paso) }));
+    const siglasoAcronimosConIntegrante = idSolicitudInfraestructura !== undefined ? this.siglasoAcronimosConIntegrantePorSolicitud.get(idSolicitudInfraestructura) : undefined;
+    const marcarPasos = (pasos: string[]): PasoLineaMandoSolicitud[] => pasos.map(paso => ({ siglaoAcronimo: paso, aprobado: !!siglasoAcronimosConIntegrante?.has(paso) }));
+    const tramoComun = marcarPasos(lineaMando.tramoComun);
+    const indicesVigentes = obtenerIndicesFinalesVigentes(lineaMando, siglasoAcronimosConIntegrante ?? new Set<string>());
+    const finalesVigentes = indicesVigentes.map(indice => marcarPasos(lineaMando.finalesAlternativos[indice]));
+    const caminoTomado = indicesVigentes.length < lineaMando.finalesAlternativos.length || finalesVigentes.some(pasos => pasos.some(paso => paso.aprobado));
+    if (caminoTomado && finalesVigentes.length === 1) {
+      return { tramoComun: [...tramoComun, ...finalesVigentes[0]], finalesAlternativos: [] };
+    }
+    return { tramoComun, finalesAlternativos: finalesVigentes.map(pasos => ({ pasos, enCurso: caminoTomado })) };
   }
 
   //ABRE EL MODAL DE CREAR / MODIFICAR / ELIMINAR, MOSTRANDO PRIMERO EL SPINNER GLOBAL DEL PIÑÓN GIRATORIO
@@ -284,9 +354,10 @@ export class ListadoSolicitudesInfraestructurasComponent implements OnInit {
   cerrarModalIntegrantes(): void {
     this.modalIntegrantesVisible = false;
     this.solicitudInfraestructuraParaIntegrantes = null;
-    //VUELVE A CARGAR EL HISTORIAL DE INTEGRANTES POR SI SE AGREGÓ, MODIFICÓ O ELIMINÓ ALGO MIENTRAS EL MODAL ESTUVO
-    //ABIERTO, PARA QUE LAS COLUMNAS DE CHULEO/X DE LA TABLA QUEDEN ACTUALIZADAS:
-    this.cargarHistorialIntegrantesSolicInfraest();
+    //VUELVE A CARGAR LA PÁGINA DE SOLICITUDES (Y CON ELLA EL HISTORIAL DE INTEGRANTES DE SUS SOLICITUDES) POR SI SE AGREGÓ,
+    //MODIFICÓ O ELIMINÓ ALGO MIENTRAS EL MODAL ESTUVO ABIERTO: ASÍ QUEDAN ACTUALIZADOS LA LÍNEA DE MANDO Y EL ESTADO DE LA
+    //SOLICITUD, QUE EL BACKEND RECALCULA AUTOMÁTICAMENTE CON CADA INTEGRANTE:
+    this.accionListar();
   }
 
   //RECIBE LA SOLICITUD DE INFRAESTRUCTURA NUEVA O MODIFICADA DESDE EL MODAL Y LA ENVÍA AL BACKEND (POST SI ES NUEVA, PUT SI YA TIENE ID):

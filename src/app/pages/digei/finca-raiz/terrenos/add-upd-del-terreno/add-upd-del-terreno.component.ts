@@ -6,10 +6,11 @@ import { TerrenosI } from '../../../../../interfaces/digei/finca-raiz/terrenos/t
 import { UnidadesMilitaresI } from '../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
 import { SociedadesUnidadesCentralizadorasI } from '../../../../../interfaces/panel-control/sociedades-unidades-centralizadoras/sociedades-unidades-centralizadoras.interface';
 import { BuscadorUbicacionComponent } from '../../../../../shared/components/buscador-ubicacion/buscador-ubicacion.component';
+import { OrdenarPorSiglaPipe } from '../../../../../shared/pipes/ordenar-por-sigla.pipe';
 
 @Component({
   selector: 'app-add-upd-del-terreno', standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, BuscadorUbicacionComponent],
+  imports: [CommonModule, ReactiveFormsModule, BuscadorUbicacionComponent, OrdenarPorSiglaPipe],
   templateUrl: './add-upd-del-terreno.component.html', styleUrl: './add-upd-del-terreno.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

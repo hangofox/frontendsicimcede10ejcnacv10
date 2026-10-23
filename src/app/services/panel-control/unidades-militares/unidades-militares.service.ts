@@ -16,27 +16,30 @@ export class UnidadesMilitaresService {
   constructor(private http: HttpClient) {}
 
   //CONTADORES DE REGISTROS FILTRADOS.
-  findCountTotalRegisters(idUnidadMilitar?: number, keyword?: string): Observable<number> {
+  findCountTotalRegisters(idUnidadMilitar?: number, keyword?: string, nivelUnidadMilitar?: string): Observable<number> {
     let params = new HttpParams();
     if (idUnidadMilitar !== undefined) params = params.set('idUnidadMilitar', idUnidadMilitar.toString());
     if (keyword) params = params.set('keyword', keyword);
+    if (nivelUnidadMilitar) params = params.set('nivelUnidadMilitar', nivelUnidadMilitar);
     return this.http.get<number>(`${this.baseUrl}/unidadesMilitares/count`, { params });
   }
 
   //LISTADO DE REGISTROS FILTRADOS SIN PAGINACIÓN.
-  findAllMilitaryUnits(idUnidadMilitar?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<UnidadesMilitaresI[]> {
+  findAllMilitaryUnits(idUnidadMilitar?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC', nivelUnidadMilitar?: string): Observable<UnidadesMilitaresI[]> {
     let params = new HttpParams().set('orderMode', orderMode);
     if (idUnidadMilitar !== undefined) params = params.set('idUnidadMilitar', idUnidadMilitar.toString());
     if (keyword) params = params.set('keyword', keyword);
+    if (nivelUnidadMilitar) params = params.set('nivelUnidadMilitar', nivelUnidadMilitar);
     if (orderBy) params = params.set('orderBy', orderBy);
     return this.http.get<UnidadesMilitaresI[]>(`${this.baseUrl}/unidadesMilitares/lista`, { params });
   }
 
   //LISTADO DE REGISTROS FILTRADOS CON PAGINACIÓN.
-  findAllMilitaryUnitsPag(page: number = 0, size: number = 10, idUnidadMilitar?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC'): Observable<UnidadesMilitaresI[]> {
+  findAllMilitaryUnitsPag(page: number = 0, size: number = 10, idUnidadMilitar?: number, keyword?: string, orderBy?: string, orderMode: string = 'ASC', nivelUnidadMilitar?: string): Observable<UnidadesMilitaresI[]> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('orderMode', orderMode);
     if (idUnidadMilitar !== undefined) params = params.set('idUnidadMilitar', idUnidadMilitar.toString());
     if (keyword) params = params.set('keyword', keyword);
+    if (nivelUnidadMilitar) params = params.set('nivelUnidadMilitar', nivelUnidadMilitar);
     if (orderBy) params = params.set('orderBy', orderBy);
     return this.http.get<any>(`${this.baseUrl}/unidadesMilitares/listaPag`, { params }).pipe(
       map((slice: any) => slice.content as UnidadesMilitaresI[])

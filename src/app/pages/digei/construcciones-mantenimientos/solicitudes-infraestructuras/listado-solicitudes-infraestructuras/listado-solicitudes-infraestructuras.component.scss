@@ -35,7 +35,7 @@
   select { min-width: 200px; }
 }
 
-.btn-sicim {
+.btn-titulo-sistema {
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -115,16 +115,52 @@
   }
 }
 
-//LÍNEA DE MANDO DE LA SOLICITUD: CADA PASO ES UNA SIGLA; LOS PASOS CON INTEGRANTE EN EL HISTORIAL SE ILUMINAN EN VERDE
-//Y LOS PENDIENTES QUEDAN EN GRIS:
+//LÍNEA DE MANDO DE LA SOLICITUD: CADA PASO ES UNA SIGLA O ACRÓNIMO; LOS PASOS CON INTEGRANTE EN EL HISTORIAL SE ILUMINAN EN VERDE
+//Y LOS PENDIENTES QUEDAN EN GRIS. LA LÍNEA NO SE PARTE EN VARIOS RENGLONES (nowrap): SI ES MÁS ANCHA QUE LA PANTALLA, LA TABLA SE
+//DESPLAZA CON EL SCROLL HORIZONTAL DE .tabla-contenedor:
 .celda-linea-mando { text-align: left !important; }
 
 .linea-mando {
   display: inline-flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: flex-start;
   gap: 4px;
+}
+
+.tramo-linea-mando,
+.final-linea-mando {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 4px;
+}
+
+//FINALES ALTERNATIVOS (CAMINOS) DE LA LÍNEA DE MANDO: SE APILAN UNO DEBAJO DEL OTRO, UNIDOS AL TRAMO COMÚN POR UNA LLAVE
+//(BORDE IZQUIERDO) Y UN CONECTOR HORIZONTAL POR CAMINO; EL CAMINO QUE YA TIENE INTEGRANTES SE RESALTA EN VERDE:
+.finales-linea-mando {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 2px 0 2px 2px;
+  border-left: 2px solid var(--sicim-soft);
+  border-radius: 6px 0 0 6px;
+}
+
+.final-linea-mando {
+  position: relative;
+  padding-left: 12px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 9px;
+    border-top: 2px solid var(--sicim-soft);
+  }
+
+  &.final-en-curso::before { border-top-color: #16a34a; }
 }
 
 .paso-linea-mando {
@@ -148,6 +184,25 @@
 .flecha-linea-mando {
   color: var(--sicim-gray);
   font-size: 12px;
+}
+
+//ESTADO DE LA SOLICITUD: LOS AUTOMÁTICOS (CREACION A ASIGNACION) EN TONOS QUE AVANZAN DE GRIS A AZUL, APROBACION EN VERDE Y
+//RECHAZADO EN ROJO:
+.estado-solicitud {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  background: #f3f4f6;
+  color: var(--sicim-gray);
+
+  &.estado-verificacion { background: #e0f2fe; color: #0369a1; }
+  &.estado-validacion { background: #dbeafe; color: #1d4ed8; }
+  &.estado-asignacion { background: #ede9fe; color: #6d28d9; }
+  &.estado-aprobacion { background: #dcfce7; color: #15803d; }
+  &.estado-rechazado { background: #fee2e2; color: #b91c1c; }
 }
 
 .sin-linea-mando {
