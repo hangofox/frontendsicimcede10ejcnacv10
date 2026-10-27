@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { FotografiasAnexasApoyAtencPrevEmergDesastService } from './fot_anex_apoy_atenc_prev_emerg_des.service';
+import { IntegrantesApoyosAtencPrevEmergDesastService } from './integrantes-apoy-atenc-prev-emerg-des.service';
 
-describe('FotografiasAnexasApoyAtencPrevEmergDesastService', () => {
-  let service: FotografiasAnexasApoyAtencPrevEmergDesastService;
+describe('IntegrantesApoyosAtencPrevEmergDesastService', () => {
+  let service: IntegrantesApoyosAtencPrevEmergDesastService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideHttpClient(), provideHttpClientTesting()]
     });
-    service = TestBed.inject(FotografiasAnexasApoyAtencPrevEmergDesastService);
+    service = TestBed.inject(IntegrantesApoyosAtencPrevEmergDesastService);
   });
 
   it('should be created', () => {

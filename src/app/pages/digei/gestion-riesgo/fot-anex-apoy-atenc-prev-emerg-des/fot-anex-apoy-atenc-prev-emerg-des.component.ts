@@ -3,8 +3,8 @@ import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChange
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ApoyosAtencPrevEmergDesastI } from '../../../../interfaces/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/apoyos-atenc-prev-emerg-desast.interface';
-import { FotografiasAnexasApoyAtencPrevEmergDesastI, FotografiasAnexasApoyAtencPrevEmergDesastMsj } from '../../../../interfaces/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/fot_anex_apoy_atenc_prev_emerg_des/fot_anex_apoy_atenc_prev_emerg_des.interface';
-import { FotografiasAnexasApoyAtencPrevEmergDesastService } from '../../../../services/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/fot_anex_apoy_atenc_prev_emerg_des/fot_anex_apoy_atenc_prev_emerg_des.service';
+import { FotografiasAnexasApoyAtencPrevEmergDesastI, FotografiasAnexasApoyAtencPrevEmergDesastMsj } from '../../../../interfaces/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/fot-anex-apoy-atenc-prev-emerg-des/fot-anex-apoy-atenc-prev-emerg-des.interface';
+import { FotografiasAnexasApoyAtencPrevEmergDesastService } from '../../../../services/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/fot-anex-apoy-atenc-prev-emerg-des/fot-anex-apoy-atenc-prev-emerg-des.service';
 import { ParametrosSistemaService } from '../../../../services/panel-control/parametros-sistema/parametros-sistema.service';
 import { UnidadesMilitaresService } from '../../../../services/panel-control/unidades-militares/unidades-militares.service';
 import { GestionArchivosService } from '../../../../services/gestion-archivos/gestion-archivos.service';
@@ -34,13 +34,13 @@ interface FotografiaSubida {
 }
 
 @Component({
-  selector: 'app-fotog-anex-apoy-atenc-prev-emerg-des',
+  selector: 'app-fot-anex-apoy-atenc-prev-emerg-des',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './fotog_anex_apoy_atenc_prev_emerg_des.component.html',
-  styleUrl: './fotog_anex_apoy_atenc_prev_emerg_des.component.scss'
+  templateUrl: './fot-anex-apoy-atenc-prev-emerg-des.component.html',
+  styleUrl: './fot-anex-apoy-atenc-prev-emerg-des.component.scss'
 })
-export class FotogAnexApoyAtencPrevEmergDesComponent implements OnChanges, OnDestroy {
+export class FotAnexApoyAtencPrevEmergDesComponent implements OnChanges, OnDestroy {
   //APOYO DESDE EL QUE SE ABREN LAS FOTOGRAFÍAS ANEXAS (MODAL DEL LISTADO DE APOYOS). EL BACKEND SOLO PERMITE UN REGISTRO
   //DE FOTOGRAFÍAS ANEXAS POR APOYO, CON CUATRO FOTOGRAFÍAS:
   @Input() apoyoAtencPrevEmergDesast: ApoyosAtencPrevEmergDesastI | null = null;
@@ -90,7 +90,7 @@ export class FotogAnexApoyAtencPrevEmergDesComponent implements OnChanges, OnDes
   }
 
   private crearRanurasVacias(): RanuraFotografia[] {
-    return FotogAnexApoyAtencPrevEmergDesComponent.NUMEROS.map(numero => ({ numero, nombreArchivo: '', archivoSeleccionado: null, eliminada: false, previewUrl: null, noEncontrada: false, mensajeError: '' }));
+    return FotAnexApoyAtencPrevEmergDesComponent.NUMEROS.map(numero => ({ numero, nombreArchivo: '', archivoSeleccionado: null, eliminada: false, previewUrl: null, noEncontrada: false, mensajeError: '' }));
   }
 
   //NOMBRE DEL ARCHIVO GUARDADO EN LA COLUMNA DE LA FOTOGRAFÍA N.° numero DEL REGISTRO:
@@ -200,11 +200,11 @@ export class FotogAnexApoyAtencPrevEmergDesComponent implements OnChanges, OnDes
     input.value = '';
     if (!file) return;
     const extension = (file.name.split('.').pop() || '').toLowerCase();
-    if (file.size > FotogAnexApoyAtencPrevEmergDesComponent.TAMANO_MAXIMO_BYTES) {
+    if (file.size > FotAnexApoyAtencPrevEmergDesComponent.TAMANO_MAXIMO_BYTES) {
       ranura.mensajeError = 'El archivo excede el tamaño máximo permitido de 2.0 MB.';
       return;
     }
-    if (!FotogAnexApoyAtencPrevEmergDesComponent.EXTENSIONES_PERMITIDAS.includes(extension)) {
+    if (!FotAnexApoyAtencPrevEmergDesComponent.EXTENSIONES_PERMITIDAS.includes(extension)) {
       ranura.mensajeError = 'El archivo debe tener una extensión válida (jpg, jpeg, bmp, png o gif).';
       return;
     }

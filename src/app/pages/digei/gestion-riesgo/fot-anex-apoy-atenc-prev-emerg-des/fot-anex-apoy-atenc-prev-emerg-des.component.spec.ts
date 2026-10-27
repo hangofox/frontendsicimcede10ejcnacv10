@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { FotogAnexApoyAtencPrevEmergDesComponent } from './fotog_anex_apoy_atenc_prev_emerg_des.component';
+import { FotAnexApoyAtencPrevEmergDesComponent } from './fot-anex-apoy-atenc-prev-emerg-des.component';
 
-describe('FotogAnexApoyAtencPrevEmergDesComponent', () => {
+describe('FotAnexApoyAtencPrevEmergDesComponent', () => {
   it('debe crearse', async () => {
     await TestBed.configureTestingModule({
-      imports: [FotogAnexApoyAtencPrevEmergDesComponent],
+      imports: [FotAnexApoyAtencPrevEmergDesComponent],
       providers: [provideHttpClient(), provideHttpClientTesting()]
     }).compileComponents();
 
-    expect(TestBed.createComponent(FotogAnexApoyAtencPrevEmergDesComponent).componentInstance).toBeTruthy();
+    expect(TestBed.createComponent(FotAnexApoyAtencPrevEmergDesComponent).componentInstance).toBeTruthy();
   });
 });

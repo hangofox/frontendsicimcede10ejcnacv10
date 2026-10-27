@@ -33,7 +33,7 @@
 
     <button type="button" class="btn-titulo-sistema btn-nuevo" (click)="abrirModalAddUpdDel('guardar')">
       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Nuevo Informe
+      Nuevo Informe de Apoyo
     </button>
   </div>
 
@@ -54,6 +54,7 @@
           <th>Equipos de transportes</th>
           <th>Ordenes de movimientos de tropas</th>
           <th>Fotografías anexas</th>
+          <th>Integrantes de apoyos</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -73,7 +74,8 @@
             @for (columna of [
               { cantidad: cantidadAsociada(cantidadEquiposTransportesPorApoyo, apoyoAtencPrevEmergDesast), mostrarCantidad: false, titulo: 'equipos de transportes' },
               { cantidad: cantidadAsociada(cantidadOrdenesMovimientosTropasPorApoyo, apoyoAtencPrevEmergDesast), mostrarCantidad: false, titulo: 'órdenes de movimientos de tropas' },
-              { cantidad: cantidadAsociada(cantidadFotografiasAnexasPorApoyo, apoyoAtencPrevEmergDesast), mostrarCantidad: true, titulo: 'fotografías anexas' }
+              { cantidad: cantidadAsociada(cantidadFotografiasAnexasPorApoyo, apoyoAtencPrevEmergDesast), mostrarCantidad: true, titulo: 'fotografías anexas' },
+              { cantidad: cantidadAsociada(cantidadIntegrantesPorApoyo, apoyoAtencPrevEmergDesast), mostrarCantidad: true, titulo: 'integrantes registrados' }
             ]; track columna.titulo) {
               <td class="celda-asociados">
                 @if (columna.cantidad === null) {
@@ -113,12 +115,16 @@
                 <button type="button" class="btn-accion btn-fotografias-anexas" title="Fotografias Anexas del Apoyo" (click)="abrirModalFotografiasAnexas(apoyoAtencPrevEmergDesast)">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                 </button>
+
+                <button type="button" class="btn-accion btn-integrantes" title="Integrantes del apoyo en atención y prevención de emergencias y desastres" (click)="abrirModalIntegrantes(apoyoAtencPrevEmergDesast)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </button>
               </div>
             </td>
           </tr>
         } @empty {
           <tr>
-            <td colspan="13" class="tabla-vacia">No se encontraron informes de apoyos en atención y prevención de emergencias y desastres con los filtros aplicados.</td>
+            <td colspan="14" class="tabla-vacia">No se encontraron informes de apoyos en atención y prevención de emergencias y desastres con los filtros aplicados.</td>
           </tr>
         }
       </tbody>
@@ -246,7 +252,24 @@
         </button>
       </div>
       <div class="modal-cuerpo">
-        <app-fotog-anex-apoy-atenc-prev-emerg-des [apoyoAtencPrevEmergDesast]="apoyoAtencPrevEmergDesastParaFotografiasAnexas"></app-fotog-anex-apoy-atenc-prev-emerg-des>
+        <app-fot-anex-apoy-atenc-prev-emerg-des [apoyoAtencPrevEmergDesast]="apoyoAtencPrevEmergDesastParaFotografiasAnexas"></app-fot-anex-apoy-atenc-prev-emerg-des>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL: INTEGRANTES DEL APOYO -->
+@if (modalIntegrantesVisible) {
+  <div class="modal-overlay" (click)="cerrarModalIntegrantes()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Integrantes del apoyo en atención y prevención de emergencias y desastres</h3>
+        <button type="button" class="modal-cerrar" (click)="cerrarModalIntegrantes()" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-cuerpo">
+        <app-listado-integ-apoy-atenc-prev-emerg-desast [apoyoAtencPrevEmergDesast]="apoyoAtencPrevEmergDesastParaIntegrantes"></app-listado-integ-apoy-atenc-prev-emerg-desast>
       </div>
     </div>
   </div>

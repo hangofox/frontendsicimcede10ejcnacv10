@@ -1,0 +1,39 @@
+@if (data; as x) {
+  <div class="vista-historial">
+    <h3>Integrantes del apoyo {{ x.apoyoAtencPrevEmergDesastDTO.codigoRadicadoApoyoAtencPrevEmergDesast }}</h3>
+    <div class="vista-seccion">
+      <div class="datos-grid">
+        <div class="dato-grupo"><span class="dato-label">Apoyo</span><span>{{ x.apoyoAtencPrevEmergDesastDTO.codigoRadicadoApoyoAtencPrevEmergDesast }} — {{ x.apoyoAtencPrevEmergDesastDTO.nombreEntidadInstitucionalSolicApoyoAtencPrevEmergDesast }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Unidad militar del apoyo</span><span>{{ x.apoyoAtencPrevEmergDesastDTO.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span></div>
+      </div>
+    </div>
+
+    @for (integrante of integrantes; track integrante.tipo) {
+      <div class="vista-seccion">
+        <div class="integrante-vista-titulo">{{ integrante.titulo }}</div>
+        <div class="integrante-vista-contenido">
+          <div class="datos-grid">
+            <div class="dato-grupo"><span class="dato-label">Grado, nombres y apellidos</span><span>{{ nombreCompleto(integrante) || 'Sin registrar' }}</span></div>
+            <div class="dato-grupo"><span class="dato-label">Cargo</span><span>{{ valor(integrante, 'cargo') || 'Sin registrar' }}</span></div>
+            <div class="dato-grupo"><span class="dato-label">Archivo de la firma</span><span class="nombre-firma">{{ nombreFirma(integrante) || 'Sin firma' }}</span></div>
+          </div>
+          <div class="firma-previa">
+            @if (previews[integrante.tipo]) {
+              <img [src]="previews[integrante.tipo]" [alt]="'Firma del ' + integrante.titulo">
+            } @else {
+              <span class="firma-vacia">
+                @if (!nombreFirma(integrante)) { Sin firma }
+                @else if (noEncontradas[integrante.tipo]) { Archivo no encontrado en el servidor }
+                @else { Cargando... }
+              </span>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="vista-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cerrar</button>
+    </div>
+  </div>
+}

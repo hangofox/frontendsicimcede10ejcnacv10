@@ -22,20 +22,23 @@ import { DepartamentosoEstadosMundoService } from '../../../../../services/paise
 import { SpinnerService } from '../../../../../services/spinner/spinner.service';
 import { HistorialEquipTranspApoyAtencPrevEmergDesastService } from '../../../../../services/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/historial-eq_tr-apoy-at-prev-em-des/historial-eq_tr-apoy-at-prev-em-des.service';
 import { HistorialOrdenApoyoMovimientoTropaService } from '../../../../../services/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/historial-ordenes-apoy-mov-trop/historial-ordenes-apoy-mov-trop.service';
-import { FotografiasAnexasApoyAtencPrevEmergDesastService } from '../../../../../services/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/fot_anex_apoy_atenc_prev_emerg_des/fot_anex_apoy_atenc_prev_emerg_des.service';
+import { FotografiasAnexasApoyAtencPrevEmergDesastService } from '../../../../../services/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/fot-anex-apoy-atenc-prev-emerg-des/fot-anex-apoy-atenc-prev-emerg-des.service';
+import { IntegrantesApoyosAtencPrevEmergDesastService } from '../../../../../services/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/integrantes-apoy-atenc-prev-emerg-des/integrantes-apoy-atenc-prev-emerg-des.service';
 
 import { AddUpdDelApoyoAtencPrevEmergDesastComponent } from '../add-upd-del-apoyo-atenc-prev-emerg-desast/add-upd-del-apoyo-atenc-prev-emerg-desast.component';
 import { VistaApoyoAtencPrevEmergDesastComponent } from '../vista-apoyo-atenc-prev-emerg-desast/vista-apoyo-atenc-prev-emerg-desast.component';
 import { ListadoHistEqTrApoyAtPrevEmDesComponent } from '../../historial-eq_tr-apoy-at-prev-em-des/listado-hist-eq_tr-apoy-at-prev-em-des/listado-hist-eq_tr-apoy-at-prev-em-des.component';
 import { ListadoHistOrdApoyMovTropComponent } from '../../historial-ordenes-apoy-mov-trop/listado-hist-ord-apoy-mov-trop/listado-hist-ord-apoy-mov-trop.component';
-import { FotogAnexApoyAtencPrevEmergDesComponent } from '../../fotog_anex_apoy_atenc_prev_emerg_des/fotog_anex_apoy_atenc_prev_emerg_des.component';
+import { FotAnexApoyAtencPrevEmergDesComponent } from '../../fot-anex-apoy-atenc-prev-emerg-des/fot-anex-apoy-atenc-prev-emerg-des.component';
+import { ListadoIntegApoyAtencPrevEmergDesastComponent } from '../integrantes_apoy_atenc_prev_emerg_des/listado-integ-apoy-atenc-prev-emerg-desast/listado-integ-apoy-atenc-prev-emerg-desast.component';
+import { cantidadIntegrantesRegistrados } from '../integrantes_apoy_atenc_prev_emerg_des/add-upd-del-integ_apoy-atenc-prev-emerg-desast/add-upd-del-integ_apoy-atenc-prev-emerg-desast.component';
 import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 import { OrdenarPorSiglaPipe } from '../../../../../shared/pipes/ordenar-por-sigla.pipe';
 
 @Component({
   selector: 'app-listado-apoyos-atenc-prev-emerg-desast',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelApoyoAtencPrevEmergDesastComponent, VistaApoyoAtencPrevEmergDesastComponent, ListadoHistEqTrApoyAtPrevEmDesComponent, ListadoHistOrdApoyMovTropComponent, FotogAnexApoyAtencPrevEmergDesComponent, SemaforoContadoresComponent, OrdenarPorSiglaPipe],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelApoyoAtencPrevEmergDesastComponent, VistaApoyoAtencPrevEmergDesastComponent, ListadoHistEqTrApoyAtPrevEmDesComponent, ListadoHistOrdApoyMovTropComponent, FotAnexApoyAtencPrevEmergDesComponent, ListadoIntegApoyAtencPrevEmergDesastComponent, SemaforoContadoresComponent, OrdenarPorSiglaPipe],
   templateUrl: './listado-apoyos-atenc-prev-emerg-desast.component.html',
   styleUrl: './listado-apoyos-atenc-prev-emerg-desast.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -62,6 +65,7 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
   cantidadEquiposTransportesPorApoyo: Map<number, number> | null = null;
   cantidadOrdenesMovimientosTropasPorApoyo: Map<number, number> | null = null;
   cantidadFotografiasAnexasPorApoyo: Map<number, number> | null = null;
+  cantidadIntegrantesPorApoyo: Map<number, number> | null = null;
 
   apoyosAtencPrevEmergDesastForm: FormGroup;
 
@@ -87,6 +91,10 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
   modalFotografiasAnexasVisible = false;
   apoyoAtencPrevEmergDesastParaFotografiasAnexas: ApoyosAtencPrevEmergDesastI | null = null;
 
+  //ESTADO DEL MODAL DE LOS INTEGRANTES DEL APOYO (ASOCIADO AL APOYO SELECCIONADO):
+  modalIntegrantesVisible = false;
+  apoyoAtencPrevEmergDesastParaIntegrantes: ApoyosAtencPrevEmergDesastI | null = null;
+
   //TOAST LOCAL:
   toastMensaje = '';
   toastTipo: 'exito' | 'error' = 'exito';
@@ -106,7 +114,8 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
     private spinnerService: SpinnerService,
     private historialEquipTranspApoyAtencPrevEmergDesastService: HistorialEquipTranspApoyAtencPrevEmergDesastService,
     private historialOrdenApoyoMovimientoTropaService: HistorialOrdenApoyoMovimientoTropaService,
-    private fotografiasAnexasApoyAtencPrevEmergDesastService: FotografiasAnexasApoyAtencPrevEmergDesastService
+    private fotografiasAnexasApoyAtencPrevEmergDesastService: FotografiasAnexasApoyAtencPrevEmergDesastService,
+    private integrantesApoyosAtencPrevEmergDesastService: IntegrantesApoyosAtencPrevEmergDesastService
   ) {
     this.apoyosAtencPrevEmergDesastForm = this.formBuilder.group({
       ctextPalabraClave: new FormControl(''),
@@ -128,6 +137,7 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
     this.cargarCantidadEquiposTransportes();
     this.cargarCantidadOrdenesMovimientosTropas();
     this.cargarCantidadFotografiasAnexas();
+    this.cargarCantidadIntegrantes();
   }
 
   //CUENTA CUÁNTOS REGISTROS DE LA LISTA PERTENECEN A CADA APOYO (POR EL ID DE SU apoyoAtencPrevEmergDesastDTO):
@@ -185,6 +195,25 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
         this.changeDetectorRef.markForCheck();
       },
       error: err => console.error('ERROR AL CONTAR LAS FOTOGRAFÍAS ANEXAS DE LOS APOYOS: ', err)
+    });
+  }
+
+  //CARGA LOS REGISTROS DE INTEGRANTES (UNO POR APOYO) Y CUENTA CUÁNTOS DE SUS TRES INTEGRANTES (JEFE DE GESTIÓN DEL RIESGO, JEFE DE
+  //OPERACIONES Y COMANDANTE) ESTÁN REGISTRADOS:
+  private cargarCantidadIntegrantes(): void {
+    this.cantidadIntegrantesPorApoyo = null;
+    this.integrantesApoyosAtencPrevEmergDesastService.findAllMembersOfSupports().subscribe({
+      next: registros => {
+        const cantidades = new Map<number, number>();
+        registros.forEach(registro => {
+          const idApoyoAtencPrevEmergDesast = registro.apoyoAtencPrevEmergDesastDTO?.idApoyoAtencPrevEmergDesast;
+          if (idApoyoAtencPrevEmergDesast === undefined) return;
+          cantidades.set(idApoyoAtencPrevEmergDesast, (cantidades.get(idApoyoAtencPrevEmergDesast) ?? 0) + cantidadIntegrantesRegistrados(registro));
+        });
+        this.cantidadIntegrantesPorApoyo = cantidades;
+        this.changeDetectorRef.markForCheck();
+      },
+      error: err => console.error('ERROR AL CONTAR LOS INTEGRANTES DE LOS APOYOS: ', err)
     });
   }
 
@@ -422,6 +451,22 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
     this.apoyoAtencPrevEmergDesastParaFotografiasAnexas = null;
     //SE VUELVE A CONTAR POR SI SE AGREGÓ O QUITÓ ALGUNA FOTOGRAFÍA MIENTRAS EL MODAL ESTUVO ABIERTO:
     this.cargarCantidadFotografiasAnexas();
+  }
+
+  //ABRE EL MODAL CON LOS INTEGRANTES (JEFE DE GESTIÓN DEL RIESGO, JEFE DE OPERACIONES Y COMANDANTE) DEL APOYO SELECCIONADO:
+  abrirModalIntegrantes(apoyoAtencPrevEmergDesast: ApoyosAtencPrevEmergDesastI): void {
+    this.spinnerService.showBeforeOpening(() => {
+      this.apoyoAtencPrevEmergDesastParaIntegrantes = apoyoAtencPrevEmergDesast;
+      this.modalIntegrantesVisible = true;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
+  cerrarModalIntegrantes(): void {
+    this.modalIntegrantesVisible = false;
+    this.apoyoAtencPrevEmergDesastParaIntegrantes = null;
+    //SE VUELVE A CONTAR POR SI SE AGREGARON, MODIFICARON O ELIMINARON LOS INTEGRANTES MIENTRAS EL MODAL ESTUVO ABIERTO:
+    this.cargarCantidadIntegrantes();
   }
 
   //RESPUESTA DEL BACKEND AL CREAR, MODIFICAR O ELIMINAR: RESPONDE HTTP 200 AUNQUE NO GUARDE (EJ. CÓDIGO RADICADO REPETIDO), ASÍ QUE

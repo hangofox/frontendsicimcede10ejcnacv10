@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { ResponseFotografiaAnexaApoyAtencPrevEmergDesastDTO } from '../../../../../interfaces/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/fot_anex_apoy_atenc_prev_emerg_des/responseFotografiaAnexaApoyAtencPrevEmergDesastDTO.interface';
-import { FotografiasAnexasApoyAtencPrevEmergDesastI, FotografiasAnexasApoyAtencPrevEmergDesastMsj } from '../../../../../interfaces/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/fot_anex_apoy_atenc_prev_emerg_des/fot_anex_apoy_atenc_prev_emerg_des.interface';
+import { ResponseFotografiaAnexaApoyAtencPrevEmergDesastDTO } from '../../../../../interfaces/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/fot-anex-apoy-atenc-prev-emerg-des/responseFotografiaAnexaApoyAtencPrevEmergDesastDTO.interface';
+import { FotografiasAnexasApoyAtencPrevEmergDesastI, FotografiasAnexasApoyAtencPrevEmergDesastMsj } from '../../../../../interfaces/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/fot-anex-apoy-atenc-prev-emerg-des/fot-anex-apoy-atenc-prev-emerg-des.interface';
 
 @Injectable({
   providedIn: 'root'

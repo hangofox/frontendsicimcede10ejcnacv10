@@ -1,0 +1,45 @@
+@use '../../../../../panel-control/responsables/vista-responsable/vista-responsable.component';
+
+.integrante-vista-titulo {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  color: var(--sicim-gray);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--sicim-soft);
+}
+
+//DATOS DEL INTEGRANTE A LA IZQUIERDA Y SU FIRMA A LA DERECHA (UNO DEBAJO DEL OTRO EN PANTALLAS PEQUEÑAS):
+.integrante-vista-contenido {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(200px, 1fr);
+  gap: 16px;
+  align-items: start;
+
+  @media (max-width: 720px) { grid-template-columns: minmax(0, 1fr); }
+}
+
+.nombre-firma { word-break: break-all; }
+
+.firma-previa {
+  aspect-ratio: 3 / 1;
+  width: 100%;
+  border: 1px solid var(--sicim-border);
+  border-radius: 4px;
+  background: var(--sicim-white);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img { width: 100%; height: 100%; object-fit: contain; }
+}
+
+.firma-vacia {
+  color: var(--sicim-gray);
+  font-size: 12px;
+  text-align: center;
+  padding: 0 8px;
+}
