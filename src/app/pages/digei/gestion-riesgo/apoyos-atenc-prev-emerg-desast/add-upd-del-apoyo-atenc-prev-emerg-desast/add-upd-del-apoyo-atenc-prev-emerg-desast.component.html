@@ -1,0 +1,215 @@
+<div class="modal-formulario" *ngIf="apoyosAtencPrevEmergDesastForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará el registro del informe de apoyo en atención y prevención de emergencias y desastres de la lista. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="apoyosAtencPrevEmergDesastForm" (ngSubmit)="guardarModificar()">
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Identificación</div>
+      <div class="form-grid">
+        <div class="form-group" *ngIf="!banderaCrudGuardar">
+          <label>Código radicado</label>
+          <input type="text" formControlName="codigoRadicadoApoyoAtencPrevEmergDesast">
+        </div>
+        <div class="form-group">
+          <label>Unidad militar (*)</label>
+          <select formControlName="unidadMilitarSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let unidadMilitar of unidadesMilitares" [value]="unidadMilitar.idUnidadMilitar">
+              {{ unidadMilitar.nombreUnidadMilitar }} ({{ unidadMilitar.siglaoAcronimoUnidadMilitar }})
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fecha de iniciación del apoyo (*)</label>
+          <input type="datetime-local" formControlName="fechaHMSIniciacionApoyoAtencPrevEmergDesast">
+        </div>
+        <div class="form-group">
+          <label>Fecha de finalización del apoyo (*)</label>
+          <input type="datetime-local" formControlName="fechaHMSFinalizacionApoyoAtencPrevEmergDesast">
+          <small class="error-campo" *ngIf="apoyosAtencPrevEmergDesastForm.hasError('fechaFinalizacionAnterior')">La fecha de finalización no puede ser anterior a la de iniciación.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Ubicación del apoyo</div>
+      <div class="form-grid">
+        <div class="form-group campo-autocompletar">
+          <label>País (*)</label>
+          <input type="hidden" formControlName="paisOrigenApoyoAtencPrevEmergDesast">
+          <div class="autocompletar-caja">
+            <input
+              type="text"
+              [(ngModel)]="terminoBusquedaPaisOrigen"
+              [ngModelOptions]="{standalone: true}"
+              [readOnly]="banderaPaisOrigenSeleccionado"
+              [disabled]="banderaCrudEliminar"
+              placeholder="Escriba para buscar el país..."
+              (input)="onEscribirBusquedaPaisOrigen()"
+              (focus)="mostrarSugerenciasPaisOrigen = true"
+              (blur)="ocultarSugerenciasPaisOrigenConRetraso()">
+            <button
+              type="button"
+              class="btn-limpiar-autocompletar"
+              *ngIf="terminoBusquedaPaisOrigen && !banderaCrudEliminar"
+              (mousedown)="limpiarBusquedaPaisOrigen()"
+              title="Limpiar">×</button>
+
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasPaisOrigen && !banderaPaisOrigenSeleccionado && paisesMundoFiltrados.length > 0">
+              <li *ngFor="let pais of paisesMundoFiltrados" (mousedown)="seleccionarPaisOrigen(pais)">
+                {{ pais.nombrePaisMundo }}
+              </li>
+            </ul>
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasPaisOrigen && !banderaPaisOrigenSeleccionado && paisesMundoFiltrados.length === 0">
+              <li class="autocompletar-sin-resultados">Sin coincidencias.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="form-group campo-autocompletar">
+          <label>Departamento o estado (*)</label>
+          <input type="hidden" formControlName="departamentoOEstadoOrigenApoyoAtencPrevEmergDesast">
+          <div class="autocompletar-caja">
+            <input
+              type="text"
+              [(ngModel)]="terminoBusquedaDepartamentoOrigen"
+              [ngModelOptions]="{standalone: true}"
+              [readOnly]="banderaDepartamentoOrigenSeleccionado"
+              [disabled]="!banderaPaisOrigenSeleccionado || banderaCrudEliminar"
+              [placeholder]="banderaPaisOrigenSeleccionado ? 'Escriba para buscar el departamento o estado...' : 'Seleccione primero el país'"
+              (input)="onEscribirBusquedaDepartamentoOrigen()"
+              (focus)="mostrarSugerenciasDepartamentoOrigen = true"
+              (blur)="ocultarSugerenciasDepartamentoOrigenConRetraso()">
+            <button
+              type="button"
+              class="btn-limpiar-autocompletar"
+              *ngIf="terminoBusquedaDepartamentoOrigen && !banderaCrudEliminar"
+              (mousedown)="limpiarBusquedaDepartamentoOrigen()"
+              title="Limpiar">×</button>
+
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasDepartamentoOrigen && !banderaDepartamentoOrigenSeleccionado && departamentosoEstadosMundoFiltrados.length > 0">
+              <li *ngFor="let departamento of departamentosoEstadosMundoFiltrados" (mousedown)="seleccionarDepartamentoOrigen(departamento)">
+                {{ departamento.nombreDepartamentooEstadoMundo }}
+              </li>
+            </ul>
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasDepartamentoOrigen && !banderaDepartamentoOrigenSeleccionado && departamentosoEstadosMundoFiltrados.length === 0">
+              <li class="autocompletar-sin-resultados">Sin coincidencias.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Ciudad (*)</label>
+          <input type="text" formControlName="ciudadOrigenApoyoAtencPrevEmergDesast" placeholder="Ej. VILLAVICENCIO">
+        </div>
+        <div class="form-group">
+          <label>Latitud (*)</label>
+          <input type="text" formControlName="latitudApoyoAtencPrevEmergDesast" placeholder="Ej. 4.142002">
+        </div>
+        <div class="form-group">
+          <label>Longitud (*)</label>
+          <input type="text" formControlName="longitudApoyoAtencPrevEmergDesast" placeholder="Ej. -73.626640">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Entidad solicitante y requerimiento</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Tipo de entidad institucional (*)</label>
+          <select formControlName="tipoEntidadInstitucionalSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let tipoEntidadInstitucional of tiposEntidadesInstitucionales" [value]="tipoEntidadInstitucional.idTipoEntidadInstitucional">
+              {{ tipoEntidadInstitucional.nombreTipoEntidadInstitucional }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nombre de la entidad solicitante (*)</label>
+          <input type="text" formControlName="nombreEntidadInstitucionalSolicApoyoAtencPrevEmergDesast" placeholder="Ej. ALCALDÍA MUNICIPAL DE VILLAVICENCIO">
+        </div>
+        <div class="form-group">
+          <label>Tipo de requerimiento (*)</label>
+          <select formControlName="tipoRequerimientoApoyoAtencionPrevencionSeleccionado" (change)="onCambiarTipoRequerimientoApoyoAtencionPrevencion()">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let tipoRequerimiento of tiposRequerimientosApoyosAtencionPrevencion" [value]="tipoRequerimiento.idTipoRequerimientoApoyoAtencionPrevencion">
+              {{ tipoRequerimiento.nombreTipoRequerimientoApoyoAtencionPrevencion }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Proceso (*)</label>
+          <select formControlName="procesoApoyoAtencionPrevencionSeleccionado">
+            <option value="">{{ apoyosAtencPrevEmergDesastForm.get('tipoRequerimientoApoyoAtencionPrevencionSeleccionado')?.value ? '-- Seleccione --' : '-- Seleccione primero el tipo de requerimiento --' }}</option>
+            <option *ngFor="let proceso of procesosApoyosAtencionPrevencionDelTipoSeleccionado" [value]="proceso.idProcesoApoyoAtencionPrevencion">
+              {{ proceso.nombreProcesoApoyoAtencionPrevencion }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Código radicado del requerimiento (*)</label>
+          <input type="text" formControlName="codigoRadicadoTipoRequerimientoApoyoAtencionPrevencion" placeholder="Ej. OFI-2026-0001">
+        </div>
+        <div class="form-group">
+          <label>Tipo de evento del apoyo realizado (*)</label>
+          <select formControlName="tipoEventoApoyoRealizadoSeleccionado">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let tipoEvento of tiposEventosApoyosRealizados" [value]="tipoEvento.idTipoEventoApoyoRealizado">
+              {{ tipoEvento.nombreTipoEventoApoyoRealizado }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Afectaciones</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>N.° de heridos (*)</label>
+          <input type="number" min="0" formControlName="numeroHeridosRequerimientoApoyoAtencionPrevencion">
+        </div>
+        <div class="form-group">
+          <label>N.° de muertos (*)</label>
+          <input type="number" min="0" formControlName="numeroMuertosRequerimientoApoyoAtencionPrevencion">
+        </div>
+        <div class="form-group">
+          <label>N.° de desaparecidos (*)</label>
+          <input type="number" min="0" formControlName="numeroDesaparecidosRequerimientoApoyoAtencionPrevencion">
+        </div>
+        <div class="form-group">
+          <label>N.° de viviendas afectadas (*)</label>
+          <input type="number" min="0" formControlName="numeroViviendasAfectadasRequerimientoApoyoAtencionPrevencion">
+        </div>
+        <div class="form-group">
+          <label>N.° de puentes afectados (*)</label>
+          <input type="number" min="0" formControlName="numeroPuentesAfectadosRequerimientoApoyoAtencionPrevencion">
+        </div>
+        <div class="form-group">
+          <label>N.° de vías afectadas (*)</label>
+          <input type="number" min="0" formControlName="numeroViasAfectadasRequerimientoApoyoAtencionPrevencion">
+        </div>
+        <div class="form-group">
+          <label>N.° de hectáreas afectadas (*)</label>
+          <input type="number" min="0" formControlName="numeroHectareasAfectadasRequerimientoApoyoAtencionPrevencion">
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Descripción de la afectación</label>
+          <textarea formControlName="descripcionAfectacionApoyoAtencPrevEmergDesast" rows="4" placeholder="Ej. Desbordamiento del río que afectó viviendas y vías del sector..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-titulo-sistema btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="apoyosAtencPrevEmergDesastForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-titulo-sistema btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>

@@ -37,7 +37,15 @@ export const routes: Routes = [
               { path: 'solicitudes-infraestructuras-avaladas', redirectTo: 'solicitudes-infraestructuras-avaladas/listado-solicitudes-infraestructuras-avaladas', pathMatch: 'full' }
             ]
           },
-          { path: 'gestion-riesgo', loadComponent: () => import('./pages/digei/gestion-riesgo/gestion-riesgo.component').then(m => m.GestionRiesgoComponent), title: 'Gestión del riesgo | SICIM' },
+          {
+            //APOYOS DE ATENCIÓN Y PREVENCIÓN DE EMERGENCIAS Y DESASTRES ES UN SUBMODULO DE GESTIÓN DEL RIESGO, TANTO EN CARPETAS COMO EN NAVEGACION.
+            path: 'gestion-riesgo',
+            children: [
+              { path: '', loadComponent: () => import('./pages/digei/gestion-riesgo/gestion-riesgo.component').then(m => m.GestionRiesgoComponent), title: 'Gestión del riesgo | SICIM' },
+              { path: 'apoyos-atenc-prev-emerg-desast/listado-apoyos-atenc-prev-emerg-desast', loadComponent: () => import('./pages/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/listado-apoyos-atenc-prev-emerg-desast/listado-apoyos-atenc-prev-emerg-desast.component').then(m => m.ListadoApoyosAtencPrevEmergDesastComponent), title: 'Informes de apoyos en atención y prevención de emergencias y desastres | SICIM' },
+              { path: 'apoyos-atenc-prev-emerg-desast', redirectTo: 'apoyos-atenc-prev-emerg-desast/listado-apoyos-atenc-prev-emerg-desast', pathMatch: 'full' }
+            ]
+          },
           { path: 'gestion-ambiental', loadComponent: () => import('./pages/digei/gestion-ambiental/gestion-ambiental.component').then(m => m.GestionAmbientalComponent), title: 'Gestión ambiental | SICIM' },
           { path: 'geomatica-topografia', loadComponent: () => import('./pages/digei/geomatica-topografia/geomatica-topografia.component').then(m => m.GeomaticaTopografiaComponent), title: 'Geomática y topografía | SICIM' },
           {

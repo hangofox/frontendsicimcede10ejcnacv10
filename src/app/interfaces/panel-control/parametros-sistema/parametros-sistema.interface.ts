@@ -10,6 +10,7 @@ export interface ParametrosSistemaI {
     rutaDestinoArchivosResponsables: String;
     rutaDestinoArchivosAltasEquiposIngenieros: String;
     rutaDestinoArchivosBajasEquiposIngenieros: String;
+    rutaDestinoArchivosFotografiasAnexasApoyosAtencPrevEmergDesast: String;
     authEnable: String;//EL BACKEND LO DECLARA COMO String (NO boolean) EN ParametrosSistemaDTO.
     startTTLSEnable: String;//EL BACKEND LO DECLARA COMO String (NO boolean) EN ParametrosSistemaDTO.
     smtpHost: String;//ESPECÍFICA LA DIRECCIÓN DEL SERVIDOR SMTP AL QUE SE CONECTARÁ PARA ENVIAR LOS CORREOS ELECTRÓNICOS.

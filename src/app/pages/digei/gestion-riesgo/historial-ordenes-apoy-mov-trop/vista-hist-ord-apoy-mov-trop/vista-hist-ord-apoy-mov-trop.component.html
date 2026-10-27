@@ -1,0 +1,17 @@
+@if (data; as x) {
+  <div class="vista-historial">
+    <h3>{{ x.numeroOficioHrOrdenApoyoMovimientoTropa }}</h3>
+    <div class="vista-seccion">
+      <div class="datos-grid">
+        <div class="dato-grupo"><span class="dato-label">Número de registro</span><span>{{ x.numRegHistorialOrdenApoyoMovimientoTropa }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Apoyo</span><span>{{ x.apoyoAtencPrevEmergDesastDTO.codigoRadicadoApoyoAtencPrevEmergDesast }} — {{ x.apoyoAtencPrevEmergDesastDTO.nombreEntidadInstitucionalSolicApoyoAtencPrevEmergDesast }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Unidad militar del apoyo</span><span>{{ x.apoyoAtencPrevEmergDesastDTO.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Número de oficio / HR</span><span>{{ x.numeroOficioHrOrdenApoyoMovimientoTropa }}</span></div>
+        <div class="dato-grupo dato-grupo-ancho"><span class="dato-label">Asunto</span><span>{{ x.asuntoOrdenApoyoMovimientoTropa }}</span></div>
+      </div>
+    </div>
+    <div class="vista-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cerrar</button>
+    </div>
+  </div>
+}

@@ -382,7 +382,8 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
           { etiqueta: 'Responsables', ruta: parametrosSistemaDTO.rutaDestinoArchivosResponsables },
           { etiqueta: 'Historial de integrantes de documentos', ruta: parametrosSistemaDTO.rutaDestinoArchivosHistorialIntegrantesDocumentos },
           { etiqueta: 'Altas de equipos ingenieros', ruta: parametrosSistemaDTO.rutaDestinoArchivosAltasEquiposIngenieros },
-          { etiqueta: 'Bajas de equipos ingenieros', ruta: parametrosSistemaDTO.rutaDestinoArchivosBajasEquiposIngenieros }
+          { etiqueta: 'Bajas de equipos ingenieros', ruta: parametrosSistemaDTO.rutaDestinoArchivosBajasEquiposIngenieros },
+          { etiqueta: 'Fotografías anexas de apoyos en atención y prevención de emergencias y desastres', ruta: parametrosSistemaDTO.rutaDestinoArchivosFotografiasAnexasApoyosAtencPrevEmergDesast }
         ];
         const sincronizados = subcarpetas
           .filter(({ ruta }) => String(ruta || '').trim())

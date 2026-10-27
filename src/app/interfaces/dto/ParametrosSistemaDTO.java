@@ -24,6 +24,7 @@ public class ParametrosSistemaDTO {
     private String rutaDestinoArchivosResponsables;
     private String rutaDestinoArchivosAltasEquiposIngenieros;
     private String rutaDestinoArchivosBajasEquiposIngenieros;
+    private String rutaDestinoArchivosFotografiasAnexasApoyosAtencPrevEmergDesast;
     private String authEnable;
     private String startTTLSEnable;
     private String smtpHost;

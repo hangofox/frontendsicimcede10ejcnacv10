@@ -266,6 +266,161 @@
 }
 
 /* =====================================================================
+   Panal de ocho ranuras 3-3-2 (referencia
+   imagen_objetivo_futurista_gestion_riesgo_01.png). Mismas medidas que
+   .cm-panal de construcciones-mantenimientos (tamaño de pieza, solape y
+   separaciones), pero con siete medias columnas: la fila 1 ocupa las
+   columnas 1-2, 3-4 y 5-6; la fila 2 las 2-3, 4-5 y 6-7, y la fila 3 las
+   3-4 y 5-6, de modo que cada fila queda corrida exactamente medio
+   hexagono a la derecha de la anterior.
+   ===================================================================== */
+
+.gr-panal {
+  /* Tamaño de pieza de construcciones-mantenimientos, pero sin pasar del
+     espacio que queda a la derecha de los piñones: el panal mide 3,5 piezas
+     de ancho y la escena de piñones ocupa ~37,9vw (ver .gr-escena), así que
+     cada pieza no puede pasar de (62,1vw - rellenos - separación) / 3,5. */
+  --gr-ranura: clamp(100px, min(20vw, 25dvh, calc(17vw - 14px)), 240px);
+  /* Los hexagonos miden 272x300, asi que su alto no es igual al ancho. */
+  --gr-alto: calc(var(--gr-ranura) * 300 / 272);
+  /* Mismo solape proporcional de construcciones-mantenimientos. */
+  --gr-solape: calc(var(--gr-alto) * -.237);
+  /* Mismas separaciones de construcciones-mantenimientos (1 mm vertical y
+     0,3 mm entre medias columnas con piezas de 235 px), proporcionales a la pieza. */
+  --gr-sep-y: calc(var(--gr-ranura) * .016083);
+  --gr-sep-x: calc(var(--gr-ranura) * .004825);
+
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  margin-inline: auto;
+  width: calc(var(--gr-ranura) * 3.5 + var(--gr-sep-x) * 6);
+  /* Fila 1 completa + filas 2 y 3 subidas un 23,7 % cada una (más la
+     separación vertical de cada fila). */
+  height: calc(var(--gr-alto) * (1 + 2 * (1 - .237)) + var(--gr-sep-y) * 2);
+  display: grid;
+  grid-template-columns: repeat(7, calc(var(--gr-ranura) / 2));
+  justify-content: center;
+  align-content: center;
+  column-gap: var(--gr-sep-x);
+}
+
+.gr-ranura {
+  box-sizing: border-box;
+  width: var(--gr-ranura);
+  /* Proporcion nativa del PNG: no se deforma. */
+  aspect-ratio: 272 / 300;
+  align-self: start;
+  display: block;
+  margin: 0;
+  background: none;
+}
+
+.gr-ranura__pieza {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: center / contain no-repeat;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.gr-ranura--informes-apoyos-atenc-prev-emerg-desast .gr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_informes_apoyos_atenc_prev_emerg_desast_01.png');
+}
+
+.gr-ranura--informes-apoyos-obr-red-mitig-gest-riesg-desast .gr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_informes_apoyos_obr_red_mitig_gest_riesg_desast_01.png');
+}
+
+.gr-ranura--lineamientos .gr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_lineamientos_gestion_riesgo_01.png');
+}
+
+.gr-ranura--solicitudes .gr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_solicitudes_gestion_riesgo_01.png');
+}
+
+.gr-ranura--avales .gr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_avales_gestion_riesgo_01.png');
+}
+
+.gr-ranura--planes-programas .gr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_planes_programas_gestion_riesgo_01.png');
+}
+
+.gr-ranura--estadisticas .gr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_estadisticas_gestion_riesgo_01.png');
+}
+
+.gr-ranura--dashboard .gr-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_dashboard_gestion_riesgo_01.png');
+}
+
+/* Fila 1 */
+.gr-ranura--informes-apoyos-atenc-prev-emerg-desast {
+  grid-area: 1 / 1 / 2 / 3;
+}
+
+.gr-ranura--informes-apoyos-obr-red-mitig-gest-riesg-desast {
+  grid-area: 1 / 3 / 2 / 5;
+}
+
+.gr-ranura--lineamientos {
+  grid-area: 1 / 5 / 2 / 7;
+}
+
+/* Fila 2: medio hexagono a la derecha de la fila 1, con la misma separacion
+   vertical de construcciones-mantenimientos (solape + --gr-sep-y). */
+.gr-ranura--solicitudes {
+  grid-area: 2 / 2 / 3 / 4;
+  margin-top: calc(var(--gr-solape) + var(--gr-sep-y));
+}
+
+.gr-ranura--avales {
+  grid-area: 2 / 4 / 3 / 6;
+  margin-top: calc(var(--gr-solape) + var(--gr-sep-y));
+}
+
+.gr-ranura--planes-programas {
+  grid-area: 2 / 6 / 3 / 8;
+  margin-top: calc(var(--gr-solape) + var(--gr-sep-y));
+}
+
+/* Fila 3: otro medio hexagono a la derecha, bajo los huecos de la fila 2. */
+.gr-ranura--estadisticas {
+  grid-area: 3 / 3 / 4 / 5;
+  margin-top: calc(var(--gr-solape) + var(--gr-sep-y));
+}
+
+.gr-ranura--dashboard {
+  grid-area: 3 / 5 / 4 / 7;
+  margin-top: calc(var(--gr-solape) + var(--gr-sep-y));
+}
+
+/* Zoom igual que construcciones-mantenimientos: lo llevan las ocho piezas. */
+.gr-ranura__pieza {
+  transition: transform .24s cubic-bezier(.2, .75, .25, 1), filter .24s ease;
+}
+
+.gr-ranura__pieza:hover,
+.gr-ranura__pieza--enlace:focus-visible {
+  transform: scale(1.06);
+  filter: brightness(1.08) drop-shadow(0 0 10px rgb(255 190 25 / 45%));
+}
+
+/* El cursor de mano y el foco de teclado son solo de las que navegan: las
+   demas se realzan, pero no llevan a ningun sitio y no deben aparentar que
+   si. Igual que construcciones-mantenimientos. */
+.gr-ranura__pieza--enlace {
+  cursor: pointer;
+}
+
+.gr-ranura__pieza--enlace:focus-visible {
+  outline: 2px solid #fff3a8;
+  outline-offset: 2px;
+}
+
+/* =====================================================================
    Animación. Mismas curvas y sentidos que digei; los nombres son propios
    porque los @keyframes de los otros componentes no se cargan aquí.
    ===================================================================== */
@@ -286,15 +441,22 @@
     transform: rotate(var(--gr-fase, 0deg));
   }
 
-  .gr-pinon__medallon--enlace .gr-pinon__medallon-img {
+  .gr-pinon__medallon--enlace .gr-pinon__medallon-img,
+  .gr-ranura__pieza {
     transition: none;
+  }
+
+  .gr-ranura__pieza:hover,
+  .gr-ranura__pieza--enlace:focus-visible {
+    transform: none;
   }
 }
 
 /* =====================================================================
    Responsive. Mismos tamaños de piñón que construcciones-mantenimientos
-   (los de digei en pantalla pequeña); como aquí no hay panal al lado, no
-   hace falta reservarle espacio.
+   (los de digei en pantalla pequeña). Por debajo de 900px el panal de 3,5
+   piezas ya no cabe al lado de los piñones: baja completo, centrado, y
+   conserva su composición.
    ===================================================================== */
 
 @media (max-width: 900px) {
@@ -309,6 +471,13 @@
     /* Piñones del tamaño de digei en pantalla pequeña (allí la unidad vale
        0,847px), nunca por debajo del mínimo de .55px. */
     --gr-u: max(.55px, min(.847px, calc((100vw - 36px) / 303.6)));
+  }
+
+  /* El panal baja debajo de los piñones: cada pieza toma el ancho disponible
+     entre 3,5 (sin pasar del tamaño de construcciones-mantenimientos en este
+     rango ni bajar de 70px). */
+  .gr-panal {
+    --gr-ranura: clamp(70px, calc((100vw - 36px) / 3.6), calc(clamp(104px, 22vw, 176px) * .92));
   }
 }
 

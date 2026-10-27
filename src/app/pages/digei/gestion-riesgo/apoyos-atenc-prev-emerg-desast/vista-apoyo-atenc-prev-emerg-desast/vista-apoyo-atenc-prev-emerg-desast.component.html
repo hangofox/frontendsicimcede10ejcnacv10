@@ -1,0 +1,133 @@
+<div class="vista-apoyo-atenc-prev-emerg-desast" *ngIf="apoyoAtencPrevEmergDesastData as apoyoAtencPrevEmergDesast">
+
+  <div class="perfil-cabecera">
+    <div class="avatar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 4v6c0 5-3.8 9.4-9 10-5.2-.6-9-5-9-10V6z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+    </div>
+    <div>
+      <h3 class="perfil-nombre">{{ apoyoAtencPrevEmergDesast.codigoRadicadoApoyoAtencPrevEmergDesast }}</h3>
+      <p class="perfil-tipo">{{ apoyoAtencPrevEmergDesast.unidadMilitarDTO.nombreUnidadMilitar }} ({{ apoyoAtencPrevEmergDesast.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }})</p>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Identificación</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Código radicado</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.codigoRadicadoApoyoAtencPrevEmergDesast }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Unidad militar</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de iniciación del apoyo</span>
+        <span class="dato-valor">{{ formatearFecha(apoyoAtencPrevEmergDesast.fechaHMSIniciacionApoyoAtencPrevEmergDesast) }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de finalización del apoyo</span>
+        <span class="dato-valor">{{ formatearFecha(apoyoAtencPrevEmergDesast.fechaHMSFinalizacionApoyoAtencPrevEmergDesast) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Ubicación del apoyo</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">País</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.paisOrigenApoyoAtencPrevEmergDesast }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Departamento o estado</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.departamentoOEstadoOrigenApoyoAtencPrevEmergDesast }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Ciudad</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.ciudadOrigenApoyoAtencPrevEmergDesast }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Latitud</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.latitudApoyoAtencPrevEmergDesast }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Longitud</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.longitudApoyoAtencPrevEmergDesast }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Entidad solicitante y requerimiento</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Tipo de entidad institucional</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.tipoEntidadInstitucionalDTO.nombreTipoEntidadInstitucional }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Nombre de la entidad solicitante</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.nombreEntidadInstitucionalSolicApoyoAtencPrevEmergDesast }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Tipo de requerimiento</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.tipoRequerimientoApoyoAtencionPrevencionDTO.nombreTipoRequerimientoApoyoAtencionPrevencion }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Proceso</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.procesoApoyoAtencionPrevencionDTO.nombreProcesoApoyoAtencionPrevencion }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Código radicado del requerimiento</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.codigoRadicadoTipoRequerimientoApoyoAtencionPrevencion }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Tipo de evento del apoyo realizado</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.tipoEventoApoyoRealizadoDTO.nombreTipoEventoApoyoRealizado }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Afectaciones</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de heridos</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.numeroHeridosRequerimientoApoyoAtencionPrevencion }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de muertos</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.numeroMuertosRequerimientoApoyoAtencionPrevencion }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de desaparecidos</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.numeroDesaparecidosRequerimientoApoyoAtencionPrevencion }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de viviendas afectadas</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.numeroViviendasAfectadasRequerimientoApoyoAtencionPrevencion }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de puentes afectados</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.numeroPuentesAfectadosRequerimientoApoyoAtencionPrevencion }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de vías afectadas</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.numeroViasAfectadasRequerimientoApoyoAtencionPrevencion }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de hectáreas afectadas</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.numeroHectareasAfectadasRequerimientoApoyoAtencionPrevencion }}</span>
+      </div>
+      <div class="dato-grupo dato-grupo-ancho">
+        <span class="dato-label">Descripción de la afectación</span>
+        <span class="dato-valor">{{ apoyoAtencPrevEmergDesast.descripcionAfectacionApoyoAtencPrevEmergDesast || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-acciones">
+    <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cerrar</button>
+  </div>
+
+</div>
