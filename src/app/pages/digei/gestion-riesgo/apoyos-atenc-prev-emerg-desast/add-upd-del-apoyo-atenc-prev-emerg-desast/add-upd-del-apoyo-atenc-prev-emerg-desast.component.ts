@@ -148,7 +148,7 @@ export class AddUpdDelApoyoAtencPrevEmergDesastComponent implements OnChanges {
   }
 
   //DEVUELVE LA FECHA Y HORA LOCAL ACTUAL EN FORMATO YYYY-MM-DDTHH:mm QUE REQUIERE <input type="datetime-local">.
-  //A PROPÓSITO NO SE USA Date.toISOString() (DEVUELVE LA HORA EN UTC) — MISMO PATRÓN QUE AddUpdDelSolicitudInfraestructuraComponent:
+  //A PROPÓSITO NO SE USA Date.toISOString() (DEVUELVE LA HORA EN UTC) — MISMO PATRÓN QUE AddUpdDelSolicitudConstruccionNuevaComponent:
   private obtenerFechaHoraActual(): string {
     const ahora = new Date();
     const dosDigitos = (valor: number): string => String(valor).padStart(2, '0');
@@ -158,7 +158,7 @@ export class AddUpdDelApoyoAtencPrevEmergDesastComponent implements OnChanges {
   }
 
   //NORMALIZA UNA FECHA DEL BACKEND AL FORMATO YYYY-MM-DDTHH:mm QUE REQUIERE <input type="datetime-local"> — MISMO PATRÓN QUE
-  //AddUpdDelSolicitudInfraestructuraComponent:
+  //AddUpdDelSolicitudConstruccionNuevaComponent:
   private formatearFechaParaInput(fecha: unknown): string {
     if (!fecha) return '';
     const texto = String(fecha).replace(' ', 'T');
@@ -166,7 +166,7 @@ export class AddUpdDelApoyoAtencPrevEmergDesastComponent implements OnChanges {
   }
 
   //JACKSON EXIGE SEGUNDOS EN EL STRING ISO (yyyy-MM-ddTHH:mm:ss) Y EL <input type="datetime-local"> SOLO ENVÍA MINUTOS; SE LE
-  //AGREGAN LOS SEGUNDOS ANTES DE ENVIARLO — MISMO PATRÓN QUE AddUpdDelSolicitudInfraestructuraComponent:
+  //AGREGAN LOS SEGUNDOS ANTES DE ENVIARLO — MISMO PATRÓN QUE AddUpdDelSolicitudConstruccionNuevaComponent:
   private agregarSegundosParaBackend(fecha: string): string {
     if (!fecha) return fecha;
     return fecha.length === 16 ? `${fecha}:00` : fecha;

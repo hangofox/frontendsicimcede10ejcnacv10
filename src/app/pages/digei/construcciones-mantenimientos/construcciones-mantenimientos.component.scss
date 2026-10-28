@@ -289,13 +289,13 @@
 }
 
 /* =====================================================================
-   Panal de cuatro ranuras 2-2 (referencia
-   construcciones_y_mantenimientos_futurista_01.png).
+   Panal de seis ranuras 2-2-2 (referencia
+   imagen_objetivo_construcciones_y_mantenimientos_01.png).
    La caja mide lo mismo que .fr-panal de finca-raiz (2,5 piezas de ancho y
    3 filas solapadas de alto) para que los piñones queden en la misma
-   posición; las dos filas van centradas en vertical dentro de ella.
-   Rejilla de cinco medias columnas: la fila 1 ocupa las columnas 1-2 y
-   3-4, y la fila 2 las columnas 2-3 y 4-5, de modo que queda corrida
+   posición; las tres filas la llenan en vertical.
+   Rejilla de cinco medias columnas: las filas 1 y 3 ocupan las columnas
+   1-2 y 3-4, y la fila 2 las columnas 2-3 y 4-5, de modo que queda corrida
    exactamente medio hexagono a la derecha.
    ===================================================================== */
 
@@ -350,47 +350,67 @@
   -webkit-user-drag: none;
 }
 
-.cm-ranura--solicitudes .cm-ranura__pieza {
-  background-image: url('../../../../assets/images/imagen_hexagono_solicitudes_infraestructuras_01.png');
+.cm-ranura--solicitudes-construcciones .cm-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_solicitudes_construcciones_nuevas_01.png');
 }
 
-.cm-ranura--avales .cm-ranura__pieza {
-  background-image: url('../../../../assets/images/imagen_hexagono_avales_solicitudes_infraestructuras_01.png');
+.cm-ranura--avales-construcciones .cm-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_avales_solicitudes_construcciones_nuevas_01.png');
 }
 
-.cm-ranura--dashboards .cm-ranura__pieza {
-  background-image: url('../../../../assets/images/imagen_hexagono_dashboards_estadisticas_solicitudes_infraestructuras_01.png');
+.cm-ranura--solicitudes-mantenimientos .cm-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_solicitudes_mantenimientos_01.png');
+}
+
+.cm-ranura--avales-mantenimientos .cm-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_avales_solicitudes_mantenimientos_01.png');
 }
 
 .cm-ranura--estadisticas .cm-ranura__pieza {
-  background-image: url('../../../../assets/images/imagen_hexagono_estadisticas_solicitudes_infraestructuras_01.png');
+  background-image: url('../../../../assets/images/imagen_hexagono_estadisticas_construcciones_y_mantenimientos_01.png');
 }
 
-/* Fila 1 */
-.cm-ranura--solicitudes {
+.cm-ranura--dashboard .cm-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_dashboard_construcciones_y_mantenimientos_01.png');
+}
+
+/* Fila 1: construcciones nuevas */
+.cm-ranura--solicitudes-construcciones {
   grid-area: 1 / 1 / 2 / 3;
 }
 
-.cm-ranura--avales {
+.cm-ranura--avales-construcciones {
   grid-area: 1 / 3 / 2 / 5;
 }
 
-/* Fila 2: medio hexagono a la derecha. La separacion vertical con la fila 1
-   es la medida en finca-raiz entre sus filas 1 y 2: alli la pieza Terrenos
-   alarga 1 mm la fila de arriba (height 100% + 1,2 mm con margin-top
+/* Fila 2: mantenimientos, medio hexagono a la derecha. La separacion vertical
+   con la fila 1 es la medida en finca-raiz entre sus filas 1 y 2: alli la pieza
+   Terrenos alarga 1 mm la fila de arriba (height 100% + 1,2 mm con margin-top
    -0,2 mm), asi que la fila 2 queda --cm-sep-y (1 mm a 235 px) mas abajo
    que el solape puro. */
-.cm-ranura--dashboards {
+.cm-ranura--solicitudes-mantenimientos {
   grid-area: 2 / 2 / 3 / 4;
   margin-top: calc(var(--cm-solape) + var(--cm-sep-y));
 }
 
-.cm-ranura--estadisticas {
+.cm-ranura--avales-mantenimientos {
   grid-area: 2 / 4 / 3 / 6;
   margin-top: calc(var(--cm-solape) + var(--cm-sep-y));
 }
 
-/* Zoom igual que finca-raiz: lo llevan las cuatro piezas. */
+/* Fila 3: estadisticas y dashboard, de nuevo alineadas con la fila 1 y con la
+   misma separacion vertical que hay entre las filas 1 y 2. */
+.cm-ranura--estadisticas {
+  grid-area: 3 / 1 / 4 / 3;
+  margin-top: calc(var(--cm-solape) + var(--cm-sep-y));
+}
+
+.cm-ranura--dashboard {
+  grid-area: 3 / 3 / 4 / 5;
+  margin-top: calc(var(--cm-solape) + var(--cm-sep-y));
+}
+
+/* Zoom igual que finca-raiz: lo llevan las seis piezas. */
 .cm-ranura__pieza {
   transition: transform .24s cubic-bezier(.2, .75, .25, 1), filter .24s ease;
 }

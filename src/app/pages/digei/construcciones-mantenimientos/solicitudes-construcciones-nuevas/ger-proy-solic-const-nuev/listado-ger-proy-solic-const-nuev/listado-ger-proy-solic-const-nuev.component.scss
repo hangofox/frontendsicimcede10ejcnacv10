@@ -1,0 +1,24 @@
+@use '../../../../../panel-control/historial-integrantes-documentos/listado-historial-integrantes-documentos/listado-historial-integrantes-documentos.component';
+
+.acciones-celda { display: flex; align-items: center; gap: 5px; }
+.btn-accion { width: 30px; height: 30px; padding: 0; overflow: visible; }
+.btn-accion svg { display: block; width: 14px; height: 14px; overflow: visible; }
+.btn-nuevo:disabled { opacity: .5; cursor: not-allowed; }
+
+//AVISO CUANDO LA SOLICITUD YA TIENE SU ÚNICO GERENTE DE PROYECTO:
+.aviso-unico {
+  margin: 0;
+  font-size: 12px;
+  color: var(--sicim-gray);
+}
+
+.solicitud-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--sicim-gray);
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--sicim-soft);
+}

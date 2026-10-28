@@ -383,6 +383,8 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
           { etiqueta: 'Historial de integrantes de documentos', ruta: parametrosSistemaDTO.rutaDestinoArchivosHistorialIntegrantesDocumentos },
           { etiqueta: 'Altas de equipos ingenieros', ruta: parametrosSistemaDTO.rutaDestinoArchivosAltasEquiposIngenieros },
           { etiqueta: 'Bajas de equipos ingenieros', ruta: parametrosSistemaDTO.rutaDestinoArchivosBajasEquiposIngenieros },
+          { etiqueta: 'Documentación anexa de solicitudes de construcción y mantenimiento', ruta: parametrosSistemaDTO.rutaDestinoArchivosDocumentacionAnexaSolicInfraest },
+          { etiqueta: 'Fotografías anexas de solicitudes de construcción y mantenimiento', ruta: parametrosSistemaDTO.rutaDestinoArchivosFotografiasAnexasSolicInfraest },
           { etiqueta: 'Fotografías anexas de apoyos en atención y prevención de emergencias y desastres', ruta: parametrosSistemaDTO.rutaDestinoArchivosFotografiasAnexasApoyosAtencPrevEmergDesast },
           { etiqueta: 'Integrantes de apoyos en atención y prevención de emergencias y desastres', ruta: parametrosSistemaDTO.rutaDestinoArchivosIntegrantesApoyosAtencPrevEmergDesast }
         ];

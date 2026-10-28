@@ -30,30 +30,43 @@
       </div>
     </div>
 
-    <!-- Panal 2-2 segun la referencia construcciones_y_mantenimientos_futurista_01:
-         la fila de abajo va corrida medio hexagono a la derecha. Ocupa la
-         misma caja del panal de finca-raiz para que los piñones queden en la
-         misma posición. Solicitudes navega; las otras tres se realzan al pasar el
-         cursor pero todavia no llevan a ningun sitio. -->
+    <!-- Panal 2-2-2 segun la referencia imagen_objetivo_construcciones_y_mantenimientos_01:
+         la fila del medio va corrida medio hexagono a la derecha y la de abajo
+         vuelve a quedar alineada con la de arriba. Ocupa la misma caja del panal
+         de finca-raiz para que los piñones queden en la misma posición. Las cuatro
+         de solicitudes y avales navegan; estadisticas y dashboard se realzan al
+         pasar el cursor pero todavia no llevan a ningun sitio. -->
     <div class="cm-panal">
-      <article class="cm-ranura cm-ranura--solicitudes">
+      <article class="cm-ranura cm-ranura--solicitudes-construcciones">
         <a class="cm-ranura__pieza cm-ranura__pieza--enlace"
-           routerLink="/digei/construcciones-mantenimientos/solicitudes-infraestructuras/listado-solicitudes-infraestructuras"
-           aria-label="Solicitudes de construcción y mantenimiento"></a>
+           routerLink="/digei/construcciones-mantenimientos/solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas"
+           aria-label="Solicitudes de construcción nueva"></a>
       </article>
 
-      <article class="cm-ranura cm-ranura--avales">
+      <article class="cm-ranura cm-ranura--avales-construcciones">
         <a class="cm-ranura__pieza cm-ranura__pieza--enlace"
-           routerLink="/digei/construcciones-mantenimientos/solicitudes-infraestructuras-avaladas/listado-solicitudes-infraestructuras-avaladas"
-           aria-label="Avales de construcción y mantenimiento"></a>
+           routerLink="/digei/construcciones-mantenimientos/solicitudes-construcciones-nuevas-avaladas/listado-solic-const-nuev-avaladas"
+           aria-label="Avales de construcción nueva"></a>
       </article>
 
-      <article class="cm-ranura cm-ranura--dashboards">
-        <span class="cm-ranura__pieza" role="img" aria-label="Dashboards de construcción y mantenimiento"></span>
+      <article class="cm-ranura cm-ranura--solicitudes-mantenimientos">
+        <a class="cm-ranura__pieza cm-ranura__pieza--enlace"
+           routerLink="/digei/construcciones-mantenimientos/solicitudes-mantenimientos/listado-solicitudes-mantenimientos"
+           aria-label="Solicitudes de mantenimiento"></a>
+      </article>
+
+      <article class="cm-ranura cm-ranura--avales-mantenimientos">
+        <a class="cm-ranura__pieza cm-ranura__pieza--enlace"
+           routerLink="/digei/construcciones-mantenimientos/solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados"
+           aria-label="Avales de mantenimiento"></a>
       </article>
 
       <article class="cm-ranura cm-ranura--estadisticas">
-        <span class="cm-ranura__pieza" role="img" aria-label="Estadísticas de construcción y mantenimiento"></span>
+        <span class="cm-ranura__pieza" role="img" aria-label="Estadísticas de construcciones y mantenimientos"></span>
+      </article>
+
+      <article class="cm-ranura cm-ranura--dashboard">
+        <span class="cm-ranura__pieza" role="img" aria-label="Dashboard de construcciones y mantenimientos"></span>
       </article>
     </div>
   </div>

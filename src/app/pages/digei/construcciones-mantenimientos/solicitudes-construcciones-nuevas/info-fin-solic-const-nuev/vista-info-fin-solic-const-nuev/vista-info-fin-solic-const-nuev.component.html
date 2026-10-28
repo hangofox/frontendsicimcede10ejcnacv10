@@ -1,0 +1,22 @@
+@if (data; as x) {
+  <div class="vista-historial">
+    <h3>{{ x.actividadProductoInfraestructuraDTO.nombreActividadProductoInfraestructura }}</h3>
+    <div class="vista-seccion">
+      <div class="datos-grid">
+        <div class="dato-grupo"><span class="dato-label">Solicitud</span><span>{{ x.solicitudInfraestructuraDTO.codigoRadicadoSolicitudInfraestructura }} — {{ x.solicitudInfraestructuraDTO.nombreSolicitudInfraestructura }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Unidad militar de la solicitud</span><span>{{ x.solicitudInfraestructuraDTO.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Fuente de financiación</span><span>{{ x.tipoFuenteFinanciacionDTO.nombreTipoFuenteFinanciacion }} ({{ x.tipoFuenteFinanciacionDTO.clasificacionTipoFuenteFinanciacion }})</span></div>
+        <div class="dato-grupo"><span class="dato-label">Capítulo</span><span>{{ x.actividadProductoInfraestructuraDTO.capituloInfraestructuraDTO.nombreCapituloInfraestructura || '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Actividad del producto</span><span>{{ x.actividadProductoInfraestructuraDTO.nombreActividadProductoInfraestructura }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Cantidad</span><span>{{ x.cantidadActividadProductoInfraestructura }} {{ x.actividadProductoInfraestructuraDTO.siglaOAcronimoUnidadMedidaActividadProductoInfraestructura }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Valor del costo unitario</span><span>{{ x.valorCostoUnitarioCapituloProductoInfraestructura ? (+x.valorCostoUnitarioCapituloProductoInfraestructura | currency:'COP':'symbol-narrow':'1.0-2') : '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Valor total</span><span>{{ valorTotal !== null ? (valorTotal | currency:'COP':'symbol-narrow':'1.0-2') : '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Área de intervención</span><span>{{ x.numeroAreaIntervencionInfraestructura }} {{ x.nombreUnidadMedidaAreaIntervencionInfraestructura }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Observaciones del presupuesto</span><span>{{ x.observacionesPresupuestoInfraestructura || '-' }}</span></div>
+      </div>
+    </div>
+    <div class="vista-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cerrar</button>
+    </div>
+  </div>
+}

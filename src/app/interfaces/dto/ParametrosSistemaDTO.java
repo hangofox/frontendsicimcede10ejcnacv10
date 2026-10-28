@@ -24,6 +24,8 @@ public class ParametrosSistemaDTO {
     private String rutaDestinoArchivosResponsables;
     private String rutaDestinoArchivosAltasEquiposIngenieros;
     private String rutaDestinoArchivosBajasEquiposIngenieros;
+    private String rutaDestinoArchivosDocumentacionAnexaSolicInfraest;
+    private String rutaDestinoArchivosFotografiasAnexasSolicInfraest;
     private String rutaDestinoArchivosFotografiasAnexasApoyosAtencPrevEmergDesast;
     private String rutaDestinoArchivosIntegrantesApoyosAtencPrevEmergDesast;
     private String authEnable;

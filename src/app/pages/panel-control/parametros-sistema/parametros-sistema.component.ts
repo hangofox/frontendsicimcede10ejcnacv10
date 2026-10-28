@@ -55,6 +55,8 @@ export class ParametrosSistemaComponent implements OnInit {
       rutaDestinoArchivosResponsables: ['', Validators.required],
       rutaDestinoArchivosAltasEquiposIngenieros: ['', Validators.required],
       rutaDestinoArchivosBajasEquiposIngenieros: ['', Validators.required],
+      rutaDestinoArchivosDocumentacionAnexaSolicInfraest: ['', Validators.required],
+      rutaDestinoArchivosFotografiasAnexasSolicInfraest: ['', Validators.required],
       rutaDestinoArchivosFotografiasAnexasApoyosAtencPrevEmergDesast: ['', Validators.required],
       rutaDestinoArchivosIntegrantesApoyosAtencPrevEmergDesast: ['', Validators.required],
       authEnable: [''], startTTLSEnable: [''], smtpHost: [''], smtpPort: [''], smtpProtocols: [''],

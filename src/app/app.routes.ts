@@ -26,15 +26,27 @@ export const routes: Routes = [
           { path: '', loadComponent: () => import('./pages/digei/digei.component').then(m => m.DigeiComponent), title: 'DIGEI | SICIM' },
           { path: 'consolidaciones', loadComponent: () => import('./pages/digei/consolidaciones/consolidaciones.component').then(m => m.ConsolidacionesComponent), title: 'Consolidaciones | SICIM' },
           {
-            //SOLICITUDES DE INFRAESTRUCTURAS ES UN SUBMODULO DE CONSTRUCCIONES Y MANTENIMIENTOS, TANTO EN CARPETAS COMO EN NAVEGACION.
+            //SOLICITUDES DE CONSTRUCCIONES NUEVAS Y DE MANTENIMIENTOS SON SUBMODULOS DE CONSTRUCCIONES Y MANTENIMIENTOS, TANTO EN CARPETAS COMO EN NAVEGACION.
             path: 'construcciones-mantenimientos',
             children: [
               { path: '', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/construcciones-mantenimientos.component').then(m => m.ConstruccionesMantenimientosComponent), title: 'Construcciones y mantenimientos | SICIM' },
-              { path: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-infraestructuras/listado-solicitudes-infraestructuras/listado-solicitudes-infraestructuras.component').then(m => m.ListadoSolicitudesInfraestructurasComponent), title: 'Solicitudes de construcción y mantenimiento | SICIM' },
-              { path: 'solicitudes-infraestructuras', redirectTo: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', pathMatch: 'full' },
-              //SOLICITUDES DE INFRAESTRUCTURAS AVALADAS (EN ESTADO ASIGNACION, APROBACION O RECHAZADO): "AVALES DE CONSTRUCCIÓN Y MANTENIMIENTO" DEL PANEL.
-              { path: 'solicitudes-infraestructuras-avaladas/listado-solicitudes-infraestructuras-avaladas', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-infraestructuras-avaladas/listado-solicitudes-infraestructuras-avaladas/listado-solicitudes-infraestructuras-avaladas.component').then(m => m.ListadoSolicitudesInfraestructurasAvaladasComponent), title: 'Avales de construcción y mantenimiento | SICIM' },
-              { path: 'solicitudes-infraestructuras-avaladas', redirectTo: 'solicitudes-infraestructuras-avaladas/listado-solicitudes-infraestructuras-avaladas', pathMatch: 'full' }
+              //SOLICITUDES DE CONSTRUCCIONES NUEVAS (TIPO CONSTRUCCION NUEVA DE TABLA_TIPOS_SOLICITUDES_INFRAESTRUCTURAS):
+              { path: 'solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas.component').then(m => m.ListadoSolicitudesConstruccionesNuevasComponent), title: 'Solicitudes de construcción nueva | SICIM' },
+              { path: 'solicitudes-construcciones-nuevas', redirectTo: 'solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas', pathMatch: 'full' },
+              //SOLICITUDES DE CONSTRUCCIONES NUEVAS AVALADAS (EN ESTADO ASIGNACION, APROBACION O RECHAZADO):
+              { path: 'solicitudes-construcciones-nuevas-avaladas/listado-solic-const-nuev-avaladas', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-construcciones-nuevas-avaladas/listado-solic-const-nuev-avaladas/listado-solic-const-nuev-avaladas.component').then(m => m.ListadoSolicitudesConstruccionesNuevasAvaladasComponent), title: 'Avales de construcción nueva | SICIM' },
+              { path: 'solicitudes-construcciones-nuevas-avaladas', redirectTo: 'solicitudes-construcciones-nuevas-avaladas/listado-solic-const-nuev-avaladas', pathMatch: 'full' },
+              //SOLICITUDES DE MANTENIMIENTOS (TIPO MANTENIMIENTO DE TABLA_TIPOS_SOLICITUDES_INFRAESTRUCTURAS):
+              { path: 'solicitudes-mantenimientos/listado-solicitudes-mantenimientos', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-mantenimientos/listado-solicitudes-mantenimientos/listado-solicitudes-mantenimientos.component').then(m => m.ListadoSolicitudesMantenimientosComponent), title: 'Solicitudes de mantenimiento | SICIM' },
+              { path: 'solicitudes-mantenimientos', redirectTo: 'solicitudes-mantenimientos/listado-solicitudes-mantenimientos', pathMatch: 'full' },
+              //SOLICITUDES DE MANTENIMIENTOS AVALADOS (EN ESTADO ASIGNACION, APROBACION O RECHAZADO):
+              { path: 'solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados.component').then(m => m.ListadoSolicitudesMantenimientosAvaladosComponent), title: 'Avales de mantenimiento | SICIM' },
+              { path: 'solicitudes-mantenimientos-avalados', redirectTo: 'solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados', pathMatch: 'full' },
+              //LAS DIRECCIONES ANTERIORES DE SOLICITUDES DE INFRAESTRUCTURAS LLEVAN A LAS DE CONSTRUCCIONES NUEVAS:
+              { path: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', redirectTo: 'solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas', pathMatch: 'full' },
+              { path: 'solicitudes-infraestructuras', redirectTo: 'solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas', pathMatch: 'full' },
+              { path: 'solicitudes-infraestructuras-avaladas/listado-solicitudes-infraestructuras-avaladas', redirectTo: 'solicitudes-construcciones-nuevas-avaladas/listado-solic-const-nuev-avaladas', pathMatch: 'full' },
+              { path: 'solicitudes-infraestructuras-avaladas', redirectTo: 'solicitudes-construcciones-nuevas-avaladas/listado-solic-const-nuev-avaladas', pathMatch: 'full' }
             ]
           },
           {
@@ -67,8 +79,8 @@ export const routes: Routes = [
             ]
           },
           //LAS DIRECCIONES ANTERIORES DE SOLICITUDES (COLGABAN DIRECTAMENTE DE DIGEI) LLEVAN A SU NUEVA UBICACION.
-          { path: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', redirectTo: 'construcciones-mantenimientos/solicitudes-infraestructuras/listado-solicitudes-infraestructuras', pathMatch: 'full' },
-          { path: 'solicitudes-infraestructuras', redirectTo: 'construcciones-mantenimientos/solicitudes-infraestructuras/listado-solicitudes-infraestructuras', pathMatch: 'full' }
+          { path: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', redirectTo: 'construcciones-mantenimientos/solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas', pathMatch: 'full' },
+          { path: 'solicitudes-infraestructuras', redirectTo: 'construcciones-mantenimientos/solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas', pathMatch: 'full' }
         ]
       },
       { path: 'dinco', loadComponent: () => import('./pages/dinco/dinco.component').then(m => m.DincoComponent), title: 'DINCO | SICIM' },

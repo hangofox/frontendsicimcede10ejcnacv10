@@ -446,7 +446,7 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
   }
 
   //ABRE EL MODAL CON EL HISTORIAL DE EQUIPOS DE TRANSPORTES ASOCIADO AL APOYO SELECCIONADO — MISMO PATRÓN QUE EL HISTORIAL DE
-  //INTEGRANTES DE ListadoSolicitudesInfraestructurasComponent:
+  //INTEGRANTES DE ListadoSolicitudesConstruccionesNuevasComponent:
   abrirModalEquiposTransportes(apoyoAtencPrevEmergDesast: ApoyosAtencPrevEmergDesastI): void {
     this.spinnerService.showBeforeOpening(() => {
       this.apoyoAtencPrevEmergDesastParaEquiposTransportes = apoyoAtencPrevEmergDesast;

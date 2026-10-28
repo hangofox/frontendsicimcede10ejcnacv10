@@ -1,0 +1,64 @@
+<div class="modal-formulario">
+  @if (modo === 'eliminar') {
+    <div class="alerta-eliminar">Esta acción eliminará el documento anexo de la solicitud y su archivo del servidor de archivos. ¿Desea continuar?</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="enviar()">
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos del documento anexo de la solicitud</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Tipo de documento (*)</label>
+          <select formControlName="tipoDocumentoAnexoSeleccionado">
+            <option value="">-- Seleccione --</option>
+            @for (tipo of tiposDocumentosAnexos; track tipo.idTipoDocumentoAnexoSolicInfraest) {
+              <option [value]="tipo.idTipoDocumentoAnexoSolicInfraest">{{ tipo.nombreTipoDocumentoAnexoSolicInfraest }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group campo-ancho">
+          <label>Nombre del documento (*)</label>
+          <input formControlName="nombreDocumento" maxlength="250" placeholder="Ej. COTIZACION MANTENIMIENTO GENERAL ALOJAMIENTO TROPA - PROVEEDOR 1">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Archivo del documento {{ modo === 'guardar' ? '(*)' : '' }} ({{ extensionesPermitidas.join(', ') }} — máximo 5 MB)</div>
+      @if (nombreArchivoActual) {
+        <p class="archivo-actual">Archivo actual: <strong>{{ nombreArchivoActual }}</strong>{{ archivoSeleccionado ? ' (se reemplazará al guardar)' : '' }}</p>
+      }
+      @if (modo !== 'eliminar') {
+        <div class="foto-upload-controles">
+          @if (!archivoSeleccionado) {
+            <label class="btn-archivo" [class.btn-archivo--deshabilitado]="guardando">
+              <input type="file" [accept]="acceptArchivos" [disabled]="guardando" (change)="onSeleccionarArchivo($event)" style="display:none">
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              {{ nombreArchivoActual ? 'Cambiar archivo' : 'Seleccionar archivo' }}
+            </label>
+          } @else {
+            <span class="foto-nombre">{{ archivoSeleccionado.name }} (nuevo)</span>
+            <button type="button" class="btn-quitar" [disabled]="guardando" (click)="onQuitarArchivoSeleccionado()">Quitar</button>
+          }
+        </div>
+      }
+      @if (mensajeErrorArchivo) {
+        <div class="alerta-error-foto">{{ mensajeErrorArchivo }}</div>
+      }
+      @if (faltaArchivo && form.touched) {
+        <p class="mensaje-error">Seleccione el archivo del documento.</p>
+      }
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" [disabled]="guardando" (click)="cerrarModal.emit()">Cancelar</button>
+      @if (modo === 'eliminar') {
+        <button type="button" class="btn-titulo-sistema btn-peligro" [disabled]="guardando" (click)="confirmar()">{{ guardando ? 'Eliminando...' : 'Eliminar' }}</button>
+      } @else {
+        <button type="submit" class="btn-titulo-sistema btn-primario" [disabled]="form.invalid || faltaArchivo || guardando">
+          {{ guardando ? 'Guardando...' : (modo === 'modificar' ? 'Modificar' : 'Guardar') }}
+        </button>
+      }
+    </div>
+  </form>
+</div>

@@ -10,6 +10,8 @@ export interface ParametrosSistemaI {
     rutaDestinoArchivosResponsables: String;
     rutaDestinoArchivosAltasEquiposIngenieros: String;
     rutaDestinoArchivosBajasEquiposIngenieros: String;
+    rutaDestinoArchivosDocumentacionAnexaSolicInfraest: String;
+    rutaDestinoArchivosFotografiasAnexasSolicInfraest: String;
     rutaDestinoArchivosFotografiasAnexasApoyosAtencPrevEmergDesast: String;
     rutaDestinoArchivosIntegrantesApoyosAtencPrevEmergDesast: String;
     authEnable: String;//EL BACKEND LO DECLARA COMO String (NO boolean) EN ParametrosSistemaDTO.

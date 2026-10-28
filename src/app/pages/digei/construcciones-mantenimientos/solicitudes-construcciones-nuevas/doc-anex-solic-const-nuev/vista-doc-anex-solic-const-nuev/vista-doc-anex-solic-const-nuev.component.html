@@ -1,0 +1,39 @@
+@if (data; as x) {
+  <div class="vista-historial">
+    <h3>{{ x.nombreDocumentoAnexoSolicInfraest }}</h3>
+    <div class="vista-seccion">
+      <div class="datos-grid">
+        <div class="dato-grupo"><span class="dato-label">Solicitud</span><span>{{ x.solicitudInfraestructuraDTO.codigoRadicadoSolicitudInfraestructura }} — {{ x.solicitudInfraestructuraDTO.nombreSolicitudInfraestructura }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Unidad militar de la solicitud</span><span>{{ x.solicitudInfraestructuraDTO.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Tipo de documento</span><span>{{ x.tipoDocumentoAnexoSolicInfraestDTO.nombreTipoDocumentoAnexoSolicInfraest }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Archivo</span><span class="nombre-archivo">{{ nombreArchivo || '-' }}</span></div>
+      </div>
+    </div>
+
+    <!-- VISTA PREVIA DEL DOCUMENTO -->
+    <div class="vista-seccion">
+      <div class="documento-previa">
+        @if (cargando) {
+          <p class="documento-mensaje">Cargando el documento...</p>
+        } @else if (noEncontrado) {
+          <p class="documento-mensaje">Archivo no encontrado en el servidor de archivos.</p>
+        } @else if (!nombreArchivo) {
+          <p class="documento-mensaje">El registro no tiene archivo.</p>
+        } @else if (urlSegura && esPdf) {
+          <iframe [src]="urlSegura" title="Vista previa del documento anexo"></iframe>
+        } @else if (urlArchivo && esImagen) {
+          <img [src]="urlArchivo" alt="Vista previa del documento anexo">
+        } @else if (urlArchivo) {
+          <p class="documento-mensaje">Este tipo de archivo no tiene vista previa; ábralo en otra pestaña.</p>
+        }
+      </div>
+    </div>
+
+    <div class="vista-acciones">
+      @if (urlArchivo) {
+        <button type="button" class="btn-titulo-sistema btn-primario" (click)="abrirEnPestana()">Abrir en otra pestaña</button>
+      }
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cerrar</button>
+    </div>
+  </div>
+}

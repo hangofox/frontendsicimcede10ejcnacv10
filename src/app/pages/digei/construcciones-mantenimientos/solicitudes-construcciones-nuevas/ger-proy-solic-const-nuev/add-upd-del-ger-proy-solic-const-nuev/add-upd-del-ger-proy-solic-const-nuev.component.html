@@ -1,0 +1,31 @@
+<div class="modal-formulario">
+  @if (modo === 'eliminar') {
+    <div class="alerta-eliminar">Esta acción eliminará el gerente de proyecto de la solicitud. ¿Desea continuar?</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="enviar()">
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos del gerente de proyecto de la solicitud</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Grado (*)</label><input formControlName="grado"></div>
+        <div class="form-group"><label>Nombres (*)</label><input formControlName="nombres"></div>
+        <div class="form-group"><label>Primer apellido (*)</label><input formControlName="apellido1"></div>
+        <div class="form-group"><label>Segundo apellido</label><input formControlName="apellido2"></div>
+        <div class="form-group"><label>Móvil (*)</label><input formControlName="movil" inputmode="numeric" placeholder="Ej. 3001234567"></div>
+        <div class="form-group"><label>Cargo actual</label><input formControlName="cargo"></div>
+      </div>
+      @if (form.controls.movil.touched && form.controls.movil.errors?.['pattern']) {
+        <p class="mensaje-error">El móvil solo debe tener números (entre 7 y 15 dígitos).</p>
+      }
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>
+      @if (modo === 'eliminar') {
+        <button type="button" class="btn-titulo-sistema btn-peligro" (click)="confirmar()">Eliminar</button>
+      } @else {
+        <button type="submit" class="btn-titulo-sistema btn-primario" [disabled]="form.invalid">{{ modo === 'modificar' ? 'Modificar' : 'Guardar' }}</button>
+      }
+    </div>
+  </form>
+</div>

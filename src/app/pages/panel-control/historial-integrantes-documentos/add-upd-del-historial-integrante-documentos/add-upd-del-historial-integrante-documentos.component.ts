@@ -326,7 +326,7 @@ export class AddUpdDelHistorialIntegranteDocumentosComponent implements OnChange
   //DEVUELVE LA FECHA Y HORA LOCAL ACTUAL EN FORMATO YYYY-MM-DDTHH:mm QUE REQUIERE <input type="datetime-local">.
   //A PROPÓSITO NO SE USA Date.toISOString() (DEVUELVE LA HORA EN UTC): EN COLOMBIA (UTC-5) EL CAMPO QUEDABA
   //MOSTRANDO/ENVIANDO LA HORA 5 HORAS ADELANTADA RESPECTO A LA HORA REAL DE BOGOTÁ. MISMO PATRÓN QUE
-  //AddUpdDelSolicitudInfraestructuraComponent.obtenerFechaHoraActual():
+  //AddUpdDelSolicitudConstruccionNuevaComponent.obtenerFechaHoraActual():
   private obtenerFechaHoraActual(): string {
     const ahora = new Date();
     const dosDigitos = (valor: number): string => String(valor).padStart(2, '0');
@@ -337,7 +337,7 @@ export class AddUpdDelHistorialIntegranteDocumentosComponent implements OnChange
 
   //NORMALIZA UNA FECHA DEL BACKEND AL FORMATO YYYY-MM-DDTHH:mm QUE REQUIERE <input type="datetime-local">. LOS
   //CAMPOS TIMESTAMP DE ORACLE LLEGAN CON ESPACIO EN VEZ DE "T" Y, MUCHAS VECES, CON SEGUNDOS/FRACCIÓN DE SEGUNDOS
-  //(EJ. "2024-05-12 14:30:00.0") — MISMO PATRÓN QUE AddUpdDelSolicitudInfraestructuraComponent.formatearFechaParaInput():
+  //(EJ. "2024-05-12 14:30:00.0") — MISMO PATRÓN QUE AddUpdDelSolicitudConstruccionNuevaComponent.formatearFechaParaInput():
   private formatearFechaParaInput(fecha: unknown): string {
     if (!fecha) return '';
     const texto = String(fecha).replace(' ', 'T');
@@ -350,7 +350,7 @@ export class AddUpdDelHistorialIntegranteDocumentosComponent implements OnChange
   //MINUTOS (yyyy-MM-ddTHH:mm), ASÍ QUE JACKSON NO LOGRA PARSEARLO Y EL CAMPO QUEDA EN null EN EL BACKEND (SIN
   //LANZAR ERROR 400, POR ESO SOLO SE NOTA CUANDO LA COLUMNA DE ORACLE ES NOT NULL). SE LE AGREGAN LOS SEGUNDOS
   //ANTES DE ENVIARLO, SIN CAMBIAR LO QUE VE O EDITA EL USUARIO EN EL FORMULARIO — MISMO PATRÓN QUE
-  //AddUpdDelSolicitudInfraestructuraComponent.agregarSegundosParaBackend():
+  //AddUpdDelSolicitudConstruccionNuevaComponent.agregarSegundosParaBackend():
   private agregarSegundosParaBackend(fecha: string): string {
     if (!fecha) return fecha;
     return fecha.length === 16 ? `${fecha}:00` : fecha;

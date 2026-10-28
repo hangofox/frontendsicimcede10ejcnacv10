@@ -1,0 +1,9 @@
+//MISMOS ESTILOS DEL FORMULARIO DE RESPONSABLES (SECCIONES, BOTONES DE ARCHIVO Y ALERTAS), COMO LAS FOTOGRAFÍAS ANEXAS DE APOYOS:
+@use '../../../../../panel-control/responsables/add-upd-del-responsable/add-upd-del-responsable.component';
+
+.campo-ancho { grid-column: 1 / -1; }
+.archivo-actual { margin: 0 0 10px; font-size: 13px; color: var(--sicim-gray); word-break: break-all; }
+.btn-archivo--deshabilitado { opacity: .5; pointer-events: none; }
+.btn-quitar:disabled { opacity: .5; cursor: not-allowed; }
+.foto-nombre { word-break: break-all; }
+.mensaje-error { margin: 8px 0 0; font-size: 12px; color: #b91c1c; }
