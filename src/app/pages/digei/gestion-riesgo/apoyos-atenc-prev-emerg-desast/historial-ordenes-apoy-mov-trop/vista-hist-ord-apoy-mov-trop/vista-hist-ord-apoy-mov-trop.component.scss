@@ -1,0 +1,4 @@
+@use '../../../../../panel-control/responsables/vista-responsable/vista-responsable.component';
+
+//EL ASUNTO (CLOB) OCUPA TODO EL ANCHO DEL DETALLE Y CONSERVA SUS SALTOS DE LÍNEA:
+.dato-grupo-ancho { grid-column: 1 / -1; white-space: pre-line; }

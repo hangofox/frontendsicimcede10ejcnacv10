@@ -24,13 +24,17 @@ import { HistorialEquipTranspApoyAtencPrevEmergDesastService } from '../../../..
 import { HistorialOrdenApoyoMovimientoTropaService } from '../../../../../services/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/historial-ordenes-apoy-mov-trop/historial-ordenes-apoy-mov-trop.service';
 import { FotografiasAnexasApoyAtencPrevEmergDesastService } from '../../../../../services/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/fot-anex-apoy-atenc-prev-emerg-des/fot-anex-apoy-atenc-prev-emerg-des.service';
 import { IntegrantesApoyosAtencPrevEmergDesastService } from '../../../../../services/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/integrantes-apoy-atenc-prev-emerg-des/integrantes-apoy-atenc-prev-emerg-des.service';
+import { HistorialMaqPesadApoyAtencPrevEmergDesastService } from '../../../../../services/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/historial-maq-pesad-apoy-atenc-prev-des/historial-maq-pesad-apoy-atenc-prev-des.service';
+import { HistorialTipoPersonalApoyAtencPrevEmergDesastService } from '../../../../../services/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/historial-tip-pers-apoy-atenc-prev-des/historial-tip-pers-apoy-atenc-prev-des.service';
 
 import { AddUpdDelApoyoAtencPrevEmergDesastComponent } from '../add-upd-del-apoyo-atenc-prev-emerg-desast/add-upd-del-apoyo-atenc-prev-emerg-desast.component';
 import { VistaApoyoAtencPrevEmergDesastComponent } from '../vista-apoyo-atenc-prev-emerg-desast/vista-apoyo-atenc-prev-emerg-desast.component';
-import { ListadoHistEqTrApoyAtPrevEmDesComponent } from '../../historial-eq_tr-apoy-at-prev-em-des/listado-hist-eq_tr-apoy-at-prev-em-des/listado-hist-eq_tr-apoy-at-prev-em-des.component';
-import { ListadoHistOrdApoyMovTropComponent } from '../../historial-ordenes-apoy-mov-trop/listado-hist-ord-apoy-mov-trop/listado-hist-ord-apoy-mov-trop.component';
-import { FotAnexApoyAtencPrevEmergDesComponent } from '../../fot-anex-apoy-atenc-prev-emerg-des/fot-anex-apoy-atenc-prev-emerg-des.component';
+import { ListadoHistEqTrApoyAtPrevEmDesComponent } from '../historial-eq_tr-apoy-at-prev-em-des/listado-hist-eq_tr-apoy-at-prev-em-des/listado-hist-eq_tr-apoy-at-prev-em-des.component';
+import { ListadoHistOrdApoyMovTropComponent } from '../historial-ordenes-apoy-mov-trop/listado-hist-ord-apoy-mov-trop/listado-hist-ord-apoy-mov-trop.component';
+import { FotAnexApoyAtencPrevEmergDesComponent } from '../fot-anex-apoy-atenc-prev-emerg-des/fot-anex-apoy-atenc-prev-emerg-des.component';
 import { ListadoIntegApoyAtencPrevEmergDesastComponent } from '../integrantes_apoy_atenc_prev_emerg_des/listado-integ-apoy-atenc-prev-emerg-desast/listado-integ-apoy-atenc-prev-emerg-desast.component';
+import { ListadoHistMaqPesadApoyAtencPrevDesComponent } from '../historial-maq-pesad-apoy-at-prev-des/listado-hist-maq-pesad-apoy-at-prev-des/listado-hist-maq-pesad-apoy-at-prev-des.component';
+import { ListadoHistTipPersApoyAtencPrevDesComponent } from '../historial-tip-pers-apoy-at-prev-des/listado-hist-tip-pers-apoy-at-prev-des/listado-hist-tip-pers-apoy-at-prev-des.component';
 import { cantidadIntegrantesRegistrados } from '../integrantes_apoy_atenc_prev_emerg_des/add-upd-del-integ_apoy-atenc-prev-emerg-desast/add-upd-del-integ_apoy-atenc-prev-emerg-desast.component';
 import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 import { OrdenarPorSiglaPipe } from '../../../../../shared/pipes/ordenar-por-sigla.pipe';
@@ -38,7 +42,7 @@ import { OrdenarPorSiglaPipe } from '../../../../../shared/pipes/ordenar-por-sig
 @Component({
   selector: 'app-listado-apoyos-atenc-prev-emerg-desast',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelApoyoAtencPrevEmergDesastComponent, VistaApoyoAtencPrevEmergDesastComponent, ListadoHistEqTrApoyAtPrevEmDesComponent, ListadoHistOrdApoyMovTropComponent, FotAnexApoyAtencPrevEmergDesComponent, ListadoIntegApoyAtencPrevEmergDesastComponent, SemaforoContadoresComponent, OrdenarPorSiglaPipe],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelApoyoAtencPrevEmergDesastComponent, VistaApoyoAtencPrevEmergDesastComponent, ListadoHistEqTrApoyAtPrevEmDesComponent, ListadoHistOrdApoyMovTropComponent, FotAnexApoyAtencPrevEmergDesComponent, ListadoIntegApoyAtencPrevEmergDesastComponent, ListadoHistTipPersApoyAtencPrevDesComponent, ListadoHistMaqPesadApoyAtencPrevDesComponent, SemaforoContadoresComponent, OrdenarPorSiglaPipe],
   templateUrl: './listado-apoyos-atenc-prev-emerg-desast.component.html',
   styleUrl: './listado-apoyos-atenc-prev-emerg-desast.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -62,7 +66,9 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
   //CANTIDAD DE EQUIPOS DE TRANSPORTES, DE ÓRDENES DE MOVIMIENTOS DE TROPAS Y DE FOTOGRAFÍAS ANEXAS DE CADA APOYO (POR SU ID), PARA LAS
   //COLUMNAS QUE MUESTRAN "NO" O EL CHULO VERDE. LOS HISTORIALES NO SE PUEDEN FILTRAR POR APOYO EN EL BACKEND, ASÍ QUE CADA LISTA SE
   //TRAE COMPLETA UNA SOLA VEZ Y SE CUENTA AQUÍ; MIENTRAS SE CARGA (null) LA COLUMNA MUESTRA "...":
+  cantidadTiposPersonalPorApoyo: Map<number, number> | null = null;
   cantidadEquiposTransportesPorApoyo: Map<number, number> | null = null;
+  cantidadMaquinariasPesadasPorApoyo: Map<number, number> | null = null;
   cantidadOrdenesMovimientosTropasPorApoyo: Map<number, number> | null = null;
   cantidadFotografiasAnexasPorApoyo: Map<number, number> | null = null;
   cantidadIntegrantesPorApoyo: Map<number, number> | null = null;
@@ -83,6 +89,10 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
   modalEquiposTransportesVisible = false;
   apoyoAtencPrevEmergDesastParaEquiposTransportes: ApoyosAtencPrevEmergDesastI | null = null;
 
+  //ESTADO DEL MODAL DEL HISTORIAL DE MAQUINARIAS PESADAS DEL APOYO (ASOCIADO AL APOYO SELECCIONADO):
+  modalMaquinariasPesadasVisible = false;
+  apoyoAtencPrevEmergDesastParaMaquinariasPesadas: ApoyosAtencPrevEmergDesastI | null = null;
+
   //ESTADO DEL MODAL DEL HISTORIAL DE ÓRDENES DE APOYOS DE MOVIMIENTOS DE TROPAS DEL APOYO (ASOCIADO AL APOYO SELECCIONADO):
   modalOrdenesMovimientosTropasVisible = false;
   apoyoAtencPrevEmergDesastParaOrdenesMovimientosTropas: ApoyosAtencPrevEmergDesastI | null = null;
@@ -94,6 +104,10 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
   //ESTADO DEL MODAL DE LOS INTEGRANTES DEL APOYO (ASOCIADO AL APOYO SELECCIONADO):
   modalIntegrantesVisible = false;
   apoyoAtencPrevEmergDesastParaIntegrantes: ApoyosAtencPrevEmergDesastI | null = null;
+
+  //ESTADO DEL MODAL DEL HISTORIAL DE TIPOS DE PERSONAL DE APOYOS DEL APOYO (ASOCIADO AL APOYO SELECCIONADO):
+  modalTiposPersonalVisible = false;
+  apoyoAtencPrevEmergDesastParaTiposPersonal: ApoyosAtencPrevEmergDesastI | null = null;
 
   //TOAST LOCAL:
   toastMensaje = '';
@@ -115,7 +129,9 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
     private historialEquipTranspApoyAtencPrevEmergDesastService: HistorialEquipTranspApoyAtencPrevEmergDesastService,
     private historialOrdenApoyoMovimientoTropaService: HistorialOrdenApoyoMovimientoTropaService,
     private fotografiasAnexasApoyAtencPrevEmergDesastService: FotografiasAnexasApoyAtencPrevEmergDesastService,
-    private integrantesApoyosAtencPrevEmergDesastService: IntegrantesApoyosAtencPrevEmergDesastService
+    private integrantesApoyosAtencPrevEmergDesastService: IntegrantesApoyosAtencPrevEmergDesastService,
+    private historialTipoPersonalApoyAtencPrevEmergDesastService: HistorialTipoPersonalApoyAtencPrevEmergDesastService,
+    private historialMaqPesadApoyAtencPrevEmergDesastService: HistorialMaqPesadApoyAtencPrevEmergDesastService
   ) {
     this.apoyosAtencPrevEmergDesastForm = this.formBuilder.group({
       ctextPalabraClave: new FormControl(''),
@@ -134,7 +150,9 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
     this.cargarPaisesMundo();
     this.cargarDepartamentosoEstadosMundo();
     this.accionListar();
+    this.cargarCantidadTiposPersonal();
     this.cargarCantidadEquiposTransportes();
+    this.cargarCantidadMaquinariasPesadas();
     this.cargarCantidadOrdenesMovimientosTropas();
     this.cargarCantidadFotografiasAnexas();
     this.cargarCantidadIntegrantes();
@@ -150,6 +168,18 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
     return cantidades;
   }
 
+  //CARGA EL HISTORIAL COMPLETO DE TIPOS DE PERSONAL DE APOYOS Y CUENTA LOS DE CADA APOYO:
+  private cargarCantidadTiposPersonal(): void {
+    this.cantidadTiposPersonalPorApoyo = null;
+    this.historialTipoPersonalApoyAtencPrevEmergDesastService.findAllSupportStaffTypeHistories().subscribe({
+      next: registros => {
+        this.cantidadTiposPersonalPorApoyo = this.contarPorApoyo(registros);
+        this.changeDetectorRef.markForCheck();
+      },
+      error: err => console.error('ERROR AL CONTAR LOS TIPOS DE PERSONAL DE LOS APOYOS: ', err)
+    });
+  }
+
   //CARGA EL HISTORIAL COMPLETO DE EQUIPOS DE TRANSPORTES Y CUENTA LOS DE CADA APOYO:
   private cargarCantidadEquiposTransportes(): void {
     this.cantidadEquiposTransportesPorApoyo = null;
@@ -159,6 +189,18 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
         this.changeDetectorRef.markForCheck();
       },
       error: err => console.error('ERROR AL CONTAR LOS EQUIPOS DE TRANSPORTES DE LOS APOYOS: ', err)
+    });
+  }
+
+  //CARGA EL HISTORIAL COMPLETO DE MAQUINARIAS PESADAS Y CUENTA LAS DE CADA APOYO:
+  private cargarCantidadMaquinariasPesadas(): void {
+    this.cantidadMaquinariasPesadasPorApoyo = null;
+    this.historialMaqPesadApoyAtencPrevEmergDesastService.findAllHeavyMachineryHistoriesOfSupports().subscribe({
+      next: registros => {
+        this.cantidadMaquinariasPesadasPorApoyo = this.contarPorApoyo(registros);
+        this.changeDetectorRef.markForCheck();
+      },
+      error: err => console.error('ERROR AL CONTAR LAS MAQUINARIAS PESADAS DE LOS APOYOS: ', err)
     });
   }
 
@@ -420,6 +462,23 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
     this.cargarCantidadEquiposTransportes();
   }
 
+  //ABRE EL MODAL CON EL HISTORIAL DE MAQUINARIAS PESADAS ASOCIADO AL APOYO SELECCIONADO — MISMO PATRÓN QUE EL HISTORIAL DE EQUIPOS
+  //DE TRANSPORTES:
+  abrirModalMaquinariasPesadas(apoyoAtencPrevEmergDesast: ApoyosAtencPrevEmergDesastI): void {
+    this.spinnerService.showBeforeOpening(() => {
+      this.apoyoAtencPrevEmergDesastParaMaquinariasPesadas = apoyoAtencPrevEmergDesast;
+      this.modalMaquinariasPesadasVisible = true;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
+  cerrarModalMaquinariasPesadas(): void {
+    this.modalMaquinariasPesadasVisible = false;
+    this.apoyoAtencPrevEmergDesastParaMaquinariasPesadas = null;
+    //SE VUELVE A CONTAR POR SI SE AGREGÓ O ELIMINÓ ALGUNA MAQUINARIA PESADA MIENTRAS EL MODAL ESTUVO ABIERTO:
+    this.cargarCantidadMaquinariasPesadas();
+  }
+
   //ABRE EL MODAL CON EL HISTORIAL DE ÓRDENES DE APOYOS DE MOVIMIENTOS DE TROPAS ASOCIADO AL APOYO SELECCIONADO — MISMO PATRÓN QUE
   //EL HISTORIAL DE EQUIPOS DE TRANSPORTES:
   abrirModalOrdenesMovimientosTropas(apoyoAtencPrevEmergDesast: ApoyosAtencPrevEmergDesastI): void {
@@ -467,6 +526,23 @@ export class ListadoApoyosAtencPrevEmergDesastComponent implements OnInit {
     this.apoyoAtencPrevEmergDesastParaIntegrantes = null;
     //SE VUELVE A CONTAR POR SI SE AGREGARON, MODIFICARON O ELIMINARON LOS INTEGRANTES MIENTRAS EL MODAL ESTUVO ABIERTO:
     this.cargarCantidadIntegrantes();
+  }
+
+  //ABRE EL MODAL CON EL HISTORIAL DE TIPOS DE PERSONAL DE APOYOS ASOCIADO AL APOYO SELECCIONADO — MISMO PATRÓN QUE EL HISTORIAL DE
+  //EQUIPOS DE TRANSPORTES:
+  abrirModalTiposPersonal(apoyoAtencPrevEmergDesast: ApoyosAtencPrevEmergDesastI): void {
+    this.spinnerService.showBeforeOpening(() => {
+      this.apoyoAtencPrevEmergDesastParaTiposPersonal = apoyoAtencPrevEmergDesast;
+      this.modalTiposPersonalVisible = true;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
+  cerrarModalTiposPersonal(): void {
+    this.modalTiposPersonalVisible = false;
+    this.apoyoAtencPrevEmergDesastParaTiposPersonal = null;
+    //SE VUELVE A CONTAR POR SI SE AGREGÓ O ELIMINÓ ALGÚN TIPO DE PERSONAL MIENTRAS EL MODAL ESTUVO ABIERTO:
+    this.cargarCantidadTiposPersonal();
   }
 
   //RESPUESTA DEL BACKEND AL CREAR, MODIFICAR O ELIMINAR: RESPONDE HTTP 200 AUNQUE NO GUARDE (EJ. CÓDIGO RADICADO REPETIDO), ASÍ QUE

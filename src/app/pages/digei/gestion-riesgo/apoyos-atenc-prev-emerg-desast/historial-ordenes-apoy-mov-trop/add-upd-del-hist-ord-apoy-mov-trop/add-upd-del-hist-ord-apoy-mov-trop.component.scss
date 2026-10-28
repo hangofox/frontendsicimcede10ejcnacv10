@@ -1,0 +1,20 @@
+@use '../../../../../panel-control/responsables/add-upd-del-responsable/add-upd-del-responsable.component';
+
+
+//EL ASUNTO (CLOB) OCUPA TODO EL ANCHO DEL FORMULARIO Y USA UN textarea CON EL MISMO ESTILO DE LOS DEMÁS CAMPOS — MISMO PATRÓN QUE
+//AddUpdDelApoyoAtencPrevEmergDesastComponent:
+.form-group-ancho { grid-column: 1 / -1; }
+
+.form-group textarea {
+  padding: 8px 10px;
+  border: 1px solid var(--sicim-border);
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--sicim-black);
+  background: var(--sicim-white);
+  font-family: inherit;
+  resize: vertical;
+
+  &:focus { outline: none; border-color: var(--sicim-focus); }
+  &:disabled { background: var(--sicim-soft); color: var(--sicim-gray); }
+}

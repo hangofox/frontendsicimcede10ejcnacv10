@@ -1,0 +1,18 @@
+@if (data; as x) {
+  <div class="vista-historial">
+    <h3>{{ x.tipoPersonalApoyoDTO.nombreTipoPersonalApoyo }}</h3>
+    <div class="vista-seccion">
+      <div class="datos-grid">
+        <div class="dato-grupo"><span class="dato-label">Número de registro</span><span>{{ x.numRegHistorialTipoPersonalApoyAtencPrevEmergDesast }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Apoyo</span><span>{{ x.apoyoAtencPrevEmergDesastDTO.codigoRadicadoApoyoAtencPrevEmergDesast }} — {{ x.apoyoAtencPrevEmergDesastDTO.nombreEntidadInstitucionalSolicApoyoAtencPrevEmergDesast }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Unidad militar del apoyo</span><span>{{ x.apoyoAtencPrevEmergDesastDTO.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Tipo de personal</span><span>{{ x.tipoPersonalApoyoDTO.nombreTipoPersonalApoyo }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Cantidad de personal</span><span>{{ x.cantidadPersonalApoyo }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Días empleados</span><span>{{ x.diasEmpleadosTipoPersonalApoyAtencPrevEmergDesast }}</span></div>
+      </div>
+    </div>
+    <div class="vista-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cerrar</button>
+    </div>
+  </div>
+}

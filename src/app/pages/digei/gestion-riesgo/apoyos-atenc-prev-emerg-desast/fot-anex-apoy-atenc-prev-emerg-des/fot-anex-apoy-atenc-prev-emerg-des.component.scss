@@ -1,0 +1,100 @@
+//MISMOS ESTILOS DE LA FOTO DEL FORMULARIO DE RESPONSABLES (SECCIONES, BOTONES DE ARCHIVO, ALERTAS Y CONFIRMACIÓN):
+@use '../../../../panel-control/responsables/add-upd-del-responsable/add-upd-del-responsable.component';
+
+.apoyo-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--sicim-gray);
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--sicim-soft);
+}
+
+.mensaje-carga {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: var(--sicim-gray);
+}
+
+//LAS CUATRO FOTOGRAFÍAS EN UNA CUADRÍCULA (DOS POR FILA EN PANTALLAS MEDIANAS Y UNA EN CELULAR):
+.fotografias-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.fotografia-ranura {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--sicim-border);
+  border-radius: 4px;
+  background: var(--sicim-white);
+
+  //RANURA CON CAMBIOS SIN GUARDAR (ARCHIVO NUEVO O FOTOGRAFÍA POR QUITAR):
+  &--cambio { border-color: #ca8a04; box-shadow: inset 0 0 0 1px #ca8a04; }
+}
+
+.fotografia-titulo {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--sicim-black);
+}
+
+//A DIFERENCIA DE LA FOTO DE RESPONSABLES (CÍRCULO DE 68 PX CON EL ROSTRO), AQUÍ LAS FOTOGRAFÍAS SON DE CAMPO: SE MUESTRAN
+//RECTANGULARES Y COMPLETAS (contain) PARA NO RECORTAR LO QUE SE QUIERE EVIDENCIAR:
+.fotografia-previa {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  max-width: 100%;
+  border: 2px dashed var(--sicim-border);
+  border-radius: 4px;
+  background: var(--sicim-soft);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #111;
+  }
+}
+
+.fotografia-vacia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--sicim-gray);
+  font-size: 12px;
+  text-align: center;
+  padding: 0 8px;
+}
+
+.btn-archivo--deshabilitado { opacity: .5; pointer-events: none; }
+.btn-quitar:disabled { opacity: .5; cursor: not-allowed; }
+
+.foto-nombre { word-break: break-all; }
+
+/* Toast */
+.toast-global {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10001;
+  min-width: 280px;
+  max-width: 420px;
+  padding: 12px 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .2);
+}
+.toast-exito { background: #f0fdf4; border: 1px solid rgba(34, 197, 94, .4); border-left: 4px solid #22c55e; color: #15803d; }
+.toast-error { background: #fef2f2; border: 1px solid rgba(220, 38, 38, .4); border-left: 4px solid #dc2626; color: #b91c1c; }

@@ -226,7 +226,9 @@
   transition: background-color .15s ease, color .15s ease;
 
   &.btn-ver:hover { background: #0ea5e9; color: #fff; border-color: #0ea5e9; }
+  &.btn-tipos-personal:hover { background: #c2410c; color: #fff; border-color: #c2410c; }
   &.btn-equipos-transportes:hover { background: #7c3aed; color: #fff; border-color: #7c3aed; }
+  &.btn-maquinarias-pesadas:hover { background: #a16207; color: #fff; border-color: #a16207; }
   &.btn-ordenes-movimientos-tropas:hover { background: #15803d; color: #fff; border-color: #15803d; }
   &.btn-fotografias-anexas:hover { background: #0f766e; color: #fff; border-color: #0f766e; }
   &.btn-integrantes:hover { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
