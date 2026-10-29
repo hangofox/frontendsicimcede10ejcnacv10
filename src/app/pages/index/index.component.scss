@@ -36,7 +36,8 @@
 .contenido:has(> app-finca-raiz),
 .contenido:has(> app-geomatica-topografia),
 .contenido:has(> app-construcciones-mantenimientos),
-.contenido:has(> app-gestion-riesgo) {
+.contenido:has(> app-gestion-riesgo),
+.contenido:has(> app-gestion-ambiental) {
   padding: 0;
   background: #020203;
 }

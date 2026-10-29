@@ -1,0 +1,67 @@
+//MISMOS ESTILOS DEL FORMULARIO DE RESPONSABLES (SECCIONES, CAMPOS, BOTONES DE ARCHIVO, ALERTAS Y CONFIRMACIÓN):
+@use '../../../../../panel-control/responsables/add-upd-del-responsable/add-upd-del-responsable.component';
+
+//DATOS DEL INTEGRANTE A LA IZQUIERDA Y SU FIRMA A LA DERECHA (UNO DEBAJO DEL OTRO EN PANTALLAS PEQUEÑAS):
+.integrante-contenido {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr);
+  gap: 16px;
+  align-items: start;
+
+  @media (max-width: 720px) { grid-template-columns: minmax(0, 1fr); }
+}
+
+.form-group-ancho { grid-column: 1 / -1; }
+
+.cargo-fila {
+  display: flex;
+  gap: 8px;
+
+  input { flex: 1; min-width: 0; }
+}
+
+.firma-bloque {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--sicim-border);
+  border-radius: 4px;
+
+  //FIRMA CON CAMBIOS SIN GUARDAR (ARCHIVO NUEVO O FIRMA POR QUITAR):
+  &--cambio { border-color: #ca8a04; box-shadow: inset 0 0 0 1px #ca8a04; }
+}
+
+.firma-titulo {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--sicim-black);
+}
+
+//LA FIRMA SE MUESTRA COMPLETA (contain) SOBRE FONDO BLANCO, EN UN RECUADRO HORIZONTAL:
+.firma-previa {
+  aspect-ratio: 3 / 1;
+  width: 100%;
+  border: 2px dashed var(--sicim-border);
+  border-radius: 4px;
+  background: var(--sicim-white);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.firma-vacia {
+  color: var(--sicim-gray);
+  font-size: 12px;
+  text-align: center;
+  padding: 0 8px;
+}
+
+.foto-nombre { word-break: break-all; }

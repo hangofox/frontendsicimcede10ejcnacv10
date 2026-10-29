@@ -1,0 +1,101 @@
+@if (apoyoObrRedMitigGestRiesgDesast) {
+  <div class="apoyo-info">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 4v6c0 5-3.8 9.4-9 10-5.2-.6-9-5-9-10V6z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+    <span><strong>{{ apoyoObrRedMitigGestRiesgDesast.codigoRadicadoApoyoObrRedMitigGestRiesgDesast }}</strong> — {{ apoyoObrRedMitigGestRiesgDesast.nombreEntidadInstitucionalSolicApoyoObrRedMitigGestRiesgDesast }} ({{ apoyoObrRedMitigGestRiesgDesast.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }})</span>
+  </div>
+}
+
+<div class="modal-formulario">
+  <div class="form-seccion">
+    <div class="seccion-titulo">Fotografías anexas del apoyo ({{ totalFotografias }} de 2) (*.jpg, *.gif, *.png, *.bmp — máximo 2 MB cada una)</div>
+
+    @if (cargando) {
+      <p class="mensaje-carga">Cargando las fotografías anexas del apoyo...</p>
+    }
+
+    <div class="fotografias-grid">
+      @for (ranura of ranuras; track ranura.numero) {
+        <div class="fotografia-ranura" [class.fotografia-ranura--cambio]="ranura.archivoSeleccionado || ranura.eliminada">
+          <!-- LA FOTOGRAFÍA 1 ES LA DE ANTES DE LA OBRA Y LA 2 LA DE DESPUÉS -->
+          <div class="fotografia-titulo">Fotografía {{ ranura.numero }} ({{ ranura.numero === 1 ? 'antes de la obra' : 'después de la obra' }})</div>
+
+          <div class="fotografia-previa">
+            @if (ranura.previewUrl) {
+              <img [src]="ranura.previewUrl" [alt]="'Fotografía ' + ranura.numero + ' del apoyo'">
+            } @else {
+              <div class="fotografia-vacia">
+                <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span>
+                  @if (ranura.eliminada) { Se quitará al guardar }
+                  @else if (ranura.noEncontrada) { Archivo no encontrado en el servidor }
+                  @else if (ranura.nombreArchivo) { Cargando... }
+                  @else { Sin fotografía }
+                </span>
+              </div>
+            }
+          </div>
+
+          @if (ranura.mensajeError) {
+            <div class="alerta-error-foto">{{ ranura.mensajeError }}</div>
+          }
+
+          <div class="foto-upload-controles">
+            @if (!ranura.archivoSeleccionado) {
+              <label class="btn-archivo" [class.btn-archivo--deshabilitado]="guardando">
+                <input type="file" accept="image/*" [disabled]="guardando" (change)="onSeleccionarArchivo(ranura, $event)" style="display:none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                {{ ranura.nombreArchivo && !ranura.eliminada ? 'Cambiar foto' : 'Seleccionar archivo' }}
+              </label>
+            } @else {
+              <button type="button" class="btn-quitar" [disabled]="guardando" (click)="onQuitarArchivoSeleccionado(ranura)">Quitar</button>
+            }
+            @if (!ranura.archivoSeleccionado && ranura.nombreArchivo && !ranura.eliminada) {
+              <button type="button" class="btn-quitar" [disabled]="guardando" (click)="confirmarEliminarFotografia(ranura)">Quitar foto</button>
+            }
+          </div>
+          <span class="foto-nombre">
+            @if (ranura.archivoSeleccionado) { {{ ranura.archivoSeleccionado.name }} (nueva) }
+            @else if (ranura.nombreArchivo && !ranura.eliminada) { {{ ranura.nombreArchivo }} }
+          </span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="form-acciones">
+    <button type="button" class="btn-titulo-sistema btn-secundario" [disabled]="!hayCambios || guardando" (click)="descartarCambios()">Descartar cambios</button>
+    <button type="button" class="btn-titulo-sistema btn-primario" [disabled]="!hayCambios || guardando || cargando" (click)="guardar()">
+      {{ guardando ? 'Guardando...' : 'Guardar fotografías' }}
+    </button>
+  </div>
+</div>
+
+<!-- CONFIRMACIÓN PARA QUITAR UNA FOTOGRAFÍA GUARDADA -->
+@if (ranuraPorEliminar) {
+  <div class="confirmacion-overlay">
+    <div class="confirmacion-caja">
+      <div class="confirmacion-icono">
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <h4 class="confirmacion-titulo">Confirmación de eliminación</h4>
+      <p class="confirmacion-mensaje">¿Está seguro de que desea quitar la fotografía {{ ranuraPorEliminar.numero }} de este apoyo? El archivo se borrará al guardar.</p>
+      <div class="confirmacion-botones">
+        <button type="button" class="btn-confirmacion btn-si" (click)="siEliminarFotografia()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Sí, quitar
+        </button>
+        <button type="button" class="btn-confirmacion btn-no" (click)="noEliminarFotografia()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          No, cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- TOAST -->
+@if (toast) {
+  <div class="toast-global" [class.toast-exito]="toastTipo === 'exito'" [class.toast-error]="toastTipo === 'error'">
+    <span>{{ toast }}</span>
+  </div>
+}

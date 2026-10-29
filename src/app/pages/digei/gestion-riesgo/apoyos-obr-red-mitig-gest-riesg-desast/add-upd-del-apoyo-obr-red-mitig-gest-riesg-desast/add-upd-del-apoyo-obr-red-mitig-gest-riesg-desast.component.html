@@ -1,0 +1,173 @@
+<div class="modal-formulario" *ngIf="apoyosObrRedMitigGestRiesgDesastForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará el registro del informe de apoyo en obras, reducción y mitigación de riesgos y desastres de la lista. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="apoyosObrRedMitigGestRiesgDesastForm" (ngSubmit)="guardarModificar()">
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Identificación</div>
+      <div class="form-grid">
+        <div class="form-group" *ngIf="!banderaCrudGuardar">
+          <label>Código radicado</label>
+          <input type="text" formControlName="codigoRadicadoApoyoObrRedMitigGestRiesgDesast">
+        </div>
+        <div class="form-group">
+          <label>Unidad militar (*)</label>
+          <select formControlName="unidadMilitarSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let unidadMilitar of unidadesMilitares" [value]="unidadMilitar.idUnidadMilitar">
+              {{ unidadMilitar.nombreUnidadMilitar }} ({{ unidadMilitar.siglaoAcronimoUnidadMilitar }})
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fecha de iniciación del apoyo (*)</label>
+          <input type="datetime-local" formControlName="fechaHMSIniciacionApoyoObrRedMitigGestRiesgDesast">
+        </div>
+        <div class="form-group">
+          <label>Fecha de finalización del apoyo (*)</label>
+          <input type="datetime-local" formControlName="fechaHMSFinalizacionApoyoObrRedMitigGestRiesgDesast">
+          <small class="error-campo" *ngIf="apoyosObrRedMitigGestRiesgDesastForm.hasError('fechaFinalizacionAnterior')">La fecha de finalización no puede ser anterior a la de iniciación.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Ubicación del apoyo</div>
+      <div class="form-grid">
+        <div class="form-group campo-autocompletar">
+          <label>País (*)</label>
+          <input type="hidden" formControlName="paisOrigenApoyoObrRedMitigGestRiesgDesast">
+          <div class="autocompletar-caja">
+            <input
+              type="text"
+              [(ngModel)]="terminoBusquedaPaisOrigen"
+              [ngModelOptions]="{standalone: true}"
+              [readOnly]="banderaPaisOrigenSeleccionado"
+              [disabled]="banderaCrudEliminar"
+              placeholder="Escriba para buscar el país..."
+              (input)="onEscribirBusquedaPaisOrigen()"
+              (focus)="mostrarSugerenciasPaisOrigen = true"
+              (blur)="ocultarSugerenciasPaisOrigenConRetraso()">
+            <button
+              type="button"
+              class="btn-limpiar-autocompletar"
+              *ngIf="terminoBusquedaPaisOrigen && !banderaCrudEliminar"
+              (mousedown)="limpiarBusquedaPaisOrigen()"
+              title="Limpiar">×</button>
+
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasPaisOrigen && !banderaPaisOrigenSeleccionado && paisesMundoFiltrados.length > 0">
+              <li *ngFor="let pais of paisesMundoFiltrados" (mousedown)="seleccionarPaisOrigen(pais)">
+                {{ pais.nombrePaisMundo }}
+              </li>
+            </ul>
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasPaisOrigen && !banderaPaisOrigenSeleccionado && paisesMundoFiltrados.length === 0">
+              <li class="autocompletar-sin-resultados">Sin coincidencias.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="form-group campo-autocompletar">
+          <label>Departamento o estado (*)</label>
+          <input type="hidden" formControlName="departamentoOEstadoOrigenApoyoObrRedMitigGestRiesgDesast">
+          <div class="autocompletar-caja">
+            <input
+              type="text"
+              [(ngModel)]="terminoBusquedaDepartamentoOrigen"
+              [ngModelOptions]="{standalone: true}"
+              [readOnly]="banderaDepartamentoOrigenSeleccionado"
+              [disabled]="!banderaPaisOrigenSeleccionado || banderaCrudEliminar"
+              [placeholder]="banderaPaisOrigenSeleccionado ? 'Escriba para buscar el departamento o estado...' : 'Seleccione primero el país'"
+              (input)="onEscribirBusquedaDepartamentoOrigen()"
+              (focus)="mostrarSugerenciasDepartamentoOrigen = true"
+              (blur)="ocultarSugerenciasDepartamentoOrigenConRetraso()">
+            <button
+              type="button"
+              class="btn-limpiar-autocompletar"
+              *ngIf="terminoBusquedaDepartamentoOrigen && !banderaCrudEliminar"
+              (mousedown)="limpiarBusquedaDepartamentoOrigen()"
+              title="Limpiar">×</button>
+
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasDepartamentoOrigen && !banderaDepartamentoOrigenSeleccionado && departamentosoEstadosMundoFiltrados.length > 0">
+              <li *ngFor="let departamento of departamentosoEstadosMundoFiltrados" (mousedown)="seleccionarDepartamentoOrigen(departamento)">
+                {{ departamento.nombreDepartamentooEstadoMundo }}
+              </li>
+            </ul>
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasDepartamentoOrigen && !banderaDepartamentoOrigenSeleccionado && departamentosoEstadosMundoFiltrados.length === 0">
+              <li class="autocompletar-sin-resultados">Sin coincidencias.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Ciudad (*)</label>
+          <input type="text" formControlName="ciudadOrigenApoyoObrRedMitigGestRiesgDesast" placeholder="Ej. VILLAVICENCIO">
+        </div>
+        <div class="form-group">
+          <label>Latitud (*)</label>
+          <input type="text" formControlName="latitudApoyoObrRedMitigGestRiesgDesast" placeholder="Ej. 4.142002">
+        </div>
+        <div class="form-group">
+          <label>Longitud (*)</label>
+          <input type="text" formControlName="longitudApoyoObrRedMitigGestRiesgDesast" placeholder="Ej. -73.626640">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Entidad solicitante y autorización</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Tipo de entidad institucional (*)</label>
+          <select formControlName="tipoEntidadInstitucionalSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let tipoEntidadInstitucional of tiposEntidadesInstitucionales" [value]="tipoEntidadInstitucional.idTipoEntidadInstitucional">
+              {{ tipoEntidadInstitucional.nombreTipoEntidadInstitucional }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nombre de la entidad solicitante (*)</label>
+          <input type="text" formControlName="nombreEntidadInstitucionalSolicApoyoObrRedMitigGestRiesgDesast" placeholder="Ej. ALCALDÍA MUNICIPAL DE VILLAVICENCIO">
+        </div>
+        <div class="form-group">
+          <label>Código radicado de la HR u oficio de autorización del Comando de Ingenieros (*)</label>
+          <input type="text" formControlName="codigoRadicadoHrOficioAutorizacionCdoIngApoyoObrRedMitigGestRiesgDesast" placeholder="Ej. OFI-2026-0001">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Obra</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Tipo de emergencia o desastre que genera la obra (*)</label>
+          <select formControlName="tipoEmDesastGenObrApoyoObrRedMitigGestRiesgDesastSeleccionado">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let tipoEmDesastGenObr of tiposEmDesastGenObrApoyoObrRedMitigGestRiesgDesast" [value]="tipoEmDesastGenObr.idTipoEmDesastGenObrApoyoObrRedMitigGestRiesgDesast">
+              {{ tipoEmDesastGenObr.nombreTipoEmDesastGenObrApoyoObrRedMitigGestRiesgDesast }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>N.° de población beneficiada (*)</label>
+          <input type="number" min="0" formControlName="numeroPobBenefApoyoObrRedMitigGestRiesgDesast">
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Descripción de la obra</label>
+          <textarea formControlName="descripcionObrApoyoObrRedMitigGestRiesgDesast" rows="4" placeholder="Ej. Construcción de muro de contención en la ribera del río..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-titulo-sistema btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="apoyosObrRedMitigGestRiesgDesastForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-titulo-sistema btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>

@@ -1,0 +1,20 @@
+@if (data; as x) {
+  <div class="vista-historial">
+    <h3>{{ x.nombreHistorialControlAvancObrRedMitigGestRiesgDesast }}</h3>
+    <div class="vista-seccion">
+      <div class="datos-grid">
+        <div class="dato-grupo"><span class="dato-label">Número de registro</span><span>{{ x.numRegHistorialControlAvancObrRedMitigGestRiesgDesast }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Apoyo</span><span>{{ x.apoyoObrRedMitigGestRiesgDesastDTO.codigoRadicadoApoyoObrRedMitigGestRiesgDesast }} — {{ x.apoyoObrRedMitigGestRiesgDesastDTO.nombreEntidadInstitucionalSolicApoyoObrRedMitigGestRiesgDesast }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Unidad militar del apoyo</span><span>{{ x.apoyoObrRedMitigGestRiesgDesastDTO.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Nombre del control de avance</span><span>{{ x.nombreHistorialControlAvancObrRedMitigGestRiesgDesast }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Porcentaje de actividades programadas</span><span>{{ x.numeroPorcentajeActProgAvancObrRedMitigGestRiesgDesast || '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Porcentaje de actividades ejecutadas</span><span>{{ x.numeroPorcentajeActEjecAvancObrRedMitigGestRiesgDesast || '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Porcentaje de actividades faltantes</span><span>{{ x.numeroPorcentajeActFaltAvancObrRedMitigGestRiesgDesast || '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Observaciones</span><span>{{ x.observacionesHistorialControlAvancObrRedMitigGestRiesgDesast || '-' }}</span></div>
+      </div>
+    </div>
+    <div class="vista-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cerrar</button>
+    </div>
+  </div>
+}

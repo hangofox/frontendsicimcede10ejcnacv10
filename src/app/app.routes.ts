@@ -50,12 +50,15 @@ export const routes: Routes = [
             ]
           },
           {
-            //APOYOS DE ATENCIÓN Y PREVENCIÓN DE EMERGENCIAS Y DESASTRES ES UN SUBMODULO DE GESTIÓN DEL RIESGO, TANTO EN CARPETAS COMO EN NAVEGACION.
+            //APOYOS DE ATENCIÓN Y PREVENCIÓN DE EMERGENCIAS Y DESASTRES Y APOYOS EN OBRAS, REDUCCIÓN Y MITIGACIÓN DE RIESGOS Y DESASTRES SON
+            //SUBMODULOS DE GESTIÓN DEL RIESGO, TANTO EN CARPETAS COMO EN NAVEGACION.
             path: 'gestion-riesgo',
             children: [
               { path: '', loadComponent: () => import('./pages/digei/gestion-riesgo/gestion-riesgo.component').then(m => m.GestionRiesgoComponent), title: 'Gestión del riesgo | SICIM' },
               { path: 'apoyos-atenc-prev-emerg-desast/listado-apoyos-atenc-prev-emerg-desast', loadComponent: () => import('./pages/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/listado-apoyos-atenc-prev-emerg-desast/listado-apoyos-atenc-prev-emerg-desast.component').then(m => m.ListadoApoyosAtencPrevEmergDesastComponent), title: 'Informes de apoyos en atención y prevención de emergencias y desastres | SICIM' },
-              { path: 'apoyos-atenc-prev-emerg-desast', redirectTo: 'apoyos-atenc-prev-emerg-desast/listado-apoyos-atenc-prev-emerg-desast', pathMatch: 'full' }
+              { path: 'apoyos-atenc-prev-emerg-desast', redirectTo: 'apoyos-atenc-prev-emerg-desast/listado-apoyos-atenc-prev-emerg-desast', pathMatch: 'full' },
+              { path: 'apoyos-obr-red-mitig-gest-riesg-desast/listado-apoyos-obr-red-mitig-gest-riesg-desast', loadComponent: () => import('./pages/digei/gestion-riesgo/apoyos-obr-red-mitig-gest-riesg-desast/listado-apoyos-obr-red-mitig-gest-riesg-desast/listado-apoyos-obr-red-mitig-gest-riesg-desast.component').then(m => m.ListadoApoyosObrRedMitigGestRiesgDesastComponent), title: 'Informes de apoyos en obras, reducción y mitigación de riesgos y desastres | SICIM' },
+              { path: 'apoyos-obr-red-mitig-gest-riesg-desast', redirectTo: 'apoyos-obr-red-mitig-gest-riesg-desast/listado-apoyos-obr-red-mitig-gest-riesg-desast', pathMatch: 'full' }
             ]
           },
           { path: 'gestion-ambiental', loadComponent: () => import('./pages/digei/gestion-ambiental/gestion-ambiental.component').then(m => m.GestionAmbientalComponent), title: 'Gestión ambiental | SICIM' },

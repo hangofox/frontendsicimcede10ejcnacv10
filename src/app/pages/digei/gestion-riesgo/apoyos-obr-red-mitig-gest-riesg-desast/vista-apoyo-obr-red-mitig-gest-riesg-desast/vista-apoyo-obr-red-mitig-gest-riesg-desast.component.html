@@ -1,0 +1,101 @@
+<div class="vista-apoyo-obr-red-mitig-gest-riesg-desast" *ngIf="apoyoObrRedMitigGestRiesgDesastData as apoyoObrRedMitigGestRiesgDesast">
+
+  <div class="perfil-cabecera">
+    <div class="avatar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 4v6c0 5-3.8 9.4-9 10-5.2-.6-9-5-9-10V6z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+    </div>
+    <div>
+      <h3 class="perfil-nombre">{{ apoyoObrRedMitigGestRiesgDesast.codigoRadicadoApoyoObrRedMitigGestRiesgDesast }}</h3>
+      <p class="perfil-tipo">{{ apoyoObrRedMitigGestRiesgDesast.unidadMilitarDTO.nombreUnidadMilitar }} ({{ apoyoObrRedMitigGestRiesgDesast.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }})</p>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Identificación</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Código radicado</span>
+        <span class="dato-valor">{{ apoyoObrRedMitigGestRiesgDesast.codigoRadicadoApoyoObrRedMitigGestRiesgDesast }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Unidad militar</span>
+        <span class="dato-valor">{{ apoyoObrRedMitigGestRiesgDesast.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de iniciación del apoyo</span>
+        <span class="dato-valor">{{ formatearFecha(apoyoObrRedMitigGestRiesgDesast.fechaHMSIniciacionApoyoObrRedMitigGestRiesgDesast) }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de finalización del apoyo</span>
+        <span class="dato-valor">{{ formatearFecha(apoyoObrRedMitigGestRiesgDesast.fechaHMSFinalizacionApoyoObrRedMitigGestRiesgDesast) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Ubicación del apoyo</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">País</span>
+        <span class="dato-valor">{{ apoyoObrRedMitigGestRiesgDesast.paisOrigenApoyoObrRedMitigGestRiesgDesast }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Departamento o estado</span>
+        <span class="dato-valor">{{ apoyoObrRedMitigGestRiesgDesast.departamentoOEstadoOrigenApoyoObrRedMitigGestRiesgDesast }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Ciudad</span>
+        <span class="dato-valor">{{ apoyoObrRedMitigGestRiesgDesast.ciudadOrigenApoyoObrRedMitigGestRiesgDesast }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Latitud</span>
+        <span class="dato-valor">{{ apoyoObrRedMitigGestRiesgDesast.latitudApoyoObrRedMitigGestRiesgDesast }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Longitud</span>
+        <span class="dato-valor">{{ apoyoObrRedMitigGestRiesgDesast.longitudApoyoObrRedMitigGestRiesgDesast }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Entidad solicitante y autorización</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Tipo de entidad institucional</span>
+        <span class="dato-valor">{{ apoyoObrRedMitigGestRiesgDesast.tipoEntidadInstitucionalDTO.nombreTipoEntidadInstitucional }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Nombre de la entidad solicitante</span>
+        <span class="dato-valor">{{ apoyoObrRedMitigGestRiesgDesast.nombreEntidadInstitucionalSolicApoyoObrRedMitigGestRiesgDesast }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Código radicado de la HR u oficio de autorización del Comando de Ingenieros</span>
+        <span class="dato-valor">{{ apoyoObrRedMitigGestRiesgDesast.codigoRadicadoHrOficioAutorizacionCdoIngApoyoObrRedMitigGestRiesgDesast }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Obra</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Tipo de emergencia o desastre que genera la obra</span>
+        <span class="dato-valor">{{ apoyoObrRedMitigGestRiesgDesast.tipoEmDesastGenObrApoyoObrRedMitigGestRiesgDesastDTO.nombreTipoEmDesastGenObrApoyoObrRedMitigGestRiesgDesast }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de población beneficiada</span>
+        <span class="dato-valor">{{ apoyoObrRedMitigGestRiesgDesast.numeroPobBenefApoyoObrRedMitigGestRiesgDesast }}</span>
+      </div>
+      <div class="dato-grupo dato-grupo-ancho">
+        <span class="dato-label">Descripción de la obra</span>
+        <span class="dato-valor">{{ apoyoObrRedMitigGestRiesgDesast.descripcionObrApoyoObrRedMitigGestRiesgDesast || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-acciones">
+    <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cerrar</button>
+  </div>
+
+</div>

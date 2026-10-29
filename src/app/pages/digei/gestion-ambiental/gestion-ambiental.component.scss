@@ -1,1 +1,331 @@
-@use '../consolidaciones/consolidaciones.component';
+/* Mismos piñones de gestion-riesgo (prefijo gr- -> ga-): DIGEI engranado con
+   Gestión Ambiental, con la geometría y el tamaño de digei. Por ahora solo van
+   los dos piñones (sin panal). */
+:host {
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  flex: 1 1 auto;
+  align-self: stretch;
+  background: #020203 url('../../../../assets/images/imagen_fondo_cuerpo_gestion_ambiental_01.png') center / 100% 100% no-repeat;
+}
+
+/* El componente administra su propio fondo desde :host, igual que digei,
+   inicio, construcciones-mantenimientos y gestion-riesgo. Aquí solo va el contenido, sin
+   ningún fondo encima. */
+.gestion-ambiental {
+  box-sizing: border-box;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  padding: clamp(18px, 2vw, 30px);
+  color: #fff;
+  background: none;
+}
+
+/* Contenedor transparente del cuerpo, con los piñones a la izquierda. */
+.gestion-ambiental__cuerpo {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(10px, 2.4vw, 54px);
+  background: none;
+}
+
+/* =====================================================================
+   Piñones. Valores tomados del componente digei sin alterarlo (los
+   mismos de gestion-riesgo):
+     anillo DIGEI   = --digei-d-central     230 ud, horario, 60 s
+     anillo Ambiental = --digei-d-satelite 181.13 ud, antihorario, 48 s
+     distancia entre centros = --digei-radio 196 ud
+     fase de engrane = 7deg, la misma de los seis satélites
+   La relación 181,13/230 = 78,75 % es la que hace que 30 y 24 dientes
+   del mismo paso engranen.
+   ===================================================================== */
+
+.ga-escena {
+  /* Unidad común. A 1024 px vale 1 px, así que el piñón DIGEI mide
+     230 px y el de Gestión Ambiental 181 px. */
+  --ga-u: clamp(.55px, .0977vw, 1.18px);
+
+  --ga-d-digei: 230;
+  --ga-d-gestion-ambiental: 181.13;
+  --ga-radio: 196;
+  /* Tapa el piñón interno y queda a ras del círculo dorado del medio:
+     el mismo valor de .digei-escena. */
+  --ga-contenido-digei: 150.35;
+  /* Medallón que cubre la banda púrpura del anillo: el mismo valor de
+     .digei-pinon[data-posicion="izquierda"], que es el piñón de Gestión
+     Ambiental en digei (su PNG dibuja el aro dorado con 228,59 px de radio,
+     por eso es mayor que los 150 de Gestión del Riesgo). */
+  --ga-contenido-gestion-ambiental: 153.54;
+  --ga-giro-digei: 60s;
+  --ga-giro-gestion-ambiental: 48s;
+
+  /* Dirección de Gestión Ambiental respecto a DIGEI: 60 grados
+     abajo-derecha, la misma composición de gestion-riesgo. */
+  --ga-fx: .5;
+  --ga-fy: .8660254;
+
+  position: relative;
+  flex: 0 0 auto;
+  /* El centro del piñón DIGEI se alinea con el centro de la opción DIGEI
+     del menú superior (19,437 % del ancho de la ventana), igual que en
+     gestion-riesgo. Se descuenta el padding del cuerpo y el
+     radio del piñón (115 ud). */
+  margin-left: max(0px, calc(19.437vw - clamp(18px, 2vw, 30px) - var(--ga-u) * 115));
+  /* Caja justa del par: 303,6 x 375,3 ud. */
+  width: calc(var(--ga-u) * 303.6);
+  height: calc(var(--ga-u) * 375.3);
+}
+
+.ga-engranajes {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---- Piñón: tres capas -------------------------------------------
+   1. .ga-pinon           contenedor de posición, NO gira
+   2. .ga-pinon__rotor    anillo dentado, gira
+   3. .ga-pinon__medallon ilustración, hermana del rotor, fija
+   ------------------------------------------------------------------ */
+
+.ga-pinon {
+  position: absolute;
+  /* La posición usa left/top y márgenes negativos, nunca transform, para
+     que el giro del rotor no pueda sobrescribirla. */
+  width: var(--ga-d);
+  height: var(--ga-d);
+  margin-left: calc(var(--ga-d) / -2);
+  margin-top: calc(var(--ga-d) / -2);
+}
+
+.ga-pinon__rotor {
+  position: absolute;
+  inset: 0;
+  /* El dibujo no está centrado en su PNG: se corrige el eje de giro
+     para que el anillo no bascule al rotar. */
+  transform-origin:
+    calc(50% + var(--ga-u) * var(--ga-rotor-x, 0))
+    calc(50% + var(--ga-u) * var(--ga-rotor-y, 0));
+  will-change: transform;
+}
+
+.ga-pinon__anillo,
+.ga-pinon__medallon-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: center / contain no-repeat;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Mismo patrón que .cm-pinon__medallon: el centrado se hace con left/top
+   al 50 % y márgenes negativos de media caja, NUNCA con transform, para
+   que el scale del zoom (que va en la imagen interior) no desplace el
+   centro. backface-visibility promueve el medallón a su propia capa y
+   evita el temblor de subpíxel en el centro. */
+.ga-pinon__medallon {
+  position: absolute;
+  top: calc(50% + var(--ga-u) * var(--ga-contenido-y, 0)
+    + var(--ga-contenido-ajuste-y, 0px));
+  left: calc(50% + var(--ga-u) * var(--ga-contenido-x, 0)
+    + var(--ga-contenido-ajuste-x, 0px));
+  z-index: 2;
+  display: block;
+  width: var(--ga-contenido);
+  height: var(--ga-contenido);
+  margin-left: calc(var(--ga-contenido) / -2);
+  margin-top: calc(var(--ga-contenido) / -2);
+  line-height: 0;
+  image-rendering: auto;
+  backface-visibility: hidden;
+}
+
+/* ---- Piñón DIGEI --------------------------------------------------- */
+
+.ga-pinon--digei {
+  --ga-d: calc(var(--ga-u) * var(--ga-d-digei));
+  /* Ajuste fino a ojo copiado de digei: +0,4 mm de diámetro y bajada de
+     0,2 mm tapan la línea negra que asomaba a las 06:00. */
+  --ga-contenido: calc(var(--ga-u) * var(--ga-contenido-digei) + .4mm);
+  --ga-contenido-ajuste-y: .2mm;
+  /* El círculo dorado del medio NO es concéntrico con los dientes; mismos
+     valores que .digei-pinon--central y .cm-pinon--digei. */
+  --ga-rotor-x: -.072;
+  --ga-rotor-y: -.095;
+  --ga-ajuste-x: .072;
+  --ga-ajuste-y: .095;
+  --ga-contenido-x: .118;
+  --ga-contenido-y: -.285;
+
+  left: calc(var(--ga-u) * (115 + var(--ga-ajuste-x)));
+  top: calc(var(--ga-u) * (115 + var(--ga-ajuste-y)));
+  z-index: 1;
+}
+
+.ga-pinon--digei .ga-pinon__rotor {
+  animation: ga-giro-horario var(--ga-giro-digei) linear infinite;
+}
+
+.ga-pinon--digei .ga-pinon__anillo {
+  background-image: url('../../../../assets/images/imagen_anillo_pinon_central_01.png');
+}
+
+/* Copia interior trasladada (0,46 ; 6,34) px de 482: lleva el centro del
+   dorado al de los dientes. Igual que .cm-pinon--digei .cm-pinon__anillo--interior. */
+.ga-pinon--digei .ga-pinon__anillo--interior {
+  position: absolute;
+  inset: 0;
+  transform: translate(.0954%, 1.3154%);
+  mask: radial-gradient(ellipse 50% 50% at 49.873% 48.643%, #000 68.9%, transparent 75.5%);
+  -webkit-mask: radial-gradient(ellipse 50% 50% at 49.873% 48.643%, #000 68.9%, transparent 75.5%);
+}
+
+.ga-pinon--digei .ga-pinon__medallon-img {
+  background-image: url('../../../../assets/images/imagen_circulo_proceso_digei_01.png');
+}
+
+/* ---- Piñón Gestión Ambiental --------------------------------------- */
+
+.ga-pinon--gestion-ambiental {
+  --ga-d: calc(var(--ga-u) * var(--ga-d-gestion-ambiental));
+  /* Mismo aumento del medallón que en gestion-riesgo
+     (6,9 ud), para que escale con el resto. */
+  --ga-contenido: calc(var(--ga-u) * (var(--ga-contenido-gestion-ambiental) + 6.9));
+  /* Eje del anillo externo en el centro de sus dientes (engrane exacto);
+     mismos valores que .digei-pinon--satelite y .cm-pinon--construcciones. */
+  --ga-rotor-x: -.038;
+  --ga-rotor-y: .169;
+  --ga-ajuste-x: .038;
+  --ga-ajuste-y: -.169;
+  --ga-contenido-x: -.038;
+  --ga-contenido-y: .169;
+  /* Fase de engrane: la misma de los seis satélites de digei. */
+  --ga-fase: 7deg;
+
+  left: calc(var(--ga-u) * (115 + var(--ga-radio) * var(--ga-fx) + var(--ga-ajuste-x)));
+  top: calc(var(--ga-u) * (115 + var(--ga-radio) * var(--ga-fy) + var(--ga-ajuste-y)));
+  z-index: 2;
+}
+
+.ga-pinon--gestion-ambiental .ga-pinon__rotor {
+  animation: ga-giro-antihorario var(--ga-giro-gestion-ambiental) linear infinite;
+}
+
+.ga-pinon--gestion-ambiental .ga-pinon__anillo {
+  background-image: url('../../../../assets/images/imagen_anillo_pinon_externo_01.png');
+}
+
+/* Copia interior trasladada (0,17 ; 1,55) px de 482: lleva el centro de
+   la banda púrpura al de los dientes. Igual que en gestion-riesgo. */
+.ga-pinon--gestion-ambiental .ga-pinon__anillo--interior {
+  position: absolute;
+  inset: 0;
+  transform: translate(.0353%, .3216%);
+  mask: radial-gradient(ellipse 50% 50% at 49.944% 49.772%, #000 85.27%, transparent 87.97%);
+  -webkit-mask: radial-gradient(ellipse 50% 50% at 49.944% 49.772%, #000 85.27%, transparent 87.97%);
+}
+
+.ga-pinon--gestion-ambiental .ga-pinon__medallon-img {
+  background-image: url('../../../../assets/images/imagen_circulo_gestion_ambiental_01.png');
+}
+
+/* ---- Enlace y zoom del medallón DIGEI ------------------------------ */
+
+.ga-pinon__medallon--enlace {
+  cursor: pointer;
+  border-radius: 50%;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ga-pinon__medallon--enlace .ga-pinon__medallon-img {
+  transform: scale(1);
+  transform-origin: center;
+  transition: transform .26s cubic-bezier(.2, .75, .25, 1);
+}
+
+.ga-pinon__medallon--enlace:hover .ga-pinon__medallon-img,
+.ga-pinon__medallon--enlace:focus-visible .ga-pinon__medallon-img {
+  /* Mismo zoom de gestion-riesgo: 1,46 tapa por igual todo
+     el contorno de la circunferencia dorada, que no es redonda. */
+  transform: scale(1.46);
+}
+
+.ga-pinon__medallon--enlace:focus-visible {
+  outline: 2px solid #fff3a8;
+  outline-offset: 3px;
+}
+
+/* =====================================================================
+   Animación. Mismas curvas y sentidos que digei; los nombres son propios
+   porque los @keyframes de los otros componentes no se cargan aquí.
+   ===================================================================== */
+
+@keyframes ga-giro-horario {
+  from { transform: rotate(var(--ga-fase, 0deg)); }
+  to { transform: rotate(calc(var(--ga-fase, 0deg) + 360deg)); }
+}
+
+@keyframes ga-giro-antihorario {
+  from { transform: rotate(var(--ga-fase, 0deg)); }
+  to { transform: rotate(calc(var(--ga-fase, 0deg) - 360deg)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ga-pinon__rotor {
+    animation: none;
+    transform: rotate(var(--ga-fase, 0deg));
+  }
+
+  .ga-pinon__medallon--enlace .ga-pinon__medallon-img {
+    transition: none;
+  }
+}
+
+/* =====================================================================
+   Responsive. Mismos tamaños de piñón que gestion-riesgo (los de digei en
+   pantalla pequeña); por debajo de 900px los piñones se centran.
+   ===================================================================== */
+
+@media (max-width: 900px) {
+  .gestion-ambiental__cuerpo {
+    align-content: center;
+    justify-content: center;
+    padding-block: clamp(8px, 1.5vw, 20px);
+  }
+
+  .ga-escena {
+    margin-left: 0;
+    /* Piñones del tamaño de digei en pantalla pequeña (allí la unidad vale
+       0,847px), nunca por debajo del mínimo de .55px. */
+    --ga-u: max(.55px, min(.847px, calc((100vw - 36px) / 303.6)));
+  }
+}
+
+@media (max-width: 600px) {
+  .gestion-ambiental {
+    padding: 14px 12px;
+  }
+
+  /* Como digei en celular (unidad = escena x 0,0980392 % x 1,52). */
+  .ga-escena {
+    --ga-u: max(.55px, calc((100vw - 36px) * .0014902));
+  }
+}
+
+/* Digei reduce su relleno lateral a 10px por debajo de 520px. */
+@media (max-width: 520px) {
+  .ga-escena {
+    --ga-u: max(.55px, calc((100vw - 20px) * .0014902));
+  }
+}

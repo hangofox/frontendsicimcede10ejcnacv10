@@ -28,6 +28,8 @@ public class ParametrosSistemaDTO {
     private String rutaDestinoArchivosFotografiasAnexasSolicInfraest;
     private String rutaDestinoArchivosFotografiasAnexasApoyosAtencPrevEmergDesast;
     private String rutaDestinoArchivosIntegrantesApoyosAtencPrevEmergDesast;
+    private String rutaDestinoArchivosFotografiasAnexasApoyosObrRedMitigGestRiesgDesast;
+    private String rutaDestinoArchivosIntegrantesApoyosObrRedMitigGestRiesgDesast;
     private String authEnable;
     private String startTTLSEnable;
     private String smtpHost;

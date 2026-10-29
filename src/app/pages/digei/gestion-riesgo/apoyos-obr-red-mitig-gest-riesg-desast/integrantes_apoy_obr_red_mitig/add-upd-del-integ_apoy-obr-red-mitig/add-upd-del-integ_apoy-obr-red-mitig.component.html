@@ -1,0 +1,117 @@
+<div class="modal-formulario">
+  @if (modo === 'eliminar') {
+    <div class="alerta-eliminar">Esta acción eliminará el registro de integrantes del apoyo y sus firmas. ¿Desea continuar?</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="enviar()">
+    <datalist id="grados-siath-integrantes-apoyo">
+      @for (grado of gradosSiath; track grado) {
+        <option [value]="grado"></option>
+      }
+    </datalist>
+
+    @for (integrante of integrantes; track integrante.tipo) {
+      <div class="form-seccion">
+        <div class="seccion-titulo">{{ integrante.titulo }}</div>
+        <div class="integrante-contenido">
+          <div class="form-grid">
+            <div class="form-group"><label>Grado</label><input [formControlName]="'grado' + integrante.sufijo" list="grados-siath-integrantes-apoyo" placeholder="Ej. MY"></div>
+            <div class="form-group"><label>Nombres</label><input [formControlName]="'nombres' + integrante.sufijo" placeholder="Ej. OSCAR IVAN"></div>
+            <div class="form-group"><label>Primer apellido</label><input [formControlName]="'primerApellido' + integrante.sufijo" placeholder="Ej. TRUJILLO"></div>
+            <div class="form-group"><label>Segundo apellido</label><input [formControlName]="'segundoApellido' + integrante.sufijo" placeholder="Ej. MORA"></div>
+            <div class="form-group form-group-ancho">
+              <label>Cargo</label>
+              <div class="cargo-fila">
+                <input [formControlName]="'cargo' + integrante.sufijo" [placeholder]="'Ej. ' + cargoSugerido(integrante)">
+                @if (modo !== 'eliminar') {
+                  <button type="button" class="btn-quitar" (click)="usarCargoSugerido(integrante)" [title]="'Usar ' + cargoSugerido(integrante)">Sugerido</button>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- FIRMA DEL INTEGRANTE -->
+          @if (firmas[integrante.tipo]; as firma) {
+            <div class="firma-bloque" [class.firma-bloque--cambio]="firma.archivoSeleccionado || firma.eliminada">
+              <div class="firma-titulo">Firma (*.jpg, *.gif, *.png, *.bmp — máximo 2 MB)</div>
+              <div class="firma-previa">
+                @if (firma.previewUrl) {
+                  <img [src]="firma.previewUrl" [alt]="'Firma del ' + integrante.titulo">
+                } @else {
+                  <span class="firma-vacia">
+                    @if (firma.eliminada) { Se quitará al guardar }
+                    @else if (firma.noEncontrada) { Archivo no encontrado en el servidor }
+                    @else if (firma.nombreArchivo) { Cargando... }
+                    @else { Sin firma }
+                  </span>
+                }
+              </div>
+              @if (firma.mensajeError) {
+                <div class="alerta-error-foto">{{ firma.mensajeError }}</div>
+              }
+              @if (modo !== 'eliminar') {
+                <div class="foto-upload-controles">
+                  @if (!firma.archivoSeleccionado) {
+                    <label class="btn-archivo">
+                      <input type="file" accept="image/*" (change)="onSeleccionarFirma(integrante, $event)" style="display:none">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                      {{ firma.nombreArchivo && !firma.eliminada ? 'Cambiar firma' : 'Seleccionar archivo' }}
+                    </label>
+                  } @else {
+                    <button type="button" class="btn-quitar" (click)="onQuitarFirmaSeleccionada(integrante)">Quitar</button>
+                  }
+                  @if (!firma.archivoSeleccionado && firma.nombreArchivo && !firma.eliminada) {
+                    <button type="button" class="btn-quitar" (click)="confirmarQuitarFirma(integrante)">Quitar firma</button>
+                  }
+                </div>
+              }
+              <span class="foto-nombre">
+                @if (firma.archivoSeleccionado) { {{ firma.archivoSeleccionado.name }} (nueva) }
+                @else if (firma.nombreArchivo && !firma.eliminada) { {{ firma.nombreArchivo }} }
+              </span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (modo !== 'eliminar' && form.errors?.['integranteIncompleto']) {
+      <div class="alerta-error-foto">Diligencie los nombres y el primer apellido de cada integrante que tenga datos.</div>
+    }
+    @if (modo !== 'eliminar' && form.errors?.['sinIntegrantes']) {
+      <div class="ayuda-texto">Registre al menos un integrante con sus nombres y su primer apellido.</div>
+    }
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>
+      @if (modo === 'eliminar') {
+        <button type="button" class="btn-titulo-sistema btn-peligro" (click)="confirmar()">Eliminar</button>
+      } @else {
+        <button type="submit" class="btn-titulo-sistema btn-primario" [disabled]="form.invalid">{{ modo === 'modificar' ? 'Modificar' : 'Guardar' }}</button>
+      }
+    </div>
+  </form>
+</div>
+
+<!-- CONFIRMACIÓN PARA QUITAR UNA FIRMA GUARDADA -->
+@if (integrantePorQuitarFirma) {
+  <div class="confirmacion-overlay">
+    <div class="confirmacion-caja">
+      <div class="confirmacion-icono">
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <h4 class="confirmacion-titulo">Confirmación de eliminación</h4>
+      <p class="confirmacion-mensaje">¿Está seguro de que desea quitar la firma del {{ integrantePorQuitarFirma.titulo | lowercase }}? El archivo se borrará al guardar.</p>
+      <div class="confirmacion-botones">
+        <button type="button" class="btn-confirmacion btn-si" (click)="siQuitarFirma()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Sí, quitar
+        </button>
+        <button type="button" class="btn-confirmacion btn-no" (click)="noQuitarFirma()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          No, cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+}

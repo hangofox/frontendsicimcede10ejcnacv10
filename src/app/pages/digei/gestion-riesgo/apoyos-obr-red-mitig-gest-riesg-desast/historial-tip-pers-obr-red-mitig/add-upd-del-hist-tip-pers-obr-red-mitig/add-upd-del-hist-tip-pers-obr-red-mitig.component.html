@@ -1,0 +1,34 @@
+<div class="modal-formulario">
+  @if (modo === 'eliminar') {
+    <div class="alerta-eliminar">Esta acción eliminará el registro del historial de tipos de personal del apoyo. ¿Desea continuar?</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="enviar()">
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos del tipo de personal del apoyo</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Número de registro</label><input formControlName="registro" placeholder="Asignado automáticamente"></div>
+        <div class="form-group">
+          <label>Tipo de personal (*)</label>
+          <select formControlName="tipoPersonalApoyoSeleccionado">
+            <option value="">-- Seleccione --</option>
+            @for (tipo of tiposPersonalApoyos; track tipo.idTipoPersonalApoyo) {
+              <option [value]="tipo.idTipoPersonalApoyo">{{ tipo.nombreTipoPersonalApoyo }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group"><label>Cantidad de personal (*)</label><input type="number" min="1" formControlName="cantidad" placeholder="Ej. 25"></div>
+        <div class="form-group"><label>Nombre de la especialidad (*)</label><input type="text" maxlength="150" formControlName="especialidad" placeholder="Ej. INGENIERO CIVIL"></div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>
+      @if (modo === 'eliminar') {
+        <button type="button" class="btn-titulo-sistema btn-peligro" (click)="confirmar()">Eliminar</button>
+      } @else {
+        <button type="submit" class="btn-titulo-sistema btn-primario" [disabled]="form.invalid">{{ modo === 'modificar' ? 'Modificar' : 'Guardar' }}</button>
+      }
+    </div>
+  </form>
+</div>

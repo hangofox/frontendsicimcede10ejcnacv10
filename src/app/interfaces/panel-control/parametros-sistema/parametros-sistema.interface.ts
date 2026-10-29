@@ -14,6 +14,8 @@ export interface ParametrosSistemaI {
     rutaDestinoArchivosFotografiasAnexasSolicInfraest: String;
     rutaDestinoArchivosFotografiasAnexasApoyosAtencPrevEmergDesast: String;
     rutaDestinoArchivosIntegrantesApoyosAtencPrevEmergDesast: String;
+    rutaDestinoArchivosFotografiasAnexasApoyosObrRedMitigGestRiesgDesast: String;
+    rutaDestinoArchivosIntegrantesApoyosObrRedMitigGestRiesgDesast: String;
     authEnable: String;//EL BACKEND LO DECLARA COMO String (NO boolean) EN ParametrosSistemaDTO.
     startTTLSEnable: String;//EL BACKEND LO DECLARA COMO String (NO boolean) EN ParametrosSistemaDTO.
     smtpHost: String;//ESPECÍFICA LA DIRECCIÓN DEL SERVIDOR SMTP AL QUE SE CONECTARÁ PARA ENVIAR LOS CORREOS ELECTRÓNICOS.

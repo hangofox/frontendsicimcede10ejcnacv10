@@ -1,0 +1,319 @@
+<h2 class="page-title">Informes de Apoyos en Obras, Reducción y Mitigación de Riesgos y Desastres</h2>
+<!-- SEMÁFORO CON EL TOTAL DE REGISTROS FILTRADOS (LOS APOYOS NO TIENEN ESTADO, POR ESO SOLO SE MUESTRA EL TOTAL) -->
+<app-semaforo-contadores [total]="totalRegistros" />
+
+<section class="page-card panel-apoyos-obr-red-mitig-gest-riesg-desast" [formGroup]="apoyosObrRedMitigGestRiesgDesastForm" aria-labelledby="titulo-apoyos-obr-red-mitig-gest-riesg-desast">
+
+  <!-- BARRA DE BÚSQUEDA Y ACCIONES -->
+  <div class="barra-acciones">
+    <input
+      type="text"
+      formControlName="ctextPalabraClave"
+      placeholder="Buscar por código radicado, ciudad o sigla o acrónimo de la unidad militar..."
+      (keyup.enter)="buscar()">
+
+    <button type="button" class="btn-titulo-sistema btn-buscar" (click)="buscar()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Buscar
+    </button>
+
+    <select formControlName="cboxSiglaoAcronimoUnidadMilitarSeleccionado" (change)="buscar()">
+      <option value="">TODAS LAS UNIDADES MILITARES</option>
+      @for (unidadMilitar of unidadesMilitares | ordenarPorSigla; track unidadMilitar.idUnidadMilitar) {
+        <option [value]="unidadMilitar.siglaoAcronimoUnidadMilitar">{{ unidadMilitar.siglaoAcronimoUnidadMilitar }}</option>
+      }
+    </select>
+
+
+    <button type="button" class="btn-titulo-sistema btn-nuevo" (click)="abrirModalAddUpdDel('guardar')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Nuevo Informe de Apoyo
+    </button>
+  </div>
+
+  <!-- TABLA -->
+  <div class="tabla-contenedor">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Código radicado</th>
+          <th>Unidad militar</th>
+          <th>Entidad solicitante</th>
+          <th>Tipo de emergencia o desastre que genera la obra</th>
+          <th>Población beneficiada</th>
+          <th>Fecha de iniciación</th>
+          <th>Fecha de finalización</th>
+          <th>Tipos de personal de apoyo</th>
+          <th>Equipos de transportes</th>
+          <th>Maquinarias pesadas</th>
+          <th>Controles de avances de la obra</th>
+          <th>Fotografías anexas</th>
+          <th>Integrantes de apoyos</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (apoyoObrRedMitigGestRiesgDesast of apoyosObrRedMitigGestRiesgDesast; track apoyoObrRedMitigGestRiesgDesast.idApoyoObrRedMitigGestRiesgDesast; let i = $index) {
+          <tr>
+            <td>{{ i + 1 + (paginaActual * tandaNumeroRegistrosporPagina) }}</td>
+            <td>{{ apoyoObrRedMitigGestRiesgDesast.codigoRadicadoApoyoObrRedMitigGestRiesgDesast }}</td>
+            <td>{{ apoyoObrRedMitigGestRiesgDesast.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</td>
+            <td>{{ apoyoObrRedMitigGestRiesgDesast.nombreEntidadInstitucionalSolicApoyoObrRedMitigGestRiesgDesast }}</td>
+            <td>{{ apoyoObrRedMitigGestRiesgDesast.tipoEmDesastGenObrApoyoObrRedMitigGestRiesgDesastDTO.nombreTipoEmDesastGenObrApoyoObrRedMitigGestRiesgDesast }}</td>
+            <td>{{ apoyoObrRedMitigGestRiesgDesast.numeroPobBenefApoyoObrRedMitigGestRiesgDesast }}</td>
+            <td>{{ formatearFecha(apoyoObrRedMitigGestRiesgDesast.fechaHMSIniciacionApoyoObrRedMitigGestRiesgDesast) }}</td>
+            <td>{{ formatearFecha(apoyoObrRedMitigGestRiesgDesast.fechaHMSFinalizacionApoyoObrRedMitigGestRiesgDesast) }}</td>
+            <!-- REGISTROS ASOCIADOS AL APOYO: "NO" SI NO TIENE, CHULO VERDE SI TIENE (EN FOTOGRAFÍAS, CON LA CANTIDAD) Y "..." MIENTRAS SE CUENTAN -->
+            @for (columna of [
+              { cantidad: cantidadAsociada(cantidadTiposPersonalPorApoyo, apoyoObrRedMitigGestRiesgDesast), mostrarCantidad: true, titulo: 'tipos de personal de apoyos en obras, reducción y mitigación de riesgos y desastres' },
+              { cantidad: cantidadAsociada(cantidadEquiposTransportesPorApoyo, apoyoObrRedMitigGestRiesgDesast), mostrarCantidad: true, titulo: 'equipos de transportes' },
+              { cantidad: cantidadAsociada(cantidadMaquinariasPesadasPorApoyo, apoyoObrRedMitigGestRiesgDesast), mostrarCantidad: true, titulo: 'maquinarias pesadas' },
+              { cantidad: cantidadAsociada(cantidadControlesAvancesPorApoyo, apoyoObrRedMitigGestRiesgDesast), mostrarCantidad: true, titulo: 'controles de avances de la obra' },
+              { cantidad: cantidadAsociada(cantidadFotografiasAnexasPorApoyo, apoyoObrRedMitigGestRiesgDesast), mostrarCantidad: true, titulo: 'fotografías anexas' },
+              { cantidad: cantidadAsociada(cantidadIntegrantesPorApoyo, apoyoObrRedMitigGestRiesgDesast), mostrarCantidad: true, titulo: 'integrantes registrados' }
+            ]; track columna.titulo) {
+              <td class="celda-asociados">
+                @if (columna.cantidad === null) {
+                  <span class="asociados-cargando" title="Contando...">...</span>
+                } @else if (columna.cantidad > 0) {
+                  <span class="asociados-si" [title]="columna.cantidad + ' ' + columna.titulo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                    @if (columna.mostrarCantidad) { <span class="asociados-cantidad">{{ columna.cantidad }}</span> }
+                  </span>
+                } @else {
+                  <span class="asociados-no" [title]="'Sin ' + columna.titulo">NO</span>
+                }
+              </td>
+            }
+            <td>
+              <div class="acciones-celda">
+                <button type="button" class="btn-accion btn-ver" title="Ver" (click)="abrirModalVista(apoyoObrRedMitigGestRiesgDesast)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+
+                <button type="button" class="btn-accion btn-editar" title="Modificar" (click)="abrirModalAddUpdDel('modificar', apoyoObrRedMitigGestRiesgDesast)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+
+                <button type="button" class="btn-accion btn-eliminar" title="Eliminar" (click)="abrirModalAddUpdDel('eliminar', apoyoObrRedMitigGestRiesgDesast)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                </button>
+
+                <button type="button" class="btn-accion btn-tipos-personal" title="Historial de tipos de personal del apoyo" (click)="abrirModalTiposPersonal(apoyoObrRedMitigGestRiesgDesast)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="8" r="2"/><circle cx="19" cy="8" r="2"/><path d="M9 21v-6l1-5h4l1 5v6"/><path d="M2 21v-5l1-3h4"/><path d="M22 21v-5l-1-3h-4"/></svg>
+                </button>
+
+                <button type="button" class="btn-accion btn-equipos-transportes" title="Historial de equipos de transportes del apoyo" (click)="abrirModalEquiposTransportes(apoyoObrRedMitigGestRiesgDesast)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="14" height="10" rx="1"/><path d="M15 9h4l3 3v4h-7"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+                </button>
+
+                <button type="button" class="btn-accion btn-maquinarias-pesadas" title="Historial de maquinarias pesadas de apoyos" (click)="abrirModalMaquinariasPesadas(apoyoObrRedMitigGestRiesgDesast)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17h12v-5H9l-2-4H4v9"/><path d="M14 12l3-6 5 3-2 4"/><path d="M20 13l1 3h-3"/><rect x="2" y="17" width="12" height="4" rx="2"/></svg>
+                </button>
+
+                <button type="button" class="btn-accion btn-controles-avances" title="Historial de controles de avances de la obra" (click)="abrirModalControlesAvances(apoyoObrRedMitigGestRiesgDesast)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </button>
+
+                <button type="button" class="btn-accion btn-fotografias-anexas" title="Fotografias Anexas del Apoyo" (click)="abrirModalFotografiasAnexas(apoyoObrRedMitigGestRiesgDesast)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                </button>
+
+                <button type="button" class="btn-accion btn-integrantes" title="Integrantes del apoyo" (click)="abrirModalIntegrantes(apoyoObrRedMitigGestRiesgDesast)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="15" class="tabla-vacia">No se encontraron informes de apoyos en obras, reducción y mitigación de riesgos y desastres con los filtros aplicados.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PAGINACIÓN -->
+  <div class="paginacion">
+    <div class="paginacion-info">
+      <span>Registros por página:</span>
+      <select formControlName="cboxTandaNumeroRegistrosporPaginaSeleccionado" (change)="seleccionarTandaNumeroRegistrosporPagina()">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+      <span class="paginacion-total">{{ totalRegistros }} informes de apoyos en total</span>
+    </div>
+    <div class="paginacion-controles">
+      <button type="button" class="btn-pag" [disabled]="paginaActual === 0" (click)="cambiarPagina(paginaActual - 1)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <span class="paginacion-texto">{{ paginaActual + 1 }} / {{ calcularTotalPaginas() }}</span>
+      <button type="button" class="btn-pag" [disabled]="paginaActual >= calcularTotalPaginas() - 1" (click)="cambiarPagina(paginaActual + 1)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+</section>
+
+<!-- MODAL: CREAR / MODIFICAR / ELIMINAR -->
+@if (modalAddUpdDelVisible) {
+  <div class="modal-overlay" (click)="cerrarModalAddUpdDel()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>
+          @if (modalModo === 'guardar') { Nuevo informe de apoyo en obras, reducción y mitigación de riesgos y desastres }
+          @if (modalModo === 'modificar') { Modificación de informe de apoyo en obras, reducción y mitigación de riesgos y desastres }
+          @if (modalModo === 'eliminar') { Eliminación de informe de apoyo en obras, reducción y mitigación de riesgos y desastres }
+        </h3>
+        <button type="button" class="modal-cerrar" (click)="cerrarModalAddUpdDel()" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-cuerpo">
+        <app-add-upd-del-apoyo-obr-red-mitig-gest-riesg-desast
+          [modo]="modalModo"
+          [apoyoObrRedMitigGestRiesgDesastData]="apoyoObrRedMitigGestRiesgDesastSeleccionado"
+          [unidadesMilitares]="unidadesMilitares"
+          [tiposEntidadesInstitucionales]="tiposEntidadesInstitucionales"
+          [tiposEmDesastGenObrApoyoObrRedMitigGestRiesgDesast]="tiposEmDesastGenObrApoyoObrRedMitigGestRiesgDesast"
+          [paisesMundo]="paisesMundo"
+          [departamentosoEstadosMundo]="departamentosoEstadosMundo"
+          (cerrarModal)="cerrarModalAddUpdDel()"
+          (guardar)="guardarApoyoObrRedMitigGestRiesgDesast($event)"
+          (eliminar)="eliminarApoyoObrRedMitigGestRiesgDesast($event)">
+        </app-add-upd-del-apoyo-obr-red-mitig-gest-riesg-desast>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL: VISTA -->
+@if (modalVistaVisible) {
+  <div class="modal-overlay" (click)="cerrarModalVista()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Detalle del informe de apoyo en obras, reducción y mitigación de riesgos y desastres</h3>
+        <button type="button" class="modal-cerrar" (click)="cerrarModalVista()" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-cuerpo">
+        <app-vista-apoyo-obr-red-mitig-gest-riesg-desast [apoyoObrRedMitigGestRiesgDesastData]="apoyoObrRedMitigGestRiesgDesastSeleccionado" (cerrarModal)="cerrarModalVista()"></app-vista-apoyo-obr-red-mitig-gest-riesg-desast>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL: HISTORIAL DE TIPOS DE PERSONAL DE APOYOS DEL APOYO -->
+@if (modalTiposPersonalVisible) {
+  <div class="modal-overlay" (click)="cerrarModalTiposPersonal()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Tipos de personal de apoyos</h3>
+        <button type="button" class="modal-cerrar" (click)="cerrarModalTiposPersonal()" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-cuerpo">
+        <app-listado-hist-tip-pers-obr-red-mitig [apoyoObrRedMitigGestRiesgDesast]="apoyoObrRedMitigGestRiesgDesastParaTiposPersonal"></app-listado-hist-tip-pers-obr-red-mitig>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL: HISTORIAL DE EQUIPOS DE TRANSPORTES DEL APOYO -->
+@if (modalEquiposTransportesVisible) {
+  <div class="modal-overlay" (click)="cerrarModalEquiposTransportes()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Historial de equipos de transportes del apoyo</h3>
+        <button type="button" class="modal-cerrar" (click)="cerrarModalEquiposTransportes()" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-cuerpo">
+        <app-listado-hist-eq_tr-obr-red-mitig [apoyoObrRedMitigGestRiesgDesast]="apoyoObrRedMitigGestRiesgDesastParaEquiposTransportes"></app-listado-hist-eq_tr-obr-red-mitig>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL: HISTORIAL DE MAQUINARIAS PESADAS DEL APOYO -->
+@if (modalMaquinariasPesadasVisible) {
+  <div class="modal-overlay" (click)="cerrarModalMaquinariasPesadas()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Historial de maquinarias pesadas de apoyos</h3>
+        <button type="button" class="modal-cerrar" (click)="cerrarModalMaquinariasPesadas()" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-cuerpo">
+        <app-listado-hist-maq-pesad-obr-red-mitig [apoyoObrRedMitigGestRiesgDesast]="apoyoObrRedMitigGestRiesgDesastParaMaquinariasPesadas"></app-listado-hist-maq-pesad-obr-red-mitig>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL: HISTORIAL DE CONTROLES DE AVANCES DE LA OBRA DEL APOYO -->
+@if (modalControlesAvancesVisible) {
+  <div class="modal-overlay" (click)="cerrarModalControlesAvances()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Historial de controles de avances de la obra</h3>
+        <button type="button" class="modal-cerrar" (click)="cerrarModalControlesAvances()" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-cuerpo">
+        <app-listado-hist-ctr-avanc-obr-red-mitig [apoyoObrRedMitigGestRiesgDesast]="apoyoObrRedMitigGestRiesgDesastParaControlesAvances"></app-listado-hist-ctr-avanc-obr-red-mitig>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL: FOTOGRAFÍAS ANEXAS DEL APOYO -->
+@if (modalFotografiasAnexasVisible) {
+  <div class="modal-overlay" (click)="cerrarModalFotografiasAnexas()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Fotografias Anexas del Apoyo</h3>
+        <button type="button" class="modal-cerrar" (click)="cerrarModalFotografiasAnexas()" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-cuerpo">
+        <app-fot-anex-apoy-obr-red-mitig-gest-des [apoyoObrRedMitigGestRiesgDesast]="apoyoObrRedMitigGestRiesgDesastParaFotografiasAnexas"></app-fot-anex-apoy-obr-red-mitig-gest-des>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL: INTEGRANTES DEL APOYO -->
+@if (modalIntegrantesVisible) {
+  <div class="modal-overlay" (click)="cerrarModalIntegrantes()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Integrantes del apoyo en obras, reducción y mitigación de riesgos y desastres</h3>
+        <button type="button" class="modal-cerrar" (click)="cerrarModalIntegrantes()" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-cuerpo">
+        <app-listado-integ-apoy-obr-red-mitig [apoyoObrRedMitigGestRiesgDesast]="apoyoObrRedMitigGestRiesgDesastParaIntegrantes"></app-listado-integ-apoy-obr-red-mitig>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- TOAST -->
+@if (toastMensaje) {
+  <div class="toast-global" [class.toast-exito]="toastTipo === 'exito'" [class.toast-error]="toastTipo === 'error'">
+    <span>{{ toastMensaje }}</span>
+  </div>
+}

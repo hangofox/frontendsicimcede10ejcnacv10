@@ -386,7 +386,9 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
           { etiqueta: 'Documentación anexa de solicitudes de construcción y mantenimiento', ruta: parametrosSistemaDTO.rutaDestinoArchivosDocumentacionAnexaSolicInfraest },
           { etiqueta: 'Fotografías anexas de solicitudes de construcción y mantenimiento', ruta: parametrosSistemaDTO.rutaDestinoArchivosFotografiasAnexasSolicInfraest },
           { etiqueta: 'Fotografías anexas de apoyos en atención y prevención de emergencias y desastres', ruta: parametrosSistemaDTO.rutaDestinoArchivosFotografiasAnexasApoyosAtencPrevEmergDesast },
-          { etiqueta: 'Integrantes de apoyos en atención y prevención de emergencias y desastres', ruta: parametrosSistemaDTO.rutaDestinoArchivosIntegrantesApoyosAtencPrevEmergDesast }
+          { etiqueta: 'Integrantes de apoyos en atención y prevención de emergencias y desastres', ruta: parametrosSistemaDTO.rutaDestinoArchivosIntegrantesApoyosAtencPrevEmergDesast },
+          { etiqueta: 'Fotografías anexas de apoyos en obras, reducción y mitigación de riesgos y desastres', ruta: parametrosSistemaDTO.rutaDestinoArchivosFotografiasAnexasApoyosObrRedMitigGestRiesgDesast },
+          { etiqueta: 'Integrantes de apoyos en obras, reducción y mitigación de riesgos y desastres', ruta: parametrosSistemaDTO.rutaDestinoArchivosIntegrantesApoyosObrRedMitigGestRiesgDesast }
         ];
         const sincronizados = subcarpetas
           .filter(({ ruta }) => String(ruta || '').trim())
