@@ -1,0 +1,38 @@
+@use '../../../../../panel-control/historial-integrantes-documentos/listado-historial-integrantes-documentos/listado-historial-integrantes-documentos.component';
+
+.acciones-celda { display: flex; align-items: center; gap: 5px; }
+.btn-accion { width: 30px; height: 30px; padding: 0; overflow: visible; }
+.btn-accion svg { display: block; width: 14px; height: 14px; overflow: visible; }
+
+//EL NOMBRE DEL DOCUMENTO PUEDE SER LARGO (HASTA 250 CARACTERES), POR ESO SE DEJA PARTIR EN VARIAS LÍNEAS:
+.celda-nombre { white-space: normal !important; min-width: 240px; }
+
+//BOTÓN CON EL NOMBRE DEL ARCHIVO QUE LO ABRE EN OTRA PESTAÑA:
+.btn-archivo-tabla {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border: 1px solid var(--sicim-border);
+  border-radius: 4px;
+  background: var(--sicim-white);
+  color: #1d4ed8;
+  font-size: 12px;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { border-color: #1d4ed8; background: #eff6ff; }
+  &:disabled { opacity: .5; cursor: not-allowed; }
+}
+
+.sin-archivo { color: var(--sicim-gray); font-size: 12px; }
+
+.solicitud-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--sicim-gray);
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--sicim-soft);
+}

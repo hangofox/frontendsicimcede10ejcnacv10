@@ -61,7 +61,18 @@ export const routes: Routes = [
               { path: 'apoyos-obr-red-mitig-gest-riesg-desast', redirectTo: 'apoyos-obr-red-mitig-gest-riesg-desast/listado-apoyos-obr-red-mitig-gest-riesg-desast', pathMatch: 'full' }
             ]
           },
-          { path: 'gestion-ambiental', loadComponent: () => import('./pages/digei/gestion-ambiental/gestion-ambiental.component').then(m => m.GestionAmbientalComponent), title: 'Gestión ambiental | SICIM' },
+          {
+            //SOLICITUDES DE OBRAS NUEVAS DE SANEAMIENTO BÁSICO (Y SUS AVALES) SON SUBMODULOS DE GESTIÓN AMBIENTAL, TANTO EN CARPETAS COMO EN
+            //NAVEGACION.
+            path: 'gestion-ambiental',
+            children: [
+              { path: '', loadComponent: () => import('./pages/digei/gestion-ambiental/gestion-ambiental.component').then(m => m.GestionAmbientalComponent), title: 'Gestión ambiental | SICIM' },
+              { path: 'solicitudes-obras-nuevas-san-bas/listado-solicitudes-obras-nuevas-san-bas', loadComponent: () => import('./pages/digei/gestion-ambiental/solicitudes-obras-nuevas-san-bas/listado-solicitudes-obras-nuevas-san-bas/listado-solicitudes-obras-nuevas-san-bas.component').then(m => m.ListadoSolicitudesObrasNuevasSaneamientosBasicosComponent), title: 'Solicitudes de obras nuevas de saneamiento básico | SICIM' },
+              { path: 'solicitudes-obras-nuevas-san-bas', redirectTo: 'solicitudes-obras-nuevas-san-bas/listado-solicitudes-obras-nuevas-san-bas', pathMatch: 'full' },
+              { path: 'solicitudes-obras-nuevas-san-bas-av/listado-solicitudes-obras-nuevas-san-bas-av', loadComponent: () => import('./pages/digei/gestion-ambiental/solicitudes-obras-nuevas-san-bas-av/listado-solicitudes-obras-nuevas-san-bas-av/listado-solicitudes-obras-nuevas-san-bas-av.component').then(m => m.ListadoSolicitudesObrasNuevasSaneamientosBasicosAvaladosComponent), title: 'Avales de obras nuevas de saneamiento básico | SICIM' },
+              { path: 'solicitudes-obras-nuevas-san-bas-av', redirectTo: 'solicitudes-obras-nuevas-san-bas-av/listado-solicitudes-obras-nuevas-san-bas-av', pathMatch: 'full' }
+            ]
+          },
           { path: 'geomatica-topografia', loadComponent: () => import('./pages/digei/geomatica-topografia/geomatica-topografia.component').then(m => m.GeomaticaTopografiaComponent), title: 'Geomática y topografía | SICIM' },
           {
             //INFRAESTRUCTURAS ES UN SUBMODULO DE FINCA RAIZ, TANTO EN CARPETAS COMO EN NAVEGACION.

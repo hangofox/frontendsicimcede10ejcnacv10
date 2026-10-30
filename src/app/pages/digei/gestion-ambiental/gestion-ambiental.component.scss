@@ -1,6 +1,6 @@
 /* Mismos piñones de gestion-riesgo (prefijo gr- -> ga-): DIGEI engranado con
-   Gestión Ambiental, con la geometría y el tamaño de digei. Por ahora solo van
-   los dos piñones (sin panal). */
+   Gestión Ambiental, con la geometría y el tamaño de digei, y a su derecha el
+   panal de ocho hexágonos de gestion-riesgo. */
 :host {
   display: flex;
   width: 100%;
@@ -24,7 +24,7 @@
   background: none;
 }
 
-/* Contenedor transparente del cuerpo, con los piñones a la izquierda. */
+/* Contenedor transparente del cuerpo: piñones a la izquierda y panal a la derecha. */
 .gestion-ambiental__cuerpo {
   box-sizing: border-box;
   position: relative;
@@ -267,6 +267,161 @@
 }
 
 /* =====================================================================
+   Panal de ocho ranuras 3-3-2 (referencia
+   imagen_gestion_ambiental_futurista_01.png). Mismas medidas que
+   .gr-panal de gestion-riesgo (tamaño de pieza, solape y
+   separaciones), pero con siete medias columnas: la fila 1 ocupa las
+   columnas 1-2, 3-4 y 5-6; la fila 2 las 2-3, 4-5 y 6-7, y la fila 3 las
+   3-4 y 5-6, de modo que cada fila queda corrida exactamente medio
+   hexagono a la derecha de la anterior.
+   ===================================================================== */
+
+.ga-panal {
+  /* Tamaño de pieza de gestion-riesgo, pero sin pasar del
+     espacio que queda a la derecha de los piñones: el panal mide 3,5 piezas
+     de ancho y la escena de piñones ocupa ~37,9vw (ver .ga-escena), así que
+     cada pieza no puede pasar de (62,1vw - rellenos - separación) / 3,5. */
+  --ga-ranura: clamp(100px, min(20vw, 25dvh, calc(17vw - 14px)), 240px);
+  /* Los hexagonos miden 272x300, asi que su alto no es igual al ancho. */
+  --ga-alto: calc(var(--ga-ranura) * 300 / 272);
+  /* Mismo solape proporcional de gestion-riesgo. */
+  --ga-solape: calc(var(--ga-alto) * -.237);
+  /* Mismas separaciones de gestion-riesgo (1 mm vertical y
+     0,3 mm entre medias columnas con piezas de 235 px), proporcionales a la pieza. */
+  --ga-sep-y: calc(var(--ga-ranura) * .016083);
+  --ga-sep-x: calc(var(--ga-ranura) * .004825);
+
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  margin-inline: auto;
+  width: calc(var(--ga-ranura) * 3.5 + var(--ga-sep-x) * 6);
+  /* Fila 1 completa + filas 2 y 3 subidas un 23,7 % cada una (más la
+     separación vertical de cada fila). */
+  height: calc(var(--ga-alto) * (1 + 2 * (1 - .237)) + var(--ga-sep-y) * 2);
+  display: grid;
+  grid-template-columns: repeat(7, calc(var(--ga-ranura) / 2));
+  justify-content: center;
+  align-content: center;
+  column-gap: var(--ga-sep-x);
+}
+
+.ga-ranura {
+  box-sizing: border-box;
+  width: var(--ga-ranura);
+  /* Proporcion nativa del PNG: no se deforma. */
+  aspect-ratio: 272 / 300;
+  align-self: start;
+  display: block;
+  margin: 0;
+  background: none;
+}
+
+.ga-ranura__pieza {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: center / contain no-repeat;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.ga-ranura--solicitudes-obras-nuevas-saneamientos-basicos .ga-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_solicitudes_obras_nuevas_saneamientos_basicos_01.png');
+}
+
+.ga-ranura--avales-mantenimientos-saneamientos-basicos .ga-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_avales_solicitudes_mantenimientos_saneamientos_basicos_01.png');
+}
+
+.ga-ranura--educacion-ambiental .ga-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_educacion_ambiental_01.png');
+}
+
+.ga-ranura--solicitudes-mantenimientos-saneamientos-basicos .ga-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_solicitudes_mantenimientos_saneamientos_basicos_01.png');
+}
+
+.ga-ranura--avales-obras-nuevas-saneamientos-basicos .ga-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_avales_solicitudes_obras_nuevas_saneamientos_basicos_01.png');
+}
+
+.ga-ranura--tramites-ambientales .ga-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_tramites_ambientales_01.png');
+}
+
+.ga-ranura--estadisticas .ga-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_estadisticas_gestion_ambiental_01.png');
+}
+
+.ga-ranura--dashboard .ga-ranura__pieza {
+  background-image: url('../../../../assets/images/imagen_hexagono_dashboard_gestion_ambiental_01.png');
+}
+
+/* Fila 1 */
+.ga-ranura--solicitudes-obras-nuevas-saneamientos-basicos {
+  grid-area: 1 / 1 / 2 / 3;
+}
+
+.ga-ranura--avales-obras-nuevas-saneamientos-basicos {
+  grid-area: 1 / 3 / 2 / 5;
+}
+
+.ga-ranura--educacion-ambiental {
+  grid-area: 1 / 5 / 2 / 7;
+}
+
+/* Fila 2: medio hexagono a la derecha de la fila 1, con la misma separacion
+   vertical de gestion-riesgo (solape + --ga-sep-y). */
+.ga-ranura--solicitudes-mantenimientos-saneamientos-basicos {
+  grid-area: 2 / 2 / 3 / 4;
+  margin-top: calc(var(--ga-solape) + var(--ga-sep-y));
+}
+
+.ga-ranura--avales-mantenimientos-saneamientos-basicos {
+  grid-area: 2 / 4 / 3 / 6;
+  margin-top: calc(var(--ga-solape) + var(--ga-sep-y));
+}
+
+.ga-ranura--tramites-ambientales {
+  grid-area: 2 / 6 / 3 / 8;
+  margin-top: calc(var(--ga-solape) + var(--ga-sep-y));
+}
+
+/* Fila 3: otro medio hexagono a la derecha, bajo los huecos de la fila 2. */
+.ga-ranura--estadisticas {
+  grid-area: 3 / 3 / 4 / 5;
+  margin-top: calc(var(--ga-solape) + var(--ga-sep-y));
+}
+
+.ga-ranura--dashboard {
+  grid-area: 3 / 5 / 4 / 7;
+  margin-top: calc(var(--ga-solape) + var(--ga-sep-y));
+}
+
+/* Zoom igual que gestion-riesgo: lo llevan las ocho piezas, aunque todavía ninguna navega. */
+.ga-ranura__pieza {
+  transition: transform .24s cubic-bezier(.2, .75, .25, 1), filter .24s ease;
+}
+
+.ga-ranura__pieza:hover,
+.ga-ranura__pieza--enlace:focus-visible {
+  transform: scale(1.06);
+  filter: brightness(1.08) drop-shadow(0 0 10px rgb(255 190 25 / 45%));
+}
+
+/* El cursor de mano y el foco de teclado son solo de las que navegan: las
+   demas se realzan, pero no llevan a ningun sitio y no deben aparentar que
+   si. Igual que gestion-riesgo. */
+.ga-ranura__pieza--enlace {
+  cursor: pointer;
+}
+
+.ga-ranura__pieza--enlace:focus-visible {
+  outline: 2px solid #fff3a8;
+  outline-offset: 2px;
+}
+
+/* =====================================================================
    Animación. Mismas curvas y sentidos que digei; los nombres son propios
    porque los @keyframes de los otros componentes no se cargan aquí.
    ===================================================================== */
@@ -287,14 +442,21 @@
     transform: rotate(var(--ga-fase, 0deg));
   }
 
-  .ga-pinon__medallon--enlace .ga-pinon__medallon-img {
+  .ga-pinon__medallon--enlace .ga-pinon__medallon-img,
+  .ga-ranura__pieza {
     transition: none;
+  }
+
+  .ga-ranura__pieza:hover,
+  .ga-ranura__pieza--enlace:focus-visible {
+    transform: none;
   }
 }
 
 /* =====================================================================
    Responsive. Mismos tamaños de piñón que gestion-riesgo (los de digei en
-   pantalla pequeña); por debajo de 900px los piñones se centran.
+   pantalla pequeña). Por debajo de 900px el panal de 3,5 piezas ya no cabe al
+   lado de los piñones: baja completo, centrado, y conserva su composición.
    ===================================================================== */
 
 @media (max-width: 900px) {
@@ -309,6 +471,13 @@
     /* Piñones del tamaño de digei en pantalla pequeña (allí la unidad vale
        0,847px), nunca por debajo del mínimo de .55px. */
     --ga-u: max(.55px, min(.847px, calc((100vw - 36px) / 303.6)));
+  }
+
+  /* El panal baja debajo de los piñones: cada pieza toma el ancho disponible
+     entre 3,5 (sin pasar del tamaño de gestion-riesgo en este rango ni bajar
+     de 70px). */
+  .ga-panal {
+    --ga-ranura: clamp(70px, calc((100vw - 36px) / 3.6), calc(clamp(104px, 22vw, 176px) * .92));
   }
 }
 

@@ -1,0 +1,19 @@
+@if (data; as x) {
+  <div class="vista-historial">
+    <h3>{{ x.gradoGerenteProyectoSolicInfraest }} {{ x.nombresGerenteProyectoSolicInfraest }} {{ x.primerApellidoGerenteProyectoSolicInfraest }} {{ x.segundoApellidoGerenteProyectoSolicInfraest }}</h3>
+    <div class="vista-seccion">
+      <div class="datos-grid">
+        <div class="dato-grupo"><span class="dato-label">Solicitud</span><span>{{ x.solicitudInfraestructuraDTO.codigoRadicadoSolicitudInfraestructura }} — {{ x.solicitudInfraestructuraDTO.nombreSolicitudInfraestructura }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Unidad militar de la solicitud</span><span>{{ x.solicitudInfraestructuraDTO.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Grado</span><span>{{ x.gradoGerenteProyectoSolicInfraest || '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Nombres</span><span>{{ x.nombresGerenteProyectoSolicInfraest || '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Apellidos</span><span>{{ x.primerApellidoGerenteProyectoSolicInfraest }} {{ x.segundoApellidoGerenteProyectoSolicInfraest }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Móvil</span><span>{{ x.movilGerenteProyectoSolicInfraest || '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Cargo actual</span><span>{{ x.cargoActualGerenteProyectoSolicInfraest || '-' }}</span></div>
+      </div>
+    </div>
+    <div class="vista-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cerrar</button>
+    </div>
+  </div>
+}
