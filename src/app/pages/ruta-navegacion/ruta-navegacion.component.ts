@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, afterNextRender, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
@@ -22,22 +22,6 @@ const PALABRAS_MENORES = new Set(['a', 'al', 'con', 'de', 'del', 'e', 'el', 'en'
 })
 export class RutaNavegacionComponent {
   private readonly router = inject(Router);
-  private readonly elemento = inject<ElementRef<HTMLElement>>(ElementRef);
-
-  constructor() {
-    //PUBLICA EN EL CONTENEDOR PADRE (.contenido DE index) EL ALTO REAL DE LA RUTA EN --ruta-navegacion-alto. EN LAS PÁGINAS DE
-    //ENTRADA DE LOS MÓDULOS LA RUTA VA SUPERPUESTA SOBRE EL FONDO E index BAJA LOS PIÑONES Y PANALES ESE ALTO; ASÍ, AUNQUE EN UN
-    //CELULAR ESTRECHO LOS NIVELES PASEN A DOS LÍNEAS, LA RUTA NUNCA QUEDA ENCIMA DE ELLOS.
-    const destruccion = inject(DestroyRef);
-    afterNextRender(() => {
-      const anfitrion = this.elemento.nativeElement;
-      const observador = new ResizeObserver(() => {
-        anfitrion.parentElement?.style.setProperty('--ruta-navegacion-alto', `${Math.ceil(anfitrion.getBoundingClientRect().height)}px`);
-      });
-      observador.observe(anfitrion);
-      destruccion.onDestroy(() => observador.disconnect());
-    });
-  }
 
   /** Niveles de la ruta activa, recalculados en cada navegación. Se siembra
       con la actual porque el primer NavigationEnd ya ha ocurrido cuando este
@@ -51,11 +35,12 @@ export class RutaNavegacionComponent {
     { initialValue: [] as NivelRutaNavegacion[] }
   );
 
-  /** Solo se muestra dentro de DIGEI y a partir del segundo nivel: en la
-      propia página de DIGEI un único eslabón sin enlace no aporta nada. */
+  /** Solo se muestra dentro de DIGEI y a partir del tercer nivel, es decir,
+      en los listados (DIGEI » Módulo » Listado). En DIGEI y en las páginas de
+      entrada de los módulos (Gestión del Riesgo, Finca Raíz...) no aparece. */
   readonly visible = computed(() => {
     const niveles = this.niveles();
-    return niveles.length >= 2 && niveles[0].enlace === '/digei';
+    return niveles.length >= 3 && niveles[0].enlace === '/digei';
   });
 
   /** Recorre la rama activa de rutas y genera un nivel por cada ruta que

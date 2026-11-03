@@ -279,11 +279,7 @@
    ===================================================================== */
 
 .options-cluster {
-  /* Mismo tamaño de pieza de .gr-panal de gestion-riesgo: limitado también
-     por el alto de la ventana (25dvh), para que el panal no crezca más que
-     los de los demás módulos y los piñones y panales queden a la misma
-     altura en todos. */
-  --gt-ranura: clamp(100px, min(20vw, 25dvh, calc(17vw - 14px)), 240px);
+  --gt-ranura: clamp(124px, 21vw, 240px);
   /* Proporción de los marcos hexagonales del proyecto (272 x 300). */
   --gt-alto: calc(var(--gt-ranura) * 300 / 272);
   /* 23,7 % del alto: con las columnas pegadas es el solape que deja los
