@@ -42,8 +42,95 @@
   background: #020203;
 }
 
+//RUTA DE NAVEGACIÓN (DIGEI » MÓDULO » PÁGINA): SOLO OCUPA ESPACIO CUANDO SE MUESTRA (DENTRO DE DIGEI, DESDE EL SEGUNDO NIVEL).
+//EN LOS LISTADOS QUEDA DENTRO DEL MARGEN SUPERIOR DE .contenido Y DEJA UNA SEPARACIÓN AMPLIA CON LO QUE SIGUE DEBAJO. EL MARGEN
+//IZQUIERDO NEGATIVO ANULA EL DE .contenido Y LA DEJA A --ruta-navegacion-izquierda DEL BORDE DE LA VENTANA: LA MISMA MEDIDA DEL MARCO
+//DORADO DEL MENÚ SUPERIOR (--marco: 8 PX, 7 PX DESDE 1100 PX), ASÍ SU BORDE OVALADO QUEDA COMPLETO Y ALINEADO CON EL BORDE DEL MENÚ.
+.contenido > app-ruta-navegacion {
+  flex: 0 0 auto;
+}
+
+//EL MARGEN SUPERIOR NEGATIVO LA SUBE HASTA --ruta-navegacion-arriba BAJO EL MENÚ, LA MISMA ALTURA QUE EN LAS PÁGINAS DE ENTRADA DE LOS
+//MÓDULOS, ASÍ LA RUTA QUEDA A LA MISMA ALTURA EN TODOS LOS COMPONENTES.
+.contenido > app-ruta-navegacion:has(nav) {
+  margin-top: calc(var(--ruta-navegacion-arriba) - clamp(22px, 3.5vw, 48px));
+  margin-left: calc(var(--ruta-navegacion-izquierda) - clamp(14px, 3.5vw, 56px));
+  margin-bottom: clamp(22px, 3vw, 40px);
+}
+
+//EN LAS PÁGINAS DE ENTRADA DE LOS MÓDULOS (.contenido SIN MARGEN Y FONDO OSCURO) EL FONDO DEL MÓDULO SIGUE ARRANCANDO PEGADO AL
+//MENÚ SUPERIOR: LA RUTA SE SUPERPONE ARRIBA A LA IZQUIERDA SOBRE ESE FONDO Y EL MÓDULO RECIBE UN MARGEN INTERNO SUPERIOR (QUE QUEDA
+//DENTRO DE SU PROPIO FONDO) IGUAL AL ALTO DE LA RUTA MÁS UNA SEPARACIÓN. ESO BAJA LOS PANALES Y PIÑONES LO SUFICIENTE PARA QUE NI
+//SIQUIERA EL ZOOM DE UN HEXÁGONO DE LA FILA SUPERIOR (scale 1.06) SE CRUCE CON LOS ENLACES. EN ESTAS PÁGINAS LA RUTA TIENE SOLO DOS
+//NIVELES (DIGEI » MÓDULO); --ruta-navegacion-alto ARRANCA EN 46 PX (UNA LÍNEA) Y EL COMPONENTE DE LA RUTA LO ACTUALIZA CON SU ALTO
+//REAL, POR SI EN UN CELULAR ESTRECHO PASA A DOS LÍNEAS.
+.contenido {
+  --ruta-navegacion-izquierda: 8px;
+  --ruta-navegacion-arriba: clamp(14px, 2vw, 24px);
+  --ruta-navegacion-alto: 46px;
+  --ruta-navegacion-separacion: clamp(18px, 2.6vw, 34px);
+}
+
+.contenido:has(> app-finca-raiz),
+.contenido:has(> app-geomatica-topografia),
+.contenido:has(> app-construcciones-mantenimientos),
+.contenido:has(> app-gestion-riesgo),
+.contenido:has(> app-gestion-ambiental) {
+  position: relative;
+}
+
+.contenido:has(> app-finca-raiz) > app-ruta-navegacion:has(nav),
+.contenido:has(> app-geomatica-topografia) > app-ruta-navegacion:has(nav),
+.contenido:has(> app-construcciones-mantenimientos) > app-ruta-navegacion:has(nav),
+.contenido:has(> app-gestion-riesgo) > app-ruta-navegacion:has(nav),
+.contenido:has(> app-gestion-ambiental) > app-ruta-navegacion:has(nav) {
+  position: absolute;
+  top: var(--ruta-navegacion-arriba);
+  left: var(--ruta-navegacion-izquierda);
+  right: 0;
+  z-index: 2;
+  width: auto;
+  margin: 0;
+  padding-right: clamp(14px, 3.5vw, 56px);
+}
+
+.contenido:has(> app-ruta-navegacion nav) ::ng-deep > app-finca-raiz,
+.contenido:has(> app-ruta-navegacion nav) ::ng-deep > app-geomatica-topografia,
+.contenido:has(> app-ruta-navegacion nav) ::ng-deep > app-construcciones-mantenimientos,
+.contenido:has(> app-ruta-navegacion nav) ::ng-deep > app-gestion-riesgo,
+.contenido:has(> app-ruta-navegacion nav) ::ng-deep > app-gestion-ambiental {
+  box-sizing: border-box;
+  padding-top: calc(var(--ruta-navegacion-arriba) + var(--ruta-navegacion-alto) + var(--ruta-navegacion-separacion));
+}
+
+@media (max-width: 1100px) {
+  .contenido {
+    --ruta-navegacion-izquierda: 7px;
+  }
+}
+
 @media (max-width: 600px) {
   .contenido {
     padding: 22px 12px;
+  }
+
+  .contenido > app-ruta-navegacion:has(nav) {
+    margin-top: calc(var(--ruta-navegacion-arriba) - 22px);
+    margin-left: calc(var(--ruta-navegacion-izquierda) - 12px);
+    margin-bottom: 22px;
+  }
+
+  .contenido {
+    --ruta-navegacion-arriba: 14px;
+    --ruta-navegacion-separacion: 26px;
+  }
+
+  .contenido:has(> app-finca-raiz) > app-ruta-navegacion:has(nav),
+  .contenido:has(> app-geomatica-topografia) > app-ruta-navegacion:has(nav),
+  .contenido:has(> app-construcciones-mantenimientos) > app-ruta-navegacion:has(nav),
+  .contenido:has(> app-gestion-riesgo) > app-ruta-navegacion:has(nav),
+  .contenido:has(> app-gestion-ambiental) > app-ruta-navegacion:has(nav) {
+    margin: 0;
+    padding-right: 12px;
   }
 }

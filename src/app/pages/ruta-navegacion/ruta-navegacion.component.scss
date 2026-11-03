@@ -1,0 +1,97 @@
+/* Ruta de navegación (DIGEI » Módulo » Página). Va en index, debajo del menú
+   superior y encima del contenido. Es una cápsula oscura con borde dorado
+   para que contraste igual sobre los fondos oscuros de los módulos que
+   sobre los listados de fondo blanco. Queda alineada con el borde
+   del menú superior (index le da la misma separación de su marco dorado),
+   así el borde ovalado se ve completo en las dos puntas. */
+:host {
+  display: block;
+  width: 100%;
+}
+
+.ruta-navegacion {
+  box-sizing: border-box;
+  display: inline-block;
+  max-width: 100%;
+  padding: 8px 16px;
+  border: 1px solid rgba(232, 193, 92, .6);
+  border-radius: 14px;
+  background: rgba(8, 16, 28, .9);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .35);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.ruta-navegacion__lista {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ruta-navegacion__nivel {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ruta-navegacion__enlace {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 4px;
+  border-radius: 6px;
+  color: #ffd56b;
+  font-weight: 600;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: color .15s ease, background-color .15s ease;
+
+  &:hover {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #ffd56b;
+    outline-offset: 1px;
+  }
+}
+
+.ruta-navegacion__separador {
+  padding: 0 8px;
+  color: #9fb4cc;
+  font-weight: 700;
+}
+
+.ruta-navegacion__actual {
+  padding: 0 4px;
+  color: #fff;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+/* CELULARES: LETRA Y CÁPSULA MÁS COMPACTAS; LOS NIVELES PASAN A LA LÍNEA
+   SIGUIENTE CUANDO NO CABEN Y LOS TÍTULOS LARGOS SE PARTEN EN VARIAS LÍNEAS
+   SIN DESBORDAR LA PANTALLA. LOS ENLACES CONSERVAN 32 PX DE ALTO PARA EL DEDO. */
+@media (max-width: 600px) {
+  .ruta-navegacion {
+    display: block;
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 12.5px;
+  }
+
+  .ruta-navegacion__enlace {
+    min-height: 32px;
+  }
+
+  .ruta-navegacion__separador {
+    padding: 0 5px;
+  }
+}

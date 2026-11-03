@@ -4,11 +4,12 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { CabezoteComponent } from '../cabezote/cabezote.component';
 import { MenuPrincipalHorizontalSuperiorComponent } from '../menu-principal-horizontal-superior/menu-principal-horizontal-superior.component';
+import { RutaNavegacionComponent } from '../ruta-navegacion/ruta-navegacion.component';
 
 @Component({
   selector: 'app-index',
   standalone: true,
-  imports: [RouterOutlet, CabezoteComponent, MenuPrincipalHorizontalSuperiorComponent],
+  imports: [RouterOutlet, CabezoteComponent, MenuPrincipalHorizontalSuperiorComponent, RutaNavegacionComponent],
   templateUrl: './index.component.html',
   styleUrl: './index.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

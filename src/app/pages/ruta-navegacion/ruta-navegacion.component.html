@@ -1,0 +1,16 @@
+@if (visible()) {
+  <nav class="ruta-navegacion" aria-label="Ruta de navegación">
+    <ol class="ruta-navegacion__lista">
+      @for (nivel of niveles(); track nivel.enlace; let ultimo = $last) {
+        <li class="ruta-navegacion__nivel">
+          @if (ultimo) {
+            <span class="ruta-navegacion__actual" aria-current="page">{{ nivel.etiqueta }}</span>
+          } @else {
+            <a class="ruta-navegacion__enlace" [routerLink]="nivel.enlace">{{ nivel.etiqueta }}</a>
+            <span class="ruta-navegacion__separador" aria-hidden="true">»</span>
+          }
+        </li>
+      }
+    </ol>
+  </nav>
+}
