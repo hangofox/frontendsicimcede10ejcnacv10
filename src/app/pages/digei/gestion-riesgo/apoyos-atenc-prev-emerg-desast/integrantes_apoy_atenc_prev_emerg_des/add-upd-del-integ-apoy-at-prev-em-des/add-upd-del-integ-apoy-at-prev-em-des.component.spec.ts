@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { AddUpdDelIntegApoyAtencPrevEmergDesastComponent } from './add-upd-del-integ_apoy-atenc-prev-emerg-desast.component';
+import { AddUpdDelIntegApoyAtencPrevEmergDesastComponent } from './add-upd-del-integ-apoy-at-prev-em-des.component';
 
 describe('AddUpdDelIntegApoyAtencPrevEmergDesastComponent', () => {
   it('debe crearse', async () => {

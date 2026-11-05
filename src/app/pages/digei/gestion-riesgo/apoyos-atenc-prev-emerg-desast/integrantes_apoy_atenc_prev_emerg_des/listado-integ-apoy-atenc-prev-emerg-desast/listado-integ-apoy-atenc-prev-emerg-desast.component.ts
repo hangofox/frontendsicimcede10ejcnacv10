@@ -18,7 +18,7 @@ import {
   INTEGRANTES_APOYO,
   integranteRegistrado,
   nombreArchivoFirmaIntegrante
-} from '../add-upd-del-integ_apoy-atenc-prev-emerg-desast/add-upd-del-integ_apoy-atenc-prev-emerg-desast.component';
+} from '../add-upd-del-integ-apoy-at-prev-em-des/add-upd-del-integ-apoy-at-prev-em-des.component';
 import { VistaIntegApoyAtencPrevEmergDesastComponent } from '../vista-integ-apoy-atenc-prev-emerg-desast/vista-integ-apoy-atenc-prev-emerg-desast.component';
 
 @Component({

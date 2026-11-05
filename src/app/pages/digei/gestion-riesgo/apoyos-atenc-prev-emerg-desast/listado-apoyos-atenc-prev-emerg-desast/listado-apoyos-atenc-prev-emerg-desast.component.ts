@@ -35,7 +35,7 @@ import { FotAnexApoyAtencPrevEmergDesComponent } from '../fot-anex-apoy-atenc-pr
 import { ListadoIntegApoyAtencPrevEmergDesastComponent } from '../integrantes_apoy_atenc_prev_emerg_des/listado-integ-apoy-atenc-prev-emerg-desast/listado-integ-apoy-atenc-prev-emerg-desast.component';
 import { ListadoHistMaqPesadApoyAtencPrevDesComponent } from '../historial-maq-pesad-apoy-at-prev-des/listado-hist-maq-pesad-apoy-at-prev-des/listado-hist-maq-pesad-apoy-at-prev-des.component';
 import { ListadoHistTipPersApoyAtencPrevDesComponent } from '../historial-tip-pers-apoy-at-prev-des/listado-hist-tip-pers-apoy-at-prev-des/listado-hist-tip-pers-apoy-at-prev-des.component';
-import { cantidadIntegrantesRegistrados } from '../integrantes_apoy_atenc_prev_emerg_des/add-upd-del-integ_apoy-atenc-prev-emerg-desast/add-upd-del-integ_apoy-atenc-prev-emerg-desast.component';
+import { cantidadIntegrantesRegistrados } from '../integrantes_apoy_atenc_prev_emerg_des/add-upd-del-integ-apoy-at-prev-em-des/add-upd-del-integ-apoy-at-prev-em-des.component';
 import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 import { OrdenarPorSiglaPipe } from '../../../../../shared/pipes/ordenar-por-sigla.pipe';
 

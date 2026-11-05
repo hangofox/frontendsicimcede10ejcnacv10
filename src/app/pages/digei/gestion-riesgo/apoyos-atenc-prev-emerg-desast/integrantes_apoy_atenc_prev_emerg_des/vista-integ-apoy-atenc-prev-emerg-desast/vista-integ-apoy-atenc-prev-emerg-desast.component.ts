@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { IntegrantesApoyosAtencPrevEmergDesastI } from '../../../../../../interfaces/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/integrantes-apoy-atenc-prev-emerg-des/integrantes-apoy-atenc-prev-emerg-des.interface';
 import { GestionArchivosService } from '../../../../../../services/gestion-archivos/gestion-archivos.service';
-import { ConfiguracionIntegranteApoyo, INTEGRANTES_APOYO, nombreArchivoFirmaIntegrante, TipoIntegranteApoyo } from '../add-upd-del-integ_apoy-atenc-prev-emerg-desast/add-upd-del-integ_apoy-atenc-prev-emerg-desast.component';
+import { ConfiguracionIntegranteApoyo, INTEGRANTES_APOYO, nombreArchivoFirmaIntegrante, TipoIntegranteApoyo } from '../add-upd-del-integ-apoy-at-prev-em-des/add-upd-del-integ-apoy-at-prev-em-des.component';
 
 @Component({
   selector: 'app-vista-integ-apoy-atenc-prev-emerg-desast',

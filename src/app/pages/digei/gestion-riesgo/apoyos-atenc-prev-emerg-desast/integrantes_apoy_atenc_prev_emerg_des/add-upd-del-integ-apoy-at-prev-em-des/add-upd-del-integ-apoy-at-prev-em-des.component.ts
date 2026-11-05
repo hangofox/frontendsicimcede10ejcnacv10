@@ -83,8 +83,8 @@ function validarIntegrantes(control: AbstractControl): ValidationErrors | null {
   selector: 'app-add-upd-del-integ-apoy-atenc-prev-emerg-desast',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './add-upd-del-integ_apoy-atenc-prev-emerg-desast.component.html',
-  styleUrl: './add-upd-del-integ_apoy-atenc-prev-emerg-desast.component.scss'
+  templateUrl: './add-upd-del-integ-apoy-at-prev-em-des.component.html',
+  styleUrl: './add-upd-del-integ-apoy-at-prev-em-des.component.scss'
 })
 export class AddUpdDelIntegApoyAtencPrevEmergDesastComponent implements OnChanges, OnDestroy {
   @Input() modo: 'guardar' | 'modificar' | 'eliminar' = 'guardar';
