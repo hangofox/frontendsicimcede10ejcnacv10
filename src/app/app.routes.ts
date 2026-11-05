@@ -30,13 +30,13 @@ export const routes: Routes = [
             path: 'construcciones-mantenimientos',
             children: [
               { path: '', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/construcciones-mantenimientos.component').then(m => m.ConstruccionesMantenimientosComponent), title: 'Construcciones y mantenimientos | SICIM' },
-              //SOLICITUDES DE CONSTRUCCIONES NUEVAS (TIPO CONSTRUCCION NUEVA DE TABLA_TIPOS_SOLICITUDES_INFRAESTRUCTURAS):
+              //SOLICITUDES DE CONSTRUCCIONES NUEVAS (TIPO CONSTRUCCIÓN OBRA NUEVA DE INFRAESTRUCTURA DE TABLA_TIPOS_SOLICITUDES_INFRAESTRUCTURAS):
               { path: 'solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas.component').then(m => m.ListadoSolicitudesConstruccionesNuevasComponent), title: 'Solicitudes de construcción nueva | SICIM' },
               { path: 'solicitudes-construcciones-nuevas', redirectTo: 'solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas', pathMatch: 'full' },
               //SOLICITUDES DE CONSTRUCCIONES NUEVAS AVALADAS (EN ESTADO ASIGNACION, APROBACION O RECHAZADO):
               { path: 'solicitudes-construcciones-nuevas-avaladas/listado-solic-const-nuev-avaladas', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-construcciones-nuevas-avaladas/listado-solic-const-nuev-avaladas/listado-solic-const-nuev-avaladas.component').then(m => m.ListadoSolicitudesConstruccionesNuevasAvaladasComponent), title: 'Avales de construcción nueva | SICIM' },
               { path: 'solicitudes-construcciones-nuevas-avaladas', redirectTo: 'solicitudes-construcciones-nuevas-avaladas/listado-solic-const-nuev-avaladas', pathMatch: 'full' },
-              //SOLICITUDES DE MANTENIMIENTOS (TIPO MANTENIMIENTO DE TABLA_TIPOS_SOLICITUDES_INFRAESTRUCTURAS):
+              //SOLICITUDES DE MANTENIMIENTOS (TIPO MANTENIMIENTO DE INFRAESTRUCTURA DE TABLA_TIPOS_SOLICITUDES_INFRAESTRUCTURAS):
               { path: 'solicitudes-mantenimientos/listado-solicitudes-mantenimientos', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-mantenimientos/listado-solicitudes-mantenimientos/listado-solicitudes-mantenimientos.component').then(m => m.ListadoSolicitudesMantenimientosComponent), title: 'Solicitudes de mantenimiento | SICIM' },
               { path: 'solicitudes-mantenimientos', redirectTo: 'solicitudes-mantenimientos/listado-solicitudes-mantenimientos', pathMatch: 'full' },
               //SOLICITUDES DE MANTENIMIENTOS AVALADOS (EN ESTADO ASIGNACION, APROBACION O RECHAZADO):
@@ -62,7 +62,7 @@ export const routes: Routes = [
             ]
           },
           {
-            //SOLICITUDES DE OBRAS NUEVAS DE SANEAMIENTO BÁSICO (Y SUS AVALES) SON SUBMODULOS DE GESTIÓN AMBIENTAL, TANTO EN CARPETAS COMO EN
+            //SOLICITUDES DE OBRAS NUEVAS Y DE MANTENIMIENTOS DE SANEAMIENTO BÁSICO (Y SUS AVALES) SON SUBMODULOS DE GESTIÓN AMBIENTAL, TANTO EN CARPETAS COMO EN
             //NAVEGACION.
             path: 'gestion-ambiental',
             children: [
@@ -70,7 +70,13 @@ export const routes: Routes = [
               { path: 'solicitudes-obras-nuevas-san-bas/listado-solicitudes-obras-nuevas-san-bas', loadComponent: () => import('./pages/digei/gestion-ambiental/solicitudes-obras-nuevas-san-bas/listado-solicitudes-obras-nuevas-san-bas/listado-solicitudes-obras-nuevas-san-bas.component').then(m => m.ListadoSolicitudesObrasNuevasSaneamientosBasicosComponent), title: 'Solicitudes de obras nuevas de saneamiento básico | SICIM' },
               { path: 'solicitudes-obras-nuevas-san-bas', redirectTo: 'solicitudes-obras-nuevas-san-bas/listado-solicitudes-obras-nuevas-san-bas', pathMatch: 'full' },
               { path: 'solicitudes-obras-nuevas-san-bas-av/listado-solicitudes-obras-nuevas-san-bas-av', loadComponent: () => import('./pages/digei/gestion-ambiental/solicitudes-obras-nuevas-san-bas-av/listado-solicitudes-obras-nuevas-san-bas-av/listado-solicitudes-obras-nuevas-san-bas-av.component').then(m => m.ListadoSolicitudesObrasNuevasSaneamientosBasicosAvaladosComponent), title: 'Avales de obras nuevas de saneamiento básico | SICIM' },
-              { path: 'solicitudes-obras-nuevas-san-bas-av', redirectTo: 'solicitudes-obras-nuevas-san-bas-av/listado-solicitudes-obras-nuevas-san-bas-av', pathMatch: 'full' }
+              { path: 'solicitudes-obras-nuevas-san-bas-av', redirectTo: 'solicitudes-obras-nuevas-san-bas-av/listado-solicitudes-obras-nuevas-san-bas-av', pathMatch: 'full' },
+              //SOLICITUDES DE MANTENIMIENTOS DE SANEAMIENTO BÁSICO (TIPO MANTENIMIENTO DE SANEAMIENTO BÁSICO DE TABLA_TIPOS_SOLICITUDES_INFRAESTRUCTURAS):
+              { path: 'solicitudes-mantenimientos-san-bas/listado-solicitudes-mantenimientos-san-bas', loadComponent: () => import('./pages/digei/gestion-ambiental/solicitudes-mantenimientos-san-bas/listado-solicitudes-mantenimientos-san-bas/listado-solicitudes-mantenimientos-san-bas.component').then(m => m.ListadoSolicitudesMantenimientosSaneamientosBasicosComponent), title: 'Solicitudes de mantenimientos de saneamiento básico | SICIM' },
+              { path: 'solicitudes-mantenimientos-san-bas', redirectTo: 'solicitudes-mantenimientos-san-bas/listado-solicitudes-mantenimientos-san-bas', pathMatch: 'full' },
+              //SOLICITUDES DE MANTENIMIENTOS DE SANEAMIENTO BÁSICO AVALADOS (EN ESTADO ASIGNACION, APROBACION O RECHAZADO):
+              { path: 'solicitudes-mantenimientos-san-bas-av/listado-solicitudes-mantenimientos-san-bas-av', loadComponent: () => import('./pages/digei/gestion-ambiental/solicitudes-mantenimientos-san-bas-av/listado-solicitudes-mantenimientos-san-bas-av/listado-solicitudes-mantenimientos-san-bas-av.component').then(m => m.ListadoSolicitudesMantenimientosSaneamientosBasicosAvaladosComponent), title: 'Avales de mantenimientos de saneamiento básico | SICIM' },
+              { path: 'solicitudes-mantenimientos-san-bas-av', redirectTo: 'solicitudes-mantenimientos-san-bas-av/listado-solicitudes-mantenimientos-san-bas-av', pathMatch: 'full' }
             ]
           },
           { path: 'geomatica-topografia', loadComponent: () => import('./pages/digei/geomatica-topografia/geomatica-topografia.component').then(m => m.GeomaticaTopografiaComponent), title: 'Geomática y topografía | SICIM' },

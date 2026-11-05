@@ -21,7 +21,7 @@ export class AddUpdDelSolicitudObraNuevaSaneamientoBasicoComponent implements On
   @Input() solicitudInfraestructuraData: SolicitudesInfraestructurasI | null = null;
   @Input() unidadesMilitares: UnidadesMilitaresI[] = [];
   @Input() tiposSolicitudesInfraestructuras: TiposSolicitudesInfraestructurasI[] = [];
-  //TIPO DE SOLICITUD DEL LISTADO QUE ABRE EL FORMULARIO (EJ. OBRA DE SANEAMIENTO BASICO): QUEDA SELECCIONADO POR DEFECTO AL CREAR UNA SOLICITUD:
+  //TIPO DE SOLICITUD DEL LISTADO QUE ABRE EL FORMULARIO (EJ. CONSTRUCCIÓN OBRA NUEVA DE SANEAMIENTO BÁSICO): QUEDA SELECCIONADO POR DEFECTO AL CREAR UNA SOLICITUD:
   @Input() idTipoSolicitudInfraestructuraPorDefecto: number | undefined = undefined;
   @Input() infraestructuras: InfraestructurasI[] = [];
 
@@ -35,7 +35,7 @@ export class AddUpdDelSolicitudObraNuevaSaneamientoBasicoComponent implements On
   get banderaCrudModificar(): boolean { return this.modo === 'modificar'; }
   get banderaCrudEliminar(): boolean { return this.modo === 'eliminar'; }
 
-  //EL COMBO DEL TIPO DE SOLICITUD SOLO OFRECE EL TIPO DEL LISTADO (OBRA DE SANEAMIENTO BASICO); SI AÚN NO SE CONOCE SU ID, NO OFRECE NINGUNO:
+  //EL COMBO DEL TIPO DE SOLICITUD SOLO OFRECE EL TIPO DEL LISTADO (CONSTRUCCIÓN OBRA NUEVA DE SANEAMIENTO BÁSICO); SI AÚN NO SE CONOCE SU ID, NO OFRECE NINGUNO:
   get tiposSolicitudesInfraestructurasPermitidos(): TiposSolicitudesInfraestructurasI[] {
     return this.tiposSolicitudesInfraestructuras.filter(tipo => tipo.idTipoSolicitudInfraestructura === this.idTipoSolicitudInfraestructuraPorDefecto);
   }

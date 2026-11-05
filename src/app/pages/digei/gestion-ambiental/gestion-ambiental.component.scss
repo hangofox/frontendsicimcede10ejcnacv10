@@ -405,8 +405,18 @@
 
 .ga-ranura__pieza:hover,
 .ga-ranura__pieza--enlace:focus-visible {
-  transform: scale(1.06);
+  /* ZOOM AMPLIADO A PEDIDO DE LA DUEÑA DEL SISTEMA (ANTES 1,06; SE PROBÓ 1,3 Y QUEDÓ EXCESIVO), EN PANTALLAS GRANDES Y PEQUEÑAS, PARA QUE
+     EL CONTENIDO DE CADA HEXÁGONO SE VEA MEJOR. */
+  transform: scale(1.13);
   filter: brightness(1.08) drop-shadow(0 0 10px rgb(255 190 25 / 45%));
+}
+
+/* LA RANURA DEL HEXÁGONO AMPLIADO SE PONE POR ENCIMA DE SUS VECINAS PARA QUE
+   EL ZOOM NO QUEDE TAPADO POR LAS PIEZAS QUE VIENEN DESPUÉS EN EL PANAL. */
+.ga-ranura:has(> .ga-ranura__pieza:hover),
+.ga-ranura:has(> .ga-ranura__pieza:focus-visible) {
+  position: relative;
+  z-index: 5;
 }
 
 /* El cursor de mano y el foco de teclado son solo de las que navegan: las

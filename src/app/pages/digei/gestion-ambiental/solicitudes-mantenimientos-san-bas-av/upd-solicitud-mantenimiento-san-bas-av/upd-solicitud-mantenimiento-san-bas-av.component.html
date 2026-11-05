@@ -1,0 +1,114 @@
+<div class="modal-formulario" *ngIf="solicitudesInfraestructurasAvaladasForm">
+
+  <form [formGroup]="solicitudesInfraestructurasAvaladasForm" (ngSubmit)="modificar()">
+
+    <!-- DATOS DE LA SOLICITUD: SOLO DE CONSULTA (DESHABILITADOS) -->
+    <div class="form-seccion">
+      <div class="seccion-titulo">Identificación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Código radicado</label>
+          <input type="text" formControlName="codigoRadicadoSolicitudInfraestructura">
+        </div>
+        <div class="form-group">
+          <label>Unidad militar</label>
+          <input type="text" formControlName="unidadMilitar">
+        </div>
+        <div class="form-group">
+          <label>Tipo de solicitud</label>
+          <input type="text" formControlName="tipoSolicitudInfraestructura">
+        </div>
+        <div class="form-group">
+          <label>Infraestructura asociada</label>
+          <input type="text" formControlName="infraestructura">
+        </div>
+        <div class="form-group">
+          <label>Nombre de la solicitud</label>
+          <input type="text" formControlName="nombreSolicitudInfraestructura">
+        </div>
+        <div class="form-group">
+          <label>Fecha de solicitud</label>
+          <input type="datetime-local" formControlName="fechaHMSSolicitudInfraestructura">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Dependencia</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre de la dependencia</label>
+          <input type="text" formControlName="nombreDependenciaSolicitudInfraestructura">
+        </div>
+        <div class="form-group">
+          <label>N.° de funcionarios</label>
+          <input type="number" formControlName="numeroFuncionariosSolicitudInfraestructura">
+        </div>
+        <div class="form-group">
+          <label>N.° de usuarios</label>
+          <input type="number" formControlName="numeroUsuariosSolicitudInfraestructura">
+        </div>
+      </div>
+    </div>
+
+    <!-- CAMPOS HABILITADOS: OBSERVACIONES, JUSTIFICACIÓN, DESCRIPCIONES Y ESTADO DE LA SOLICITUD AVALADA -->
+    <div class="form-seccion">
+      <div class="seccion-titulo">Observaciones y justificación</div>
+      <div class="form-grid">
+        <div class="form-group form-group-ancho">
+          <label>Observaciones jurídicas del estado del predio</label>
+          <textarea formControlName="observacionesJuridicasEstadoPredioInfraestructura" rows="3" placeholder="Ej. El predio cuenta con escritura pública vigente..."></textarea>
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Observaciones del estado ambiental</label>
+          <textarea formControlName="observacionesEstadoAmbientalInfraestructura" rows="3" placeholder="Ej. No se identifican afectaciones ambientales..."></textarea>
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Justificación de la necesidad</label>
+          <textarea formControlName="justificacionNecesidadInfraestructura" rows="3" placeholder="Ej. Se requiere ampliar la capacidad instalada..."></textarea>
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Descripción general de la necesidad</label>
+          <textarea formControlName="descripcionGeneralNecesidadInfraestructura" rows="3" placeholder="Ej. Descripción detallada de la necesidad..."></textarea>
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Descripción del impacto esperado</label>
+          <textarea formControlName="descripcionImpactoEsperadoInfraestructura" rows="3" placeholder="Ej. Mejora en la capacidad operativa..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Estado de la solicitud</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Estado de la solicitud (*)</label>
+          <select formControlName="estadoSolicitudInfraestructura">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let estado of estadosSolicitudInfraestructuraAvalada" [value]="estado">{{ estado }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos de registro</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Fecha de ingreso</label>
+          <input type="datetime-local" formControlName="fechaHMSIngresoSolicitudInfraestructura">
+        </div>
+        <div class="form-group">
+          <label>Fecha de modificación</label>
+          <input type="datetime-local" formControlName="fechaHMSModificacionSolicitudInfraestructura">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-titulo-sistema btn-primario" [disabled]="solicitudesInfraestructurasAvaladasForm.invalid">Modificar</button>
+    </div>
+
+  </form>
+</div>

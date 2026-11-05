@@ -21,7 +21,7 @@ export class AddUpdDelSolicitudMantenimientoComponent implements OnChanges {
   @Input() solicitudInfraestructuraData: SolicitudesInfraestructurasI | null = null;
   @Input() unidadesMilitares: UnidadesMilitaresI[] = [];
   @Input() tiposSolicitudesInfraestructuras: TiposSolicitudesInfraestructurasI[] = [];
-  //TIPO DE SOLICITUD DEL LISTADO QUE ABRE EL FORMULARIO (EJ. MANTENIMIENTO): QUEDA SELECCIONADO POR DEFECTO AL CREAR UNA SOLICITUD:
+  //TIPO DE SOLICITUD DEL LISTADO QUE ABRE EL FORMULARIO (EJ. MANTENIMIENTO DE INFRAESTRUCTURA): QUEDA SELECCIONADO POR DEFECTO AL CREAR UNA SOLICITUD:
   @Input() idTipoSolicitudInfraestructuraPorDefecto: number | undefined = undefined;
   @Input() infraestructuras: InfraestructurasI[] = [];
 
@@ -35,7 +35,7 @@ export class AddUpdDelSolicitudMantenimientoComponent implements OnChanges {
   get banderaCrudModificar(): boolean { return this.modo === 'modificar'; }
   get banderaCrudEliminar(): boolean { return this.modo === 'eliminar'; }
 
-  //EL COMBO DEL TIPO DE SOLICITUD SOLO OFRECE EL TIPO DEL LISTADO (MANTENIMIENTO); SI AÚN NO SE CONOCE SU ID, NO OFRECE NINGUNO:
+  //EL COMBO DEL TIPO DE SOLICITUD SOLO OFRECE EL TIPO DEL LISTADO (MANTENIMIENTO DE INFRAESTRUCTURA); SI AÚN NO SE CONOCE SU ID, NO OFRECE NINGUNO:
   get tiposSolicitudesInfraestructurasPermitidos(): TiposSolicitudesInfraestructurasI[] {
     return this.tiposSolicitudesInfraestructuras.filter(tipo => tipo.idTipoSolicitudInfraestructura === this.idTipoSolicitudInfraestructuraPorDefecto);
   }

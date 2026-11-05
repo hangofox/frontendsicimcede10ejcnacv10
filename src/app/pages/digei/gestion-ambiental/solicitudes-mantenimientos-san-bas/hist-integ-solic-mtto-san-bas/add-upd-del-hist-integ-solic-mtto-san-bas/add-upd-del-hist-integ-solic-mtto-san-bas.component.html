@@ -1,0 +1,86 @@
+<div class="modal-formulario">
+  @if (modo === 'eliminar') {
+    <div class="alerta-eliminar">Esta acción eliminará el registro del historial de integrantes de la solicitud. ¿Desea continuar?</div>
+  }
+
+  @if (modo === 'guardar') {
+    <div class="form-seccion form-seccion-busqueda" [formGroup]="busquedaForm">
+      <div class="seccion-titulo">Cargar datos desde el historial de integrantes de documentos (solo predeterminados para firmar)</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Unidad militar (paso de la línea de mando)</label>
+          <!-- TODOS LOS PASOS DISPONIBLES: LOS DEL TRAMO COMÚN Y, AGRUPADOS, LOS DE CADA FINAL ALTERNATIVO VIGENTE -->
+          <select formControlName="pasoSeleccionado" (change)="onCambioPaso()">
+            @if (!busquedaForm.get('pasoSeleccionado')?.value) {
+              <option value="" disabled>{{ debeElegirFinal ? '-- Seleccione la unidad del final alternativo --' : '-- Seleccione --' }}</option>
+            }
+            @for (opcion of opcionesTramoComunDisponibles; track opcion.valor) {
+              <option [value]="opcion.valor">{{ opcion.numero }}. {{ opcion.siglaoAcronimo }}</option>
+            }
+            @for (grupo of gruposFinalesDisponibles; track grupo.numeroFinal) {
+              <optgroup [label]="grupo.etiqueta">
+                @for (opcion of grupo.opciones; track opcion.valor) {
+                  <option [value]="opcion.valor">{{ opcion.numero }}. {{ opcion.siglaoAcronimo }} (final {{ grupo.numeroFinal }})</option>
+                }
+              </optgroup>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Cargo</label>
+          <select formControlName="cargoSeleccionado" (change)="onCambioCargo()">
+            <option value="">-- Seleccione --</option>
+            @for (cargo of cargosConIntegrantesPredeterminados; track cargo.idCargoIntegranteDocumentos) {
+              <option [value]="cargo.idCargoIntegranteDocumentos">{{ cargo.nombreCargoIntegranteDocumentos }}</option>
+            }
+          </select>
+        </div>
+        @if (historialesDelCargo.length) {
+          <div class="form-group resultado-integrante">
+            <label>Integrante predeterminado de {{ siglaoAcronimoPasoSeleccionado }}</label>
+            <select formControlName="integranteSeleccionado" (change)="cargarIntegranteSeleccionado()">
+              <option value="">-- Seleccione --</option>
+              @for (historial of historialesDelCargo; track historial.idHistorialIntegranteDocumentos) {
+                <option [value]="historial.idHistorialIntegranteDocumentos">
+                  {{ historial.gradoIntegranteDocumentos }} {{ historial.nombresIntegranteDocumentos }} {{ historial.primerApellidoIntegranteDocumentos }} {{ historial.segundoApellidoIntegranteDocumentos }} — {{ historial.cargoIntegranteDocumentos }}
+                </option>
+              }
+            </select>
+          </div>
+        }
+      </div>
+      @if (mensajeBusqueda) { <p class="mensaje-busqueda">{{ mensajeBusqueda }}</p> }
+    </div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="enviar()">
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos del integrante de la solicitud</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Número de registro</label><input formControlName="registro" placeholder="Asignado automáticamente"></div>
+        <div class="form-group"><label>Unidad militar (*)</label><input formControlName="unidad" placeholder="Se toma del integrante seleccionado"></div>
+        <div class="form-group"><label>Grado (*)</label><input formControlName="grado"></div>
+        <div class="form-group"><label>Nombres (*)</label><input formControlName="nombres"></div>
+        <div class="form-group"><label>Primer apellido (*)</label><input formControlName="apellido1"></div>
+        <div class="form-group"><label>Segundo apellido (*)</label><input formControlName="apellido2"></div>
+        <div class="form-group"><label>Cargo (*)</label><input formControlName="cargo"></div>
+        <div class="form-group"><label>Archivo foto/firma (*)</label><input formControlName="firma" placeholder="Se toma del historial de integrantes"></div>
+      </div>
+      @if (cargoRepetido) {
+        <p class="mensaje-error">El cargo ya está registrado para esta unidad militar en el historial de integrantes de esta solicitud.</p>
+      }
+      @if (modo !== 'eliminar' && faltanDatosIntegrante) {
+        <p class="mensaje-error">Seleccione un integrante predeterminado para firmar (SI) del historial de integrantes de documentos que tenga unidad militar y archivo de firma.</p>
+      }
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cancelar</button>
+      @if (modo === 'eliminar') {
+        <button type="button" class="btn-titulo-sistema btn-peligro" (click)="confirmar()">Eliminar</button>
+      } @else {
+        <button type="submit" class="btn-titulo-sistema btn-primario" [disabled]="form.invalid || cargoRepetido || faltanDatosIntegrante">{{ modo === 'modificar' ? 'Modificar' : 'Guardar' }}</button>
+      }
+    </div>
+  </form>
+</div>

@@ -167,11 +167,16 @@
     <path class="marca-agua-cabezote__figura marca-agua-cabezote__figura--inferior" transform="translate(0 11)" d="M76.41 75.00L76.26 96.85L70.01 97.00L69.42 93.88L66.15 90.46L65.26 88.97L64.81 87.49L65.11 83.32L65.85 81.54L65.55 82.14L65.55 82.73L65.85 82.73L67.34 79.91L69.72 77.68L72.24 76.19L76.41 75.00ZM78.04 75.00L78.64 75.30L80.42 75.15L80.42 77.97L82.20 78.42L82.80 79.16L85.03 77.38L86.51 78.72L87.26 79.76L85.32 81.39L85.32 81.84L86.07 83.03L86.36 84.51L89.19 84.36L89.19 87.93L86.36 87.93L85.32 90.91L87.26 92.84L84.88 95.22L83.09 93.43L82.65 93.43L80.27 94.62L80.42 96.85L77.89 97.00L77.89 92.09L79.23 92.24L81.76 90.91L82.80 89.57L82.50 89.27L83.09 88.53L83.39 87.34L83.24 84.22L82.20 82.14L80.57 80.80L78.64 80.20L78.04 80.35L78.04 75.00Z"/>
   </svg>
 
+  <!-- Con sesion la fecha se proyecta dentro de datos-usuario-conectado, en la
+       columna de texto a la derecha de la foto: queda encima del grado, nombres
+       y apellidos y alineada a la izquierda con ellos. -->
   <div class="informacion-cabezote">
-    <time class="fecha-login">{{ ahora | date:"EEEE, d 'de' MMMM 'de' y HH:mm":"":"es-CO" }}</time>
-
     @if (mostrarUsuario) {
-      <app-datos-usuario-conectado></app-datos-usuario-conectado>
+      <app-datos-usuario-conectado>
+        <time class="fecha-login">{{ ahora | date:"EEEE, d 'de' MMMM 'de' y HH:mm":"":"es-CO" }}</time>
+      </app-datos-usuario-conectado>
+    } @else {
+      <time class="fecha-login">{{ ahora | date:"EEEE, d 'de' MMMM 'de' y HH:mm":"":"es-CO" }}</time>
     }
   </div>
 

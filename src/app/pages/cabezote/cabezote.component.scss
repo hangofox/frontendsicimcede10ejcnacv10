@@ -690,6 +690,24 @@ $marco-inferior: 3.03%;
   gap: 8px;
 }
 
+/* Con sesion iniciada el bloque (foto + fecha + datos del usuario) se centra en
+   vertical dentro del marco, que en la referencia va de y=22 a y=190 de un
+   lienzo de ~198 px: su centro cae en el 53,5 % del alto. Asi la foto queda a
+   la misma distancia del borde superior y del inferior del marco. */
+@media (min-width: 1201px) {
+  .informacion-cabezote:has(app-datos-usuario-conectado) {
+    top: 53.5%;
+    transform: translateY(-50%);
+  }
+}
+
+/* La fecha proyectada en la columna de texto del usuario: separada un poco del
+   grado y el nombre que van debajo. */
+app-datos-usuario-conectado .fecha-login {
+  display: block;
+  margin-bottom: 6px;
+}
+
 .fecha-login {
   font-family: Arial, sans-serif;
   font-size: clamp(.86rem, .95vw, 1.2rem);

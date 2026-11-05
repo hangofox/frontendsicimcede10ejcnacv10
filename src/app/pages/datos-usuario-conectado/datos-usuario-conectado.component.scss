@@ -11,8 +11,9 @@
 .avatar {
   position: relative;
   isolation: isolate;
-  width: 70px;
-  height: 59px;
+  /* 84 x 71 (antes 70 x 59): misma proporción 1,18, un 20 % más grande. */
+  width: 84px;
+  height: 71px;
   flex: 0 0 auto;
   overflow: visible;
   background: transparent;
@@ -161,9 +162,14 @@ button:focus-visible {
    La proporcion se respeta -70/59 y 110/93 dan la misma razon, 1,18- asi que el
    recorte hexagonal no se deforma. */
 @media (min-width: 1201px) {
+  /* Ampliado a pedido (antes 110 x 93 fijos): crece con la ventana y a 1920 px
+     mide 145 x 123, con un margen igual arriba y abajo dentro del marco del
+     cabezote, que centra el bloque en vertical. */
   .avatar {
-    width: 110px;
-    height: 93px;
+    --avatar-alto: clamp(100px, 6.4vw, 128px);
+
+    width: calc(var(--avatar-alto) * 110 / 93);
+    height: var(--avatar-alto);
   }
 
   .avatar img {
@@ -174,9 +180,10 @@ button:focus-visible {
 }
 
 @media (max-width: 760px) {
+  /* 68 x 58 (antes 58 x 49): misma proporción, más grande en celular. */
   .avatar {
-    width: 58px;
-    height: 49px;
+    width: 68px;
+    height: 58px;
   }
 
   .fecha {

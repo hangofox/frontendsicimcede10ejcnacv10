@@ -33,8 +33,8 @@
     <!-- Panal 3-3-2 segun la referencia imagen_gestion_ambiental_futurista_01:
          cada fila va corrida medio hexagono a la derecha de la anterior, igual
          que en gestion-riesgo. Las ocho piezas se realzan al pasar el cursor;
-         las de solicitudes y avales de obras nuevas de saneamiento basico
-         navegan y las demas todavia no llevan a ningun sitio: se enlazaran
+         las de solicitudes y avales de obras nuevas y de mantenimientos de
+         saneamiento basico navegan y las demas todavia no llevan a ningun sitio: se enlazaran
          cuando se definan sus componentes. -->
     <div class="ga-panal">
       <article class="ga-ranura ga-ranura--solicitudes-obras-nuevas-saneamientos-basicos">
@@ -54,11 +54,15 @@
       </article>
 
       <article class="ga-ranura ga-ranura--solicitudes-mantenimientos-saneamientos-basicos">
-        <span class="ga-ranura__pieza" role="img" aria-label="Solicitudes de mantenimientos de saneamiento básico"></span>
+        <a class="ga-ranura__pieza ga-ranura__pieza--enlace"
+           routerLink="/digei/gestion-ambiental/solicitudes-mantenimientos-san-bas/listado-solicitudes-mantenimientos-san-bas"
+           aria-label="Solicitudes de mantenimientos de saneamiento básico"></a>
       </article>
 
       <article class="ga-ranura ga-ranura--avales-mantenimientos-saneamientos-basicos">
-        <span class="ga-ranura__pieza" role="img" aria-label="Avales de mantenimientos de saneamiento básico"></span>
+        <a class="ga-ranura__pieza ga-ranura__pieza--enlace"
+           routerLink="/digei/gestion-ambiental/solicitudes-mantenimientos-san-bas-av/listado-solicitudes-mantenimientos-san-bas-av"
+           aria-label="Avales de mantenimientos de saneamiento básico"></a>
       </article>
 
       <article class="ga-ranura ga-ranura--tramites-ambientales">

@@ -20,6 +20,8 @@
       <span *ngIf="!previewUrlFotoUsuario" class="avatar__brillos" aria-hidden="true"></span>
     </div>
     <div>
+      <!-- Fecha y hora que proyecta el cabezote, encima del grado y el nombre. -->
+      <ng-content></ng-content>
       <div class="usuario__nombre">{{ usuario.grado }} {{ usuario.nombreCompleto }}</div>
       <div>{{ usuario.rol }}</div>
       <button type="button" (click)="cerrarSesion()">Cerrar sesión</button>
