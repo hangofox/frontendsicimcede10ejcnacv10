@@ -42,6 +42,18 @@ export const routes: Routes = [
               //SOLICITUDES DE MANTENIMIENTOS AVALADOS (EN ESTADO ASIGNACION, APROBACION O RECHAZADO):
               { path: 'solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados.component').then(m => m.ListadoSolicitudesMantenimientosAvaladosComponent), title: 'Avales de mantenimiento | SICIM' },
               { path: 'solicitudes-mantenimientos-avalados', redirectTo: 'solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados', pathMatch: 'full' },
+              //MANTENIMIENTOS DE INFRAESTRUCTURAS (MANTENIMIENTO, SOLICITUD, AVAL E HISTORIAL DE MANTENIMIENTO DE INFRAESTRUCTURA):
+              //SE ANIDA PARA QUE LA RUTA DE NAVEGACIÓN DEL HISTORIAL MUESTRE DIGEI » CONSTRUCCIONES Y MANTENIMIENTOS » MANTENIMIENTOS DE
+              //INFRAESTRUCTURAS » HISTORIAL (LA ETIQUETA DE ESTE NIVEL SALE DEL title DE SU HIJO DE CAMINO VACÍO):
+              {
+                path: 'mantenimientos-infraestructuras',
+                children: [
+                  { path: '', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/mantenimientos-infraestructuras/mantenimientos-infraestructuras.component').then(m => m.MantenimientosInfraestructurasComponent), title: 'Mantenimientos de infraestructuras | SICIM' },
+                  //HISTORIAL DE MANTENIMIENTOS DE INFRAESTRUCTURAS (ROMBO DE HISTORIAL):
+                  { path: 'historial-mantenimientos-infraest/listado-hist-mttos-infraest', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/mantenimientos-infraestructuras/historial-mantenimientos-infraest/listado-hist-mttos-infraest/listado-hist-mttos-infraest.component').then(m => m.ListadoHistorialMantenimientosInfraestComponent), title: 'Historial de mantenimientos de infraestructuras | SICIM' },
+                  { path: 'historial-mantenimientos-infraest', redirectTo: 'historial-mantenimientos-infraest/listado-hist-mttos-infraest', pathMatch: 'full' }
+                ]
+              },
               //LAS DIRECCIONES ANTERIORES DE SOLICITUDES DE INFRAESTRUCTURAS LLEVAN A LAS DE CONSTRUCCIONES NUEVAS:
               { path: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', redirectTo: 'solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas', pathMatch: 'full' },
               { path: 'solicitudes-infraestructuras', redirectTo: 'solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas', pathMatch: 'full' },

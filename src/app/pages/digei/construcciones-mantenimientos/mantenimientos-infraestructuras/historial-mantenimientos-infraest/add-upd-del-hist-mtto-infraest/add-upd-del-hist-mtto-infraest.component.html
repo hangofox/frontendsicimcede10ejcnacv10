@@ -1,0 +1,87 @@
+<div class="modal-formulario" *ngIf="historialesMantenimientosInfraestructurasForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará el registro del mantenimiento de infraestructura del historial. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="historialesMantenimientosInfraestructurasForm" (ngSubmit)="guardarModificar()">
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Identificación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>N.° de registro (*)</label>
+          <input type="text" formControlName="numRegHistorialMantenimientoInfraestructura" placeholder="Ej. MTTO-2026-0001">
+        </div>
+        <div class="form-group">
+          <label>Infraestructura (*)</label>
+          <select formControlName="infraestructuraSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let infraestructura of infraestructuras" [value]="infraestructura.idInfraestructura">
+              {{ infraestructura.denominacionInfraestructura }} ({{ infraestructura.numeroInventarioInfraestructura }}) - {{ infraestructura.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tipo de mantenimiento (*)</label>
+          <select formControlName="tipoMantenimientoInfraestructuraSeleccionado">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let tipoMantenimiento of tiposMantenimientosInfraestructuras" [value]="tipoMantenimiento.idTipoMantenimientoInfraestructura">
+              {{ tipoMantenimiento.nombreTipoMantenimientoInfraestructura }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fecha del mantenimiento (*)</label>
+          <input type="datetime-local" formControlName="fechaHMSMantenimientoInfraestructura">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Detalle del mantenimiento</div>
+      <div class="form-grid">
+        <div class="form-group form-group-ancho">
+          <label>Asunto (*)</label>
+          <input type="text" formControlName="asuntoMantenimientoInfraestructura" placeholder="Ej. CAMBIO DE CUBIERTA DEL ALOJAMIENTO DE TROPA">
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Descripción</label>
+          <textarea formControlName="descripcionMantenimientoInfraestructura" rows="4" placeholder="Ej. Se retiraron las tejas deterioradas y se instaló lámina termoacústica..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Costo y financiación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Valor del costo (*)</label>
+          <input type="text" inputmode="decimal" formControlName="valorCostoMantenimientoInfraestructura" placeholder="Ej. 85000000">
+          <small class="campo-error" *ngIf="historialesMantenimientosInfraestructurasForm.get('valorCostoMantenimientoInfraestructura')?.hasError('pattern')">
+            Solo números, sin puntos de miles (hasta dos decimales con punto).
+          </small>
+        </div>
+        <div class="form-group">
+          <label>Fuente de financiación (*)</label>
+          <select formControlName="tipoFuenteFinanciacionSeleccionado">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let tipoFuente of tiposFuentesFinanciacion" [value]="tipoFuente.idTipoFuenteFinanciacion">
+              {{ tipoFuente.nombreTipoFuenteFinanciacion }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-titulo-sistema btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="historialesMantenimientosInfraestructurasForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-titulo-sistema btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>

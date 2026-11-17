@@ -1,0 +1,55 @@
+<section class="mantenimientos-infraestructuras" aria-label="Mantenimientos de infraestructuras">
+  <div class="mantenimientos-infraestructuras__cuerpo">
+    <!-- Escena izquierda segun imagen_objetivo_mantenimientos_infraestructuras_01:
+         pinon de Construcciones y Mantenimientos arriba (regresa a su modulo) y el
+         hexagono de Mantenimiento abajo a la derecha, montado sobre el pinon. -->
+    <div class="mi-escena">
+      <div class="mi-pinon mi-pinon--construcciones">
+        <div class="mi-pinon__rotor" aria-hidden="true">
+          <span class="mi-pinon__anillo"></span>
+          <!-- Copia interior del mismo PNG, recentrada sobre los dientes. -->
+          <span class="mi-pinon__anillo mi-pinon__anillo--interior"></span>
+        </div>
+        <a
+          class="mi-pinon__medallon mi-pinon__medallon--enlace"
+          routerLink="/digei/construcciones-mantenimientos"
+          aria-label="Ir a Construcciones y Mantenimientos"
+        >
+          <span class="mi-pinon__medallon-img" aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="mi-hexagono">
+        <span class="mi-hexagono__pieza" role="img" aria-label="Mantenimiento de infraestructuras"></span>
+      </div>
+    </div>
+
+    <!-- En lugar de los cuatro rombos de la referencia va texto en la misma
+         posicion: superior, derecha, centro e inferior. Solicitud y aval navegan
+         a sus listados; mantenimiento e historial se enlazaran cuando existan
+         sus componentes. -->
+    <nav class="mi-rombos" aria-label="Opciones de mantenimientos de infraestructuras">
+      <span class="mi-rombo mi-rombo--superior">
+        <span class="mi-rombo__texto">Mantenimiento<br>de infraestructura</span>
+      </span>
+
+      <a class="mi-rombo mi-rombo--derecha mi-rombo--enlace"
+         routerLink="/digei/construcciones-mantenimientos/solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados">
+        <span class="mi-rombo__texto">Aval de mantenimiento<br>de infraestructura</span>
+      </a>
+
+      <a class="mi-rombo mi-rombo--centro mi-rombo--enlace"
+         routerLink="/digei/construcciones-mantenimientos/solicitudes-mantenimientos/listado-solicitudes-mantenimientos">
+        <span class="mi-rombo__texto">Solicitud de mantenimiento<br>de infraestructura</span>
+      </a>
+
+      <!-- Rombo de historial: imagen en lugar de texto. Se realza con el cursor
+           como los panales y lleva al listado del historial. -->
+      <span class="mi-rombo-pieza mi-rombo-pieza--historial">
+        <a class="mi-rombo-pieza__img mi-rombo-pieza__img--enlace"
+           routerLink="/digei/construcciones-mantenimientos/mantenimientos-infraestructuras/historial-mantenimientos-infraest/listado-hist-mttos-infraest"
+           aria-label="Historial de mantenimiento de infraestructura"></a>
+      </span>
+    </nav>
+  </div>
+</section>
