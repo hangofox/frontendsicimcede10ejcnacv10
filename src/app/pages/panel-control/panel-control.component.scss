@@ -59,6 +59,10 @@
   transform: translateY(-2px);
 }
 
+.acceso--sin-enlace {
+  cursor: default;
+}
+
 .acceso:focus-visible {
   outline: 3px solid var(--sicim-focus);
   outline-offset: 2px;

@@ -1,0 +1,173 @@
+<div class="modal-formulario" *ngIf="caninosForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará el canino. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="caninosForm" (ngSubmit)="guardarModificar()">
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Identificación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre (*)</label>
+          <input type="text" formControlName="nombreCanino" placeholder="Ej. ROCKY">
+          <small class="campo-error" *ngIf="campoInvalido('nombreCanino')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>Denominación (*)</label>
+          <input type="text" formControlName="denominacionCanino" placeholder="Ej. CANINO DETECTOR DE EXPLOSIVOS">
+          <small class="campo-error" *ngIf="campoInvalido('denominacionCanino')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group campo-autocompletar">
+          <label>Raza (*)</label>
+          <input type="hidden" formControlName="nombreRazaCanino">
+          <div class="autocompletar-caja">
+            <input
+              type="text"
+              [(ngModel)]="terminoBusquedaRazaCanino"
+              [ngModelOptions]="{standalone: true}"
+              [readOnly]="banderaRazaCaninoSeleccionada"
+              [disabled]="banderaCrudEliminar"
+              placeholder="Escriba para buscar la raza..."
+              (input)="onEscribirBusquedaRazaCanino()"
+              (focus)="mostrarSugerenciasRazaCanino = true"
+              (blur)="ocultarSugerenciasRazaCaninoConRetraso()">
+            <button
+              type="button"
+              class="btn-limpiar-autocompletar"
+              *ngIf="terminoBusquedaRazaCanino && !banderaCrudEliminar"
+              (mousedown)="limpiarBusquedaRazaCanino()"
+              title="Limpiar">×</button>
+
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasRazaCanino && !banderaRazaCaninoSeleccionada && razasCaninosFiltradas.length > 0">
+              <li *ngFor="let raza of razasCaninosFiltradas" (mousedown)="seleccionarRazaCanino(raza)">
+                {{ raza.nombreRazaCanino }}
+              </li>
+            </ul>
+            <ul class="autocompletar-sugerencias" *ngIf="mostrarSugerenciasRazaCanino && !banderaRazaCaninoSeleccionada && razasCaninosFiltradas.length === 0">
+              <li class="autocompletar-sin-resultados">Sin coincidencias.</li>
+            </ul>
+          </div>
+          <small class="campo-error" *ngIf="campoInvalido('nombreRazaCanino')">Seleccione una raza de la lista.</small>
+        </div>
+        <div class="form-group">
+          <label>Color (*)</label>
+          <input type="text" formControlName="colorCanino" placeholder="Ej. NEGRO Y FUEGO">
+          <small class="campo-error" *ngIf="campoInvalido('colorCanino')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>N.° Chip (*)</label>
+          <input type="text" formControlName="numeroChipCanino" placeholder="Ej. 985112003456789">
+          <small class="campo-error" *ngIf="campoInvalido('numeroChipCanino')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>N.° Inventario (*)</label>
+          <input type="text" formControlName="numeroInventarioCanino" placeholder="Ej. INV-CAN-0001">
+          <small class="campo-error" *ngIf="campoInvalido('numeroInventarioCanino')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>N.° Activo fijo (*)</label>
+          <input type="text" formControlName="numeroActivoFijoCanino" placeholder="Ej. AF-CAN-0001">
+          <small class="campo-error" *ngIf="campoInvalido('numeroActivoFijoCanino')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>Estado de uso (*)</label>
+          <select formControlName="estadoUsoCanino">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('estadoUsoCanino')">Seleccione el estado.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Asignación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Compañía de unidad militar (*)</label>
+          <select formControlName="companiaUnidadMilitarSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let item of companiasUnidadesMilitares" [value]="item.idCompaniaUnidadMilitar">
+              {{ item.nombreCompaniaUnidadMilitar }} ({{ item.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }})
+            </option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('companiaUnidadMilitarSeleccionada')">Seleccione una opción.</small>
+        </div>
+        <div class="form-group">
+          <label>Tipo de despeje militar de artefactos explosivos (*)</label>
+          <select formControlName="tipoDespejeMilitarArtefactoExplosivoSeleccionado">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let item of tiposDespejesMilitaresArtefactosExplosivos" [value]="item.idTipoDespejeMilitarArtefactoExplosivo">
+              {{ item.nombreTipoDespejeMilitarArtefactoExplosivo }}
+            </option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('tipoDespejeMilitarArtefactoExplosivoSeleccionado')">Seleccione una opción.</small>
+        </div>
+        <div class="form-group">
+          <label>Centro de costo de la compañía (*)</label>
+          <input type="text" formControlName="centroCostoCompaniaUnidadMilitar" placeholder="Ej. CC-001">
+          <small class="campo-error" *ngIf="campoInvalido('centroCostoCompaniaUnidadMilitar')">Este campo es obligatorio.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos contables</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Valor de adquisición</label>
+          <input type="text" inputmode="decimal" formControlName="valorAdquisicionCanino" placeholder="Ej. 25000000">
+          <small class="campo-error" *ngIf="campoInvalido('valorAdquisicionCanino')">Solo números, sin puntos de miles (hasta dos decimales con punto).</small>
+        </div>
+        <div class="form-group">
+          <label>Valor contable</label>
+          <input type="text" inputmode="decimal" formControlName="valorContableCanino" placeholder="Ej. 20000000">
+          <small class="campo-error" *ngIf="campoInvalido('valorContableCanino')">Solo números, sin puntos de miles (hasta dos decimales con punto).</small>
+        </div>
+        <div class="form-group">
+          <label>Valor de costo unitario</label>
+          <input type="text" inputmode="decimal" formControlName="valorCostoUnitarioCanino" placeholder="Ej. 25000000">
+          <small class="campo-error" *ngIf="campoInvalido('valorCostoUnitarioCanino')">Solo números, sin puntos de miles (hasta dos decimales con punto).</small>
+        </div>
+        <div class="form-group">
+          <label>Vida útil (años)</label>
+          <input type="text" formControlName="tiempoAnualVidaUtilCanino" placeholder="Ej. 8">
+        </div>
+        <div class="form-group">
+          <label>Fecha de alta</label>
+          <input type="datetime-local" formControlName="fechaHMSAltaCanino">
+        </div>
+        <div class="form-group">
+          <label>Fecha de ingreso</label>
+          <input type="datetime-local" formControlName="fechaHMSIngresoCanino">
+        </div>
+        <div class="form-group">
+          <label>Fecha de modificación</label>
+          <input type="datetime-local" formControlName="fechaHMSModificacionCanino">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Descripción</div>
+      <div class="form-grid">
+        <div class="form-group form-group-ancho">
+          <label>Descripción</label>
+          <textarea formControlName="descripcionCanino" rows="4" placeholder="Ej. Canino entrenado en detección de explosivos..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-titulo-sistema btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="caninosForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-titulo-sistema btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>

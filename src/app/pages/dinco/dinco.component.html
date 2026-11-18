@@ -1,8 +1,31 @@
 <app-placa-titulo-seccion texto="Dirección de Ingenieros de Combate" icono="dinco" />
-<section class="page-card" aria-label="Área de trabajo DINCO">
-  <div class="modulo-vacio">
-    <img src="assets/images/imagen_dinco_01.png" alt="" width="74" height="74">
-    <h3>Dirección de Ingenieros de Combate</h3>
-    <p>Componente preparado para integrar las opciones funcionales y los servicios del módulo DINCO.</p>
+<section class="page-card dinco-opciones" aria-label="Opciones de DINCO">
+  <!-- Mismo esquema de DIGEI: aquí solo se ve el área; sus opciones están dentro de su componente
+       (pages/dinco/gestion-desminado). Las otras dos áreas siguen como opción visual sin navegación. -->
+  <div class="dinco-grupo">
+    <h2><a routerLink="/dinco/gestion-desminado">Gestión de Desminado</a></h2>
+  </div>
+  <div class="dinco-grupo">
+    <h2><a role="link" aria-disabled="true">Equipo de Ingenieros</a></h2>
+    <ul>
+      <li><a role="link" aria-disabled="true">Inventario de equipos</a></li>
+      <li><a role="link" aria-disabled="true">Clasificación y catálogos de equipos</a></li>
+      <li><a role="link" aria-disabled="true">Documentación de altas y bajas</a></li>
+      <li><a role="link" aria-disabled="true">Diagnósticos de equipos</a></li>
+      <li><a role="link" aria-disabled="true">Mantenimientos de equipos</a></li>
+      <li><a role="link" aria-disabled="true">Deméritos, desgastes y suministros</a></li>
+      <li><a role="link" aria-disabled="true">Aseguramiento de equipos</a></li>
+    </ul>
+  </div>
+  <div class="dinco-grupo">
+    <h2><a role="link" aria-disabled="true">Planeación y soporte compartido</a></h2>
+    <ul>
+      <li><a role="link" aria-disabled="true">Proyecciones de adquisición de equipo fijo</a></li>
+      <li><a role="link" aria-disabled="true">Seguros de línea blanca, SOAT y tecnomecánicas</a></li>
+      <li><a role="link" aria-disabled="true">Unidades militares, compañías y pelotones</a></li>
+      <li><a role="link" aria-disabled="true">Centros de costos</a></li>
+      <li><a role="link" aria-disabled="true">Razas de caninos · Panel de Control</a></li>
+      <li><a role="link" aria-disabled="true">Catálogos de seguros</a></li>
+    </ul>
   </div>
 </section>

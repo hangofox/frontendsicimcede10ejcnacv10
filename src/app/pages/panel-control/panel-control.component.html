@@ -1,13 +1,24 @@
 <app-placa-titulo-seccion texto="Panel de control" icono="panel" />
 <section class="page-card accesos" aria-label="Opciones del panel de control">
-  @for (acceso of accesos; track acceso.ruta) {
-    <a [routerLink]="acceso.ruta" class="acceso">
-      @if (acceso.icono) {
-        <img [src]="'assets/images/' + acceso.icono" alt="" width="80" height="80">
-      } @else {
-        <span class="acceso__icono-pendiente" aria-hidden="true"></span>
-      }
-      <span>{{ acceso.titulo }}</span>
-    </a>
+  @for (acceso of accesos; track acceso.titulo) {
+    @if (acceso.ruta) {
+      <a [routerLink]="acceso.ruta" class="acceso">
+        <ng-container *ngTemplateOutlet="contenidoAcceso; context: { $implicit: acceso }" />
+      </a>
+    } @else {
+      <!-- Acceso aun sin componente: mismos efectos, sin hipervinculo. -->
+      <div class="acceso acceso--sin-enlace">
+        <ng-container *ngTemplateOutlet="contenidoAcceso; context: { $implicit: acceso }" />
+      </div>
+    }
   }
 </section>
+
+<ng-template #contenidoAcceso let-acceso>
+  @if (acceso.icono) {
+    <img [src]="'assets/images/' + acceso.icono" alt="" width="80" height="80">
+  } @else {
+    <span class="acceso__icono-pendiente" aria-hidden="true"></span>
+  }
+  <span>{{ acceso.titulo }}</span>
+</ng-template>

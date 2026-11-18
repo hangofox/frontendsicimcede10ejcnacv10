@@ -1,0 +1,44 @@
+//MISMOS ESTILOS DEL LISTADO DE INFRAESTRUCTURAS (BARRA, TABLA, PAGINACIÓN, MODALES, TOAST Y BADGES DE ESTADO):
+@use '../../../../digei/finca-raiz/infraestructuras/listado-infraestructuras/listado-infraestructuras.component';
+
+.panel-municiones-especiales {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+//COLUMNA DE PROYECCIONES (MISMOS ESTILOS DE LAS COLUMNAS DE REGISTROS ASOCIADOS DE ListadoApoyosAtencPrevEmergDesastComponent):
+//CHULO VERDE CON LA CANTIDAD SI TIENE PROYECCIONES Y "NO" EN GRIS SI NO TIENE:
+.celda-asociados { text-align: center !important; }
+
+.asociados-si {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #16a34a;
+  font-weight: 800;
+}
+
+.asociados-cantidad {
+  min-width: 18px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 12px;
+}
+
+.asociados-no {
+  color: var(--sicim-gray);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.asociados-cargando { color: var(--sicim-gray); }
+
+//BOTÓN DEL HISTORIAL DE PROYECCIONES: MISMO TRATAMIENTO QUE LOS BOTONES DE HISTORIAL DE OTROS LISTADOS (COLOR PROPIO AL PASAR EL CURSOR):
+.btn-accion.btn-historial-proyecciones:hover:not(:disabled) {
+  background: #1d4ed8;
+  color: #fff;
+  border-color: #1d4ed8;
+}

@@ -115,7 +115,25 @@ export const routes: Routes = [
           { path: 'solicitudes-infraestructuras', redirectTo: 'construcciones-mantenimientos/solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas', pathMatch: 'full' }
         ]
       },
-      { path: 'dinco', loadComponent: () => import('./pages/dinco/dinco.component').then(m => m.DincoComponent), title: 'DINCO | SICIM' },
+      {
+        path: 'dinco',
+        children: [
+          { path: '', loadComponent: () => import('./pages/dinco/dinco.component').then(m => m.DincoComponent), title: 'DINCO | SICIM' },
+          {
+            //CANINOS, MATERIALES TÉCNICOS Y MUNICIONES ESPECIALES SON SUBMÓDULOS DE GESTIÓN DE DESMINADO, TANTO EN CARPETAS COMO EN NAVEGACIÓN (MISMO ESQUEMA DE DIGEI).
+            path: 'gestion-desminado',
+            children: [
+              { path: '', loadComponent: () => import('./pages/dinco/gestion-desminado/gestion-desminado.component').then(m => m.GestionDesminadoComponent), title: 'Gestión de desminado | SICIM' },
+              { path: 'caninos/listado-caninos', loadComponent: () => import('./pages/dinco/gestion-desminado/caninos/listado-caninos/listado-caninos.component').then(m => m.ListadoCaninosComponent), title: 'Caninos | SICIM' },
+              { path: 'materiales-tecnicos/listado-materiales-tecnicos', loadComponent: () => import('./pages/dinco/gestion-desminado/materiales-tecnicos/listado-materiales-tecnicos/listado-materiales-tecnicos.component').then(m => m.ListadoMaterialesTecnicosComponent), title: 'Materiales técnicos | SICIM' },
+              { path: 'municiones-especiales/listado-municiones-especiales', loadComponent: () => import('./pages/dinco/gestion-desminado/municiones-especiales/listado-municiones-especiales/listado-municiones-especiales.component').then(m => m.ListadoMunicionesEspecialesComponent), title: 'Municiones especiales | SICIM' },
+              { path: 'caninos', redirectTo: 'caninos/listado-caninos', pathMatch: 'full' },
+              { path: 'materiales-tecnicos', redirectTo: 'materiales-tecnicos/listado-materiales-tecnicos', pathMatch: 'full' },
+              { path: 'municiones-especiales', redirectTo: 'municiones-especiales/listado-municiones-especiales', pathMatch: 'full' }
+            ]
+          }
+        ]
+      },
       { path: 'diesp', loadComponent: () => import('./pages/diesp/diesp.component').then(m => m.DiespComponent), title: 'DIESP | SICIM' },
       {
         path: 'dipli',
@@ -140,6 +158,7 @@ export const routes: Routes = [
           { path: 'parametros-sistema', loadComponent: () => import('./pages/panel-control/parametros-sistema/parametros-sistema.component').then(m => m.ParametrosSistemaComponent), title: 'Parámetros del sistema | SICIM' },
           { path: 'historial-integrantes-documentos/listado-historial-integrantes-documentos', loadComponent: () => import('./pages/panel-control/historial-integrantes-documentos/listado-historial-integrantes-documentos/listado-historial-integrantes-documentos.component').then(m => m.ListadoHistorialIntegrantesDocumentosComponent), title: 'Historial de integrantes de documentos | SICIM' },
           { path: 'quimicos-piscinas/listado-quimicos-piscinas', loadComponent: () => import('./pages/panel-control/quimicos-piscinas/listado-quimicos-piscinas/listado-quimicos-piscinas.component').then(m => m.ListadoQuimicosPiscinasComponent), title: 'Químicos de piscinas | SICIM' },
+          { path: 'razas-caninos/listado-razas-caninos', loadComponent: () => import('./pages/panel-control/razas-caninos/listado-razas-caninos/listado-razas-caninos.component').then(m => m.ListadoRazasCaninosComponent), title: 'Razas de caninos | SICIM' },
           { path: 'mi-perfil', loadComponent: () => import('./pages/panel-control/mi-perfil/mi-perfil.component').then(m => m.MiPerfilComponent), title: 'Mi perfil | SICIM' },
           { path: 'usuarios/listado-usuarios', loadComponent: () => import('./pages/panel-control/usuarios/listado-usuarios/listado-usuarios.component').then(m => m.ListadoUsuariosComponent), title: 'Usuarios | SICIM' },
           { path: 'unidades-militares', redirectTo: 'unidades-militares/listado-unidades-militares', pathMatch: 'full' },
@@ -152,6 +171,7 @@ export const routes: Routes = [
           { path: 'historial-proveedores-productos-servicios', redirectTo: 'historial-proveedores-productos-servicios/listado-historial-proveedores-productos-servicios', pathMatch: 'full' },
           { path: 'historial-integrantes-documentos', redirectTo: 'historial-integrantes-documentos/listado-historial-integrantes-documentos', pathMatch: 'full' },
           { path: 'quimicos-piscinas', redirectTo: 'quimicos-piscinas/listado-quimicos-piscinas', pathMatch: 'full' },
+          { path: 'razas-caninos', redirectTo: 'razas-caninos/listado-razas-caninos', pathMatch: 'full' },
           { path: 'usuarios', redirectTo: 'usuarios/listado-usuarios', pathMatch: 'full' }
         ]
       }

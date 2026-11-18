@@ -1,0 +1,83 @@
+<div class="vista-municion-especial" *ngIf="municionEspecialData as municionEspecial">
+
+  <div class="perfil-cabecera">
+    <div class="avatar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c2 2 3 4.5 3 7v11H9V9c0-2.5 1-5 3-7z"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+    </div>
+    <div>
+      <h3 class="perfil-nombre">{{ municionEspecial.nombreMunicionEspecial }}</h3>
+      <p class="perfil-tipo">Lote {{ municionEspecial.loteMunicionEspecial }} — {{ municionEspecial.pelotonUnidadMilitarDTO.nombrePelotonUnidadMilitar }}</p>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Identificación</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Nombre</span>
+        <span class="dato-valor">{{ municionEspecial.nombreMunicionEspecial || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Lote</span>
+        <span class="dato-valor">{{ municionEspecial.loteMunicionEspecial || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Cantidad</span>
+        <span class="dato-valor">{{ municionEspecial.cantidadMunicionEspecial || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Estado</span>
+        <span class="dato-valor">{{ municionEspecial.estadoMunicionEspecial || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Asignación</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Pelotón de unidad militar</span>
+        <span class="dato-valor">{{ municionEspecial.pelotonUnidadMilitarDTO.nombrePelotonUnidadMilitar }} — {{ municionEspecial.pelotonUnidadMilitarDTO.companiaUnidadMilitarDTO.nombreCompaniaUnidadMilitar }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Tipo de despeje militar de artefactos explosivos</span>
+        <span class="dato-valor">{{ municionEspecial.tipoDespejeMilitarArtefactoExplosivoDTO.nombreTipoDespejeMilitarArtefactoExplosivo }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Centro de costo del pelotón</span>
+        <span class="dato-valor">{{ municionEspecial.centroCostoPelotonUnidadMilitar || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Datos contables</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Valor de adquisición</span>
+        <span class="dato-valor">{{ formatearValor(municionEspecial.valorAdquisicionMunicionEspecial) }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Valor contable</span>
+        <span class="dato-valor">{{ formatearValor(municionEspecial.valorContableMunicionEspecial) }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de alta</span>
+        <span class="dato-valor">{{ formatearFecha(municionEspecial.fechaHMSAltaMunicionEspecial) }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de ingreso</span>
+        <span class="dato-valor">{{ formatearFecha(municionEspecial.fechaHMSIngresoMunicionEspecial) }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de modificación</span>
+        <span class="dato-valor">{{ formatearFecha(municionEspecial.fechaHMSModificacionMunicionEspecial) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-acciones">
+    <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cerrar</button>
+  </div>
+
+</div>

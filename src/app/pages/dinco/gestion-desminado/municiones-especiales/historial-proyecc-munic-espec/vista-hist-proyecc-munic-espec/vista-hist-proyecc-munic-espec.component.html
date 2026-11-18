@@ -1,0 +1,65 @@
+<div class="vista-historial-proyeccion" *ngIf="historialProyeccionMunicionEspecialData as historial">
+
+  <div class="perfil-cabecera">
+    <div class="avatar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    </div>
+    <div>
+      <h3 class="perfil-nombre">{{ historial.nombreBienOServicioHistorialProyeccionMunicionEspecial }}</h3>
+      <p class="perfil-tipo">{{ historial.municionEspecialDTO.nombreMunicionEspecial }} — Lote {{ historial.municionEspecialDTO.loteMunicionEspecial }}</p>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Proyección</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de registro</span>
+        <span class="dato-valor">{{ historial.numRegHistorialProyeccionMunicionEspecial }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Rubro presupuestal</span>
+        <span class="dato-valor">{{ historial.numeroRubroPresupuestalHistProyMunEsp || '-' }}</span>
+      </div>
+      <div class="dato-grupo dato-grupo-ancho">
+        <span class="dato-label">Bien o servicio</span>
+        <span class="dato-valor">{{ historial.nombreBienOServicioHistorialProyeccionMunicionEspecial || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Cantidad solicitada</span>
+        <span class="dato-valor">{{ historial.cantidadSolicitadaHistorialProyeccionMunicionEspecial }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Valor total</span>
+        <span class="dato-valor">{{ valorFormateado || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Munición especial</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Nombre</span>
+        <span class="dato-valor">{{ historial.municionEspecialDTO.nombreMunicionEspecial }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Lote</span>
+        <span class="dato-valor">{{ historial.municionEspecialDTO.loteMunicionEspecial }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Pelotón</span>
+        <span class="dato-valor">{{ historial.municionEspecialDTO.pelotonUnidadMilitarDTO.nombrePelotonUnidadMilitar }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Estado</span>
+        <span class="dato-valor">{{ historial.municionEspecialDTO.estadoMunicionEspecial }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-acciones">
+    <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cerrar</button>
+  </div>
+
+</div>

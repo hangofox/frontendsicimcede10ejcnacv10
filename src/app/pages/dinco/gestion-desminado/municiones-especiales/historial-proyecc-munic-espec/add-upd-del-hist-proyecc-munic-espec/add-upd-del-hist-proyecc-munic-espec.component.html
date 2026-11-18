@@ -1,0 +1,66 @@
+<div class="modal-formulario" *ngIf="historialesProyeccionesMunicionesEspecialesForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará la proyección del historial de la munición especial. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="historialesProyeccionesMunicionesEspecialesForm" (ngSubmit)="guardarModificar()">
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Munición especial</div>
+      <div class="form-grid">
+        <div class="form-group form-group-ancho">
+          <label>Munición especial</label>
+          <input type="text" [value]="municionEspecial.nombreMunicionEspecial + ' — LOTE ' + municionEspecial.loteMunicionEspecial" disabled>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Proyección</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>N.° de registro (*)</label>
+          <input type="text" formControlName="numRegHistorialProyeccionMunicionEspecial" placeholder="Ej. PROY-MUN-2026-001">
+          <small class="campo-error" *ngIf="campoInvalido('numRegHistorialProyeccionMunicionEspecial')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>Rubro presupuestal (*)</label>
+          <input type="text" formControlName="numeroRubroPresupuestalHistProyMunEsp" placeholder="Ej. A-02-02-01-003">
+          <small class="campo-error" *ngIf="campoInvalido('numeroRubroPresupuestalHistProyMunEsp')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Bien o servicio (*)</label>
+          <input type="text" formControlName="nombreBienOServicioHistorialProyeccionMunicionEspecial" placeholder="Ej. ADQUISICIÓN DE CARGAS DE DEMOLICIÓN">
+          <small class="campo-error" *ngIf="campoInvalido('nombreBienOServicioHistorialProyeccionMunicionEspecial')">Este campo es obligatorio.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Cantidad y valor</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Cantidad solicitada (*)</label>
+          <input type="text" inputmode="numeric" formControlName="cantidadSolicitadaHistorialProyeccionMunicionEspecial" placeholder="Ej. 50">
+          <small class="campo-error" *ngIf="campoInvalido('cantidadSolicitadaHistorialProyeccionMunicionEspecial')">Obligatorio. Solo números enteros.</small>
+        </div>
+        <div class="form-group">
+          <label>Valor total (*)</label>
+          <input type="text" inputmode="decimal" formControlName="valorTotalHistorialProyeccionMunicionEspecial" placeholder="Ej. 3500000">
+          <small class="campo-error" *ngIf="campoInvalido('valorTotalHistorialProyeccionMunicionEspecial')">Obligatorio. Solo números, sin puntos de miles (hasta dos decimales con punto).</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-titulo-sistema btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="historialesProyeccionesMunicionesEspecialesForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-titulo-sistema btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>

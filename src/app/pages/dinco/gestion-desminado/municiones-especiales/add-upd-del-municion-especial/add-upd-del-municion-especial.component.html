@@ -1,0 +1,107 @@
+<div class="modal-formulario" *ngIf="municionesEspecialesForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará la munición especial. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="municionesEspecialesForm" (ngSubmit)="guardarModificar()">
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Identificación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre (*)</label>
+          <input type="text" formControlName="nombreMunicionEspecial" placeholder="Ej. CARGA DE DEMOLICIÓN C4">
+          <small class="campo-error" *ngIf="campoInvalido('nombreMunicionEspecial')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>Lote (*)</label>
+          <input type="text" formControlName="loteMunicionEspecial" placeholder="Ej. LOTE-2026-001">
+          <small class="campo-error" *ngIf="campoInvalido('loteMunicionEspecial')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>Cantidad (*)</label>
+          <input type="text" inputmode="numeric" formControlName="cantidadMunicionEspecial" placeholder="Ej. 50">
+          <small class="campo-error" *ngIf="campoInvalido('cantidadMunicionEspecial')">Solo números enteros.</small>
+        </div>
+        <div class="form-group">
+          <label>Estado (*)</label>
+          <select formControlName="estadoMunicionEspecial">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('estadoMunicionEspecial')">Seleccione el estado.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Asignación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Pelotón de unidad militar (*)</label>
+          <select formControlName="pelotonUnidadMilitarSeleccionado">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let item of pelotonesUnidadesMilitares" [value]="item.idPelotonUnidadMilitar">
+              {{ item.nombrePelotonUnidadMilitar }} — {{ item.companiaUnidadMilitarDTO.nombreCompaniaUnidadMilitar }} ({{ item.companiaUnidadMilitarDTO.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }})
+            </option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('pelotonUnidadMilitarSeleccionado')">Seleccione una opción.</small>
+        </div>
+        <div class="form-group">
+          <label>Tipo de despeje militar de artefactos explosivos (*)</label>
+          <select formControlName="tipoDespejeMilitarArtefactoExplosivoSeleccionado">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let item of tiposDespejesMilitaresArtefactosExplosivos" [value]="item.idTipoDespejeMilitarArtefactoExplosivo">
+              {{ item.nombreTipoDespejeMilitarArtefactoExplosivo }}
+            </option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('tipoDespejeMilitarArtefactoExplosivoSeleccionado')">Seleccione una opción.</small>
+        </div>
+        <div class="form-group">
+          <label>Centro de costo del pelotón (*)</label>
+          <input type="text" formControlName="centroCostoPelotonUnidadMilitar" placeholder="Ej. CC-001">
+          <small class="campo-error" *ngIf="campoInvalido('centroCostoPelotonUnidadMilitar')">Este campo es obligatorio.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos contables</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Valor de adquisición</label>
+          <input type="text" inputmode="decimal" formControlName="valorAdquisicionMunicionEspecial" placeholder="Ej. 3500000">
+          <small class="campo-error" *ngIf="campoInvalido('valorAdquisicionMunicionEspecial')">Solo números, sin puntos de miles (hasta dos decimales con punto).</small>
+        </div>
+        <div class="form-group">
+          <label>Valor contable</label>
+          <input type="text" inputmode="decimal" formControlName="valorContableMunicionEspecial" placeholder="Ej. 3000000">
+          <small class="campo-error" *ngIf="campoInvalido('valorContableMunicionEspecial')">Solo números, sin puntos de miles (hasta dos decimales con punto).</small>
+        </div>
+        <div class="form-group">
+          <label>Fecha de alta</label>
+          <input type="datetime-local" formControlName="fechaHMSAltaMunicionEspecial">
+        </div>
+        <div class="form-group">
+          <label>Fecha de ingreso</label>
+          <input type="datetime-local" formControlName="fechaHMSIngresoMunicionEspecial">
+        </div>
+        <div class="form-group">
+          <label>Fecha de modificación</label>
+          <input type="datetime-local" formControlName="fechaHMSModificacionMunicionEspecial">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-titulo-sistema btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="municionesEspecialesForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-titulo-sistema btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>

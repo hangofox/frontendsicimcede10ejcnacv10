@@ -1,17 +1,19 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { PlacaTituloSeccionComponent } from '../../shared/components/placa-titulo-seccion/placa-titulo-seccion.component';
 
 interface AccesoPanelControl {
   titulo: string;
-  ruta: string;
+  /** Sin ruta: el acceso se muestra con sus efectos pero aun no navega. */
+  ruta?: string;
   icono?: string;
 }
 
 @Component({
   selector: 'app-panel-control',
   standalone: true,
-  imports: [RouterLink, PlacaTituloSeccionComponent],
+  imports: [RouterLink, NgTemplateOutlet, PlacaTituloSeccionComponent],
   templateUrl: './panel-control.component.html',
   styleUrl: './panel-control.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -27,6 +29,7 @@ export class PanelControlComponent {
     { titulo: 'Proveedores de productos y/o servicios', ruta: '/panel-control/proveedores-productos-servicios/listado-proveedores-productos-servicios', icono: 'imagen_proveedores_productos_yo_servicios_01.png' },
     { titulo: 'Historial de proveedores de productos y/o servicios', ruta: '/panel-control/historial-proveedores-productos-servicios/listado-historial-proveedores-productos-servicios', icono: 'imagen_historial_proveedores_productos_yo_servicios_01.png' },
     { titulo: 'Químicos de piscinas', ruta: '/panel-control/quimicos-piscinas/listado-quimicos-piscinas', icono: 'imagen_quimicos_piscinas_01.png' },
+    { titulo: 'Razas de caninos', ruta: '/panel-control/razas-caninos/listado-razas-caninos', icono: 'imagen_razas_caninos_01.png' },
     { titulo: 'Parámetros del sistema', ruta: '/panel-control/parametros-sistema', icono: 'imagen_parametros_sistema_01.png' },
     { titulo: 'Historial de integrantes de documentos', ruta: '/panel-control/historial-integrantes-documentos/listado-historial-integrantes-documentos', icono: 'imagen_historial_integrantes_documentos_01.png' },
     { titulo: 'Mi perfil', ruta: '/panel-control/mi-perfil', icono: 'imagen_mi_perfil_01.png' },

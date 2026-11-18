@@ -1,0 +1,8 @@
+//MISMOS ESTILOS DEL LISTADO DE INFRAESTRUCTURAS (BARRA, TABLA, PAGINACIÓN, MODALES, TOAST Y BADGES DE ESTADO):
+@use '../../../../digei/finca-raiz/infraestructuras/listado-infraestructuras/listado-infraestructuras.component';
+
+.panel-caninos {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}

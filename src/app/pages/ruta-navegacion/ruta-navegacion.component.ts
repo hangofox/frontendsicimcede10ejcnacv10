@@ -35,12 +35,15 @@ export class RutaNavegacionComponent {
     { initialValue: [] as NivelRutaNavegacion[] }
   );
 
-  /** Solo se muestra dentro de DIGEI y a partir del tercer nivel, es decir,
-      en los listados (DIGEI » Módulo » Listado). En DIGEI y en las páginas de
-      entrada de los módulos (Gestión del Riesgo, Finca Raíz...) no aparece. */
+  /** Solo se muestra dentro de DIGEI y DINCO y a partir del tercer nivel, es
+      decir, en los listados (DIGEI » Módulo » Listado, DINCO » Gestión de
+      Desminado » Caninos). En DIGEI, DINCO y en las páginas de entrada de los
+      módulos (Gestión del Riesgo, Gestión de Desminado...) no aparece. */
+  private static readonly MODULOS_CON_RUTA = new Set(['/digei', '/dinco']);
+
   readonly visible = computed(() => {
     const niveles = this.niveles();
-    return niveles.length >= 3 && niveles[0].enlace === '/digei';
+    return niveles.length >= 3 && RutaNavegacionComponent.MODULOS_CON_RUTA.has(niveles[0].enlace);
   });
 
   /** Recorre la rama activa de rutas y genera un nivel por cada ruta que

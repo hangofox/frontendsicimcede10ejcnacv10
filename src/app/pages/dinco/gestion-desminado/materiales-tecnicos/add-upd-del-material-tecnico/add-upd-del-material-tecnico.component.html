@@ -1,0 +1,125 @@
+<div class="modal-formulario" *ngIf="materialesTecnicosForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará el material técnico. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="materialesTecnicosForm" (ngSubmit)="guardarModificar()">
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Identificación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre (*)</label>
+          <input type="text" formControlName="nombreMaterialTecnico" placeholder="Ej. DETECTOR DE METALES">
+          <small class="campo-error" *ngIf="campoInvalido('nombreMaterialTecnico')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>Serial (*)</label>
+          <input type="text" formControlName="serialMaterialTecnico" placeholder="Ej. SN-000123">
+          <small class="campo-error" *ngIf="campoInvalido('serialMaterialTecnico')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>N.° Inventario (*)</label>
+          <input type="text" formControlName="numeroInventarioMaterialTecnico" placeholder="Ej. INV-MT-0001">
+          <small class="campo-error" *ngIf="campoInvalido('numeroInventarioMaterialTecnico')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>N.° Activo fijo (*)</label>
+          <input type="text" formControlName="numeroActivoFijoMaterialTecnico" placeholder="Ej. AF-MT-0001">
+          <small class="campo-error" *ngIf="campoInvalido('numeroActivoFijoMaterialTecnico')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>Estado de uso (*)</label>
+          <select formControlName="estadoUsoMaterialTecnico">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('estadoUsoMaterialTecnico')">Seleccione el estado.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Asignación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Unidad militar (*)</label>
+          <select formControlName="unidadMilitarSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let item of unidadesMilitares" [value]="item.idUnidadMilitar">
+              {{ item.nombreUnidadMilitar }} ({{ item.siglaoAcronimoUnidadMilitar }})
+            </option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('unidadMilitarSeleccionada')">Seleccione una opción.</small>
+        </div>
+        <div class="form-group">
+          <label>Tipo de despeje militar de artefactos explosivos (*)</label>
+          <select formControlName="tipoDespejeMilitarArtefactoExplosivoSeleccionado">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let item of tiposDespejesMilitaresArtefactosExplosivos" [value]="item.idTipoDespejeMilitarArtefactoExplosivo">
+              {{ item.nombreTipoDespejeMilitarArtefactoExplosivo }}
+            </option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('tipoDespejeMilitarArtefactoExplosivoSeleccionado')">Seleccione una opción.</small>
+        </div>
+        <div class="form-group">
+          <label>Centro de costo de la unidad militar (*)</label>
+          <input type="text" formControlName="centroCostoUnidadMilitar" placeholder="Ej. CC-001">
+          <small class="campo-error" *ngIf="campoInvalido('centroCostoUnidadMilitar')">Este campo es obligatorio.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos contables</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Código contable</label>
+          <input type="text" formControlName="codigoContableMaterialTecnico" placeholder="Ej. 165505">
+        </div>
+        <div class="form-group">
+          <label>Valor de adquisición</label>
+          <input type="text" inputmode="decimal" formControlName="valorAdquisicionMaterialTecnico" placeholder="Ej. 12000000">
+          <small class="campo-error" *ngIf="campoInvalido('valorAdquisicionMaterialTecnico')">Solo números, sin puntos de miles (hasta dos decimales con punto).</small>
+        </div>
+        <div class="form-group">
+          <label>Valor contable</label>
+          <input type="text" inputmode="decimal" formControlName="valorContableMaterialTecnico" placeholder="Ej. 10000000">
+          <small class="campo-error" *ngIf="campoInvalido('valorContableMaterialTecnico')">Solo números, sin puntos de miles (hasta dos decimales con punto).</small>
+        </div>
+        <div class="form-group">
+          <label>Valor de costo unitario</label>
+          <input type="text" inputmode="decimal" formControlName="valorCostoUnitarioMaterialTecnico" placeholder="Ej. 12000000">
+          <small class="campo-error" *ngIf="campoInvalido('valorCostoUnitarioMaterialTecnico')">Solo números, sin puntos de miles (hasta dos decimales con punto).</small>
+        </div>
+        <div class="form-group">
+          <label>Vida útil (años)</label>
+          <input type="text" formControlName="tiempoAnualVidaUtilMaterialTecnico" placeholder="Ej. 10">
+        </div>
+        <div class="form-group">
+          <label>Fecha de alta</label>
+          <input type="datetime-local" formControlName="fechaHMSAltaMaterialTecnico">
+        </div>
+        <div class="form-group">
+          <label>Fecha de ingreso</label>
+          <input type="datetime-local" formControlName="fechaHMSIngresoMaterialTecnico">
+        </div>
+        <div class="form-group">
+          <label>Fecha de modificación</label>
+          <input type="datetime-local" formControlName="fechaHMSModificacionMaterialTecnico">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-titulo-sistema btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="materialesTecnicosForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-titulo-sistema btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>
