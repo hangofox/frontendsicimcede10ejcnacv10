@@ -1,8 +1,8 @@
 /* Pagina de Mantenimientos de infraestructuras (referencia
    imagen_objetivo_mantenimientos_infraestructuras_01.png). Mismo pinon de
    Construcciones y Mantenimientos que construcciones-mantenimientos (prefijo
-   cm- -> mi-), el hexagono de Mantenimiento y cuatro textos en el lugar de los
-   rombos. Todas las medidas van en --mi-u, que a 1024 px vale 1 px, asi que
+   cm- -> mi-), el hexagono de Mantenimiento y los cuatro rombos de imagen.
+   Todas las medidas van en --mi-u, que a 1024 px vale 1 px, asi que
    las coordenadas son las de la referencia. */
 :host {
   display: flex;
@@ -14,9 +14,9 @@
 }
 
 .mantenimientos-infraestructuras {
-  /* Unidad comun de la escena y de los textos: la misma de construcciones-mantenimientos. */
+  /* Unidad comun de la escena y de los rombos: la misma de construcciones-mantenimientos. */
   --mi-u: clamp(.55px, .0977vw, 1.18px);
-  /* Unidad de los textos (rombos). En escritorio es la misma de la escena;
+  /* Unidad de los rombos. En escritorio es la misma de la escena;
      en pantalla pequena se calcula aparte para que quepan al lado de los
      pinones, igual que el panal de construcciones-mantenimientos. */
   --mi-r: var(--mi-u);
@@ -31,8 +31,8 @@
   background: none;
 }
 
-/* Dos zonas: pinon + hexagono a la izquierda y los textos a la derecha. Con
-   flex-wrap los textos bajan en pantallas estrechas en lugar de provocar
+/* Dos zonas: pinon + hexagono a la izquierda y los rombos a la derecha. Con
+   flex-wrap los rombos bajan en pantallas estrechas en lugar de provocar
    desplazamiento horizontal. */
 .mantenimientos-infraestructuras__cuerpo {
   box-sizing: border-box;
@@ -71,7 +71,7 @@
      del menu superior (19,437 % del ancho de la ventana). */
   margin-left: max(0px, calc(19.437vw - clamp(18px, 2vw, 30px) - var(--mi-u) * 115));
   /* El hexagono sobresale 21 ud a la derecha de la caja: se reservan con
-     margen para que nunca se monte sobre los textos. */
+     margen para que nunca se monte sobre los rombos. */
   margin-right: calc(var(--mi-u) * 21);
   width: calc(var(--mi-u) * 303.6);
   height: calc(var(--mi-u) * 375.3);
@@ -223,9 +223,35 @@
 }
 
 /* =====================================================================
-   Textos en lugar de los rombos. Caja de 530 x 525 ud con los cuatro
-   centros de la referencia: superior (130 ; 130), derecha (400 ; 130),
-   centro (265 ; 260) e inferior (130 ; 395).
+   Rombos: mosaico de la imagen objetivo.
+   - Mantenimiento y aval arriba, uno al lado del otro: solo se tocan por
+     sus puntas laterales.
+   - Solicitud en el centro, encajada entre los dos: su lado superior
+     izquierdo va paralelo al lado inferior derecho de mantenimiento y su
+     lado superior derecho al lado inferior izquierdo de aval.
+   - Historial abajo, en la misma columna de mantenimiento: su lado
+     superior derecho va paralelo al lado inferior izquierdo de solicitud.
+
+   Geometria: el rombo llena todo su PNG (puntas en el centro de cada borde
+   de 272 x 300), asi que con 260 ud de ancho su semiancho es a = 130 ud y
+   su semialto b = 130 x 300 / 272 = 143,382 ud. En un mosaico sin
+   separacion los centros vecinos quedan a (a ; b), (2a ; 0) y (0 ; 2b).
+
+   Separacion: la misma de los panales de construcciones-mantenimientos
+   (--cm-sep-y = ,016083 de la pieza, 1 mm con piezas de 235 px), medida
+   perpendicular a los lados enfrentados: g = 260 x ,016083 = 4,182 ud.
+   Para dejarla igual en todos los lados el mosaico se abre en proporcion:
+   paso = (a ; b) x (1 + k), con k = g x raiz(a2 + b2) / (2ab) = ,021711,
+   es decir paso horizontal a' = 132,822 ud y vertical b' = 146,495 ud.
+   Las puntas de mantenimiento y aval quedan a 2ak = 5,64 ud.
+
+   Caja de 530 ud de ancho (el mosaico mide 2a + 2a' = 525,64 ud y se
+   centra con 2,18 ud a cada lado) y 2b + 2b' = 579,76 ud de alto.
+   Centros:
+     mantenimiento (132,18 ; 143,382)
+     aval          (132,18 + 2a' = 397,824 ; 143,382)
+     solicitud     (132,18 + a'  = 265,002 ; 143,382 + b'  = 289,877)
+     historial     (132,18 ; 143,382 + 2b' = 436,372)
    ===================================================================== */
 
 .mi-rombos {
@@ -234,50 +260,12 @@
   /* Centrado en el espacio libre, como .cm-panal. */
   margin-inline: auto;
   width: calc(var(--mi-r) * 530);
-  /* 540 y no 525: el rombo inferior llega hasta 395 + 143,4 ud. */
-  height: calc(var(--mi-r) * 540);
+  height: calc(var(--mi-r) * 580);
 }
-
-.mi-rombo {
-  position: absolute;
-  box-sizing: border-box;
-  width: calc(var(--mi-r) * 250);
-  margin-left: calc(var(--mi-r) * -125);
-  /* Centro vertical sin transform, para que el zoom del hover no lo pise. */
-  translate: 0 -50%;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  text-decoration: none;
-  color: #ffd75e;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.mi-rombo__texto {
-  display: inline-block;
-  padding: calc(var(--mi-r) * 8) calc(var(--mi-r) * 12);
-  border-radius: 6px;
-  font-size: max(10px, calc(var(--mi-r) * 17));
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  /* Fondo translucido para que el texto se lea sobre la infografia. */
-  background: rgb(10 2 14 / 62%);
-  text-shadow:
-    0 0 6px rgb(0 0 0 / 95%),
-    0 0 12px rgb(255 160 20 / 35%);
-  transition: transform .24s cubic-bezier(.2, .75, .25, 1), color .24s ease, box-shadow .24s ease;
-}
-
-.mi-rombo--superior { left: calc(var(--mi-r) * 130); top: calc(var(--mi-r) * 130); }
-.mi-rombo--derecha  { left: calc(var(--mi-r) * 400); top: calc(var(--mi-r) * 130); }
-.mi-rombo--centro   { left: calc(var(--mi-r) * 265); top: calc(var(--mi-r) * 260); }
 
 /* ---- Rombos con imagen ---------------------------------------------
-   Sustituyen al texto en su misma posicion. Miden 260 ud de ancho, como
-   en la referencia (proporcion 272 / 300 del PNG): asi el rombo inferior
-   queda justo tocando el del centro, igual que en la imagen objetivo.
+   Miden 260 ud de ancho, como en la referencia, con la proporcion
+   272 / 300 de los cuatro PNG. Se posicionan por su centro.
    ------------------------------------------------------------------ */
 
 .mi-rombo-pieza {
@@ -286,19 +274,35 @@
   width: calc(var(--mi-r) * 260);
   aspect-ratio: 272 / 300;
   margin-left: calc(var(--mi-r) * -130);
-  margin-top: calc(var(--mi-r) * -130 * 300 / 272);
+  margin-top: calc(var(--mi-r) * -143.382);
 }
 
-.mi-rombo-pieza--historial {
-  left: calc(var(--mi-r) * 130);
-  top: calc(var(--mi-r) * 395);
+.mi-rombo-pieza--mantenimiento { left: calc(var(--mi-r) * 132.18);  top: calc(var(--mi-r) * 143.382); }
+.mi-rombo-pieza--aval          { left: calc(var(--mi-r) * 397.824); top: calc(var(--mi-r) * 143.382); }
+.mi-rombo-pieza--solicitud     { left: calc(var(--mi-r) * 265.002); top: calc(var(--mi-r) * 289.877); }
+.mi-rombo-pieza--historial     { left: calc(var(--mi-r) * 132.18);  top: calc(var(--mi-r) * 436.372); }
+
+.mi-rombo-pieza--mantenimiento .mi-rombo-pieza__img {
+  background-image: url('../../../../../assets/images/imagen_rombo_mantenimientos_infraestructuras_01.png');
+}
+
+.mi-rombo-pieza--aval .mi-rombo-pieza__img {
+  background-image: url('../../../../../assets/images/imagen_rombo_aval_mantenimientos_infraestructuras_01.png');
+}
+
+.mi-rombo-pieza--solicitud .mi-rombo-pieza__img {
+  background-image: url('../../../../../assets/images/imagen_rombo_solicitud_mantenimientos_infraestructuras_01.png');
+}
+
+.mi-rombo-pieza--historial .mi-rombo-pieza__img {
+  background-image: url('../../../../../assets/images/imagen_rombo_historial_mantenimientos_infraestructuras_01.png');
 }
 
 .mi-rombo-pieza__img {
   display: block;
   width: 100%;
   height: 100%;
-  background: url('../../../../../assets/images/imagen_rombo_historial_mantenimientos_infraestructuras_01.png') center / contain no-repeat;
+  background: center / contain no-repeat;
   user-select: none;
   -webkit-user-drag: none;
   /* Mismo zoom de los panales de construcciones-mantenimientos. */
@@ -311,7 +315,7 @@
   filter: brightness(1.08) drop-shadow(0 0 10px rgb(255 190 25 / 45%));
 }
 
-/* El rombo ampliado pasa por encima de los textos vecinos. */
+/* El rombo ampliado pasa por encima de los rombos vecinos. */
 .mi-rombo-pieza:has(> .mi-rombo-pieza__img:hover),
 .mi-rombo-pieza:has(> .mi-rombo-pieza__img:focus-visible) {
   z-index: 5;
@@ -325,27 +329,6 @@
 }
 
 .mi-rombo-pieza__img--enlace:focus-visible {
-  outline: 2px solid #fff3a8;
-  outline-offset: 2px;
-}
-
-/* Solo los que navegan llevan cursor de mano y foco de teclado. */
-.mi-rombo--enlace {
-  cursor: pointer;
-}
-
-.mi-rombo:hover .mi-rombo__texto,
-.mi-rombo--enlace:focus-visible .mi-rombo__texto {
-  transform: scale(1.08);
-  color: #fff3a8;
-  box-shadow: 0 0 14px rgb(255 190 25 / 45%);
-}
-
-.mi-rombo--enlace:focus-visible {
-  outline: none;
-}
-
-.mi-rombo--enlace:focus-visible .mi-rombo__texto {
   outline: 2px solid #fff3a8;
   outline-offset: 2px;
 }
@@ -366,14 +349,12 @@
   }
 
   .mi-pinon__medallon--enlace .mi-pinon__medallon-img,
-  .mi-rombo__texto,
   .mi-rombo-pieza__img {
     transition: none;
   }
 
   .mi-rombo-pieza__img:hover,
-  .mi-rombo:hover .mi-rombo__texto,
-  .mi-rombo--enlace:focus-visible .mi-rombo__texto {
+  .mi-rombo-pieza__img--enlace:focus-visible {
     transform: none;
   }
 }
@@ -383,9 +364,9 @@
    ===================================================================== */
 
 /* Igual que construcciones-mantenimientos: por debajo de este ancho la
-   escena deja de alinearse con el menu, pero los textos se quedan AL LADO
+   escena deja de alinearse con el menu, pero los rombos se quedan AL LADO
    de los pinones (no bajan), asi el cuerpo no se alarga y el fondo no se
-   estira en vertical. Primero se da a los textos el ancho que dejan los
+   estira en vertical. Primero se da a los rombos el ancho que dejan los
    pinones en su tamano minimo (324,6 x ,55 = 179px, contando lo que
    sobresale el hexagono) y luego los pinones toman lo que sobra, con los
    mismos topes de .cm-escena (.55px a .847px). */
@@ -425,7 +406,7 @@
 
 /* Por debajo de este ancho ya no caben lado a lado ni en su tamano minimo
    (tambien el panal de construcciones-mantenimientos baja aqui): la escena
-   y los textos van uno debajo del otro. */
+   y los rombos van uno debajo del otro. */
 @media (max-width: 520px) {
   .mantenimientos-infraestructuras__cuerpo {
     --mi-r: min(.8px, calc((100vw - 24px) / 530));

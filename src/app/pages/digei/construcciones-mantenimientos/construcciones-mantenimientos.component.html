@@ -33,9 +33,10 @@
     <!-- Panal 2-2-2 segun la referencia imagen_objetivo_construcciones_y_mantenimientos_01:
          la fila del medio va corrida medio hexagono a la derecha y la de abajo
          vuelve a quedar alineada con la de arriba. Ocupa la misma caja del panal
-         de finca-raiz para que los piñones queden en la misma posición. Las cuatro
-         de solicitudes y avales navegan; estadisticas y dashboard se realzan al
-         pasar el cursor pero todavia no llevan a ningun sitio. -->
+         de finca-raiz para que los piñones queden en la misma posición. Las de
+         construcciones nuevas y la de mantenimientos navegan; estadisticas y
+         dashboard se realzan al pasar el cursor pero todavia no llevan a ningun
+         sitio. -->
     <div class="cm-panal">
       <article class="cm-ranura cm-ranura--solicitudes-construcciones">
         <a class="cm-ranura__pieza cm-ranura__pieza--enlace"
@@ -49,24 +50,14 @@
            aria-label="Avales de construcción nueva"></a>
       </article>
 
-      <!-- Panal de mantenimientos de infraestructuras: en la fila del medio, al
-           lado izquierdo del de solicitudes de mantenimiento. -->
+      <!-- Panal de mantenimientos de infraestructuras: solo en la fila del medio,
+           centrado entre los dos de arriba y los dos de abajo. Las solicitudes y
+           los avales de mantenimiento se abren desde sus rombos dentro de
+           mantenimientos de infraestructuras. -->
       <article class="cm-ranura cm-ranura--mantenimientos-infraestructuras">
         <a class="cm-ranura__pieza cm-ranura__pieza--enlace"
            routerLink="/digei/construcciones-mantenimientos/mantenimientos-infraestructuras"
            aria-label="Mantenimientos de infraestructuras"></a>
-      </article>
-
-      <article class="cm-ranura cm-ranura--solicitudes-mantenimientos">
-        <a class="cm-ranura__pieza cm-ranura__pieza--enlace"
-           routerLink="/digei/construcciones-mantenimientos/solicitudes-mantenimientos/listado-solicitudes-mantenimientos"
-           aria-label="Solicitudes de mantenimiento"></a>
-      </article>
-
-      <article class="cm-ranura cm-ranura--avales-mantenimientos">
-        <a class="cm-ranura__pieza cm-ranura__pieza--enlace"
-           routerLink="/digei/construcciones-mantenimientos/solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados"
-           aria-label="Avales de mantenimiento"></a>
       </article>
 
       <article class="cm-ranura cm-ranura--estadisticas">

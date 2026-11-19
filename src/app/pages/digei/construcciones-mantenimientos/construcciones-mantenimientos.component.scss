@@ -289,15 +289,15 @@
 }
 
 /* =====================================================================
-   Panal de siete ranuras 2-3-2 (referencia
-   imagen_objetivo_construcciones_y_mantenimientos_01.png, mas el panal de
-   mantenimientos de infraestructuras al lado izquierdo del de solicitudes
-   de mantenimiento).
+   Panal de cinco ranuras 2-1-2 (referencia
+   imagen_objetivo_construcciones_y_mantenimientos_01.png; las solicitudes y
+   los avales de mantenimiento pasaron a los rombos de mantenimientos de
+   infraestructuras y aqui solo queda el panal de mantenimientos, al centro).
    La caja mide 3,5 piezas de ancho y 3 filas solapadas de alto; las tres
    filas la llenan en vertical.
-   Rejilla de siete medias columnas: las filas 1 y 3 ocupan las columnas
-   2-3 y 4-5, y la fila 2 las columnas 1-2, 3-4 y 5-6, de modo que sus dos
-   ultimas piezas quedan corridas exactamente medio hexagono a la derecha.
+   Rejilla de siete medias columnas (se conserva para que la caja y los
+   piñones no se muevan): las filas 1 y 3 ocupan las columnas 2-3 y 4-5, y
+   la fila 2 las columnas 3-4, centrada entre las piezas de arriba y abajo.
    ===================================================================== */
 
 .cm-panal {
@@ -365,14 +365,6 @@
   background-image: url('../../../../assets/images/imagen_hexagono_mantenimientos_infraestructuras_01.png');
 }
 
-.cm-ranura--solicitudes-mantenimientos .cm-ranura__pieza {
-  background-image: url('../../../../assets/images/imagen_hexagono_solicitudes_mantenimientos_01.png');
-}
-
-.cm-ranura--avales-mantenimientos .cm-ranura__pieza {
-  background-image: url('../../../../assets/images/imagen_hexagono_avales_solicitudes_mantenimientos_01.png');
-}
-
 .cm-ranura--estadisticas .cm-ranura__pieza {
   background-image: url('../../../../assets/images/imagen_hexagono_estadisticas_construcciones_y_mantenimientos_01.png');
 }
@@ -390,23 +382,16 @@
   grid-area: 1 / 4 / 2 / 6;
 }
 
-/* Fila 2: mantenimientos, medio hexagono a la derecha. La separacion vertical
+/* Fila 2: mantenimientos, en el centro. La separacion vertical
    con la fila 1 es la medida en finca-raiz entre sus filas 1 y 2: alli la pieza
    Terrenos alarga 1 mm la fila de arriba (height 100% + 1,2 mm con margin-top
    -0,2 mm), asi que la fila 2 queda --cm-sep-y (1 mm a 235 px) mas abajo
    que el solape puro. */
+/* Unica pieza de la fila 2, en el centro: columnas 3-4, justo debajo de la
+   union de las dos piezas de la fila 1 y encima de la union de las dos de la
+   fila 3, encajada entre las cuatro. */
 .cm-ranura--mantenimientos-infraestructuras {
-  grid-area: 2 / 1 / 3 / 3;
-  margin-top: calc(var(--cm-solape) + var(--cm-sep-y));
-}
-
-.cm-ranura--solicitudes-mantenimientos {
   grid-area: 2 / 3 / 3 / 5;
-  margin-top: calc(var(--cm-solape) + var(--cm-sep-y));
-}
-
-.cm-ranura--avales-mantenimientos {
-  grid-area: 2 / 5 / 3 / 7;
   margin-top: calc(var(--cm-solape) + var(--cm-sep-y));
 }
 
@@ -422,7 +407,7 @@
   margin-top: calc(var(--cm-solape) + var(--cm-sep-y));
 }
 
-/* Zoom igual que finca-raiz: lo llevan las seis piezas. */
+/* Zoom igual que finca-raiz: lo llevan las cinco piezas. */
 .cm-ranura__pieza {
   transition: transform .24s cubic-bezier(.2, .75, .25, 1), filter .24s ease;
 }

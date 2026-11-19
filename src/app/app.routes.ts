@@ -36,24 +36,33 @@ export const routes: Routes = [
               //SOLICITUDES DE CONSTRUCCIONES NUEVAS AVALADAS (EN ESTADO ASIGNACION, APROBACION O RECHAZADO):
               { path: 'solicitudes-construcciones-nuevas-avaladas/listado-solic-const-nuev-avaladas', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-construcciones-nuevas-avaladas/listado-solic-const-nuev-avaladas/listado-solic-const-nuev-avaladas.component').then(m => m.ListadoSolicitudesConstruccionesNuevasAvaladasComponent), title: 'Avales de construcción nueva | SICIM' },
               { path: 'solicitudes-construcciones-nuevas-avaladas', redirectTo: 'solicitudes-construcciones-nuevas-avaladas/listado-solic-const-nuev-avaladas', pathMatch: 'full' },
-              //SOLICITUDES DE MANTENIMIENTOS (TIPO MANTENIMIENTO DE INFRAESTRUCTURA DE TABLA_TIPOS_SOLICITUDES_INFRAESTRUCTURAS):
-              { path: 'solicitudes-mantenimientos/listado-solicitudes-mantenimientos', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-mantenimientos/listado-solicitudes-mantenimientos/listado-solicitudes-mantenimientos.component').then(m => m.ListadoSolicitudesMantenimientosComponent), title: 'Solicitudes de mantenimiento | SICIM' },
-              { path: 'solicitudes-mantenimientos', redirectTo: 'solicitudes-mantenimientos/listado-solicitudes-mantenimientos', pathMatch: 'full' },
-              //SOLICITUDES DE MANTENIMIENTOS AVALADOS (EN ESTADO ASIGNACION, APROBACION O RECHAZADO):
-              { path: 'solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados.component').then(m => m.ListadoSolicitudesMantenimientosAvaladosComponent), title: 'Avales de mantenimiento | SICIM' },
-              { path: 'solicitudes-mantenimientos-avalados', redirectTo: 'solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados', pathMatch: 'full' },
               //MANTENIMIENTOS DE INFRAESTRUCTURAS (MANTENIMIENTO, SOLICITUD, AVAL E HISTORIAL DE MANTENIMIENTO DE INFRAESTRUCTURA):
-              //SE ANIDA PARA QUE LA RUTA DE NAVEGACIÓN DEL HISTORIAL MUESTRE DIGEI » CONSTRUCCIONES Y MANTENIMIENTOS » MANTENIMIENTOS DE
-              //INFRAESTRUCTURAS » HISTORIAL (LA ETIQUETA DE ESTE NIVEL SALE DEL title DE SU HIJO DE CAMINO VACÍO):
+              //SE ANIDA PARA QUE LA RUTA DE NAVEGACIÓN DE SUS LISTADOS MUESTRE DIGEI » CONSTRUCCIONES Y MANTENIMIENTOS » MANTENIMIENTOS DE
+              //INFRAESTRUCTURAS » LISTADO (LA ETIQUETA DE ESTE NIVEL SALE DEL title DE SU HIJO DE CAMINO VACÍO):
               {
                 path: 'mantenimientos-infraestructuras',
                 children: [
                   { path: '', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/mantenimientos-infraestructuras/mantenimientos-infraestructuras.component').then(m => m.MantenimientosInfraestructurasComponent), title: 'Mantenimientos de infraestructuras | SICIM' },
+                  //SOLICITUDES DE MANTENIMIENTOS (ROMBO DE SOLICITUD; TIPO MANTENIMIENTO DE INFRAESTRUCTURA DE TABLA_TIPOS_SOLICITUDES_INFRAESTRUCTURAS):
+                  { path: 'solic-mttos/listado-solicitudes-mantenimientos', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/mantenimientos-infraestructuras/solic-mttos/listado-solicitudes-mantenimientos/listado-solicitudes-mantenimientos.component').then(m => m.ListadoSolicitudesMantenimientosComponent), title: 'Solicitudes de mantenimientos | SICIM' },
+                  { path: 'solic-mttos', redirectTo: 'solic-mttos/listado-solicitudes-mantenimientos', pathMatch: 'full' },
+                  //SOLICITUDES DE MANTENIMIENTOS AVALADOS (ROMBO DE AVAL; EN ESTADO ASIGNACION, APROBACION O RECHAZADO):
+                  { path: 'solic-mttos-avalados/listado-solicitudes-mantenimientos-avalados', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/mantenimientos-infraestructuras/solic-mttos-avalados/listado-solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados.component').then(m => m.ListadoSolicitudesMantenimientosAvaladosComponent), title: 'Avales de mantenimientos | SICIM' },
+                  { path: 'solic-mttos-avalados', redirectTo: 'solic-mttos-avalados/listado-solicitudes-mantenimientos-avalados', pathMatch: 'full' },
+                  //FORMULARIO DE MANTENIMIENTO DE INFRAESTRUCTURA (ROMBO DE MANTENIMIENTO; CREA Y, CON ?modo=modificar|eliminar&id=N DESDE EL
+                  //LISTADO DEL HISTORIAL, MODIFICA Y ELIMINA). mantenimientos-infraest SIN MÁS SEGMENTOS LLEVA AL FORMULARIO:
+                  { path: 'mantenimientos-infraest/add-upd-del-hist-mtto-infraest', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/mantenimientos-infraestructuras/mantenimientos-infraest/add-upd-del-hist-mtto-infraest/add-upd-del-hist-mtto-infraest.component').then(m => m.AddUpdDelHistorialMantenimientoInfraestComponent), title: 'Mantenimiento de infraestructura | SICIM' },
+                  { path: 'mantenimientos-infraest', redirectTo: 'mantenimientos-infraest/add-upd-del-hist-mtto-infraest', pathMatch: 'full' },
                   //HISTORIAL DE MANTENIMIENTOS DE INFRAESTRUCTURAS (ROMBO DE HISTORIAL):
                   { path: 'historial-mantenimientos-infraest/listado-hist-mttos-infraest', loadComponent: () => import('./pages/digei/construcciones-mantenimientos/mantenimientos-infraestructuras/historial-mantenimientos-infraest/listado-hist-mttos-infraest/listado-hist-mttos-infraest.component').then(m => m.ListadoHistorialMantenimientosInfraestComponent), title: 'Historial de mantenimientos de infraestructuras | SICIM' },
                   { path: 'historial-mantenimientos-infraest', redirectTo: 'historial-mantenimientos-infraest/listado-hist-mttos-infraest', pathMatch: 'full' }
                 ]
               },
+              //LAS DIRECCIONES ANTERIORES DE SOLICITUDES Y AVALES DE MANTENIMIENTOS (ANTES DE PASAR A MANTENIMIENTOS DE INFRAESTRUCTURAS) LLEVAN A LAS NUEVAS:
+              { path: 'solicitudes-mantenimientos/listado-solicitudes-mantenimientos', redirectTo: 'mantenimientos-infraestructuras/solic-mttos/listado-solicitudes-mantenimientos', pathMatch: 'full' },
+              { path: 'solicitudes-mantenimientos', redirectTo: 'mantenimientos-infraestructuras/solic-mttos/listado-solicitudes-mantenimientos', pathMatch: 'full' },
+              { path: 'solicitudes-mantenimientos-avalados/listado-solicitudes-mantenimientos-avalados', redirectTo: 'mantenimientos-infraestructuras/solic-mttos-avalados/listado-solicitudes-mantenimientos-avalados', pathMatch: 'full' },
+              { path: 'solicitudes-mantenimientos-avalados', redirectTo: 'mantenimientos-infraestructuras/solic-mttos-avalados/listado-solicitudes-mantenimientos-avalados', pathMatch: 'full' },
               //LAS DIRECCIONES ANTERIORES DE SOLICITUDES DE INFRAESTRUCTURAS LLEVAN A LAS DE CONSTRUCCIONES NUEVAS:
               { path: 'solicitudes-infraestructuras/listado-solicitudes-infraestructuras', redirectTo: 'solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas', pathMatch: 'full' },
               { path: 'solicitudes-infraestructuras', redirectTo: 'solicitudes-construcciones-nuevas/listado-solicitudes-construcciones-nuevas', pathMatch: 'full' },

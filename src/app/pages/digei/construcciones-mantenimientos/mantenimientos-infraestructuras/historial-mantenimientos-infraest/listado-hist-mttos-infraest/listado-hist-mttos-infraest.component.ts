@@ -1,43 +1,45 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { HistorialMantenimientosInfraestI } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/historial-mantenimientos-infraest/historial-mantenimientos-infraest.interface';
 import { TiposMantenimientosInfraestructurasI } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/tipos-mantenimientos-infraestructuras/tipos-mantenimientos-infraestructuras.interface';
 import { UnidadesMilitaresI } from '../../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
-import { InfraestructurasI } from '../../../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
 import { TiposFuentesFinanciacionI } from '../../../../../../interfaces/tipos-fuentes-financiacion/tipos-fuentes-financiacion.interface';
 
 import { HistorialMantenimientosInfraestService } from '../../../../../../services/digei/mantenimientos-infraestructuras/historial-mantenimientos-infraest/historial-mantenimientos-infraest.service';
 import { TiposMantenimientosInfraestructurasService } from '../../../../../../services/digei/mantenimientos-infraestructuras/tipos-mantenimientos-infraestructuras/tipos-mantenimientos-infraestructuras.service';
 import { UnidadesMilitaresService } from '../../../../../../services/panel-control/unidades-militares/unidades-militares.service';
-import { InfraestructurasService } from '../../../../../../services/digei/finca-raiz/infraestructuras/infraestructuras.service';
 import { TiposFuentesFinanciacionService } from '../../../../../../services/tipos-fuentes-financiacion/tipos-fuentes-financiacion.service';
 import { SpinnerService } from '../../../../../../services/spinner/spinner.service';
 
-import { AddUpdDelHistorialMantenimientoInfraestComponent } from '../add-upd-del-hist-mtto-infraest/add-upd-del-hist-mtto-infraest.component';
 import { VistaHistorialMantenimientoInfraestComponent } from '../vista-hist-mtto-infraest/vista-hist-mtto-infraest.component';
 import { SemaforoContadoresComponent } from '../../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 import { OrdenarPorSiglaPipe } from '../../../../../../shared/pipes/ordenar-por-sigla.pipe';
 
 //TONOS DE SemaforoContadoresComponent QUE SE VAN ASIGNANDO, EN ORDEN, A CADA TIPO DE MANTENIMIENTO DEL CATÁLOGO:
+//FORMULARIO DE CREAR / MODIFICAR / ELIMINAR: A PEDIDO DE LA DUEÑA DEL SISTEMA ESTE LISTADO SOLO MUESTRA EL HISTORIAL; EL FORMULARIO ES
+//UNA PÁGINA APARTE EN mantenimientos-infraest (SE CREA DESDE EL ROMBO DE MANTENIMIENTO DE INFRAESTRUCTURA Y SE MODIFICA / ELIMINA
+//DESDE LOS BOTONES DE CADA REGISTRO DE ESTA TABLA):
+const RUTA_FORMULARIO_MANTENIMIENTO = '/digei/construcciones-mantenimientos/mantenimientos-infraestructuras/mantenimientos-infraest/add-upd-del-hist-mtto-infraest';
+
 const TONOS_TIPOS_MANTENIMIENTO = ['verificacion', 'aprobacion', 'regular', 'asignacion', 'rechazado', 'mantenimiento', 'validacion', 'patrimonial', 'neutral'];
 
 @Component({
   selector: 'app-listado-hist-mttos-infraest',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelHistorialMantenimientoInfraestComponent, VistaHistorialMantenimientoInfraestComponent, SemaforoContadoresComponent, OrdenarPorSiglaPipe],
+  imports: [CommonModule, ReactiveFormsModule, VistaHistorialMantenimientoInfraestComponent, SemaforoContadoresComponent, OrdenarPorSiglaPipe],
   templateUrl: './listado-hist-mttos-infraest.component.html',
   styleUrl: './listado-hist-mttos-infraest.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListadoHistorialMantenimientosInfraestComponent implements OnInit {
+export class ListadoHistorialMantenimientosInfraestComponent implements OnInit, OnDestroy {
 
-  //CATÁLOGOS CARGADOS DESDE EL BACKEND (COMBOS DE FILTRO Y/O COMBOS DEL FORMULARIO):
+  //CATÁLOGOS CARGADOS DESDE EL BACKEND (COMBOS DE FILTRO):
   unidadesMilitares: UnidadesMilitaresI[] = [];
   tiposMantenimientosInfraestructuras: TiposMantenimientosInfraestructurasI[] = [];
   tiposFuentesFinanciacion: TiposFuentesFinanciacionI[] = [];
-  infraestructuras: InfraestructurasI[] = [];
 
   //HISTORIALES QUE COINCIDEN CON LA PALABRA CLAVE (BÚSQUEDA DEL BACKEND) Y, DE ELLOS, LOS QUE ADEMÁS CUMPLEN LOS COMBOS DE FILTRO.
   //HistorialMantenimientoInfraestructuraController SOLO FILTRA POR PALABRA CLAVE (NO POR UNIDAD MILITAR, TIPO DE MANTENIMIENTO NI
@@ -63,9 +65,7 @@ export class ListadoHistorialMantenimientosInfraestComponent implements OnInit {
   tandaNumeroRegistrosporPagina = 10;
 
   //ESTADO DE MODALES:
-  modalAddUpdDelVisible = false;
   modalVistaVisible = false;
-  modalModo: 'guardar' | 'modificar' | 'eliminar' = 'guardar';
   historialMantenimientoInfraestructuraSeleccionado: HistorialMantenimientosInfraestI | null = null;
 
   //TOAST LOCAL:
@@ -75,11 +75,11 @@ export class ListadoHistorialMantenimientosInfraestComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
     private historialMantenimientosInfraestService: HistorialMantenimientosInfraestService,
     private tiposMantenimientosInfraestructurasService: TiposMantenimientosInfraestructurasService,
     private unidadesMilitaresService: UnidadesMilitaresService,
-    private infraestructurasService: InfraestructurasService,
     private tiposFuentesFinanciacionService: TiposFuentesFinanciacionService,
     private spinnerService: SpinnerService
   ) {
@@ -96,8 +96,22 @@ export class ListadoHistorialMantenimientosInfraestComponent implements OnInit {
     this.cargarUnidadesMilitares();
     this.cargarTiposMantenimientosInfraestructuras();
     this.cargarTiposFuentesFinanciacion();
-    this.cargarInfraestructuras();
     this.accionListar();
+    this.mostrarMensajeDelFormulario();
+  }
+
+  ngOnDestroy(): void {
+    if (this.toastTimer) clearTimeout(this.toastTimer);
+  }
+
+  //AL VOLVER DEL FORMULARIO TRAS MODIFICAR O ELIMINAR, ÉSTE DEJA EL MENSAJE DEL RESULTADO EN EL ESTADO DE NAVEGACIÓN; SE MUESTRA
+  //EN EL TOAST Y SE BORRA DEL ESTADO PARA QUE NO VUELVA A SALIR AL RECARGAR O AL REGRESAR CON EL BOTÓN ATRÁS DEL NAVEGADOR:
+  private mostrarMensajeDelFormulario(): void {
+    const estado = history.state as { toastMensaje?: string; toastTipo?: 'exito' | 'error' } | null;
+    if (!estado?.toastMensaje) return;
+    this.mostrarToast(estado.toastTipo === 'error' ? 'error' : 'exito', estado.toastMensaje);
+    const { toastMensaje, toastTipo, ...resto } = estado;
+    history.replaceState(resto, '');
   }
 
   //PASA EL TEXTO A MAYÚSCULA, LE QUITA LAS TILDES Y DEJA UN SOLO ESPACIO ENTRE PALABRAS (EJ. "Jemop " → "JEMOP"):
@@ -117,7 +131,7 @@ export class ListadoHistorialMantenimientosInfraestComponent implements OnInit {
       });
   }
 
-  //CARGA EL CATÁLOGO DE TIPOS DE MANTENIMIENTO DE INFRAESTRUCTURA (COMBO DE FILTRO, COMBO DEL FORMULARIO Y LUCES DEL SEMÁFORO):
+  //CARGA EL CATÁLOGO DE TIPOS DE MANTENIMIENTO DE INFRAESTRUCTURA (COMBO DE FILTRO Y LUCES DEL SEMÁFORO):
   private cargarTiposMantenimientosInfraestructuras(): void {
     this.tiposMantenimientosInfraestructurasService.findAllTypesOfInfrastructureMaintenance(undefined, undefined, 'nombreTipoMantenimientoInfraestructura', 'ASC')
       .subscribe({
@@ -130,7 +144,7 @@ export class ListadoHistorialMantenimientosInfraestComponent implements OnInit {
       });
   }
 
-  //CARGA EL CATÁLOGO DE TIPOS DE FUENTES DE FINANCIACIÓN (COMBO DE FILTRO Y COMBO DEL FORMULARIO):
+  //CARGA EL CATÁLOGO DE TIPOS DE FUENTES DE FINANCIACIÓN (COMBO DE FILTRO):
   private cargarTiposFuentesFinanciacion(): void {
     this.tiposFuentesFinanciacionService.findAllTypesOfFundingSources(undefined, undefined, 'nombreTipoFuenteFinanciacion', 'ASC')
       .subscribe({
@@ -139,18 +153,6 @@ export class ListadoHistorialMantenimientosInfraestComponent implements OnInit {
           this.changeDetectorRef.markForCheck();
         },
         error: (err) => console.error('ERROR AL CARGAR TIPOS DE FUENTES DE FINANCIACIÓN: ', err)
-      });
-  }
-
-  //CARGA EL CATÁLOGO DE INFRAESTRUCTURAS DESDE EL BACKEND (COMBO DEL FORMULARIO):
-  private cargarInfraestructuras(): void {
-    this.infraestructurasService.findAllInfrastructures(undefined, undefined, undefined, 'denominacionInfraestructura', 'ASC')
-      .subscribe({
-        next: (infraestructuras) => {
-          this.infraestructuras = infraestructuras;
-          this.changeDetectorRef.markForCheck();
-        },
-        error: (err) => console.error('ERROR AL CARGAR INFRAESTRUCTURAS: ', err)
       });
   }
 
@@ -267,14 +269,10 @@ export class ListadoHistorialMantenimientosInfraestComponent implements OnInit {
     return texto && !isNaN(numero) && /\d/.test(texto) ? '$ ' + numero.toLocaleString('es-CO') : texto;
   }
 
-  //ABRE EL MODAL DE CREAR / MODIFICAR / ELIMINAR, MOSTRANDO PRIMERO EL SPINNER GLOBAL DEL PIÑÓN GIRATORIO:
-  abrirModalAddUpdDel(modo: 'guardar' | 'modificar' | 'eliminar', historial: HistorialMantenimientosInfraestI | null = null): void {
-    this.spinnerService.showBeforeOpening(() => {
-      this.modalModo = modo;
-      this.historialMantenimientoInfraestructuraSeleccionado = historial;
-      this.modalAddUpdDelVisible = true;
-      this.changeDetectorRef.markForCheck();
-    });
+  //BOTONES MODIFICAR Y ELIMINAR DE CADA REGISTRO: ABREN LA PÁGINA DEL FORMULARIO EN mantenimientos-infraest CON EL MODO Y EL ID:
+  irAlFormulario(modo: 'modificar' | 'eliminar', historial: HistorialMantenimientosInfraestI): void {
+    if (!historial.idHistorialMantenimientoInfraestructura) return;
+    this.router.navigate([RUTA_FORMULARIO_MANTENIMIENTO], { queryParams: { modo, id: historial.idHistorialMantenimientoInfraestructura } });
   }
 
   abrirModalVista(historial: HistorialMantenimientosInfraestI): void {
@@ -285,57 +283,9 @@ export class ListadoHistorialMantenimientosInfraestComponent implements OnInit {
     });
   }
 
-  cerrarModalAddUpdDel(): void {
-    this.modalAddUpdDelVisible = false;
-    this.historialMantenimientoInfraestructuraSeleccionado = null;
-  }
-
   cerrarModalVista(): void {
     this.modalVistaVisible = false;
     this.historialMantenimientoInfraestructuraSeleccionado = null;
-  }
-
-  //RECIBE EL HISTORIAL NUEVO O MODIFICADO DESDE EL MODAL Y LO ENVÍA AL BACKEND (POST SI ES NUEVO, PUT SI YA TIENE ID). EL BACKEND
-  //PUEDE RESPONDER HTTP 200 SIN GUARDAR (banderaexito = false), EN CUYO CASO SE MUESTRA SU MENSAJE COMO ERROR Y EL MODAL SIGUE ABIERTO:
-  guardarHistorialMantenimientoInfraestructura(historial: HistorialMantenimientosInfraestI): void {
-    const esModificacion = !!historial.idHistorialMantenimientoInfraestructura;
-    const peticion = esModificacion
-      ? this.historialMantenimientosInfraestService.updateInfrastructureMaintenanceHistory(historial)
-      : this.historialMantenimientosInfraestService.addInfrastructureMaintenanceHistory(historial);
-    peticion.subscribe({
-      next: (respuesta) => {
-        if (respuesta?.banderaexito === false) {
-          this.mostrarToast('error', respuesta.mensaje || 'No se pudo guardar el historial de mantenimiento.');
-          return;
-        }
-        this.mostrarToast('exito', respuesta?.mensaje || (esModificacion ? 'Historial de mantenimiento modificado correctamente.' : 'Historial de mantenimiento creado correctamente.'));
-        this.accionListar();
-        this.cerrarModalAddUpdDel();
-      },
-      error: (err) => {
-        console.error(esModificacion ? 'ERROR AL MODIFICAR HISTORIAL DE MANTENIMIENTO DE INFRAESTRUCTURA: ' : 'ERROR AL CREAR HISTORIAL DE MANTENIMIENTO DE INFRAESTRUCTURA: ', err);
-        this.mostrarToast('error', err.error?.mensaje || (esModificacion ? 'Error al modificar el historial de mantenimiento.' : 'Error al crear el historial de mantenimiento.'));
-      }
-    });
-  }
-
-  //RECIBE EL ID DEL HISTORIAL A ELIMINAR Y LO ENVÍA AL BACKEND:
-  eliminarHistorialMantenimientoInfraestructura(idHistorialMantenimientoInfraestructura: number): void {
-    this.historialMantenimientosInfraestService.deleteInfrastructureMaintenanceHistory(idHistorialMantenimientoInfraestructura).subscribe({
-      next: (respuesta) => {
-        if (respuesta?.banderaexito === false) {
-          this.mostrarToast('error', respuesta.mensaje || 'No se pudo eliminar el historial de mantenimiento.');
-          return;
-        }
-        this.mostrarToast('exito', respuesta?.mensaje || 'Historial de mantenimiento eliminado correctamente.');
-        this.accionListar();
-        this.cerrarModalAddUpdDel();
-      },
-      error: (err) => {
-        console.error('ERROR AL ELIMINAR HISTORIAL DE MANTENIMIENTO DE INFRAESTRUCTURA: ', err);
-        this.mostrarToast('error', err.error?.mensaje || 'Error al eliminar el historial de mantenimiento.');
-      }
-    });
   }
 
   private mostrarToast(tipo: 'exito' | 'error', mensaje: string): void {
