@@ -3,7 +3,7 @@ import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChange
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HistorialEquipTranspApoyAtencPrevEmergDesastI } from '../../../../../../interfaces/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/historial-eq_tr-apoy-at-prev-em-des/historial-eq_tr-apoy-at-prev-em-des.interface';
 import { ApoyosAtencPrevEmergDesastI } from '../../../../../../interfaces/digei/gestion-riesgo/apoyos-atenc-prev-emerg-desast/apoyos-atenc-prev-emerg-desast.interface';
-import { EquiposIngenierosI } from '../../../../../../interfaces/equipos-ingenieros/equipos-ingenieros.interface';
+import { EquiposIngenierosI } from '../../../../../../interfaces/dinco/equipos-ingenieros/equipos-ingenieros.interface';
 
 @Component({
   selector: 'app-add-upd-del-hist-eq_tr-apoy-at-prev-em-des',

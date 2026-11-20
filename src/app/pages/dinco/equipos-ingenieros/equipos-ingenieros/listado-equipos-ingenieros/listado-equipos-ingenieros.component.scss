@@ -1,0 +1,20 @@
+//MISMOS ESTILOS DEL LISTADO DE INFRAESTRUCTURAS (BARRA, TABLA, PAGINACIÓN, MODALES, TOAST Y BADGES DE ESTADO):
+@use '../../../../digei/finca-raiz/infraestructuras/listado-infraestructuras/listado-infraestructuras.component';
+
+.panel-equipos-ingenieros {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+//SEGUNDA FILA DE LA BARRA: SOLO LOS COMBOS DE FILTRO, REPARTIDOS EN EL ANCHO DISPONIBLE:
+.barra-filtros select {
+  flex: 1 1 160px;
+  min-width: 0;
+}
+
+//TONOS DEL SEMÁFORO QUE EL LISTADO BASE NO TRAE COMO BADGE (MISMOS COLORES DE semaforo-contadores):
+.badge-verificacion { background: rgba(3, 105, 161, .12); color: #0369a1; }
+.badge-validacion { background: rgba(29, 78, 216, .12); color: #1d4ed8; }
+.badge-asignacion { background: rgba(109, 40, 217, .12); color: #6d28d9; }
+.badge-rechazado { background: rgba(195, 44, 50, .12); color: #b91c1c; }

@@ -1,31 +1,31 @@
 <app-placa-titulo-seccion texto="Dirección de Ingenieros de Combate" icono="dinco" />
 <section class="page-card dinco-opciones" aria-label="Opciones de DINCO">
-  <!-- Mismo esquema de DIGEI: aquí solo se ve el área; sus opciones están dentro de su componente
-       (pages/dinco/gestion-desminado). Las otras dos áreas siguen como opción visual sin navegación. -->
+  <!-- Mismo esquema de DIGEI: aquí solo se ven las áreas; sus opciones están dentro de su componente
+       (pages/dinco/gestion-desminado y pages/dinco/equipos-ingenieros). -->
   <div class="dinco-grupo">
     <h2><a routerLink="/dinco/gestion-desminado">Gestión de Desminado</a></h2>
   </div>
   <div class="dinco-grupo">
-    <h2><a role="link" aria-disabled="true">Equipo de Ingenieros</a></h2>
-    <ul>
-      <li><a role="link" aria-disabled="true">Inventario de equipos</a></li>
-      <li><a role="link" aria-disabled="true">Clasificación y catálogos de equipos</a></li>
-      <li><a role="link" aria-disabled="true">Documentación de altas y bajas</a></li>
-      <li><a role="link" aria-disabled="true">Diagnósticos de equipos</a></li>
-      <li><a role="link" aria-disabled="true">Mantenimientos de equipos</a></li>
-      <li><a role="link" aria-disabled="true">Deméritos, desgastes y suministros</a></li>
-      <li><a role="link" aria-disabled="true">Aseguramiento de equipos</a></li>
-    </ul>
+    <h2><a routerLink="/dinco/equipos-ingenieros">Equipos de Ingenieros</a></h2>
   </div>
-  <div class="dinco-grupo">
-    <h2><a role="link" aria-disabled="true">Planeación y soporte compartido</a></h2>
-    <ul>
-      <li><a role="link" aria-disabled="true">Proyecciones de adquisición de equipo fijo</a></li>
-      <li><a role="link" aria-disabled="true">Seguros de línea blanca, SOAT y tecnomecánicas</a></li>
-      <li><a role="link" aria-disabled="true">Unidades militares, compañías y pelotones</a></li>
-      <li><a role="link" aria-disabled="true">Centros de costos</a></li>
-      <li><a role="link" aria-disabled="true">Razas de caninos · Panel de Control</a></li>
-      <li><a role="link" aria-disabled="true">Catálogos de seguros</a></li>
+  <!-- Propuesta (pendiente de aprobar con la dueña del sistema): sus únicas tablas hoy son los catálogos
+       TABLA_TIPOS_ACTIVIDADES_EXP_EQUIP_HERR_Y_PERR_DISP_ARTEF_EXP y TABLA_TIPOS_DESPEJES_ARTEFACTOS_EXPLOSIVOS.
+       Las subopciones son solo texto con las posibles tablas nuevas; no navegan. -->
+  <div class="dinco-grupo dinco-grupo--propuesta">
+    <h2><a role="link" aria-disabled="true">Disposición de Artefactos Explosivos</a></h2>
+    <ul class="dinco-propuesta">
+      <li>Equipos de disposición de artefactos explosivos (MARTE, EXDE, EXDE-Delta, UDH)
+        <span>TABLA_EQUIPOS_DISP_ARTEF_EXP</span></li>
+      <li>Integrantes de los equipos (comandante, detectoristas, operador ECAEX)
+        <span>TABLA_INTEGRANTES_EQUIPOS_DISP_ARTEF_EXP</span></li>
+      <li>Binomios caninos asignados a los equipos
+        <span>TABLA_BINOMIOS_CANINOS_EQUIPOS_DISP_ARTEF_EXP</span></li>
+      <li>Materiales técnicos asignados a los equipos
+        <span>TABLA_MATERIALES_TECNICOS_EQUIPOS_DISP_ARTEF_EXP</span></li>
+      <li>Historial de actividades de despeje (militar o humanitario)
+        <span>TABLA_HISTORIAL_ACTIVIDADES_DESPEJES_ARTEF_EXP</span></li>
+      <li>Artefactos explosivos neutralizados o destruidos por actividad
+        <span>TABLA_ARTEFACTOS_EXP_NEUTRALIZADOS</span></li>
     </ul>
   </div>
 </section>

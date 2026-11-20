@@ -1,0 +1,225 @@
+:host { display: block; }
+
+//COLOR DE LOS ENLACES DE DINCO PARA LO SELECCIONADO:
+$cei-acento: #245b85;
+
+.cei {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+//RUTA DE LA SELECCIÓN ACTUAL (CLASIFICACIÓN › SUBCLASIFICACIÓN › ELEMENTOS):
+.cei-ruta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: .82rem;
+  color: var(--sicim-gray);
+
+  &__nivel { font-weight: 700; color: var(--sicim-dark); }
+  &__flecha { color: var(--sicim-border); font-size: 1rem; }
+}
+
+.cei-estado {
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+  color: var(--sicim-gray);
+
+  &--error { color: #b91c1c; }
+}
+
+//TRES COLUMNAS: LA DE ELEMENTOS ES MÁS ANCHA PORQUE MUESTRA LÍNEA, CUENTA Y CLASE DE ACTIVO:
+.cei-columnas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 16px;
+}
+
+.cei-columna {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--sicim-border);
+  border-radius: 6px;
+  background: var(--sicim-white);
+  overflow: hidden;
+
+  &__cabecera {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--sicim-soft);
+    border-bottom: 1px solid var(--sicim-border);
+
+    h3 {
+      flex: 1;
+      margin: 0;
+      font-size: .92rem;
+      font-weight: 800;
+      color: var(--sicim-black);
+    }
+  }
+
+  &__paso {
+    display: inline-grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: $cei-acento;
+    color: #fff;
+    font-size: .75rem;
+    font-weight: 700;
+  }
+
+  &__total {
+    min-width: 28px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--sicim-white);
+    border: 1px solid var(--sicim-border);
+    text-align: center;
+    font-size: .75rem;
+    font-weight: 700;
+    color: var(--sicim-dark);
+  }
+}
+
+.cei-buscador {
+  margin: 10px 12px 4px;
+  padding: 7px 10px;
+  border: 1px solid var(--sicim-border);
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+    border-color: var(--sicim-focus);
+  }
+}
+
+//LISTA CON DESPLAZAMIENTO PROPIO PARA QUE LAS TRES COLUMNAS QUEDEN A LA MISMA ALTURA:
+.cei-lista {
+  list-style: none;
+  margin: 0;
+  padding: 6px 8px 10px;
+  max-height: 560px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cei-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid transparent;
+  border-left: 3px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:hover { background: var(--sicim-soft); }
+
+  &:focus-visible {
+    outline: 3px solid var(--sicim-focus);
+    outline-offset: 1px;
+  }
+
+  &__nombre {
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--sicim-black);
+    overflow-wrap: anywhere;
+  }
+
+  &__detalle {
+    font-size: .74rem;
+    color: var(--sicim-gray);
+  }
+
+  &--activo {
+    background: rgba(36, 91, 133, .08);
+    border-color: rgba(36, 91, 133, .25);
+    border-left-color: $cei-acento;
+
+    .cei-item__nombre { color: $cei-acento; }
+  }
+}
+
+.cei-elemento {
+  padding: 10px 12px;
+  border: 1px solid var(--sicim-soft);
+  border-left: 3px solid $cei-acento;
+  border-radius: 4px;
+
+  &__nombre {
+    display: block;
+    margin-bottom: 6px;
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--sicim-black);
+    overflow-wrap: anywhere;
+  }
+
+  &__datos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0;
+
+    dt {
+      font-size: .68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      color: var(--sicim-gray);
+    }
+
+    dd {
+      margin: 2px 0 0;
+      font-size: .78rem;
+      color: var(--sicim-dark);
+      overflow-wrap: anywhere;
+    }
+  }
+}
+
+.cei-codigo {
+  display: inline-block;
+  margin-right: 4px;
+  padding: 0 5px;
+  border-radius: 3px;
+  background: var(--sicim-soft);
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: .72rem;
+}
+
+.cei-vacio {
+  padding: 16px 8px;
+  text-align: center;
+  font-size: .82rem;
+  color: var(--sicim-gray);
+}
+
+@media (max-width: 1100px) {
+  .cei-columnas { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .cei-columna--elementos { grid-column: 1 / -1; }
+}
+
+@media (max-width: 700px) {
+  .cei-columnas { grid-template-columns: 1fr; }
+  .cei-lista { max-height: 360px; }
+  .cei-elemento__datos { grid-template-columns: 1fr; }
+}

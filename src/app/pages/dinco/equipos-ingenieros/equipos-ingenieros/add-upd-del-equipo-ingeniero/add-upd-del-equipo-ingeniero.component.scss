@@ -1,0 +1,26 @@
+//MISMOS ESTILOS DEL FORMULARIO DE INFRAESTRUCTURAS (SECCIONES, GRILLA, CAMPOS, ALERTA Y BOTONES):
+@use '../../../../digei/finca-raiz/infraestructuras/add-upd-del-infraestructura/add-upd-del-infraestructura.component';
+
+//EL FORMULARIO BASE SOLO ESTILIZA input Y select; EL textarea TOMA EL MISMO ASPECTO (MISMO PATRÓN QUE AddUpdDelCaninoComponent):
+.form-group textarea {
+  padding: 8px 10px;
+  border: 1px solid var(--sicim-border);
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--sicim-black);
+  background: var(--sicim-white);
+  resize: vertical;
+
+  &:focus {
+    outline: none;
+    border-color: var(--sicim-focus);
+  }
+
+  &:disabled { background: var(--sicim-soft); color: var(--sicim-gray); }
+}
+
+.campo-error {
+  color: #b91c1c;
+  font-size: 11px;
+}

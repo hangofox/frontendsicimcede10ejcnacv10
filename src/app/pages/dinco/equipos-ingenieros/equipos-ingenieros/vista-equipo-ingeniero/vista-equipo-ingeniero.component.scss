@@ -1,0 +1,10 @@
+//MISMOS ESTILOS DE LA VISTA DE INFRAESTRUCTURAS (CABECERA, SECCIONES, GRILLA DE DATOS Y BOTÓN CERRAR):
+@use '../../../../digei/finca-raiz/infraestructuras/vista-infraestructura/vista-infraestructura.component';
+
+.dato-grupo-ancho {
+  grid-column: 1 / -1;
+}
+
+.dato-valor {
+  white-space: pre-line;
+}

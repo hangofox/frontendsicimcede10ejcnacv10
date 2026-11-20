@@ -3,7 +3,7 @@ import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChange
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HistorialEquipTranspApoyObrRedMitigGestRiesgDesastI } from '../../../../../../interfaces/digei/gestion-riesgo/apoyos-obr-red-mitig-gest-riesg-desast/historial-eq_tr-obr-red-mitig/historial-eq_tr-obr-red-mitig.interface';
 import { ApoyosObrRedMitigGestRiesgDesastI } from '../../../../../../interfaces/digei/gestion-riesgo/apoyos-obr-red-mitig-gest-riesg-desast/apoyos-obr-red-mitig-gest-riesg-desast.interface';
-import { EquiposIngenierosI } from '../../../../../../interfaces/equipos-ingenieros/equipos-ingenieros.interface';
+import { EquiposIngenierosI } from '../../../../../../interfaces/dinco/equipos-ingenieros/equipos-ingenieros.interface';
 
 @Component({
   selector: 'app-add-upd-del-hist-eq_tr-obr-red-mitig',

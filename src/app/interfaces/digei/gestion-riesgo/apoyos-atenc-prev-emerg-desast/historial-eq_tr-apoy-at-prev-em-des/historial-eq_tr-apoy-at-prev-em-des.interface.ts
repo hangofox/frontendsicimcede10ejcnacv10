@@ -1,8 +1,8 @@
 import { ApoyosAtencPrevEmergDesastI } from "../apoyos-atenc-prev-emerg-desast.interface";
-import { ClasificacionesEquiposIngenierosI } from "../../../../equipos-ingenieros/clasificaciones-equipos-ingenieros/clasificaciones-equipos-ingenieros.interface";
-import { SubclasificacionesEquiposIngenierosI } from "../../../../equipos-ingenieros/subclasificaciones-equipos-ingenieros/subclasificaciones-equipos-ingenieros.interface";
-import { ElementosSubclasificacionesEquiposIngenierosI } from "../../../../equipos-ingenieros/elementos-subclasif-equipos-ing/elementos-subclasif-equipos-ing.interface";
-import { EquiposIngenierosI } from "../../../../equipos-ingenieros/equipos-ingenieros.interface";
+import { ClasificacionesEquiposIngenierosI } from "../../../../dinco/clasificaciones-equipos-ingenieros/clasificaciones-equipos-ingenieros.interface";
+import { SubclasificacionesEquiposIngenierosI } from "../../../../dinco/clasificaciones-equipos-ingenieros/subclasificaciones-equipos-ingenieros/subclasificaciones-equipos-ingenieros.interface";
+import { ElementosSubclasificacionesEquiposIngenierosI } from "../../../../dinco/elementos-subclasificaciones-equipos-ingenieros/elementos-subclasificaciones-equipos-ingenieros.interface";
+import { EquiposIngenierosI } from "../../../../dinco/equipos-ingenieros/equipos-ingenieros.interface";
 
 export interface HistorialEquipTranspApoyAtencPrevEmergDesastI {
     idHistorialEquipTranspApoyAtencPrevEmergDesast?: number;

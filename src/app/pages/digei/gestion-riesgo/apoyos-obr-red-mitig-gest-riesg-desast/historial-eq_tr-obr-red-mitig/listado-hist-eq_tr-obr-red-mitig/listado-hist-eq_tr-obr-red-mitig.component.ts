@@ -3,9 +3,9 @@ import { ChangeDetectorRef, Component, inject, Input, OnChanges, SimpleChanges }
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HistorialEquipTranspApoyObrRedMitigGestRiesgDesastI, HistorialEquipTranspApoyObrRedMitigGestRiesgDesastMsj } from '../../../../../../interfaces/digei/gestion-riesgo/apoyos-obr-red-mitig-gest-riesg-desast/historial-eq_tr-obr-red-mitig/historial-eq_tr-obr-red-mitig.interface';
 import { ApoyosObrRedMitigGestRiesgDesastI } from '../../../../../../interfaces/digei/gestion-riesgo/apoyos-obr-red-mitig-gest-riesg-desast/apoyos-obr-red-mitig-gest-riesg-desast.interface';
-import { EquiposIngenierosI } from '../../../../../../interfaces/equipos-ingenieros/equipos-ingenieros.interface';
+import { EquiposIngenierosI } from '../../../../../../interfaces/dinco/equipos-ingenieros/equipos-ingenieros.interface';
 import { HistorialEquipTranspApoyObrRedMitigGestRiesgDesastService } from '../../../../../../services/digei/gestion-riesgo/apoyos-obr-red-mitig-gest-riesg-desast/historial-eq_tr-obr-red-mitig/historial-eq_tr-obr-red-mitig.service';
-import { EquiposIngenierosService } from '../../../../../../services/equipos-ingenieros/equipos-ingenieros.service';
+import { EquiposIngenierosService } from '../../../../../../services/dinco/equipos-ingenieros/equipos-ingenieros.service';
 import { SemaforoContadoresComponent } from '../../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 import { AddUpdDelHistEqTrObrRedMitigComponent } from '../add-upd-del-hist-eq_tr-obr-red-mitig/add-upd-del-hist-eq_tr-obr-red-mitig.component';
 import { VistaHistEqTrObrRedMitigComponent } from '../vista-hist-eq_tr-obr-red-mitig/vista-hist-eq_tr-obr-red-mitig.component';

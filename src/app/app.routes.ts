@@ -140,6 +140,16 @@ export const routes: Routes = [
               { path: 'materiales-tecnicos', redirectTo: 'materiales-tecnicos/listado-materiales-tecnicos', pathMatch: 'full' },
               { path: 'municiones-especiales', redirectTo: 'municiones-especiales/listado-municiones-especiales', pathMatch: 'full' }
             ]
+          },
+          {
+            //EQUIPOS DE INGENIEROS: ÁREA DE DINCO CON SUS OPCIONES DENTRO (MISMO ESQUEMA DE GESTIÓN DE DESMINADO).
+            path: 'equipos-ingenieros',
+            children: [
+              { path: '', loadComponent: () => import('./pages/dinco/equipos-ingenieros/equipos-ingenieros.component').then(m => m.EquiposIngenierosComponent), title: 'Equipos de ingenieros | SICIM' },
+              { path: 'equipos-ingenieros/listado-equipos-ingenieros', loadComponent: () => import('./pages/dinco/equipos-ingenieros/equipos-ingenieros/listado-equipos-ingenieros/listado-equipos-ingenieros.component').then(m => m.ListadoEquiposIngenierosComponent), title: 'Equipos de ingenieros | SICIM' },
+              { path: 'equipos-ingenieros', redirectTo: 'equipos-ingenieros/listado-equipos-ingenieros', pathMatch: 'full' },
+              { path: 'clasific-subclasific-element-equip-ing', loadComponent: () => import('./pages/dinco/equipos-ingenieros/clasific-subclasific-element-equip-ing/clasific-subclasific-element-equip-ing.component').then(m => m.ClasificSubclasificElementEquipIngComponent), title: 'Clasificaciones, subclasificaciones y elementos de equipos de ingenieros | SICIM' }
+            ]
           }
         ]
       },

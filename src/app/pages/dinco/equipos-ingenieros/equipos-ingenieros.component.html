@@ -1,0 +1,21 @@
+<!-- Aquí irán el piñón de DINCO (regresa a DINCO) y el piñón de Equipos de Ingenieros, como en las áreas de DIGEI.
+     Mientras se crean, van en texto simple en la misma posición. -->
+<div class="ei-escena" aria-label="Equipos de Ingenieros">
+  <a class="ei-escena__dinco" routerLink="/dinco" aria-label="Ir a DINCO">DINCO</a>
+  <h1 class="ei-escena__titulo">Equipos de Ingenieros</h1>
+</div>
+
+<section class="page-card equipos-ingenieros-opciones" aria-label="Opciones de Equipos de Ingenieros">
+  <ul>
+    @for (opcion of opciones; track opcion.titulo) {
+      <li>
+        @if (opcion.ruta) {
+          <a [routerLink]="opcion.ruta">{{ opcion.titulo }}</a>
+        } @else {
+          <!-- Aún sin componente: se enlazará cuando exista. -->
+          <a role="link" aria-disabled="true">{{ opcion.titulo }}</a>
+        }
+      </li>
+    }
+  </ul>
+</section>

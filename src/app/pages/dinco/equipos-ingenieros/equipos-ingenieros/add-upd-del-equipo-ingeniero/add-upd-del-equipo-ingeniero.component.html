@@ -1,0 +1,202 @@
+<div class="modal-formulario" *ngIf="equiposIngenierosForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará el equipo de ingenieros. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="equiposIngenierosForm" (ngSubmit)="guardarModificar()">
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Identificación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Denominación (*)</label>
+          <input type="text" formControlName="denominacionEquipoIngeniero" placeholder="Ej. EQUIPO DE COMBATE">
+          <small class="campo-error" *ngIf="campoInvalido('denominacionEquipoIngeniero')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>N.° Inventario</label>
+          <input type="text" formControlName="numeroInventarioEquipoIngeniero" placeholder="Ej. INV-EQ-0001">
+        </div>
+        <div class="form-group">
+          <label>N.° Activo fijo</label>
+          <input type="text" formControlName="numeroActivoFijoEquipoIngeniero" placeholder="Ej. AF-EQ-0001">
+        </div>
+        <div class="form-group">
+          <label>Tipo de alta (*)</label>
+          <select formControlName="tipoAltaEquipoIngenieroSeleccionado">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let item of tiposAltasEquiposIngenieros" [value]="item.idTipoAltaEquipoIngeniero">{{ item.nombreTipoAltaEquipoIngeniero }}</option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('tipoAltaEquipoIngenieroSeleccionado')">Seleccione una opción.</small>
+        </div>
+        <div class="form-group">
+          <label>Estado de uso (*)</label>
+          <select formControlName="estadoUsoEquipoIngeniero">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('estadoUsoEquipoIngeniero')">Seleccione el estado.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Clasificación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Clasificación (*)</label>
+          <select formControlName="clasificacionEquipoIngenieroSeleccionada" (change)="cambiarClasificacion()">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let item of clasificacionesEquiposIngenieros" [value]="item.idClasificacionEquipoIngeniero">{{ item.nombreClasificacionEquipoIngeniero }}</option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('clasificacionEquipoIngenieroSeleccionada')">Seleccione una opción.</small>
+        </div>
+        <div class="form-group">
+          <label>Subclasificación (*)</label>
+          <select formControlName="subclasificacionEquipoIngenieroSeleccionada" (change)="cambiarSubclasificacion()">
+            <option value="">{{ subclasificacionesFiltradas.length ? '-- Seleccione --' : '-- Elija primero la clasificación --' }}</option>
+            <option *ngFor="let item of subclasificacionesFiltradas" [value]="item.idSubclasificacionEquipoIngeniero">{{ item.nombreSubclasificacionEquipoIngeniero }}</option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('subclasificacionEquipoIngenieroSeleccionada')">Seleccione una opción.</small>
+        </div>
+        <div class="form-group">
+          <label>Elemento (*)</label>
+          <select formControlName="elementoSubclasificacionEquipoIngenieroSeleccionado">
+            <option value="">{{ elementosFiltrados.length ? '-- Seleccione --' : '-- Elija primero la subclasificación --' }}</option>
+            <option *ngFor="let item of elementosFiltrados" [value]="item.idElementoSubclasificacionEquipoIngeniero">{{ item.nombreElementoSubclasificacionEquipoIngeniero }}</option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('elementoSubclasificacionEquipoIngenieroSeleccionado')">Seleccione una opción.</small>
+        </div>
+        <!-- DATOS QUE TRAE EL ELEMENTO ELEGIDO (SOLO LECTURA) -->
+        <div class="form-group">
+          <label>Línea</label>
+          <input type="text" [value]="textoLineaElemento" disabled>
+        </div>
+        <div class="form-group">
+          <label>Cuenta</label>
+          <input type="text" [value]="textoCuentaElemento" disabled>
+        </div>
+        <div class="form-group">
+          <label>Clase de activo</label>
+          <input type="text" [value]="textoClaseActivoElemento" disabled>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Características</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Marca (*)</label>
+          <input type="text" formControlName="marcaEquipoIngeniero" placeholder="Ej. CATERPILLAR">
+          <small class="campo-error" *ngIf="campoInvalido('marcaEquipoIngeniero')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>Modelo (*)</label>
+          <input type="text" formControlName="modeloEquipoIngeniero" placeholder="Ej. 320D">
+          <small class="campo-error" *ngIf="campoInvalido('modeloEquipoIngeniero')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>Capacidad (*)</label>
+          <input type="text" formControlName="capacidadEquipoIngeniero" placeholder="Ej. 20 TONELADAS">
+          <small class="campo-error" *ngIf="campoInvalido('capacidadEquipoIngeniero')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>Empadronamiento (*)</label>
+          <input type="text" formControlName="empadronamientoEquipoIngeniero" placeholder="Ej. EMP-0001">
+          <small class="campo-error" *ngIf="campoInvalido('empadronamientoEquipoIngeniero')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>N.° Placa</label>
+          <input type="text" formControlName="numeroPlacaEquipoIngeniero" placeholder="Ej. MAQ123">
+        </div>
+        <div class="form-group">
+          <label>Fecha de matrícula</label>
+          <input type="datetime-local" formControlName="fechaHMSMatriculaEquipoIngeniero">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Asignación</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Unidad militar (*)</label>
+          <select formControlName="unidadMilitarSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let item of unidadesMilitares" [value]="item.idUnidadMilitar">{{ item.siglaoAcronimoUnidadMilitar }} - {{ item.nombreUnidadMilitar }}</option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('unidadMilitarSeleccionada')">Seleccione una opción.</small>
+        </div>
+        <div class="form-group">
+          <label>Sociedad de unidad centralizadora (*)</label>
+          <select formControlName="sociedadUnidadCentralizadoraSeleccionada">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let item of sociedadesUnidadesCentralizadoras" [value]="item.idSociedadUnidadCentralizadora">{{ item.codigoSociedadUnidadCentralizadora }} ({{ item.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }})</option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('sociedadUnidadCentralizadoraSeleccionada')">Seleccione una opción.</small>
+        </div>
+        <div class="form-group">
+          <label>Centro de costo de la unidad (*)</label>
+          <input type="text" formControlName="centroCostoUnidadMilitarEquipoIngeniero" placeholder="Ej. CC-001">
+          <small class="campo-error" *ngIf="campoInvalido('centroCostoUnidadMilitarEquipoIngeniero')">Este campo es obligatorio.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos contables</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Valor de adquisición</label>
+          <input type="text" inputmode="decimal" formControlName="valorAdquisicionEquipoIngeniero" placeholder="Ej. 450000000">
+          <small class="campo-error" *ngIf="campoInvalido('valorAdquisicionEquipoIngeniero')">Solo números, sin puntos de miles (hasta dos decimales con punto).</small>
+        </div>
+        <div class="form-group">
+          <label>Valor contable</label>
+          <input type="text" inputmode="decimal" formControlName="valorContableEquipoIngeniero" placeholder="Ej. 380000000">
+          <small class="campo-error" *ngIf="campoInvalido('valorContableEquipoIngeniero')">Solo números, sin puntos de miles (hasta dos decimales con punto).</small>
+        </div>
+        <div class="form-group">
+          <label>Valor de depreciación</label>
+          <input type="text" inputmode="decimal" formControlName="valorDepreciacionEquipoIngeniero" placeholder="Ej. 70000000">
+          <small class="campo-error" *ngIf="campoInvalido('valorDepreciacionEquipoIngeniero')">Solo números, sin puntos de miles (hasta dos decimales con punto).</small>
+        </div>
+        <div class="form-group">
+          <label>Fecha de alta (*)</label>
+          <input type="datetime-local" formControlName="fechaHMSAltaEquipoIngeniero">
+          <small class="campo-error" *ngIf="campoInvalido('fechaHMSAltaEquipoIngeniero')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>Fecha de ingreso</label>
+          <input type="datetime-local" formControlName="fechaHMSIngresoEquipoIngeniero">
+        </div>
+        <div class="form-group">
+          <label>Fecha de modificación</label>
+          <input type="datetime-local" formControlName="fechaHMSModificacionEquipoIngeniero">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Observaciones</div>
+      <div class="form-grid">
+        <div class="form-group form-group-ancho">
+          <label>Observaciones</label>
+          <textarea formControlName="observacionesEquipoIngeniero" rows="4" placeholder="Ej. Equipo con kit de herramientas completo..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-titulo-sistema btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="equiposIngenierosForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-titulo-sistema btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>

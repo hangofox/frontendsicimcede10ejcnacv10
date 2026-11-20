@@ -1,0 +1,169 @@
+<div class="vista-equipo-ingeniero" *ngIf="equipoIngenieroData as equipo">
+
+  <div class="perfil-cabecera">
+    <div class="avatar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="11" width="15" height="7" rx="1"/><path d="M16 14h3l3 3v1h-6"/><circle cx="5" cy="19" r="2"/><circle cx="12" cy="19" r="2"/><path d="M4 11V7l6-3 3 4"/></svg>
+    </div>
+    <div>
+      <h3 class="perfil-nombre">{{ equipo.denominacionEquipoIngeniero }}</h3>
+      <p class="perfil-tipo">{{ equipo.elementoSubclasificacionEquipoIngenieroDTO.nombreElementoSubclasificacionEquipoIngeniero }} — {{ equipo.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</p>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Identificación</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Denominación</span>
+        <span class="dato-valor">{{ equipo.denominacionEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° Inventario</span>
+        <span class="dato-valor">{{ equipo.numeroInventarioEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° Activo fijo</span>
+        <span class="dato-valor">{{ equipo.numeroActivoFijoEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Tipo de alta</span>
+        <span class="dato-valor">{{ equipo.tipoAltaEquipoIngenieroDTO.nombreTipoAltaEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Estado de uso</span>
+        <span class="dato-valor">{{ equipo.estadoUsoEquipoIngeniero || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Clasificación</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Clasificación</span>
+        <span class="dato-valor">{{ equipo.clasificacionEquipoIngenieroDTO.nombreClasificacionEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Subclasificación</span>
+        <span class="dato-valor">{{ equipo.subclasificacionEquipoIngenieroDTO.nombreSubclasificacionEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Elemento</span>
+        <span class="dato-valor">{{ equipo.elementoSubclasificacionEquipoIngenieroDTO.nombreElementoSubclasificacionEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Línea</span>
+        <span class="dato-valor">{{ equipo.elementoSubclasificacionEquipoIngenieroDTO.lineaEquipoIngenieroDTO.nombreLineaEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Cuenta</span>
+        <span class="dato-valor">
+          @if (equipo.elementoSubclasificacionEquipoIngenieroDTO.cuentaEquipoIngenieroDTO; as cuenta) {
+            {{ cuenta.numeroCuentaEquipoIngeniero }} - {{ cuenta.nombreCuentaEquipoIngeniero }}
+          } @else { - }
+        </span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Clase de activo</span>
+        <span class="dato-valor">
+          @if (equipo.elementoSubclasificacionEquipoIngenieroDTO.claseActivoEquipoIngenieroDTO; as claseActivo) {
+            {{ claseActivo.numeroClaseActivoEquipoIngeniero }} - {{ claseActivo.nombreClaseActivoEquipoIngeniero }}
+          } @else { - }
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Características</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Marca</span>
+        <span class="dato-valor">{{ equipo.marcaEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Modelo</span>
+        <span class="dato-valor">{{ equipo.modeloEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Capacidad</span>
+        <span class="dato-valor">{{ equipo.capacidadEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Empadronamiento</span>
+        <span class="dato-valor">{{ equipo.empadronamientoEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° Placa</span>
+        <span class="dato-valor">{{ equipo.numeroPlacaEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de matrícula</span>
+        <span class="dato-valor">{{ formatearFecha(equipo.fechaHMSMatriculaEquipoIngeniero) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Asignación</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Unidad militar</span>
+        <span class="dato-valor">{{ equipo.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }} - {{ equipo.unidadMilitarDTO.nombreUnidadMilitar }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Sociedad de unidad centralizadora</span>
+        <span class="dato-valor">{{ equipo.sociedadUnidadCentralizadoraDTO.codigoSociedadUnidadCentralizadora || '-' }} ({{ equipo.sociedadUnidadCentralizadoraDTO.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }})</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Centro de costo de la unidad</span>
+        <span class="dato-valor">{{ equipo.centroCostoUnidadMilitarEquipoIngeniero || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Datos contables</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Valor de adquisición</span>
+        <span class="dato-valor">{{ formatearValor(equipo.valorAdquisicionEquipoIngeniero) }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Valor contable</span>
+        <span class="dato-valor">{{ formatearValor(equipo.valorContableEquipoIngeniero) }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Valor de depreciación</span>
+        <span class="dato-valor">{{ formatearValor(equipo.valorDepreciacionEquipoIngeniero) }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de alta</span>
+        <span class="dato-valor">{{ formatearFecha(equipo.fechaHMSAltaEquipoIngeniero) }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de ingreso</span>
+        <span class="dato-valor">{{ formatearFecha(equipo.fechaHMSIngresoEquipoIngeniero) }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha de modificación</span>
+        <span class="dato-valor">{{ formatearFecha(equipo.fechaHMSModificacionEquipoIngeniero) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Observaciones</div>
+    <div class="datos-grid">
+      <div class="dato-grupo dato-grupo-ancho">
+        <span class="dato-label">Observaciones</span>
+        <span class="dato-valor">{{ equipo.observacionesEquipoIngeniero || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-acciones">
+    <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cerrar</button>
+  </div>
+
+</div>

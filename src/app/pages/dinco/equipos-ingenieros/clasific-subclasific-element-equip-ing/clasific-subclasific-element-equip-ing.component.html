@@ -1,0 +1,115 @@
+<h2 class="page-title">Clasificaciones, Subclasificaciones y Elementos de Equipos de Ingenieros</h2>
+
+<section class="page-card cei" aria-label="Clasificaciones, subclasificaciones y elementos de equipos de ingenieros">
+
+  <!-- RUTA DE LA SELECCIÓN ACTUAL -->
+  <p class="cei-ruta" aria-live="polite">
+    <span class="cei-ruta__nivel">{{ clasificacionSeleccionada?.nombreClasificacionEquipoIngeniero || 'Clasificación' }}</span>
+    <span class="cei-ruta__flecha" aria-hidden="true">›</span>
+    <span class="cei-ruta__nivel">{{ subclasificacionSeleccionada?.nombreSubclasificacionEquipoIngeniero || 'Subclasificación' }}</span>
+    <span class="cei-ruta__flecha" aria-hidden="true">›</span>
+    <span class="cei-ruta__nivel">{{ elementosVisibles.length }} elemento(s)</span>
+  </p>
+
+  @if (cargando) {
+    <p class="cei-estado">Cargando la clasificación de equipos de ingenieros...</p>
+  } @else if (errorCarga) {
+    <p class="cei-estado cei-estado--error">No fue posible cargar la información. Verifique la conexión con el servidor.</p>
+  } @else {
+    <div class="cei-columnas">
+
+      <!-- COLUMNA 1: CLASIFICACIONES -->
+      <div class="cei-columna">
+        <div class="cei-columna__cabecera">
+          <span class="cei-columna__paso">1</span>
+          <h3>Clasificaciones</h3>
+          <span class="cei-columna__total">{{ clasificaciones.length }}</span>
+        </div>
+        <input class="cei-buscador" type="search" [(ngModel)]="busquedaClasificacion" placeholder="Buscar clasificación..." aria-label="Buscar clasificación">
+        <ul class="cei-lista">
+          @for (clasificacion of clasificacionesVisibles; track clasificacion.idClasificacionEquipoIngeniero) {
+            <li>
+              <button type="button" class="cei-item"
+                      [class.cei-item--activo]="clasificacion.idClasificacionEquipoIngeniero === idClasificacionSeleccionada"
+                      [attr.aria-pressed]="clasificacion.idClasificacionEquipoIngeniero === idClasificacionSeleccionada"
+                      (click)="seleccionarClasificacion(clasificacion.idClasificacionEquipoIngeniero)">
+                <span class="cei-item__nombre">{{ clasificacion.nombreClasificacionEquipoIngeniero }}</span>
+                <span class="cei-item__detalle">
+                  {{ totalSubclasificaciones(clasificacion.idClasificacionEquipoIngeniero) }} subclasificaciones ·
+                  {{ totalElementosClasificacion(clasificacion.idClasificacionEquipoIngeniero) }} elementos
+                </span>
+              </button>
+            </li>
+          } @empty {
+            <li class="cei-vacio">Sin clasificaciones.</li>
+          }
+        </ul>
+      </div>
+
+      <!-- COLUMNA 2: SUBCLASIFICACIONES -->
+      <div class="cei-columna">
+        <div class="cei-columna__cabecera">
+          <span class="cei-columna__paso">2</span>
+          <h3>Subclasificaciones</h3>
+          <span class="cei-columna__total">{{ subclasificacionesVisibles.length }}</span>
+        </div>
+        <input class="cei-buscador" type="search" [(ngModel)]="busquedaSubclasificacion" placeholder="Buscar subclasificación..." aria-label="Buscar subclasificación">
+        <ul class="cei-lista">
+          @for (subclasificacion of subclasificacionesVisibles; track subclasificacion.idSubclasificacionEquipoIngeniero) {
+            <li>
+              <button type="button" class="cei-item"
+                      [class.cei-item--activo]="subclasificacion.idSubclasificacionEquipoIngeniero === idSubclasificacionSeleccionada"
+                      [attr.aria-pressed]="subclasificacion.idSubclasificacionEquipoIngeniero === idSubclasificacionSeleccionada"
+                      (click)="seleccionarSubclasificacion(subclasificacion.idSubclasificacionEquipoIngeniero)">
+                <span class="cei-item__nombre">{{ subclasificacion.nombreSubclasificacionEquipoIngeniero }}</span>
+                <span class="cei-item__detalle">{{ totalElementos(subclasificacion.idSubclasificacionEquipoIngeniero) }} elementos</span>
+              </button>
+            </li>
+          } @empty {
+            <li class="cei-vacio">{{ idClasificacionSeleccionada ? 'Esta clasificación no tiene subclasificaciones.' : 'Elija una clasificación.' }}</li>
+          }
+        </ul>
+      </div>
+
+      <!-- COLUMNA 3: ELEMENTOS -->
+      <div class="cei-columna cei-columna--elementos">
+        <div class="cei-columna__cabecera">
+          <span class="cei-columna__paso">3</span>
+          <h3>Elementos</h3>
+          <span class="cei-columna__total">{{ elementosVisibles.length }}</span>
+        </div>
+        <input class="cei-buscador" type="search" [(ngModel)]="busquedaElemento" placeholder="Buscar elemento, línea, cuenta o clase..." aria-label="Buscar elemento">
+        <ul class="cei-lista">
+          @for (elemento of elementosVisibles; track elemento.idElementoSubclasificacionEquipoIngeniero) {
+            <li class="cei-elemento">
+              <span class="cei-elemento__nombre">{{ elemento.nombreElementoSubclasificacionEquipoIngeniero }}</span>
+              <dl class="cei-elemento__datos">
+                <div>
+                  <dt>Línea</dt>
+                  <dd>{{ elemento.lineaEquipoIngenieroDTO.nombreLineaEquipoIngeniero || '-' }}</dd>
+                </div>
+                <div>
+                  <dt>Cuenta</dt>
+                  <dd>
+                    <span class="cei-codigo">{{ elemento.cuentaEquipoIngenieroDTO.numeroCuentaEquipoIngeniero }}</span>
+                    {{ elemento.cuentaEquipoIngenieroDTO.nombreCuentaEquipoIngeniero }}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Clase de activo</dt>
+                  <dd>
+                    <span class="cei-codigo">{{ elemento.claseActivoEquipoIngenieroDTO.numeroClaseActivoEquipoIngeniero }}</span>
+                    {{ elemento.claseActivoEquipoIngenieroDTO.nombreClaseActivoEquipoIngeniero }}
+                  </dd>
+                </div>
+              </dl>
+            </li>
+          } @empty {
+            <li class="cei-vacio">{{ idSubclasificacionSeleccionada ? 'Esta subclasificación no tiene elementos.' : 'Elija una subclasificación.' }}</li>
+          }
+        </ul>
+      </div>
+
+    </div>
+  }
+</section>

@@ -29,6 +29,19 @@
   }
 }
 
+//PROPUESTA DE SUBOPCIONES: SOLO TEXTO (SIN ESTILO DE ENLACE), CON EL NOMBRE TENTATIVO DE LA TABLA DEBAJO.
+.dinco-propuesta {
+  li { color: #1a1a1a; }
+
+  span {
+    display: block;
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: .78rem;
+    color: #5a6670;
+    overflow-wrap: anywhere;
+  }
+}
+
 @media (max-width: 900px) {
   .dinco-opciones { grid-template-columns: 1fr; }
 }
