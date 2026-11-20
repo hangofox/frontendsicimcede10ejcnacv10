@@ -1,0 +1,21 @@
+//MISMOS ESTILOS DEL HISTORIAL DE PROYECCIONES DE MUNICIONES ESPECIALES (LISTADO BASE DE INFRAESTRUCTURAS, CONTEXTO Y MODALES INTERNOS):
+@use '../../../../../digei/finca-raiz/infraestructuras/listado-infraestructuras/listado-infraestructuras.component';
+
+.panel-historial { display: flex; flex-direction: column; gap: 16px; }
+
+.historial-contexto {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--sicim-soft);
+  font-size: 13px;
+}
+
+//LOS MODALES INTERNOS VAN POR ENCIMA DEL MODAL DEL HISTORIAL (z-index 1000):
+.modal-interno { position: fixed; inset: 0; z-index: 1100; display: flex; align-items: flex-start; justify-content: center; padding: 60px 16px; overflow-y: auto; background: rgba(22, 22, 22, .58); }
+.modal-caja-interna { max-width: 760px; }
+
+//TONO NEUTRAL PARA UN ESTADO DE DIAGNÓSTICO QUE NO TENGA TONO ASIGNADO:
+.badge-neutral { background: rgba(107, 114, 128, .14); color: #5b6472; }

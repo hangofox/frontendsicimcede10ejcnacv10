@@ -22,7 +22,6 @@ export class EquiposIngenierosComponent {
     { titulo: 'Equipos de ingenieros', ruta: '/dinco/equipos-ingenieros/equipos-ingenieros/listado-equipos-ingenieros' },
     //CONSULTA DE LA JERARQUÍA CLASIFICACIÓN → SUBCLASIFICACIÓN → ELEMENTO EN TRES COLUMNAS:
     { titulo: 'Clasificaciones, subclasificaciones y elementos de equipos de ingenieros', ruta: '/dinco/equipos-ingenieros/clasific-subclasific-element-equip-ing' },
-    { titulo: 'Diagnósticos iniciales de equipos' },
     { titulo: 'Mantenimientos de equipos' },
     { titulo: 'Deméritos y desgastes de equipos' }
   ];

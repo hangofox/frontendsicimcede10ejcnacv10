@@ -17,10 +17,12 @@ import { ClasificacionesEquiposIngenierosService } from '../../../../../services
 import { SubclasificacionesEquiposIngenierosService } from '../../../../../services/dinco/clasificaciones-equipos-ingenieros/subclasificaciones-equipos-ingenieros/subclasificaciones-equipos-ingenieros.service';
 import { ElementosSubclasificacionesEquiposIngenierosService } from '../../../../../services/dinco/elementos-subclasificaciones-equipos-ingenieros/elementos-subclasificaciones-equipos-ingenieros.service';
 import { TiposAltasEquiposIngenierosService } from '../../../../../services/dinco/tipos-altas-equipos-ingenieros/tipos-altas-equipos-ingenieros.service';
+import { HistorialDiagnInicSeleccEquipIngService } from '../../../../../services/dinco/equipos-ingenieros/historial-diagn-inic-selecc-equip-ing/historial-diagn-inic-selecc-equip-ing.service';
 import { SpinnerService } from '../../../../../services/spinner/spinner.service';
 
 import { AddUpdDelEquipoIngenieroComponent, ESTADOS_USO_EQUIPOS_INGENIEROS } from '../add-upd-del-equipo-ingeniero/add-upd-del-equipo-ingeniero.component';
 import { VistaEquipoIngenieroComponent } from '../vista-equipo-ingeniero/vista-equipo-ingeniero.component';
+import { ListadoHistDiagnInicSeleccEquipIngComponent } from '../historial-diagn-inic-selecc-equip-ing/listado-hist-diagn-inic-selecc-equip-ing/listado-hist-diagn-inic-selecc-equip-ing.component';
 import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 
 //TONO DE CADA ESTADO DE USO EN EL SEMÁFORO Y EN EL BADGE DE LA TABLA (MISMO ORDEN DE ESTADOS_USO_EQUIPOS_INGENIEROS,
@@ -42,7 +44,7 @@ const TONOS_ESTADOS_USO_EQUIPOS_INGENIEROS: Record<string, string> = {
 @Component({
   selector: 'app-listado-equipos-ingenieros',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelEquipoIngenieroComponent, VistaEquipoIngenieroComponent, SemaforoContadoresComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelEquipoIngenieroComponent, VistaEquipoIngenieroComponent, ListadoHistDiagnInicSeleccEquipIngComponent, SemaforoContadoresComponent],
   templateUrl: './listado-equipos-ingenieros.component.html',
   styleUrl: './listado-equipos-ingenieros.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -64,6 +66,9 @@ export class ListadoEquiposIngenierosComponent implements OnInit, OnDestroy {
   readonly estados = ESTADOS_USO_EQUIPOS_INGENIEROS.map(etiqueta => ({ etiqueta, tono: TONOS_ESTADOS_USO_EQUIPOS_INGENIEROS[etiqueta] ?? 'neutral' }));
   estadosContadores = this.estados.map(estado => ({ ...estado, valor: 0 }));
 
+  //CANTIDAD DE DIAGNÓSTICOS INICIALES DE SELECCIÓN DE MANTENIMIENTOS DE CADA EQUIPO (POR ID); null MIENTRAS SE CUENTAN:
+  cantidadDiagnosticosPorEquipo: Map<number, number> | null = null;
+
   equiposIngenierosForm: FormGroup;
 
   //PAGINACIÓN:
@@ -73,6 +78,7 @@ export class ListadoEquiposIngenierosComponent implements OnInit, OnDestroy {
   //ESTADO DE MODALES:
   modalAddUpdDelVisible = false;
   modalVistaVisible = false;
+  modalHistorialDiagnosticosVisible = false;
   modalModo: 'guardar' | 'modificar' | 'eliminar' = 'guardar';
   equipoIngenieroSeleccionado: EquiposIngenierosI | null = null;
 
@@ -91,7 +97,8 @@ export class ListadoEquiposIngenierosComponent implements OnInit, OnDestroy {
     private subclasificacionesEquiposIngenierosService: SubclasificacionesEquiposIngenierosService,
     private elementosSubclasificacionesEquiposIngenierosService: ElementosSubclasificacionesEquiposIngenierosService,
     private tiposAltasEquiposIngenierosService: TiposAltasEquiposIngenierosService,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
+    private historialDiagnInicSeleccEquipIngService: HistorialDiagnInicSeleccEquipIngService
   ) {
     this.equiposIngenierosForm = this.formBuilder.group({
       ctextPalabraClave: new FormControl(''),
@@ -111,7 +118,37 @@ export class ListadoEquiposIngenierosComponent implements OnInit, OnDestroy {
     this.cargarSubclasificacionesEquiposIngenieros();
     this.cargarElementosSubclasificacionesEquiposIngenieros();
     this.cargarTiposAltasEquiposIngenieros();
+    this.cargarCantidadDiagnosticos();
     this.accionListar();
+  }
+
+  //CARGA EL HISTORIAL COMPLETO DE DIAGNÓSTICOS INICIALES Y CUENTA LOS DE CADA EQUIPO (EL BACKEND NO FILTRA POR EQUIPO, ASÍ QUE SE
+  //TRAE UNA SOLA VEZ Y SE INDEXA EN MEMORIA PARA NO CONSULTAR UNA VEZ POR FILA — MISMO PATRÓN QUE ListadoMunicionesEspecialesComponent):
+  private cargarCantidadDiagnosticos(): void {
+    this.cantidadDiagnosticosPorEquipo = null;
+    this.historialDiagnInicSeleccEquipIngService.findAllEngineerEquipmentInitialDiagnosisHistories().subscribe({
+      next: registros => {
+        const cantidades = new Map<number, number>();
+        (registros ?? []).forEach(registro => {
+          const idEquipoIngeniero = registro.equipoIngenieroDTO?.idEquipoIngeniero;
+          if (idEquipoIngeniero !== undefined) cantidades.set(idEquipoIngeniero, (cantidades.get(idEquipoIngeniero) ?? 0) + 1);
+        });
+        this.cantidadDiagnosticosPorEquipo = cantidades;
+        this.changeDetectorRef.markForCheck();
+      },
+      error: err => {
+        console.error('ERROR AL CONTAR LOS DIAGNÓSTICOS INICIALES DE LOS EQUIPOS DE INGENIEROS: ', err);
+        //SI FALLA EL CONTEO NO SE DEJA LA COLUMNA EN "..." INDEFINIDAMENTE:
+        this.cantidadDiagnosticosPorEquipo = new Map<number, number>();
+        this.changeDetectorRef.markForCheck();
+      }
+    });
+  }
+
+  //CANTIDAD DE DIAGNÓSTICOS DEL EQUIPO: null MIENTRAS SE CUENTAN ("..."), 0 SI NO TIENE ("NO"):
+  cantidadDiagnosticos(equipoIngeniero: EquiposIngenierosI): number | null {
+    if (!this.cantidadDiagnosticosPorEquipo) return null;
+    return this.cantidadDiagnosticosPorEquipo.get(equipoIngeniero.idEquipoIngeniero ?? -1) ?? 0;
   }
 
   ngOnDestroy(): void {
@@ -316,6 +353,22 @@ export class ListadoEquiposIngenierosComponent implements OnInit, OnDestroy {
   cerrarModalVista(): void {
     this.modalVistaVisible = false;
     this.equipoIngenieroSeleccionado = null;
+  }
+
+  //ABRE EL HISTORIAL DE DIAGNÓSTICOS INICIALES DE SELECCIÓN DE MANTENIMIENTOS DEL EQUIPO SELECCIONADO:
+  abrirModalHistorialDiagnosticos(equipoIngeniero: EquiposIngenierosI): void {
+    this.spinnerService.showBeforeOpening(() => {
+      this.equipoIngenieroSeleccionado = equipoIngeniero;
+      this.modalHistorialDiagnosticosVisible = true;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
+  //AL CERRAR EL HISTORIAL SE VUELVEN A CONTAR LOS DIAGNÓSTICOS, PORQUE DENTRO SE PUDIERON CREAR O ELIMINAR:
+  cerrarModalHistorialDiagnosticos(): void {
+    this.modalHistorialDiagnosticosVisible = false;
+    this.equipoIngenieroSeleccionado = null;
+    this.cargarCantidadDiagnosticos();
   }
 
   //RECIBE EL EQUIPO NUEVO O MODIFICADO DESDE EL MODAL Y LO ENVÍA AL BACKEND (POST SI ES NUEVO, PUT SI YA TIENE ID).

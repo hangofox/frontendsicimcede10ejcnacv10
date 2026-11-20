@@ -11,12 +11,15 @@
     <span class="cei-ruta__nivel">{{ elementosVisibles.length }} elemento(s)</span>
   </p>
 
-  @if (cargando) {
-    <p class="cei-estado">Cargando la clasificación de equipos de ingenieros...</p>
-  } @else if (errorCarga) {
-    <p class="cei-estado cei-estado--error">No fue posible cargar la información. Verifique la conexión con el servidor.</p>
-  } @else {
-    <div class="cei-columnas">
+  <!-- AVISO GENERAL MIENTRAS ALGUNA COLUMNA SIGUE CARGANDO; LAS QUE YA LLEGARON SE VEN DE INMEDIATO -->
+  @if (cargandoAlguna) {
+    <p class="cei-estado cei-estado--cargando" role="status">
+      <span class="cei-spinner" aria-hidden="true"></span>
+      Cargando la clasificación, subclasificación y elementos de equipos de ingenieros...
+    </p>
+  }
+
+  <div class="cei-columnas">
 
       <!-- COLUMNA 1: CLASIFICACIONES -->
       <div class="cei-columna">
@@ -41,7 +44,13 @@
               </button>
             </li>
           } @empty {
-            <li class="cei-vacio">Sin clasificaciones.</li>
+            @if (cargandoClasificaciones) {
+              <li class="cei-vacio">Cargando clasificaciones...</li>
+            } @else if (errorClasificaciones) {
+              <li class="cei-vacio cei-vacio--error">No fue posible cargar las clasificaciones.</li>
+            } @else {
+              <li class="cei-vacio">Sin clasificaciones.</li>
+            }
           }
         </ul>
       </div>
@@ -66,7 +75,13 @@
               </button>
             </li>
           } @empty {
-            <li class="cei-vacio">{{ idClasificacionSeleccionada ? 'Esta clasificación no tiene subclasificaciones.' : 'Elija una clasificación.' }}</li>
+            @if (cargandoSubclasificaciones) {
+              <li class="cei-vacio">Cargando subclasificaciones...</li>
+            } @else if (errorSubclasificaciones) {
+              <li class="cei-vacio cei-vacio--error">No fue posible cargar las subclasificaciones.</li>
+            } @else {
+              <li class="cei-vacio">{{ idClasificacionSeleccionada ? 'Esta clasificación no tiene subclasificaciones.' : 'Elija una clasificación.' }}</li>
+            }
           }
         </ul>
       </div>
@@ -105,11 +120,16 @@
               </dl>
             </li>
           } @empty {
-            <li class="cei-vacio">{{ idSubclasificacionSeleccionada ? 'Esta subclasificación no tiene elementos.' : 'Elija una subclasificación.' }}</li>
+            @if (cargandoElementos) {
+              <li class="cei-vacio">Cargando elementos...</li>
+            } @else if (errorElementos) {
+              <li class="cei-vacio cei-vacio--error">No fue posible cargar los elementos.</li>
+            } @else {
+              <li class="cei-vacio">{{ idSubclasificacionSeleccionada ? 'Esta subclasificación no tiene elementos.' : 'Elija una subclasificación.' }}</li>
+            }
           }
         </ul>
       </div>
 
-    </div>
-  }
+  </div>
 </section>

@@ -1,0 +1,15 @@
+//MISMOS ESTILOS DE LA VISTA DE EQUIPOS DE INGENIEROS (CABECERA, SECCIONES, GRILLA DE DATOS Y BOTÓN CERRAR):
+@use '../../vista-equipo-ingeniero/vista-equipo-ingeniero.component';
+
+//BADGE DEL ESTADO DEL DIAGNÓSTICO (MISMOS COLORES DEL LISTADO DE INFRAESTRUCTURAS Y DEL SEMÁFORO DEL HISTORIAL):
+.badge-estado {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.badge-bueno { background: rgba(22, 131, 58, .12); color: #15803d; }
+.badge-mantenimiento { background: rgba(214, 164, 0, .16); color: #957100; }
+.badge-fuera-servicio { background: rgba(117, 80, 168, .14); color: #684397; }
+.badge-neutral { background: rgba(107, 114, 128, .14); color: #5b6472; }

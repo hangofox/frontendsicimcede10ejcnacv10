@@ -1,0 +1,71 @@
+<div class="vista-historial-diagnostico" *ngIf="historialDiagnosticoData as historial">
+
+  <div class="perfil-cabecera">
+    <div class="avatar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    </div>
+    <div>
+      <h3 class="perfil-nombre">{{ historial.numRegHistorialDiagnosticoInicialSeleccMttoEquipIng }}</h3>
+      <p class="perfil-tipo">{{ historial.equipoIngenieroDTO.denominacionEquipoIngeniero }} — Inventario {{ historial.equipoIngenieroDTO.numeroInventarioEquipoIngeniero }}</p>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Diagnóstico inicial</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de registro</span>
+        <span class="dato-valor">{{ historial.numRegHistorialDiagnosticoInicialSeleccMttoEquipIng }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Estado del diagnóstico</span>
+        <span class="dato-valor">
+          <span [class]="'badge-estado ' + claseEstado">{{ historial.estadoDiagnosticoEquipoIngenieroDTO.nombreEstadoDiagnosticoEquipoIngeniero }}</span>
+        </span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Unidad militar</span>
+        <span class="dato-valor">{{ historial.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }} — {{ historial.unidadMilitarDTO.nombreUnidadMilitar }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Unidad realizadora del mantenimiento</span>
+        <span class="dato-valor">{{ historial.unidadMilitarRealizadoraMantenimientoDTO.siglaoAcronimoUnidadMilitar }} — {{ historial.unidadMilitarRealizadoraMantenimientoDTO.nombreUnidadMilitar }}</span>
+      </div>
+      <div class="dato-grupo dato-grupo-ancho">
+        <span class="dato-label">Descripción del objetivo</span>
+        <span class="dato-valor">{{ historial.descripcionObjetivoHistorialDiagnosticoInicialSeleccMttoEquipIng || '-' }}</span>
+      </div>
+      <div class="dato-grupo dato-grupo-ancho">
+        <span class="dato-label">Documento anexo</span>
+        <span class="dato-valor">{{ historial.nombreArchivoDocumentoAnexoHistDiagInicSeleccMttoEquipIng || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Equipo de ingenieros</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Denominación</span>
+        <span class="dato-valor">{{ historial.equipoIngenieroDTO.denominacionEquipoIngeniero }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Elemento</span>
+        <span class="dato-valor">{{ historial.equipoIngenieroDTO.elementoSubclasificacionEquipoIngenieroDTO.nombreElementoSubclasificacionEquipoIngeniero }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Marca / Modelo</span>
+        <span class="dato-valor">{{ historial.equipoIngenieroDTO.marcaEquipoIngeniero }} {{ historial.equipoIngenieroDTO.modeloEquipoIngeniero }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Estado de uso</span>
+        <span class="dato-valor">{{ historial.equipoIngenieroDTO.estadoUsoEquipoIngeniero }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-acciones">
+    <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cerrar</button>
+  </div>
+
+</div>

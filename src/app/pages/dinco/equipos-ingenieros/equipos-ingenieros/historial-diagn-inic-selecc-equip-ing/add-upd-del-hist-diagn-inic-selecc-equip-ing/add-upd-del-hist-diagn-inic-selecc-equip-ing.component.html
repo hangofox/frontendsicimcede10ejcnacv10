@@ -1,0 +1,72 @@
+<div class="modal-formulario" *ngIf="historialesDiagnosticosInicialesSeleccMttoEquipIngForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará el diagnóstico inicial del historial del equipo de ingenieros. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="historialesDiagnosticosInicialesSeleccMttoEquipIngForm" (ngSubmit)="guardarModificar()">
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Equipo de ingenieros</div>
+      <div class="form-grid">
+        <div class="form-group form-group-ancho">
+          <label>Equipo de ingenieros</label>
+          <input type="text" [value]="equipoIngeniero.denominacionEquipoIngeniero + ' — INVENTARIO ' + equipoIngeniero.numeroInventarioEquipoIngeniero" disabled>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Diagnóstico inicial</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>N.° de registro (*)</label>
+          <input type="text" formControlName="numRegHistorialDiagnosticoInicialSeleccMttoEquipIng" placeholder="Ej. DIAG-EI-2026-001">
+          <small class="campo-error" *ngIf="campoInvalido('numRegHistorialDiagnosticoInicialSeleccMttoEquipIng')">Este campo es obligatorio.</small>
+        </div>
+        <div class="form-group">
+          <label>Estado del diagnóstico (*)</label>
+          <select formControlName="idEstadoDiagnosticoEquipoIngeniero">
+            <option value="">Seleccione...</option>
+            <option *ngFor="let estado of estadosDiagnosticosEquiposIngenieros" [value]="estado.idEstadoDiagnosticoEquipoIngeniero">{{ estado.nombreEstadoDiagnosticoEquipoIngeniero }}</option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('idEstadoDiagnosticoEquipoIngeniero')">Seleccione el estado del diagnóstico.</small>
+        </div>
+        <div class="form-group">
+          <label>Unidad militar (*)</label>
+          <select formControlName="idUnidadMilitar">
+            <option value="">Seleccione...</option>
+            <option *ngFor="let unidad of unidadesMilitares" [value]="unidad.idUnidadMilitar">{{ unidad.siglaoAcronimoUnidadMilitar }} — {{ unidad.nombreUnidadMilitar }}</option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('idUnidadMilitar')">Seleccione la unidad militar.</small>
+        </div>
+        <div class="form-group">
+          <label>Unidad realizadora del mantenimiento (*)</label>
+          <select formControlName="idUnidadMilitarRealizadoraMantenimiento">
+            <option value="">Seleccione...</option>
+            <option *ngFor="let unidad of unidadesMilitares" [value]="unidad.idUnidadMilitar">{{ unidad.siglaoAcronimoUnidadMilitar }} — {{ unidad.nombreUnidadMilitar }}</option>
+          </select>
+          <small class="campo-error" *ngIf="campoInvalido('idUnidadMilitarRealizadoraMantenimiento')">Seleccione la unidad que realiza el mantenimiento.</small>
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Descripción del objetivo</label>
+          <textarea formControlName="descripcionObjetivoHistorialDiagnosticoInicialSeleccMttoEquipIng" rows="4" placeholder="Ej. Diagnóstico para seleccionar el mantenimiento correctivo del sistema hidráulico..."></textarea>
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Nombre del archivo del documento anexo</label>
+          <input type="text" formControlName="nombreArchivoDocumentoAnexoHistDiagInicSeleccMttoEquipIng" placeholder="Ej. DIAGNOSTICO_EI_2026_001.pdf">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-titulo-sistema btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="historialesDiagnosticosInicialesSeleccMttoEquipIngForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-titulo-sistema btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>

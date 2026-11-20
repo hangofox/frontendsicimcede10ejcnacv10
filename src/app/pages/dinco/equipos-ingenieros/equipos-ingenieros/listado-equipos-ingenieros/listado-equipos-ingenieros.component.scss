@@ -18,3 +18,39 @@
 .badge-validacion { background: rgba(29, 78, 216, .12); color: #1d4ed8; }
 .badge-asignacion { background: rgba(109, 40, 217, .12); color: #6d28d9; }
 .badge-rechazado { background: rgba(195, 44, 50, .12); color: #b91c1c; }
+
+//COLUMNA DE DIAGNÓSTICOS INICIALES (MISMOS ESTILOS DE LA COLUMNA DE PROYECCIONES DE ListadoMunicionesEspecialesComponent):
+//CHULO VERDE CON LA CANTIDAD SI TIENE DIAGNÓSTICOS Y "NO" EN GRIS SI NO TIENE:
+.celda-asociados { text-align: center !important; }
+
+.asociados-si {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #16a34a;
+  font-weight: 800;
+}
+
+.asociados-cantidad {
+  min-width: 18px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 12px;
+}
+
+.asociados-no {
+  color: var(--sicim-gray);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.asociados-cargando { color: var(--sicim-gray); }
+
+//BOTÓN DEL HISTORIAL DE DIAGNÓSTICOS: MISMO TRATAMIENTO QUE LOS BOTONES DE HISTORIAL DE OTROS LISTADOS (COLOR PROPIO AL PASAR EL CURSOR):
+.btn-accion.btn-historial-diagnosticos:hover:not(:disabled) {
+  background: #0f766e;
+  color: #fff;
+  border-color: #0f766e;
+}

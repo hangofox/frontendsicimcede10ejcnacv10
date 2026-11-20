@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { forkJoin } from 'rxjs';
 
 import { ClasificacionesEquiposIngenierosI } from '../../../../interfaces/dinco/clasificaciones-equipos-ingenieros/clasificaciones-equipos-ingenieros.interface';
 import { SubclasificacionesEquiposIngenierosI } from '../../../../interfaces/dinco/clasificaciones-equipos-ingenieros/subclasificaciones-equipos-ingenieros/subclasificaciones-equipos-ingenieros.interface';
@@ -35,8 +34,18 @@ export class ClasificSubclasificElementEquipIngComponent implements OnInit {
   busquedaSubclasificacion = '';
   busquedaElemento = '';
 
-  cargando = true;
-  errorCarga = false;
+  //ESTADO DE CARGA DE CADA COLUMNA: CADA LISTA SE PIDE POR SEPARADO Y SU COLUMNA SE MUESTRA APENAS LLEGA (LA DE ELEMENTOS ES
+  //LA MÁS PESADA, Y ASÍ NO RETIENE A LAS OTRAS DOS); SI UNA FALLA, SOLO ESA COLUMNA MUESTRA EL ERROR:
+  cargandoClasificaciones = true;
+  cargandoSubclasificaciones = true;
+  cargandoElementos = true;
+  errorClasificaciones = false;
+  errorSubclasificaciones = false;
+  errorElementos = false;
+
+  get cargandoAlguna(): boolean {
+    return this.cargandoClasificaciones || this.cargandoSubclasificaciones || this.cargandoElementos;
+  }
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -46,29 +55,58 @@ export class ClasificSubclasificElementEquipIngComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    forkJoin({
-      clasificaciones: this.clasificacionesEquiposIngenierosService.findAllEngineerEquipmentClassifications(undefined, undefined, 'nombreClasificacionEquipoIngeniero', 'ASC'),
-      subclasificaciones: this.subclasificacionesEquiposIngenierosService.findAllEngineerEquipmentSubclassifications(undefined, undefined, undefined, undefined, 'nombreSubclasificacionEquipoIngeniero', 'ASC'),
-      elementos: this.elementosSubclasificacionesEquiposIngenierosService.findAllEngineerEquipmentSubclassificationElements(undefined, undefined, undefined, 'nombreElementoSubclasificacionEquipoIngeniero', 'ASC')
-    }).subscribe({
-      next: ({ clasificaciones, subclasificaciones, elementos }) => {
-        this.clasificaciones = clasificaciones;
-        this.subclasificaciones = subclasificaciones;
-        this.elementos = elementos;
-        this.cargando = false;
-        //SE ABRE LA PRIMERA CLASIFICACIÓN PARA QUE LAS TRES COLUMNAS NO ARRANQUEN VACÍAS:
-        if (clasificaciones.length && clasificaciones[0].idClasificacionEquipoIngeniero) {
-          this.seleccionarClasificacion(clasificaciones[0].idClasificacionEquipoIngeniero);
+    this.clasificacionesEquiposIngenierosService.findAllEngineerEquipmentClassifications(undefined, undefined, 'nombreClasificacionEquipoIngeniero', 'ASC')
+      .subscribe({
+        next: (clasificaciones) => {
+          this.clasificaciones = clasificaciones;
+          this.cargandoClasificaciones = false;
+          //SE ABRE LA PRIMERA CLASIFICACIÓN PARA QUE LAS COLUMNAS NO ARRANQUEN VACÍAS:
+          if (!this.idClasificacionSeleccionada && clasificaciones[0]?.idClasificacionEquipoIngeniero) {
+            this.seleccionarClasificacion(clasificaciones[0].idClasificacionEquipoIngeniero);
+          }
+          this.changeDetectorRef.markForCheck();
+        },
+        error: (err) => {
+          console.error('ERROR AL CARGAR CLASIFICACIONES DE EQUIPOS DE INGENIEROS: ', err);
+          this.cargandoClasificaciones = false;
+          this.errorClasificaciones = true;
+          this.changeDetectorRef.markForCheck();
         }
-        this.changeDetectorRef.markForCheck();
-      },
-      error: (err) => {
-        console.error('ERROR AL CARGAR LA CLASIFICACIÓN DE EQUIPOS DE INGENIEROS: ', err);
-        this.cargando = false;
-        this.errorCarga = true;
-        this.changeDetectorRef.markForCheck();
-      }
-    });
+      });
+
+    this.subclasificacionesEquiposIngenierosService.findAllEngineerEquipmentSubclassifications(undefined, undefined, undefined, undefined, 'nombreSubclasificacionEquipoIngeniero', 'ASC')
+      .subscribe({
+        next: (subclasificaciones) => {
+          this.subclasificaciones = subclasificaciones;
+          this.cargandoSubclasificaciones = false;
+          //SI LA CLASIFICACIÓN YA ESTÁ ELEGIDA, SE ABRE SU PRIMERA SUBCLASIFICACIÓN:
+          if (!this.idSubclasificacionSeleccionada) {
+            this.idSubclasificacionSeleccionada = this.subclasificacionesDeClasificacion[0]?.idSubclasificacionEquipoIngeniero ?? null;
+          }
+          this.changeDetectorRef.markForCheck();
+        },
+        error: (err) => {
+          console.error('ERROR AL CARGAR SUBCLASIFICACIONES DE EQUIPOS DE INGENIEROS: ', err);
+          this.cargandoSubclasificaciones = false;
+          this.errorSubclasificaciones = true;
+          this.changeDetectorRef.markForCheck();
+        }
+      });
+
+    this.elementosSubclasificacionesEquiposIngenierosService.findAllEngineerEquipmentSubclassificationElements(undefined, undefined, undefined, 'nombreElementoSubclasificacionEquipoIngeniero', 'ASC')
+      .subscribe({
+        next: (elementos) => {
+          this.elementos = elementos;
+          this.cargandoElementos = false;
+          this.changeDetectorRef.markForCheck();
+        },
+        error: (err) => {
+          console.error('ERROR AL CARGAR ELEMENTOS DE SUBCLASIFICACIONES DE EQUIPOS DE INGENIEROS: ', err);
+          this.cargandoElementos = false;
+          this.errorElementos = true;
+          this.changeDetectorRef.markForCheck();
+        }
+      });
   }
 
   private contiene(texto: unknown, busqueda: string): boolean {
