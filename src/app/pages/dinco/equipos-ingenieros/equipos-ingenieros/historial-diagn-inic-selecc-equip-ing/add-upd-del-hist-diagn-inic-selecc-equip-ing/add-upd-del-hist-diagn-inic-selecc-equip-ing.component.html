@@ -21,9 +21,8 @@
       <div class="seccion-titulo">Diagnóstico inicial</div>
       <div class="form-grid">
         <div class="form-group">
-          <label>N.° de registro (*)</label>
-          <input type="text" formControlName="numRegHistorialDiagnosticoInicialSeleccMttoEquipIng" placeholder="Ej. DIAG-EI-2026-001">
-          <small class="campo-error" *ngIf="campoInvalido('numRegHistorialDiagnosticoInicialSeleccMttoEquipIng')">Este campo es obligatorio.</small>
+          <label>N.° de registro</label>
+          <input type="text" formControlName="numRegHistorialDiagnosticoInicialSeleccMttoEquipIng" placeholder="Asignado automáticamente">
         </div>
         <div class="form-group">
           <label>Estado del diagnóstico (*)</label>
@@ -34,18 +33,10 @@
           <small class="campo-error" *ngIf="campoInvalido('idEstadoDiagnosticoEquipoIngeniero')">Seleccione el estado del diagnóstico.</small>
         </div>
         <div class="form-group">
-          <label>Unidad militar (*)</label>
-          <select formControlName="idUnidadMilitar">
-            <option value="">Seleccione...</option>
-            <option *ngFor="let unidad of unidadesMilitares" [value]="unidad.idUnidadMilitar">{{ unidad.siglaoAcronimoUnidadMilitar }} — {{ unidad.nombreUnidadMilitar }}</option>
-          </select>
-          <small class="campo-error" *ngIf="campoInvalido('idUnidadMilitar')">Seleccione la unidad militar.</small>
-        </div>
-        <div class="form-group">
           <label>Unidad realizadora del mantenimiento (*)</label>
           <select formControlName="idUnidadMilitarRealizadoraMantenimiento">
             <option value="">Seleccione...</option>
-            <option *ngFor="let unidad of unidadesMilitares" [value]="unidad.idUnidadMilitar">{{ unidad.siglaoAcronimoUnidadMilitar }} — {{ unidad.nombreUnidadMilitar }}</option>
+            <option *ngFor="let realizadora of unidadesMilitaresRealizadorasMantenimientos" [value]="realizadora.idUnidadMilitarRealizadoraMantenimiento">{{ realizadora.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }} — {{ realizadora.unidadMilitarDTO.nombreUnidadMilitar }}</option>
           </select>
           <small class="campo-error" *ngIf="campoInvalido('idUnidadMilitarRealizadoraMantenimiento')">Seleccione la unidad que realiza el mantenimiento.</small>
         </div>

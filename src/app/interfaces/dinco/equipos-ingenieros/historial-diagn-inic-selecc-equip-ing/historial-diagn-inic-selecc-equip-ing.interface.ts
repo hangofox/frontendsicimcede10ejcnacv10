@@ -1,4 +1,5 @@
 import { UnidadesMilitaresI } from '../../../panel-control/unidades-militares/unidades-militares.interface';
+import { UnidadesMilitaresRealizadorasMantenimientosI } from '../../../panel-control/unidades-militares-realiz-mttos/unidades-militares-realiz-mttos.interface';
 import { EquiposIngenierosI } from '../equipos-ingenieros.interface';
 import { EstadosDiagnosticosEquiposIngenierosI } from '../../estados-diagnosticos-equipos-ingenieros/estados-diagnosticos-equipos-ingenieros.interface';
 
@@ -9,7 +10,7 @@ export interface HistorialDiagnInicSeleccEquipIngI {
   nombreArchivoDocumentoAnexoHistDiagInicSeleccMttoEquipIng: String;//CLOB, OPCIONAL.
   descripcionObjetivoHistorialDiagnosticoInicialSeleccMttoEquipIng: String;//CLOB, OPCIONAL.
   unidadMilitarDTO: UnidadesMilitaresI;
-  unidadMilitarRealizadoraMantenimientoDTO: UnidadesMilitaresI;
+  unidadMilitarRealizadoraMantenimientoDTO: UnidadesMilitaresRealizadorasMantenimientosI;//CATÁLOGO DE REALIZADORAS (TRAE SU unidadMilitarDTO).
   equipoIngenieroDTO: EquiposIngenierosI;
   estadoDiagnosticoEquipoIngenieroDTO: EstadosDiagnosticosEquiposIngenierosI;
 }

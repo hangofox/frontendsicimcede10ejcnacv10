@@ -47,7 +47,7 @@
             <td>{{ i + 1 + (paginaActual * tandaNumeroRegistrosporPagina) }}</td>
             <td>{{ historial.numRegHistorialDiagnosticoInicialSeleccMttoEquipIng }}</td>
             <td>{{ historial.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</td>
-            <td>{{ historial.unidadMilitarRealizadoraMantenimientoDTO.siglaoAcronimoUnidadMilitar }}</td>
+            <td>{{ siglaoAcronimoRealizadora(historial) }}</td>
             <td>{{ historial.nombreArchivoDocumentoAnexoHistDiagInicSeleccMttoEquipIng || '-' }}</td>
             <td>
               <span [class]="'badge-estado ' + claseEstado(historial.estadoDiagnosticoEquipoIngenieroDTO.nombreEstadoDiagnosticoEquipoIngeniero)">
@@ -121,7 +121,7 @@
           [modo]="modalModo"
           [historialDiagnosticoData]="historialDiagnosticoSeleccionado"
           [equipoIngeniero]="equipoIngeniero"
-          [unidadesMilitares]="unidadesMilitares"
+          [unidadesMilitaresRealizadorasMantenimientos]="unidadesMilitaresRealizadorasMantenimientos"
           [estadosDiagnosticosEquiposIngenieros]="estadosDiagnosticosEquiposIngenieros"
           (cerrarModal)="cerrarModalAddUpdDel()"
           (guardar)="guardarHistorialDiagnostico($event)"

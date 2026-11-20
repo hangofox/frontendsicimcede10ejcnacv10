@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { EquiposIngenierosI } from '../../../../../../interfaces/dinco/equipos-ingenieros/equipos-ingenieros.interface';
-import { UnidadesMilitaresI } from '../../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
 import { EstadosDiagnosticosEquiposIngenierosI } from '../../../../../../interfaces/dinco/estados-diagnosticos-equipos-ingenieros/estados-diagnosticos-equipos-ingenieros.interface';
+import { UnidadesMilitaresRealizadorasMantenimientosI } from '../../../../../../interfaces/panel-control/unidades-militares-realiz-mttos/unidades-militares-realiz-mttos.interface';
 import { HistorialDiagnInicSeleccEquipIngI } from '../../../../../../interfaces/dinco/equipos-ingenieros/historial-diagn-inic-selecc-equip-ing/historial-diagn-inic-selecc-equip-ing.interface';
 import { HistorialDiagnInicSeleccEquipIngService } from '../../../../../../services/dinco/equipos-ingenieros/historial-diagn-inic-selecc-equip-ing/historial-diagn-inic-selecc-equip-ing.service';
 import { EstadosDiagnosticosEquiposIngenierosService } from '../../../../../../services/dinco/estados-diagnosticos-equipos-ingenieros/estados-diagnosticos-equipos-ingenieros.service';
+import { UnidadesMilitaresRealizadorasMantenimientosService } from '../../../../../../services/panel-control/unidades-militares-realiz-mttos/unidades-militares-realiz-mttos.service';
 import { SpinnerService } from '../../../../../../services/spinner/spinner.service';
 
 import { AddUpdDelHistDiagnInicSeleccEquipIngComponent } from '../add-upd-del-hist-diagn-inic-selecc-equip-ing/add-upd-del-hist-diagn-inic-selecc-equip-ing.component';
@@ -37,10 +38,10 @@ export class ListadoHistDiagnInicSeleccEquipIngComponent implements OnInit, OnCh
 
   //EQUIPO DE INGENIEROS DUEÑO DEL HISTORIAL:
   @Input({ required: true }) equipoIngeniero!: EquiposIngenierosI;
-  //UNIDADES MILITARES YA CARGADAS POR EL LISTADO DE EQUIPOS (COMBOS DE UNIDAD Y DE UNIDAD REALIZADORA DEL MANTENIMIENTO):
-  @Input() unidadesMilitares: UnidadesMilitaresI[] = [];
 
   estadosDiagnosticosEquiposIngenieros: EstadosDiagnosticosEquiposIngenierosI[] = [];
+  //CATÁLOGO DE UNIDADES MILITARES REALIZADORAS DE MANTENIMIENTOS (PANEL DE CONTROL), PARA EL COMBO DEL FORMULARIO:
+  unidadesMilitaresRealizadorasMantenimientos: UnidadesMilitaresRealizadorasMantenimientosI[] = [];
 
   //HistorialDiagnosticoInicialSeleccMttoEquipIngController SOLO FILTRA POR N.° DE REGISTRO (NO POR EQUIPO), ASÍ QUE SE TRAEN LOS
   //HISTORIALES QUE COINCIDEN CON LA PALABRA CLAVE Y AQUÍ SE DEJAN LOS DE ESTE EQUIPO; EL TOTAL, EL SEMÁFORO Y LA PAGINACIÓN SE
@@ -76,6 +77,7 @@ export class ListadoHistDiagnInicSeleccEquipIngComponent implements OnInit, OnCh
     private changeDetectorRef: ChangeDetectorRef,
     private historialDiagnInicSeleccEquipIngService: HistorialDiagnInicSeleccEquipIngService,
     private estadosDiagnosticosEquiposIngenierosService: EstadosDiagnosticosEquiposIngenierosService,
+    private unidadesMilitaresRealizadorasMantenimientosService: UnidadesMilitaresRealizadorasMantenimientosService,
     private spinnerService: SpinnerService
   ) {
     this.historialesDiagnosticosInicialesSeleccMttoEquipIngForm = this.formBuilder.group({
@@ -86,6 +88,7 @@ export class ListadoHistDiagnInicSeleccEquipIngComponent implements OnInit, OnCh
 
   ngOnInit(): void {
     this.cargarEstadosDiagnosticos();
+    this.cargarUnidadesMilitaresRealizadorasMantenimientos();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -107,6 +110,19 @@ export class ListadoHistDiagnInicSeleccEquipIngComponent implements OnInit, OnCh
           this.recortarPagina();
         },
         error: (err) => console.error('ERROR AL CARGAR ESTADOS DE DIAGNÓSTICOS DE EQUIPOS DE INGENIEROS: ', err)
+      });
+  }
+
+  //CARGA EL CATÁLOGO DE UNIDADES MILITARES REALIZADORAS DE MANTENIMIENTOS (ORDENADO POR SIGLA O ACRÓNIMO DE SU UNIDAD MILITAR):
+  private cargarUnidadesMilitaresRealizadorasMantenimientos(): void {
+    this.unidadesMilitaresRealizadorasMantenimientosService.findAllMaintenancePerformingMilitaryUnits()
+      .subscribe({
+        next: (realizadoras) => {
+          this.unidadesMilitaresRealizadorasMantenimientos = [...(realizadoras ?? [])].sort((a, b) =>
+            String(a.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar ?? '').localeCompare(String(b.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar ?? '')));
+          this.changeDetectorRef.markForCheck();
+        },
+        error: (err) => console.error('ERROR AL CARGAR UNIDADES MILITARES REALIZADORAS DE MANTENIMIENTOS: ', err)
       });
   }
 
@@ -155,6 +171,13 @@ export class ListadoHistDiagnInicSeleccEquipIngComponent implements OnInit, OnCh
 
   private tonoEstado(nombreEstado: unknown): string {
     return TONOS_ESTADOS_DIAGNOSTICOS[String(nombreEstado ?? '').trim().toUpperCase()] ?? 'neutral';
+  }
+
+  //SIGLA O ACRÓNIMO DE LA UNIDAD MILITAR DE LA REALIZADORA DEL MANTENIMIENTO. SE LEE CON CUIDADO PARA QUE LA TABLA NUNCA SE ROMPA SI EL BACKEND
+  //LA ENVÍA INCOMPLETA (EJ. UN BACKEND SIN REINICIAR QUE AÚN LA DEVUELVE COMO UNIDAD MILITAR Y NO COMO REALIZADORA):
+  siglaoAcronimoRealizadora(historial: HistorialDiagnInicSeleccEquipIngI): string {
+    const realizadora = historial.unidadMilitarRealizadoraMantenimientoDTO as Partial<HistorialDiagnInicSeleccEquipIngI['unidadMilitarRealizadoraMantenimientoDTO']> | null | undefined;
+    return String(realizadora?.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar ?? '-');
   }
 
   //CLASE DEL BADGE DE ESTADO EN LA TABLA, CON EL MISMO TONO DE SU LUZ EN EL SEMÁFORO:

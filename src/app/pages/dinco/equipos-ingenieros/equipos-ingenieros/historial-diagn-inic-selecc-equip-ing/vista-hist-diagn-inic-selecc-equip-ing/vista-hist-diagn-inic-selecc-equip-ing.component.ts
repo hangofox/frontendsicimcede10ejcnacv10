@@ -18,6 +18,13 @@ export class VistaHistDiagnInicSeleccEquipIngComponent {
   @Input() claseEstado = 'badge-neutral';
   @Output() cerrarModal = new EventEmitter<void>();
 
+  //"SIGLA O ACRÓNIMO — NOMBRE" DE LA UNIDAD MILITAR DE LA REALIZADORA; SE LEE CON CUIDADO PARA QUE LA VISTA NUNCA SE ROMPA SI EL BACKEND LA ENVÍA INCOMPLETA:
+  get textoRealizadora(): string {
+    const realizadora = this.historialDiagnosticoData?.unidadMilitarRealizadoraMantenimientoDTO as Partial<HistorialDiagnInicSeleccEquipIngI['unidadMilitarRealizadoraMantenimientoDTO']> | null | undefined;
+    const unidad = realizadora?.unidadMilitarDTO;
+    return unidad ? `${unidad.siglaoAcronimoUnidadMilitar} — ${unidad.nombreUnidadMilitar}` : '-';
+  }
+
   closeModal(): void {
     this.cerrarModal.emit();
   }
