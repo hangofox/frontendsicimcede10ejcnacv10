@@ -1,0 +1,105 @@
+<div class="vista-historial-mantenimiento" *ngIf="historialMantenimientoEquipoIngenieroData as historial">
+
+  <div class="perfil-cabecera">
+    <div class="avatar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+    </div>
+    <div>
+      <h3 class="perfil-nombre">{{ historial.asuntoMantenimientoEquipoIngeniero }}</h3>
+      <p class="perfil-tipo">{{ historial.equipoIngenieroDTO.denominacionEquipoIngeniero }} ({{ historial.equipoIngenieroDTO.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }})</p>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Identificación</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de registro</span>
+        <span class="dato-valor">{{ historial.numRegHistorialMantenimientoEquipoIngeniero }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Unidad militar</span>
+        <span class="dato-valor">{{ historial.equipoIngenieroDTO.unidadMilitarDTO.nombreUnidadMilitar || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Equipo de ingenieros</span>
+        <span class="dato-valor">{{ historial.equipoIngenieroDTO.denominacionEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de inventario</span>
+        <span class="dato-valor">{{ historial.equipoIngenieroDTO.numeroInventarioEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Marca / Modelo</span>
+        <span class="dato-valor">{{ historial.equipoIngenieroDTO.marcaEquipoIngeniero || '-' }} {{ historial.equipoIngenieroDTO.modeloEquipoIngeniero }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de placa</span>
+        <span class="dato-valor">{{ historial.equipoIngenieroDTO.numeroPlacaEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Nivel de mantenimiento</span>
+        <span class="dato-valor">{{ historial.nivelMantenimientoEquipoIngenieroDTO.nombreNivelMantenimientoEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Tipo de mantenimiento</span>
+        <span class="dato-valor">{{ historial.tipoMantenimientoEquipoIngenieroDTO.nombreTipoMantenimientoEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fecha del mantenimiento</span>
+        <span class="dato-valor">{{ fechaFormateada || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Detalle del mantenimiento</div>
+    <div class="datos-grid">
+      <div class="dato-grupo dato-grupo-ancho">
+        <span class="dato-label">Asunto</span>
+        <span class="dato-valor">{{ historial.asuntoMantenimientoEquipoIngeniero }}</span>
+      </div>
+      <div class="dato-grupo dato-grupo-ancho">
+        <span class="dato-label">Descripción</span>
+        <span class="dato-valor">{{ historial.descripcionMantenimientoEquipoIngeniero || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Costo y financiación</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Valor del costo</span>
+        <span class="dato-valor">{{ valorFormateado || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Fuente de financiación</span>
+        <span class="dato-valor">{{ historial.tipoFuenteFinanciacionDTO.nombreTipoFuenteFinanciacion || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Clasificación de la fuente</span>
+        <span class="dato-valor">{{ historial.tipoFuenteFinanciacionDTO.clasificacionTipoFuenteFinanciacion || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Documento anexo del contrato</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Nombre del documento</span>
+        <span class="dato-valor">{{ historial.nombreDocumentoAnexoContratoMttoEquipIng || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Nombre del archivo</span>
+        <span class="dato-valor">{{ historial.nombreArchivoDocumentoAnexoContratoMttoEquipIng || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-acciones">
+    <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cerrar</button>
+  </div>
+
+</div>

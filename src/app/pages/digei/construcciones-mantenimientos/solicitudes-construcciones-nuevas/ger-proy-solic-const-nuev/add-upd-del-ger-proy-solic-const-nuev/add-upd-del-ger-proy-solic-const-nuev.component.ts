@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { GerentesProyectosSolicInfraestI } from '../../../../../../interfaces/digei/solicitudes-infraestructuras/gerentes-proyectos-solic-infraest/gerentes-proyectos-solic-infraest.interface';
-import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
+import { GerentesProyectosSolicInfraestI } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/gerentes-proyectos-solic-infraest/gerentes-proyectos-solic-infraest.interface';
+import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
 
 @Component({
   selector: 'app-add-upd-del-ger-proy-solic-const-nuev',

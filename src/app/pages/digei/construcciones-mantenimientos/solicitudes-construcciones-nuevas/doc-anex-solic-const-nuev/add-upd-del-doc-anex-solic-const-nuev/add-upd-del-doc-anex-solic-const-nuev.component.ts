@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DocumentacionAnexaSolicInfraestI } from '../../../../../../interfaces/digei/solicitudes-infraestructuras/documentacion-anex-solic-infraest/documentacion-anex-solic-infraest.interface';
-import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
-import { TiposDocumentosAnexosSolicInfraestI } from '../../../../../../interfaces/digei/solicitudes-infraestructuras/tipos-documentacion-anex-solic-infraest/tipos-documentacion-anex-solic-infraest.interface';
+import { DocumentacionAnexaSolicInfraestI } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/documentacion-anex-solic-infraest/documentacion-anex-solic-infraest.interface';
+import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
+import { TiposDocumentosAnexosSolicInfraestI } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/tipos-documentacion-anex-solic-infraest/tipos-documentacion-anex-solic-infraest.interface';
 
 //LO QUE EL FORMULARIO ENTREGA AL LISTADO: EL REGISTRO Y, SI SE ELIGIÓ, EL ARCHIVO NUEVO (EL LISTADO LO SUBE AL SERVIDOR DE ARCHIVOS
 //ANTES DE GUARDAR EL REGISTRO, IGUAL QUE LAS FOTOGRAFÍAS ANEXAS DE APOYOS):

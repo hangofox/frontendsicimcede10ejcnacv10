@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { InformacionFinancieraSolicInfraestI } from '../../../../../../interfaces/digei/solicitudes-infraestructuras/informacion-financiera-solic-infraest/informacion-financiera-solic-infraest.interface';
+import { InformacionFinancieraSolicInfraestI } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/informacion-financiera-solic-infraest/informacion-financiera-solic-infraest.interface';
 
 @Component({
   selector: 'app-vista-inf-fin-solic-const-nuev',

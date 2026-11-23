@@ -1,0 +1,56 @@
+//MISMO ESTILO PROVISIONAL DEL ÁREA EQUIPOS DE INGENIEROS (TEXTO SIMPLE MIENTRAS SE CREAN EL PIÑÓN, LOS ROMBOS Y EL FONDO):
+:host { display: block; }
+
+.me-escena {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 18px;
+
+  &__regresar {
+    align-self: flex-start;
+    font-size: .88rem;
+    font-weight: 700;
+    color: #245b85;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+
+    &:hover { color: #163d5c; }
+
+    &:focus-visible {
+      outline: 3px solid var(--sicim-focus);
+      outline-offset: 2px;
+    }
+  }
+
+  &__titulo {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #1a1a1a;
+  }
+}
+
+.mantenimientos-equip-ing-opciones {
+  ul { margin: 0; padding-left: 20px; }
+  li { margin-bottom: 10px; font-size: .88rem; line-height: 1.5; }
+
+  a {
+    color: #245b85;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: not-allowed;
+  }
+
+  //OPCIONES YA CONSTRUIDAS (CON routerLink): NAVEGABLES.
+  a[href] {
+    cursor: pointer;
+
+    &:hover { color: #163d5c; }
+
+    &:focus-visible {
+      outline: 3px solid var(--sicim-focus);
+      outline-offset: 2px;
+    }
+  }
+}

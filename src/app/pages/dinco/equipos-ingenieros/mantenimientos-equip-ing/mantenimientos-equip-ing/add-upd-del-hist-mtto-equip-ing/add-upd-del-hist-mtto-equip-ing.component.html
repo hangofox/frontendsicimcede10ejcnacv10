@@ -1,0 +1,139 @@
+<h2 class="page-title">
+  {{ banderaCrudGuardar ? 'Nuevo Mantenimiento de Equipo de Ingenieros' : banderaCrudModificar ? 'Modificación de Mantenimiento de Equipo de Ingenieros' : 'Eliminación de Mantenimiento de Equipo de Ingenieros' }}
+</h2>
+
+<section class="page-card panel-mantenimiento-equipo-ingeniero" aria-label="Formulario de mantenimiento de equipo de ingenieros">
+
+  <div class="estado-carga" *ngIf="cargandoRegistro">Cargando el mantenimiento del equipo de ingenieros...</div>
+
+  <div class="alerta-eliminar" *ngIf="registroNoEncontrado && !cargandoRegistro">
+    No se encontró el mantenimiento de equipo de ingenieros solicitado.
+  </div>
+
+  <div class="formulario-mantenimiento" *ngIf="!cargandoRegistro && !registroNoEncontrado">
+
+    <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Esta acción eliminará el registro del mantenimiento del equipo de ingenieros del historial. ¿Desea continuar?
+    </div>
+
+    <form [formGroup]="historialesMantenimientosEquiposIngenierosForm" (ngSubmit)="guardarModificar()">
+
+      <div class="form-seccion">
+        <div class="seccion-titulo">Identificación</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>N.° de registro</label>
+            <input type="text" formControlName="numRegHistorialMantenimientoEquipoIngeniero" placeholder="Asignado automáticamente">
+          </div>
+          <div class="form-group">
+            <label>Equipo de ingenieros (*)</label>
+            <select formControlName="equipoIngenieroSeleccionado">
+              <option value="">-- Seleccione --</option>
+              <option *ngFor="let equipo of equiposIngenieros" [value]="equipo.idEquipoIngeniero">
+                {{ equipo.denominacionEquipoIngeniero }} ({{ equipo.numeroInventarioEquipoIngeniero }}) - {{ equipo.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}
+              </option>
+            </select>
+            <small class="campo-error" *ngIf="campoInvalido('equipoIngenieroSeleccionado')">Seleccione el equipo de ingenieros.</small>
+          </div>
+          <div class="form-group">
+            <label>Nivel de mantenimiento (*)</label>
+            <select formControlName="nivelMantenimientoEquipoIngenieroSeleccionado">
+              <option value="">-- Seleccione --</option>
+              <option *ngFor="let nivel of nivelesMantenimientosEquipIng" [value]="nivel.idNivelMantenimientoEquipoIngeniero">
+                {{ nivel.nombreNivelMantenimientoEquipoIngeniero }}
+              </option>
+            </select>
+            <small class="campo-error" *ngIf="campoInvalido('nivelMantenimientoEquipoIngenieroSeleccionado')">Seleccione el nivel de mantenimiento.</small>
+          </div>
+          <div class="form-group">
+            <label>Tipo de mantenimiento (*)</label>
+            <select formControlName="tipoMantenimientoEquipoIngenieroSeleccionado">
+              <option value="">-- Seleccione --</option>
+              <option *ngFor="let tipoMantenimiento of tiposMantenimientosEquipIng" [value]="tipoMantenimiento.idTipoMantenimientoEquipoIngeniero">
+                {{ tipoMantenimiento.nombreTipoMantenimientoEquipoIngeniero }}
+              </option>
+            </select>
+            <small class="campo-error" *ngIf="campoInvalido('tipoMantenimientoEquipoIngenieroSeleccionado')">Seleccione el tipo de mantenimiento.</small>
+          </div>
+          <div class="form-group">
+            <label>Fecha del mantenimiento (*)</label>
+            <input type="datetime-local" formControlName="fechaHMSMantenimientoEquipoIngeniero">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-seccion">
+        <div class="seccion-titulo">Detalle del mantenimiento</div>
+        <div class="form-grid">
+          <div class="form-group form-group-ancho">
+            <label>Asunto (*)</label>
+            <input type="text" formControlName="asuntoMantenimientoEquipoIngeniero" placeholder="Ej. MANTENIMIENTO PREVENTIVO PROGRAMADO DE TERMINADORA DE ASFALTO">
+            <small class="campo-error" *ngIf="campoInvalido('asuntoMantenimientoEquipoIngeniero')">Digite el asunto del mantenimiento.</small>
+          </div>
+          <div class="form-group form-group-ancho">
+            <label>Descripción (*)</label>
+            <textarea formControlName="descripcionMantenimientoEquipoIngeniero" rows="4" placeholder="Ej. Se realizó cambio de aceite y filtros, revisión del sistema hidráulico..."></textarea>
+            <small class="campo-error" *ngIf="campoInvalido('descripcionMantenimientoEquipoIngeniero')">Digite la descripción del mantenimiento.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-seccion">
+        <div class="seccion-titulo">Costo y financiación</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Valor del costo</label>
+            <input type="text" inputmode="decimal" formControlName="valorCostoMantenimientoEquipoIngeniero" placeholder="Ej. 4500000">
+            <small class="campo-error" *ngIf="historialesMantenimientosEquiposIngenierosForm.get('valorCostoMantenimientoEquipoIngeniero')?.hasError('pattern')">
+              Solo números, sin puntos de miles (hasta dos decimales con punto).
+            </small>
+          </div>
+          <div class="form-group">
+            <label>Fuente de financiación (*)</label>
+            <select formControlName="tipoFuenteFinanciacionSeleccionado">
+              <option value="">-- Seleccione --</option>
+              <option *ngFor="let tipoFuente of tiposFuentesFinanciacion" [value]="tipoFuente.idTipoFuenteFinanciacion">
+                {{ tipoFuente.nombreTipoFuenteFinanciacion }}
+              </option>
+            </select>
+            <small class="campo-error" *ngIf="campoInvalido('tipoFuenteFinanciacionSeleccionado')">Seleccione la fuente de financiación.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-seccion">
+        <div class="seccion-titulo">Documento anexo del contrato</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nombre del documento (*)</label>
+            <input type="text" formControlName="nombreDocumentoAnexoContratoMttoEquipIng" placeholder="Ej. ACTA_MANTENIMIENTO_EQUIPO_INGENIERO_001.PDF">
+            <small class="campo-error" *ngIf="campoInvalido('nombreDocumentoAnexoContratoMttoEquipIng')">Digite el nombre del documento anexo.</small>
+          </div>
+          <div class="form-group">
+            <label>Nombre del archivo</label>
+            <input type="text" formControlName="nombreArchivoDocumentoAnexoContratoMttoEquipIng" placeholder="Ej. ACTA_MANTENIMIENTO_EQUIPO_INGENIERO_001.PDF">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-acciones">
+        <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cancelar()">Cancelar</button>
+        <button type="submit" class="btn-titulo-sistema btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="historialesMantenimientosEquiposIngenierosForm.invalid || enviando">
+          {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+        </button>
+        <button type="button" class="btn-titulo-sistema btn-peligro" *ngIf="banderaCrudEliminar" [disabled]="enviando" (click)="confirmarEliminar()">Eliminar</button>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="form-acciones" *ngIf="registroNoEncontrado && !cargandoRegistro">
+    <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cancelar()">Volver al historial</button>
+  </div>
+</section>
+
+<!-- TOAST -->
+<div class="toast-global" *ngIf="toastMensaje" [class.toast-exito]="toastTipo === 'exito'" [class.toast-error]="toastTipo === 'error'">
+  <span>{{ toastMensaje }}</span>
+</div>

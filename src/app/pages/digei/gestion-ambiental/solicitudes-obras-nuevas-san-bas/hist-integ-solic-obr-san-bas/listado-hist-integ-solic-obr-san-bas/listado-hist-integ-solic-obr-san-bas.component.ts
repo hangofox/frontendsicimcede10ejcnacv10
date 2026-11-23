@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { HistorialIntegrantesSolicInfraestI, HistorialIntegrantesSolicInfraestMsj } from '../../../../../../interfaces/digei/solicitudes-infraestructuras/historial-integrantes-solic-infraest/historial-integrantes-solic-infraest.interface';
-import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
-import { HistorialIntegrantesSolicInfraestService } from '../../../../../../services/digei/solicitudes-infraestructuras/historial-integrantes-solic-infraest/historial-integrantes-solic-infraest.service';
+import { HistorialIntegrantesSolicInfraestI, HistorialIntegrantesSolicInfraestMsj } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/historial-integrantes-solic-infraest/historial-integrantes-solic-infraest.interface';
+import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
+import { HistorialIntegrantesSolicInfraestService } from '../../../../../../services/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/historial-integrantes-solic-infraest/historial-integrantes-solic-infraest.service';
 import { LineasMandosUnidadesMilitaresService } from '../../../../../../services/panel-control/lineas-mandos-unidades-militares/lineas-mandos-unidades-militares.service';
 import { SemaforoContadoresComponent } from '../../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 import { AddUpdDelHistorialIntegranteSolicObrSbComponent, GrupoFinalAlternativoLineaMando, OpcionPasoLineaMando } from '../add-upd-del-hist-integ-solic-obr-san-bas/add-upd-del-hist-integ-solic-obr-san-bas.component';

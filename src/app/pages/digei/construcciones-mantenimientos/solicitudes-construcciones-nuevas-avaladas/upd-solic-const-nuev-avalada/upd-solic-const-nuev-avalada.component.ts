@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { SolicitudesInfraestructurasI } from '../../../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
+import { SolicitudesInfraestructurasI } from '../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
 
 //ESTADOS QUE PUEDE TENER UNA SOLICITUD DE INFRAESTRUCTURA AVALADA (LOS ÚNICOS QUE SE ASIGNAN EN ESTE FORMULARIO); EL BACKEND
 //TAMBIÉN LOS VALIDA (MSG_ESTADO_SOLICITUD_INFRAESTRUCTURA_AVALADA_NO_PERMITIDO):

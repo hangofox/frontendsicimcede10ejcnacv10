@@ -148,7 +148,20 @@ export const routes: Routes = [
               { path: '', loadComponent: () => import('./pages/dinco/equipos-ingenieros/equipos-ingenieros.component').then(m => m.EquiposIngenierosComponent), title: 'Equipos de ingenieros | SICIM' },
               { path: 'equipos-ingenieros/listado-equipos-ingenieros', loadComponent: () => import('./pages/dinco/equipos-ingenieros/equipos-ingenieros/listado-equipos-ingenieros/listado-equipos-ingenieros.component').then(m => m.ListadoEquiposIngenierosComponent), title: 'Equipos de ingenieros | SICIM' },
               { path: 'equipos-ingenieros', redirectTo: 'equipos-ingenieros/listado-equipos-ingenieros', pathMatch: 'full' },
-              { path: 'clasific-subclasific-element-equip-ing', loadComponent: () => import('./pages/dinco/equipos-ingenieros/clasific-subclasific-element-equip-ing/clasific-subclasific-element-equip-ing.component').then(m => m.ClasificSubclasificElementEquipIngComponent), title: 'Clasificaciones, subclasificaciones y elementos de equipos de ingenieros | SICIM' }
+              { path: 'clasific-subclasific-element-equip-ing', loadComponent: () => import('./pages/dinco/equipos-ingenieros/clasific-subclasific-element-equip-ing/clasific-subclasific-element-equip-ing.component').then(m => m.ClasificSubclasificElementEquipIngComponent), title: 'Clasificaciones, subclasificaciones y elementos de equipos de ingenieros | SICIM' },
+              //MANTENIMIENTOS DE EQUIPOS DE INGENIEROS (MANTENIMIENTO E HISTORIAL; MISMO ESQUEMA DE MANTENIMIENTOS DE INFRAESTRUCTURAS, TODAVÍA SIN ROMBOS NI FONDO):
+              {
+                path: 'mantenimientos-equip-ing',
+                children: [
+                  { path: '', loadComponent: () => import('./pages/dinco/equipos-ingenieros/mantenimientos-equip-ing/mantenimientos-equip-ing.component').then(m => m.MantenimientosEquipIngComponent), title: 'Mantenimientos de equipos de ingenieros | SICIM' },
+                  //FORMULARIO DE MANTENIMIENTO DE EQUIPO DE INGENIEROS (CREA Y, CON ?modo=modificar|eliminar&id=N DESDE EL LISTADO DEL HISTORIAL, MODIFICA Y ELIMINA):
+                  { path: 'mantenimientos-equip-ing/add-upd-del-hist-mtto-equip-ing', loadComponent: () => import('./pages/dinco/equipos-ingenieros/mantenimientos-equip-ing/mantenimientos-equip-ing/add-upd-del-hist-mtto-equip-ing/add-upd-del-hist-mtto-equip-ing.component').then(m => m.AddUpdDelHistMttoEquipIngComponent), title: 'Mantenimiento de equipo de ingenieros | SICIM' },
+                  { path: 'mantenimientos-equip-ing', redirectTo: 'mantenimientos-equip-ing/add-upd-del-hist-mtto-equip-ing', pathMatch: 'full' },
+                  //HISTORIAL DE MANTENIMIENTOS DE EQUIPOS DE INGENIEROS:
+                  { path: 'historial-mantenimientos-equip-ing/listado-hist-mttos-equip-ing', loadComponent: () => import('./pages/dinco/equipos-ingenieros/mantenimientos-equip-ing/historial-mantenimientos-equip-ing/listado-hist-mttos-equip-ing/listado-hist-mttos-equip-ing.component').then(m => m.ListadoHistMttosEquipIngComponent), title: 'Historial de mantenimientos de equipos de ingenieros | SICIM' },
+                  { path: 'historial-mantenimientos-equip-ing', redirectTo: 'historial-mantenimientos-equip-ing/listado-hist-mttos-equip-ing', pathMatch: 'full' }
+                ]
+              }
             ]
           }
         ]

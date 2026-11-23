@@ -3,8 +3,8 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, O
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HistorialIntegrantesSolicInfraestI } from '../../../../../../interfaces/digei/solicitudes-infraestructuras/historial-integrantes-solic-infraest/historial-integrantes-solic-infraest.interface';
-import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
+import { HistorialIntegrantesSolicInfraestI } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/historial-integrantes-solic-infraest/historial-integrantes-solic-infraest.interface';
+import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
 import { UnidadesMilitaresI } from '../../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
 import { CargosIntegrantesDocumentosI } from '../../../../../../interfaces/panel-control/cargos-integrantes-documentos/cargos-integrantes-documentos.interface';
 import { HistorialIntegrantesDocumentosI } from '../../../../../../interfaces/panel-control/historial-integrantes-documentos/historial-integrantes-documentos.interface';

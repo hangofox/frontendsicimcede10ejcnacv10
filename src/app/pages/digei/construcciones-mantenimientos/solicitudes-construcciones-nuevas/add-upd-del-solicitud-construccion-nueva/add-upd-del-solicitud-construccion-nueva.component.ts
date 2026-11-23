@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { SolicitudesInfraestructurasI } from '../../../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
+import { SolicitudesInfraestructurasI } from '../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
 import { UnidadesMilitaresI } from '../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
-import { TiposSolicitudesInfraestructurasI } from '../../../../../interfaces/digei/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.interface';
+import { TiposSolicitudesInfraestructurasI } from '../../../../../interfaces/digei/mantenimientos-infraestructuras/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.interface';
 import { InfraestructurasI } from '../../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
 
 @Component({

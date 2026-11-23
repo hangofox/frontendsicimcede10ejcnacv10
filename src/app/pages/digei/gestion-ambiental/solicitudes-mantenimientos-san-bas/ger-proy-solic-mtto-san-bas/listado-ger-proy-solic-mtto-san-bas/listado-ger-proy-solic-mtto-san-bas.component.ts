@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { GerentesProyectosSolicInfraestI, GerentesProyectosSolicInfraestMsj } from '../../../../../../interfaces/digei/solicitudes-infraestructuras/gerentes-proyectos-solic-infraest/gerentes-proyectos-solic-infraest.interface';
-import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
-import { GerentesProyectosSolicInfraestService } from '../../../../../../services/digei/solicitudes-infraestructuras/gerentes-proyectos-solic-infraest/gerentes-proyectos-solic-infraest.service';
+import { GerentesProyectosSolicInfraestI, GerentesProyectosSolicInfraestMsj } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/gerentes-proyectos-solic-infraest/gerentes-proyectos-solic-infraest.interface';
+import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
+import { GerentesProyectosSolicInfraestService } from '../../../../../../services/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/gerentes-proyectos-solic-infraest/gerentes-proyectos-solic-infraest.service';
 import { SemaforoContadoresComponent } from '../../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 import { AddUpdDelGerenteProyectoSolicMttoSbComponent } from '../add-upd-del-ger-proy-solic-mtto-san-bas/add-upd-del-ger-proy-solic-mtto-san-bas.component';
 import { VistaGerenteProyectoSolicMttoSbComponent } from '../vista-ger-proy-solic-mtto-san-bas/vista-ger-proy-solic-mtto-san-bas.component';

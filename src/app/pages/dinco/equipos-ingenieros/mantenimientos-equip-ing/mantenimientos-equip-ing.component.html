@@ -1,0 +1,21 @@
+<!-- Aquí irán el piñón de Equipos de Ingenieros (regresa a su área) y los rombos de mantenimiento e historial sobre su fondo,
+     como en Mantenimientos de Infraestructuras. Mientras se crean, van en texto simple. -->
+<div class="me-escena" aria-label="Mantenimientos de equipos de ingenieros">
+  <a class="me-escena__regresar" routerLink="/dinco/equipos-ingenieros" aria-label="Ir a Equipos de Ingenieros">Equipos de Ingenieros</a>
+  <h1 class="me-escena__titulo">Mantenimientos de Equipos de Ingenieros</h1>
+</div>
+
+<section class="page-card mantenimientos-equip-ing-opciones" aria-label="Opciones de mantenimientos de equipos de ingenieros">
+  <ul>
+    @for (opcion of opciones; track opcion.titulo) {
+      <li>
+        @if (opcion.ruta) {
+          <a [routerLink]="opcion.ruta">{{ opcion.titulo }}</a>
+        } @else {
+          <!-- Aún sin componente: se enlazará cuando exista. -->
+          <a role="link" aria-disabled="true">{{ opcion.titulo }}</a>
+        }
+      </li>
+    }
+  </ul>
+</section>

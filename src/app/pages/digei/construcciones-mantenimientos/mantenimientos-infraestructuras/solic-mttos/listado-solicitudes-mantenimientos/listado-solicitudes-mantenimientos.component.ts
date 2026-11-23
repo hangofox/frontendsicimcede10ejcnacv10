@@ -4,19 +4,19 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angul
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
+import { SolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
 import { UnidadesMilitaresI } from '../../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
-import { TiposSolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.interface';
+import { TiposSolicitudesInfraestructurasI } from '../../../../../../interfaces/digei/mantenimientos-infraestructuras/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.interface';
 import { InfraestructurasI } from '../../../../../../interfaces/digei/finca-raiz/infraestructuras/infraestructuras.interface';
 
-import { SolicitudesInfraestructurasService } from '../../../../../../services/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.service';
+import { SolicitudesInfraestructurasService } from '../../../../../../services/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/solicitudes-infraestructuras.service';
 import { UnidadesMilitaresService } from '../../../../../../services/panel-control/unidades-militares/unidades-militares.service';
-import { TiposSolicitudesInfraestructurasService } from '../../../../../../services/digei/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.service';
+import { TiposSolicitudesInfraestructurasService } from '../../../../../../services/digei/mantenimientos-infraestructuras/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.service';
 import { InfraestructurasService } from '../../../../../../services/digei/finca-raiz/infraestructuras/infraestructuras.service';
-import { HistorialIntegrantesSolicInfraestService } from '../../../../../../services/digei/solicitudes-infraestructuras/historial-integrantes-solic-infraest/historial-integrantes-solic-infraest.service';
-import { GerentesProyectosSolicInfraestService } from '../../../../../../services/digei/solicitudes-infraestructuras/gerentes-proyectos-solic-infraest/gerentes-proyectos-solic-infraest.service';
-import { InformacionFinancieraSolicInfraestService } from '../../../../../../services/digei/solicitudes-infraestructuras/informacion-financiera-solic-infraest/informacion-financiera-solic-infraest.service';
-import { DocumentacionAnexaSolicInfraestService } from '../../../../../../services/digei/solicitudes-infraestructuras/documentacion-anex-solic-infraest/documentacion-anex-solic-infraest.service';
+import { HistorialIntegrantesSolicInfraestService } from '../../../../../../services/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/historial-integrantes-solic-infraest/historial-integrantes-solic-infraest.service';
+import { GerentesProyectosSolicInfraestService } from '../../../../../../services/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/gerentes-proyectos-solic-infraest/gerentes-proyectos-solic-infraest.service';
+import { InformacionFinancieraSolicInfraestService } from '../../../../../../services/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/informacion-financiera-solic-infraest/informacion-financiera-solic-infraest.service';
+import { DocumentacionAnexaSolicInfraestService } from '../../../../../../services/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/documentacion-anex-solic-infraest/documentacion-anex-solic-infraest.service';
 import { LineasMandosUnidadesMilitaresService } from '../../../../../../services/panel-control/lineas-mandos-unidades-militares/lineas-mandos-unidades-militares.service';
 import { SpinnerService } from '../../../../../../services/spinner/spinner.service';
 
@@ -27,7 +27,7 @@ import { ListadoGerentesProyectosSolicMttoComponent } from '../ger-proy-solic-mt
 import { ListadoInformacionFinancieraSolicMttoComponent } from '../info-fin-solic-mttos/listado-info-fin-solic-mtto/listado-info-fin-solic-mtto.component';
 import { ListadoDocumentacionAnexaSolicMttoComponent } from '../doc-anex-solic-mttos/listado-doc-anex-solic-mtto/listado-doc-anex-solic-mtto.component';
 import { FotAnexSolicMttoComponent } from '../fot-anex-solic-mttos/fot-anex-solic-mttos.component';
-import { FotografiasAnexasSolicInfraestService } from '../../../../../../services/digei/solicitudes-infraestructuras/fot-anex-solic-infraest/fot-anex-solic-infraest.service';
+import { FotografiasAnexasSolicInfraestService } from '../../../../../../services/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/fot-anex-solic-infraest/fot-anex-solic-infraest.service';
 import { SemaforoContadoresComponent } from '../../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 import { OrdenarPorSiglaPipe } from '../../../../../../shared/pipes/ordenar-por-sigla.pipe';
 import { EstructuraLineaMando, analizarLineaMando, obtenerIndicesFinalesVigentes } from '../../../../../../shared/lineas-mando/linea-mando.util';

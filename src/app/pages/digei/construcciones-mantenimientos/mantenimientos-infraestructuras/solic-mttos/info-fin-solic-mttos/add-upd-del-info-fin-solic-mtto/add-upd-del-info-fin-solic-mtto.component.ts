@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InformacionFinancieraSolicInfraestI } from '../../../../../../../interfaces/digei/solicitudes-infraestructuras/informacion-financiera-solic-infraest/informacion-financiera-solic-infraest.interface';
-import { SolicitudesInfraestructurasI } from '../../../../../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
+import { InformacionFinancieraSolicInfraestI } from '../../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/informacion-financiera-solic-infraest/informacion-financiera-solic-infraest.interface';
+import { SolicitudesInfraestructurasI } from '../../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
 import { TiposFuentesFinanciacionI } from '../../../../../../../interfaces/tipos-fuentes-financiacion/tipos-fuentes-financiacion.interface';
-import { ActividadesProductosInfraestructurasI } from '../../../../../../../interfaces/digei/solicitudes-infraestructuras/informacion-financiera-solic-infraest/activ-prod-infraest/actividades-productos-infraestructuras.interface';
-import { CapitulosInfraestructurasI } from '../../../../../../../interfaces/digei/solicitudes-infraestructuras/informacion-financiera-solic-infraest/activ-prod-infraest/capit-infraest/capitulos-infraestructuras.interface';
+import { ActividadesProductosInfraestructurasI } from '../../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/informacion-financiera-solic-infraest/activ-prod-infraest/actividades-productos-infraestructuras.interface';
+import { CapitulosInfraestructurasI } from '../../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/informacion-financiera-solic-infraest/activ-prod-infraest/capit-infraest/capitulos-infraestructuras.interface';
 import { UnidadesMedidasI } from '../../../../../../../interfaces/unidades-medidas/unidades-medidas.interface';
 
 @Component({

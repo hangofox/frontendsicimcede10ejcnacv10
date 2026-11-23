@@ -3,11 +3,11 @@ import { ChangeDetectorRef, Component, inject, Input, OnChanges, OnDestroy, OnIn
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { DocumentacionAnexaSolicInfraestI, DocumentacionAnexaSolicInfraestMsj } from '../../../../../../../interfaces/digei/solicitudes-infraestructuras/documentacion-anex-solic-infraest/documentacion-anex-solic-infraest.interface';
-import { SolicitudesInfraestructurasI } from '../../../../../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
-import { TiposDocumentosAnexosSolicInfraestI } from '../../../../../../../interfaces/digei/solicitudes-infraestructuras/tipos-documentacion-anex-solic-infraest/tipos-documentacion-anex-solic-infraest.interface';
-import { DocumentacionAnexaSolicInfraestService } from '../../../../../../../services/digei/solicitudes-infraestructuras/documentacion-anex-solic-infraest/documentacion-anex-solic-infraest.service';
-import { TiposDocumentosAnexosSolicInfraestService } from '../../../../../../../services/digei/solicitudes-infraestructuras/tipos-documentacion-anex-solic-infraest/tipos-documentacion-anex-solic-infraest.service';
+import { DocumentacionAnexaSolicInfraestI, DocumentacionAnexaSolicInfraestMsj } from '../../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/documentacion-anex-solic-infraest/documentacion-anex-solic-infraest.interface';
+import { SolicitudesInfraestructurasI } from '../../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
+import { TiposDocumentosAnexosSolicInfraestI } from '../../../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/tipos-documentacion-anex-solic-infraest/tipos-documentacion-anex-solic-infraest.interface';
+import { DocumentacionAnexaSolicInfraestService } from '../../../../../../../services/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/documentacion-anex-solic-infraest/documentacion-anex-solic-infraest.service';
+import { TiposDocumentosAnexosSolicInfraestService } from '../../../../../../../services/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/tipos-documentacion-anex-solic-infraest/tipos-documentacion-anex-solic-infraest.service';
 import { ParametrosSistemaService } from '../../../../../../../services/panel-control/parametros-sistema/parametros-sistema.service';
 import { UnidadesMilitaresService } from '../../../../../../../services/panel-control/unidades-militares/unidades-militares.service';
 import { GestionArchivosService } from '../../../../../../../services/gestion-archivos/gestion-archivos.service';

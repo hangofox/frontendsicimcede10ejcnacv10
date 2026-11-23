@@ -4,13 +4,13 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angul
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { SolicitudesInfraestructurasI } from '../../../../../interfaces/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
+import { SolicitudesInfraestructurasI } from '../../../../../interfaces/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/solicitudes-infraestructuras.interface';
 import { UnidadesMilitaresI } from '../../../../../interfaces/panel-control/unidades-militares/unidades-militares.interface';
 
-import { SolicitudesInfraestructurasService } from '../../../../../services/digei/solicitudes-infraestructuras/solicitudes-infraestructuras.service';
+import { SolicitudesInfraestructurasService } from '../../../../../services/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/solicitudes-infraestructuras.service';
 import { UnidadesMilitaresService } from '../../../../../services/panel-control/unidades-militares/unidades-militares.service';
-import { TiposSolicitudesInfraestructurasService } from '../../../../../services/digei/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.service';
-import { HistorialIntegrantesSolicInfraestService } from '../../../../../services/digei/solicitudes-infraestructuras/historial-integrantes-solic-infraest/historial-integrantes-solic-infraest.service';
+import { TiposSolicitudesInfraestructurasService } from '../../../../../services/digei/mantenimientos-infraestructuras/tipos-solicitudes-infraestructuras/tipos-solicitudes-infraestructuras.service';
+import { HistorialIntegrantesSolicInfraestService } from '../../../../../services/digei/mantenimientos-infraestructuras/solicitudes-infraestructuras/historial-integrantes-solic-infraest/historial-integrantes-solic-infraest.service';
 import { LineasMandosUnidadesMilitaresService } from '../../../../../services/panel-control/lineas-mandos-unidades-militares/lineas-mandos-unidades-militares.service';
 import { SpinnerService } from '../../../../../services/spinner/spinner.service';
 
