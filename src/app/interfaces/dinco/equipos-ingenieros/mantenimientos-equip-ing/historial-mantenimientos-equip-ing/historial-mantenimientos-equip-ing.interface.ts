@@ -12,8 +12,8 @@ export interface HistorialMantenimientosEquipIngI {
   descripcionMantenimientoEquipoIngeniero: String;//CLOB NOT NULL.
   fechaHMSMantenimientoEquipoIngeniero: String;//EN EL BACKEND ES Date; VIAJA COMO TEXTO ISO.
   valorCostoMantenimientoEquipoIngeniero: String;//EN LA TABLA ES VARCHAR2 NULL (EJ. "4500000.00").
-  nombreDocumentoAnexoContratoMttoEquipIng: String;//VARCHAR2(250) NOT NULL.
-  nombreArchivoDocumentoAnexoContratoMttoEquipIng: String;//CLOB NULL.
+  nombreDocumentoAnexoContratoMttoEquipIng: String | null;//VARCHAR2(250) NULL.
+  nombreArchivoDocumentoAnexoContratoMttoEquipIng: String | null;//CLOB NULL. EL ARCHIVO VA EN LA RUTA DE CONTRATOS DE MANTENIMIENTOS (PARÁMETROS) + LA CARPETA DE LA UNIDAD MILITAR DEL EQUIPO.
   equipoIngenieroDTO: EquiposIngenierosI;
   nivelMantenimientoEquipoIngenieroDTO: NivelesMantenimientosEquipIngI;
   tipoMantenimientoEquipoIngenieroDTO: TiposMantenimientosEquipIngI;

@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { HistorialMantenimientosEquipIngI } from '../../../../../../interfaces/dinco/equipos-ingenieros/mantenimientos-equip-ing/historial-mantenimientos-equip-ing/historial-mantenimientos-equip-ing.interface';
 import { TiposMantenimientosEquipIngI } from '../../../../../../interfaces/dinco/equipos-ingenieros/mantenimientos-equip-ing/tipos-mantenimientos-equip-ing/tipos-mantenimientos-equip-ing.interface';
@@ -15,6 +17,9 @@ import { NivelesMantenimientosEquipIngService } from '../../../../../../services
 import { UnidadesMilitaresService } from '../../../../../../services/panel-control/unidades-militares/unidades-militares.service';
 import { TiposFuentesFinanciacionService } from '../../../../../../services/tipos-fuentes-financiacion/tipos-fuentes-financiacion.service';
 import { SpinnerService } from '../../../../../../services/spinner/spinner.service';
+import { ParametrosSistemaService } from '../../../../../../services/panel-control/parametros-sistema/parametros-sistema.service';
+import { GestionArchivosService } from '../../../../../../services/gestion-archivos/gestion-archivos.service';
+import { obtenerCarpetaDocumentosContratosMttoEquipIng } from '../../mantenimientos-equip-ing/add-upd-del-hist-mtto-equip-ing/add-upd-del-hist-mtto-equip-ing.component';
 
 import { VistaHistMttoEquipIngComponent } from '../vista-hist-mtto-equip-ing/vista-hist-mtto-equip-ing.component';
 import { SemaforoContadoresComponent } from '../../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
@@ -75,6 +80,14 @@ export class ListadoHistMttosEquipIngComponent implements OnInit, OnDestroy {
   toastTipo: 'exito' | 'error' = 'exito';
   private toastTimer: any = null;
 
+  //REGISTRO CUYO DOCUMENTO ANEXO SE ESTÁ ABRIENDO EN OTRA PESTAÑA (PARA DESHABILITAR LOS BOTONES MIENTRAS SE DESCARGA):
+  abriendoId: number | null = null;
+  //URLs blob: ABIERTAS EN OTRAS PESTAÑAS, QUE SE LIBERAN AL SALIR DEL LISTADO:
+  private readonly urlsAbiertas: string[] = [];
+  //EXISTENCIA DEL DOCUMENTO ANEXO EN EL SERVIDOR POR REGISTRO (null MIENTRAS SE VERIFICA) Y CARPETA DE DOCUMENTOS POR UNIDAD MILITAR:
+  private readonly existenciaDocumentos = new Map<string, boolean | null>();
+  private readonly carpetasPorUnidad = new Map<string, Observable<string>>();
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -84,7 +97,9 @@ export class ListadoHistMttosEquipIngComponent implements OnInit, OnDestroy {
     private nivelesMantenimientosEquipIngService: NivelesMantenimientosEquipIngService,
     private unidadesMilitaresService: UnidadesMilitaresService,
     private tiposFuentesFinanciacionService: TiposFuentesFinanciacionService,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
+    private parametrosSistemaService: ParametrosSistemaService,
+    private gestionArchivosService: GestionArchivosService
   ) {
     this.historialesMantenimientosEquiposIngenierosForm = this.formBuilder.group({
       ctextPalabraClave: new FormControl(''),
@@ -106,7 +121,45 @@ export class ListadoHistMttosEquipIngComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.urlsAbiertas.forEach(url => URL.revokeObjectURL(url));
     if (this.toastTimer) clearTimeout(this.toastTimer);
+  }
+
+  nombreArchivo(historial: HistorialMantenimientosEquipIngI | null | undefined): string {
+    return String(historial?.nombreArchivoDocumentoAnexoContratoMttoEquipIng ?? '').trim();
+  }
+
+  //ABRE EL DOCUMENTO ANEXO DEL CONTRATO EN OTRA PESTAÑA (CARPETA DE LA UNIDAD MILITAR DEL EQUIPO + getFile + getFileBytes, CON EL TOKEN
+  //DE AUTORIZACIÓN) — MISMO PATRÓN QUE ListadoDocumentacionAnexaSolicMttoComponent. LA PESTAÑA SE ABRE ANTES DE LA DESCARGA PARA QUE EL
+  //NAVEGADOR NO LA BLOQUEE COMO VENTANA EMERGENTE:
+  abrirArchivo(historial: HistorialMantenimientosEquipIngI): void {
+    const nombre = this.nombreArchivo(historial);
+    if (!nombre || this.abriendoId !== null) return;
+    const pestana = window.open('', '_blank');
+    this.abriendoId = historial.idHistorialMantenimientoEquipoIngeniero ?? null;
+    const esPdf = nombre.toLowerCase().endsWith('.pdf');
+    obtenerCarpetaDocumentosContratosMttoEquipIng(historial.equipoIngenieroDTO, this.parametrosSistemaService, this.unidadesMilitaresService).subscribe({
+      next: carpeta => this.gestionArchivosService.getFile(carpeta + nombre).subscribe({
+        next: ({ rutaEstatica }) => this.gestionArchivosService.getFileBytes(rutaEstatica).subscribe({
+          next: bytes => {
+            const url = URL.createObjectURL(esPdf ? new Blob([bytes], { type: 'application/pdf' }) : bytes);
+            this.urlsAbiertas.push(url);
+            if (pestana) pestana.location.href = url; else window.open(url, '_blank');
+            this.abriendoId = null;
+            this.changeDetectorRef.markForCheck();
+          },
+          error: () => this.errorAlAbrir(pestana)
+        }),
+        error: () => this.errorAlAbrir(pestana)
+      }),
+      error: () => this.errorAlAbrir(pestana)
+    });
+  }
+
+  private errorAlAbrir(pestana: Window | null): void {
+    pestana?.close();
+    this.abriendoId = null;
+    this.mostrarToast('error', 'No se encontró el documento anexo en el servidor de archivos.');
   }
 
   //AL VOLVER DEL FORMULARIO TRAS MODIFICAR O ELIMINAR, ÉSTE DEJA EL MENSAJE DEL RESULTADO EN EL ESTADO DE NAVEGACIÓN; SE MUESTRA
@@ -256,7 +309,51 @@ export class ListadoHistMttosEquipIngComponent implements OnInit, OnDestroy {
   private recortarPagina(): void {
     const inicio = this.paginaActual * this.tandaNumeroRegistrosporPagina;
     this.historialesMantenimientosEquiposIngenieros = this.historialesFiltrados.slice(inicio, inicio + this.tandaNumeroRegistrosporPagina);
+    this.verificarDocumentosPagina();
     this.changeDetectorRef.markForCheck();
+  }
+
+  //VERIFICA EN EL SERVIDOR DE ARCHIVOS SI EL DOCUMENTO ANEXO DE CADA REGISTRO DE LA PÁGINA EXISTE DE VERDAD (UN REGISTRO PUEDE TENER EL
+  //NOMBRE GUARDADO SIN QUE EL ARCHIVO ESTÉ EN LA CARPETA). SOLO SE CONSULTAN LOS DE LA PÁGINA VISIBLE Y CADA RESULTADO QUEDA EN CACHÉ;
+  //LA CARPETA SE RESUELVE UNA VEZ POR UNIDAD MILITAR:
+  private verificarDocumentosPagina(): void {
+    this.historialesMantenimientosEquiposIngenieros.forEach(historial => {
+      const clave = this.claveDocumento(historial);
+      if (!clave || this.existenciaDocumentos.has(clave)) return;
+      this.existenciaDocumentos.set(clave, null);
+      this.carpetaDocumentosEquipo(historial).pipe(
+        switchMap(carpeta => this.gestionArchivosService.getFile(carpeta + this.nombreArchivo(historial))),
+        map(() => true),
+        catchError(() => of(false))
+      ).subscribe(existe => {
+        this.existenciaDocumentos.set(clave, existe);
+        this.changeDetectorRef.markForCheck();
+      });
+    });
+  }
+
+  //CLAVE DE CACHÉ: EQUIPO + NOMBRE DEL ARCHIVO (SI CAMBIA CUALQUIERA DE LOS DOS SE VUELVE A VERIFICAR):
+  private claveDocumento(historial: HistorialMantenimientosEquipIngI): string {
+    const nombre = this.nombreArchivo(historial);
+    return nombre ? `${historial.equipoIngenieroDTO?.idEquipoIngeniero}|${nombre}` : '';
+  }
+
+  private carpetaDocumentosEquipo(historial: HistorialMantenimientosEquipIngI): Observable<string> {
+    const clave = String(historial.equipoIngenieroDTO?.unidadMilitarDTO?.siglaoAcronimoUnidadMilitar ?? '');
+    let carpeta$ = this.carpetasPorUnidad.get(clave);
+    if (!carpeta$) {
+      carpeta$ = obtenerCarpetaDocumentosContratosMttoEquipIng(historial.equipoIngenieroDTO, this.parametrosSistemaService, this.unidadesMilitaresService).pipe(shareReplay(1));
+      this.carpetasPorUnidad.set(clave, carpeta$);
+    }
+    return carpeta$;
+  }
+
+  //ESTADO DEL DOCUMENTO ANEXO EN LA TABLA: 'si' (EXISTE: BOTÓN), 'no' (SIN NOMBRE O SIN ARCHIVO EN EL SERVIDOR: "NO") O 'verificando' ("..."):
+  estadoDocumento(historial: HistorialMantenimientosEquipIngI): 'si' | 'no' | 'verificando' {
+    const clave = this.claveDocumento(historial);
+    if (!clave) return 'no';
+    const existe = this.existenciaDocumentos.get(clave);
+    return existe === undefined || existe === null ? 'verificando' : existe ? 'si' : 'no';
   }
 
   calcularTotalPaginas(): number {

@@ -388,7 +388,10 @@ export class ListadoUnidadesMilitaresComponent implements OnInit, OnDestroy {
           { etiqueta: 'Fotografías anexas de apoyos en atención y prevención de emergencias y desastres', ruta: parametrosSistemaDTO.rutaDestinoArchivosFotografiasAnexasApoyosAtencPrevEmergDesast },
           { etiqueta: 'Integrantes de apoyos en atención y prevención de emergencias y desastres', ruta: parametrosSistemaDTO.rutaDestinoArchivosIntegrantesApoyosAtencPrevEmergDesast },
           { etiqueta: 'Fotografías anexas de apoyos en obras, reducción y mitigación de riesgos y desastres', ruta: parametrosSistemaDTO.rutaDestinoArchivosFotografiasAnexasApoyosObrRedMitigGestRiesgDesast },
-          { etiqueta: 'Integrantes de apoyos en obras, reducción y mitigación de riesgos y desastres', ruta: parametrosSistemaDTO.rutaDestinoArchivosIntegrantesApoyosObrRedMitigGestRiesgDesast }
+          { etiqueta: 'Integrantes de apoyos en obras, reducción y mitigación de riesgos y desastres', ruta: parametrosSistemaDTO.rutaDestinoArchivosIntegrantesApoyosObrRedMitigGestRiesgDesast },
+          { etiqueta: 'Documentación anexa de contratos de mantenimientos de equipos de ingenieros', ruta: parametrosSistemaDTO.rutaDestinoArchivosDocumentacionAnexaContratosMantenimientosEquiposIngenieros },
+          { etiqueta: 'Documentación anexa de historial de diagnósticos iniciales de selección de mantenimientos de equipos de ingenieros', ruta: parametrosSistemaDTO.rutaDestinoArchivosDocumentacionAnexaHistorialDiagnosticoInicialSeleccEquipIng },
+          { etiqueta: 'Historial de deméritos y desgastes de equipos de ingenieros', ruta: parametrosSistemaDTO.rutaDestinoArchivosHistorialDemeritosDesgastesEquiposIngenieros }
         ];
         const sincronizados = subcarpetas
           .filter(({ ruta }) => String(ruta || '').trim())

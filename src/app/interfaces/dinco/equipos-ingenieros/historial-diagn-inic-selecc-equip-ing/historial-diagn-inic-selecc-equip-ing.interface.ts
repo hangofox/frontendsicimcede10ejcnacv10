@@ -7,7 +7,7 @@ import { EstadosDiagnosticosEquiposIngenierosI } from '../../estados-diagnostico
 export interface HistorialDiagnInicSeleccEquipIngI {
   idHistorialDiagnosticoInicialSeleccMttoEquipIng?: number;
   numRegHistorialDiagnosticoInicialSeleccMttoEquipIng: String;
-  nombreArchivoDocumentoAnexoHistDiagInicSeleccMttoEquipIng: String;//CLOB, OPCIONAL.
+  nombreArchivoDocumentoAnexoHistDiagInicSeleccMttoEquipIng: String | null;//CLOB, OPCIONAL. EL ARCHIVO VA EN LA RUTA DE DIAGNÓSTICOS (PARÁMETROS) + LA CARPETA DE LA UNIDAD MILITAR DEL EQUIPO.
   descripcionObjetivoHistorialDiagnosticoInicialSeleccMttoEquipIng: String;//CLOB, OPCIONAL.
   unidadMilitarDTO: UnidadesMilitaresI;
   unidadMilitarRealizadoraMantenimientoDTO: UnidadesMilitaresRealizadorasMantenimientosI;//CATÁLOGO DE REALIZADORAS (TRAE SU unidadMilitarDTO).

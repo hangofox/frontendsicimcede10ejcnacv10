@@ -447,7 +447,7 @@ export class ListadoEquiposIngenierosComponent implements OnInit, OnDestroy {
     });
   }
 
-  //RECIBE EL ID DEL EQUIPO A ELIMINAR Y LO ENVÍA AL BACKEND:
+  //RECIBE EL ID DEL EQUIPO DE INGENIEROS A ELIMINAR Y LO ENVÍA AL BACKEND:
   eliminarEquipoIngeniero(idEquipoIngeniero: number): void {
     this.equiposIngenierosService.deleteEngineerEquipment(idEquipoIngeniero).subscribe({
       next: (respuesta) => {

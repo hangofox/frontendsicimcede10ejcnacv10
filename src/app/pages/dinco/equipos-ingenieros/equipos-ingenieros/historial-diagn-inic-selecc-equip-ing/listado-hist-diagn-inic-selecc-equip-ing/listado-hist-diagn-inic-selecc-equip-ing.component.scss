@@ -19,3 +19,26 @@
 
 //TONO NEUTRAL PARA UN ESTADO DE DIAGNÓSTICO QUE NO TENGA TONO ASIGNADO:
 .badge-neutral { background: rgba(107, 114, 128, .14); color: #5b6472; }
+
+//BOTÓN PARA ABRIR EL DOCUMENTO ANEXO (MISMOS ESTILOS DEL HISTORIAL DE DEMÉRITOS Y DESGASTES):
+.btn-archivo-tabla {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border: 1px solid var(--sicim-border);
+  border-radius: 4px;
+  background: var(--sicim-white);
+  color: #1d4ed8;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) { border-color: #1d4ed8; background: #eff6ff; }
+  &:disabled { opacity: .5; cursor: not-allowed; }
+}
+
+//COLUMNA DEL DOCUMENTO ANEXO: "NO" Y "..." CON EL MISMO TRATAMIENTO QUE LAS COLUMNAS DE ListadoEquiposIngenierosComponent:
+.celda-documento { text-align: center; }
+.asociados-no { color: var(--sicim-gray); font-size: 12px; font-weight: 700; }
+.asociados-cargando { color: var(--sicim-gray); }

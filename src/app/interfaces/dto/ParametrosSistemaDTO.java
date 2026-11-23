@@ -30,6 +30,9 @@ public class ParametrosSistemaDTO {
     private String rutaDestinoArchivosIntegrantesApoyosAtencPrevEmergDesast;
     private String rutaDestinoArchivosFotografiasAnexasApoyosObrRedMitigGestRiesgDesast;
     private String rutaDestinoArchivosIntegrantesApoyosObrRedMitigGestRiesgDesast;
+    private String rutaDestinoArchivosDocumentacionAnexaContratosMantenimientosEquiposIngenieros;
+    private String rutaDestinoArchivosDocumentacionAnexaHistorialDiagnosticoInicialSeleccEquipIng;
+    private String rutaDestinoArchivosHistorialDemeritosDesgastesEquiposIngenieros;
     private String authEnable;
     private String startTTLSEnable;
     private String smtpHost;

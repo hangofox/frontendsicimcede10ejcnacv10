@@ -2,7 +2,7 @@
 
   <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-    Esta acción eliminará el registro de demérito y desgaste del historial del equipo de ingenieros. ¿Desea continuar?
+    Esta acción eliminará el registro de demérito y desgaste del historial del equipo de ingenieros y su documento anexo del servidor de archivos. ¿Desea continuar?
   </div>
 
   <form [formGroup]="historialesDemeritosYDesgastesEquiposIngenierosForm" (ngSubmit)="guardarModificar()">
@@ -47,13 +47,55 @@
       </div>
     </div>
 
+    <div class="form-seccion">
+      <div class="seccion-titulo">Documento anexo ({{ extensionesPermitidas.join(', ') }} — máximo 2.0 MB)</div>
+      <p class="archivo-actual" *ngIf="nombreArchivoActual && !archivoEliminado">Archivo actual: <strong>{{ nombreArchivoActual }}</strong>{{ archivoSeleccionado ? ' (se reemplazará al guardar)' : '' }}</p>
+      <p class="archivo-actual archivo-quitado" *ngIf="nombreArchivoActual && archivoEliminado">Archivo actual: <strong>{{ nombreArchivoActual }}</strong> ({{ archivoSeleccionado ? 'se reemplazará' : 'se quitará' }} al guardar)</p>
+      <p class="archivo-actual" *ngIf="!nombreArchivoActual && banderaCrudEliminar">Sin documento anexo.</p>
+      <div class="foto-upload-controles" *ngIf="!banderaCrudEliminar">
+        <label class="btn-archivo" [class.btn-archivo--deshabilitado]="guardando" *ngIf="!archivoSeleccionado">
+          <input type="file" [accept]="acceptArchivos" [disabled]="guardando" (change)="onSeleccionarArchivo($event)" style="display:none">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          {{ nombreArchivoActual && !archivoEliminado ? 'Cambiar archivo' : 'Seleccionar archivo' }}
+        </label>
+        <ng-container *ngIf="archivoSeleccionado">
+          <span class="foto-nombre">{{ archivoSeleccionado.name }} (nuevo)</span>
+          <button type="button" class="btn-quitar" [disabled]="guardando" (click)="onQuitarArchivoSeleccionado()">Quitar</button>
+        </ng-container>
+        <!-- QUITAR EL DOCUMENTO YA GUARDADO (SOLO AL MODIFICAR), CON CONFIRMACIÓN -->
+        <button type="button" class="btn-quitar" *ngIf="banderaCrudModificar && nombreArchivoActual && !archivoSeleccionado && !archivoEliminado" [disabled]="guardando" (click)="confirmarQuitarArchivo()">Quitar documento</button>
+      </div>
+      <div class="alerta-error-foto" *ngIf="mensajeErrorArchivo">{{ mensajeErrorArchivo }}</div>
+    </div>
+
     <div class="form-acciones">
-      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cancelar</button>
-      <button type="submit" class="btn-titulo-sistema btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="historialesDemeritosYDesgastesEquiposIngenierosForm.invalid">
-        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      <button type="button" class="btn-titulo-sistema btn-secundario" [disabled]="guardando" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-titulo-sistema btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="historialesDemeritosYDesgastesEquiposIngenierosForm.invalid || guardando">
+        {{ guardando ? 'Guardando...' : (banderaCrudGuardar ? 'Guardar' : 'Modificar') }}
       </button>
-      <button type="button" class="btn-titulo-sistema btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+      <button type="button" class="btn-titulo-sistema btn-peligro" *ngIf="banderaCrudEliminar" [disabled]="guardando" (click)="confirmarEliminar()">{{ guardando ? 'Eliminando...' : 'Eliminar' }}</button>
     </div>
 
   </form>
+</div>
+
+<!-- CONFIRMACIÓN PARA QUITAR EL DOCUMENTO ANEXO GUARDADO -->
+<div class="confirmacion-overlay" *ngIf="confirmandoQuitarArchivo">
+  <div class="confirmacion-caja">
+    <div class="confirmacion-icono">
+      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <h4 class="confirmacion-titulo">Confirmación de eliminación</h4>
+    <p class="confirmacion-mensaje">¿Está seguro de que desea quitar el documento anexo? El archivo se borrará al guardar.</p>
+    <div class="confirmacion-botones">
+      <button type="button" class="btn-confirmacion btn-si" (click)="siQuitarArchivo()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Sí, quitar
+      </button>
+      <button type="button" class="btn-confirmacion btn-no" (click)="noQuitarArchivo()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        No, cancelar
+      </button>
+    </div>
+  </div>
 </div>

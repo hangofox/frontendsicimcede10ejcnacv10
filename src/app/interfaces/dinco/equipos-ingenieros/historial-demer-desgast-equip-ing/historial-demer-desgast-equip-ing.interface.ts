@@ -8,6 +8,9 @@ export interface HistorialDemerDesgastEquipIngI {
   valorPresupuestalProyectoHistorialDemeritoYDesgasteEquipoIngeniero: String;//OPCIONAL.
   horasTrabajadasHistorialDemeritoYDesgasteEquipoIngeniero: String;//OPCIONAL.
   kilometrosRecorridosHistorialDemeritoYDesgasteEquipoIngeniero: String;//OPCIONAL.
+  //NOMBRE DEL ARCHIVO DEL DOCUMENTO ANEXO (CLOB, OPCIONAL); EL ARCHIVO VA EN LA CARPETA DE LA RUTA DE DEMÉRITOS Y DESGASTES (PARÁMETROS
+  //DEL SISTEMA) + LA CARPETA DE LA UNIDAD MILITAR DEL EQUIPO:
+  nombreArchivoDocumentoAnexoHistDemerDesgastEquipIng?: String | null;
   equipoIngenieroDTO: EquiposIngenierosI;
 }
 

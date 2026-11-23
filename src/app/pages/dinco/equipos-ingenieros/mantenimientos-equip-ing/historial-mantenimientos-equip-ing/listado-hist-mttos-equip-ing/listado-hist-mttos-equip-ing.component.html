@@ -62,6 +62,7 @@
           <th>Fecha del mantenimiento</th>
           <th>Valor del costo</th>
           <th>Fuente de financiación</th>
+          <th>Documento anexo de contrato de mantenimiento</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -79,6 +80,21 @@
             <td>{{ formatearFecha(historial.fechaHMSMantenimientoEquipoIngeniero) }}</td>
             <td class="celda-valor">{{ formatearValor(historial.valorCostoMantenimientoEquipoIngeniero) }}</td>
             <td>{{ historial.tipoFuenteFinanciacionDTO.nombreTipoFuenteFinanciacion || '-' }}</td>
+            <!-- DOCUMENTO ANEXO: BOTÓN SOLO SI EL ARCHIVO EXISTE EN EL SERVIDOR, "NO" SI NO LO TIENE Y "..." MIENTRAS SE VERIFICA
+                 (MISMO TRATAMIENTO DE "NO" QUE LAS COLUMNAS DE ListadoEquiposIngenierosComponent) -->
+            <td class="celda-documento">
+              @if (estadoDocumento(historial) === 'si') {
+                <!-- ABRE EL DOCUMENTO ANEXO DEL CONTRATO EN OTRA PESTAÑA -->
+                <button type="button" class="btn-archivo-tabla" [disabled]="abriendoId !== null" [title]="'Abrir ' + nombreArchivo(historial)" (click)="abrirArchivo(historial)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                  {{ abriendoId === historial.idHistorialMantenimientoEquipoIngeniero ? 'Abriendo...' : 'Ver documento' }}
+                </button>
+              } @else if (estadoDocumento(historial) === 'verificando') {
+                <span class="asociados-cargando" title="Verificando...">...</span>
+              } @else {
+                <span class="asociados-no" title="Sin documento anexo de contrato de mantenimiento">NO</span>
+              }
+            </td>
             <td>
               <div class="acciones-celda">
                 <button type="button" class="btn-accion btn-ver" title="Ver" (click)="abrirModalVista(historial)">
@@ -97,7 +113,7 @@
           </tr>
         } @empty {
           <tr>
-            <td colspan="12" class="tabla-vacia">No se encontraron mantenimientos de equipos de ingenieros con los filtros aplicados.</td>
+            <td colspan="13" class="tabla-vacia">No se encontraron mantenimientos de equipos de ingenieros con los filtros aplicados.</td>
           </tr>
         }
       </tbody>
