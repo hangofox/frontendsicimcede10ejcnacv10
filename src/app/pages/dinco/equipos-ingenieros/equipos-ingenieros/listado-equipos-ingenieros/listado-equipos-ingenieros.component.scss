@@ -54,3 +54,10 @@
   color: #fff;
   border-color: #0f766e;
 }
+
+//BOTÓN DEL HISTORIAL DE DEMÉRITOS Y DESGASTES: MISMO TRATAMIENTO, CON SU PROPIO COLOR:
+.btn-accion.btn-historial-demeritos:hover:not(:disabled) {
+  background: #b45309;
+  color: #fff;
+  border-color: #b45309;
+}

@@ -1,0 +1,59 @@
+<div class="modal-formulario" *ngIf="historialesDemeritosYDesgastesEquiposIngenierosForm">
+
+  <div class="alerta-eliminar" *ngIf="banderaCrudEliminar">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Esta acción eliminará el registro de demérito y desgaste del historial del equipo de ingenieros. ¿Desea continuar?
+  </div>
+
+  <form [formGroup]="historialesDemeritosYDesgastesEquiposIngenierosForm" (ngSubmit)="guardarModificar()">
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Equipo de ingenieros</div>
+      <div class="form-grid">
+        <div class="form-group form-group-ancho">
+          <label>Equipo de ingenieros</label>
+          <input type="text" [value]="equipoIngeniero.denominacionEquipoIngeniero + ' — INVENTARIO ' + equipoIngeniero.numeroInventarioEquipoIngeniero" disabled>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Demérito y desgaste</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>N.° de registro</label>
+          <input type="text" formControlName="numRegHistorialDemeritoYDesgasteEquipoIngeniero" placeholder="Asignado automáticamente">
+        </div>
+        <div class="form-group">
+          <label>Valor presupuestal del proyecto</label>
+          <input type="text" formControlName="valorPresupuestalProyectoHistorialDemeritoYDesgasteEquipoIngeniero" placeholder="Ej. 15000000">
+          <small class="campo-error" *ngIf="campoInvalido('valorPresupuestalProyectoHistorialDemeritoYDesgasteEquipoIngeniero')">Digite solo números (hasta dos decimales con punto).</small>
+        </div>
+        <div class="form-group form-group-ancho">
+          <label>Nombre del proyecto (*)</label>
+          <input type="text" formControlName="nombreProyectoHistorialDemeritoYDesgasteEquipoIngeniero" placeholder="Ej. Construcción de la vía terciaria vereda El Carmen">
+          <small class="campo-error" *ngIf="campoInvalido('nombreProyectoHistorialDemeritoYDesgasteEquipoIngeniero')">Digite el nombre del proyecto.</small>
+        </div>
+        <div class="form-group">
+          <label>Horas trabajadas</label>
+          <input type="text" formControlName="horasTrabajadasHistorialDemeritoYDesgasteEquipoIngeniero" placeholder="Ej. 120">
+          <small class="campo-error" *ngIf="campoInvalido('horasTrabajadasHistorialDemeritoYDesgasteEquipoIngeniero')">Digite solo números (hasta dos decimales con punto).</small>
+        </div>
+        <div class="form-group">
+          <label>Kilómetros recorridos</label>
+          <input type="text" formControlName="kilometrosRecorridosHistorialDemeritoYDesgasteEquipoIngeniero" placeholder="Ej. 350.5">
+          <small class="campo-error" *ngIf="campoInvalido('kilometrosRecorridosHistorialDemeritoYDesgasteEquipoIngeniero')">Digite solo números (hasta dos decimales con punto).</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-titulo-sistema btn-primario" *ngIf="banderaCrudGuardar || banderaCrudModificar" [disabled]="historialesDemeritosYDesgastesEquiposIngenierosForm.invalid">
+        {{ banderaCrudGuardar ? 'Guardar' : 'Modificar' }}
+      </button>
+      <button type="button" class="btn-titulo-sistema btn-peligro" *ngIf="banderaCrudEliminar" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+
+  </form>
+</div>

@@ -1,0 +1,73 @@
+<div class="vista-historial-demerito" *ngIf="historialDemeritoDesgasteData as historial">
+
+  <div class="perfil-cabecera">
+    <div class="avatar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+    </div>
+    <div>
+      <h3 class="perfil-nombre">{{ historial.numRegHistorialDemeritoYDesgasteEquipoIngeniero }}</h3>
+      <p class="perfil-tipo">{{ historial.equipoIngenieroDTO.denominacionEquipoIngeniero }} — Inventario {{ historial.equipoIngenieroDTO.numeroInventarioEquipoIngeniero }}</p>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Demérito y desgaste</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de registro</span>
+        <span class="dato-valor">{{ historial.numRegHistorialDemeritoYDesgasteEquipoIngeniero }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Valor presupuestal del proyecto</span>
+        <span class="dato-valor">{{ valorFormateado }}</span>
+      </div>
+      <div class="dato-grupo dato-grupo-ancho">
+        <span class="dato-label">Nombre del proyecto</span>
+        <span class="dato-valor">{{ historial.nombreProyectoHistorialDemeritoYDesgasteEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Horas trabajadas</span>
+        <span class="dato-valor">{{ horasFormateadas }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Kilómetros recorridos</span>
+        <span class="dato-valor">{{ kilometrosFormateados }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-seccion">
+    <div class="seccion-titulo">Equipo de ingenieros</div>
+    <div class="datos-grid">
+      <div class="dato-grupo">
+        <span class="dato-label">Denominación</span>
+        <span class="dato-valor">{{ historial.equipoIngenieroDTO.denominacionEquipoIngeniero }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Unidad militar</span>
+        <span class="dato-valor">{{ historial.equipoIngenieroDTO.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Elemento</span>
+        <span class="dato-valor">{{ historial.equipoIngenieroDTO.elementoSubclasificacionEquipoIngenieroDTO.nombreElementoSubclasificacionEquipoIngeniero }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Marca / Modelo</span>
+        <span class="dato-valor">{{ historial.equipoIngenieroDTO.marcaEquipoIngeniero }} {{ historial.equipoIngenieroDTO.modeloEquipoIngeniero }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">N.° de placa</span>
+        <span class="dato-valor">{{ historial.equipoIngenieroDTO.numeroPlacaEquipoIngeniero || '-' }}</span>
+      </div>
+      <div class="dato-grupo">
+        <span class="dato-label">Estado de uso</span>
+        <span class="dato-valor">{{ historial.equipoIngenieroDTO.estadoUsoEquipoIngeniero }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vista-acciones">
+    <button type="button" class="btn-titulo-sistema btn-secundario" (click)="closeModal()">Cerrar</button>
+  </div>
+
+</div>

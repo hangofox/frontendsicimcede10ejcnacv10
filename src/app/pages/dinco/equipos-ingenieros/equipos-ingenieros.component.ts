@@ -23,7 +23,7 @@ export class EquiposIngenierosComponent {
     //CONSULTA DE LA JERARQUÍA CLASIFICACIÓN → SUBCLASIFICACIÓN → ELEMENTO EN TRES COLUMNAS:
     { titulo: 'Clasificaciones, subclasificaciones y elementos de equipos de ingenieros', ruta: '/dinco/equipos-ingenieros/clasific-subclasific-element-equip-ing' },
     //MANTENIMIENTO E HISTORIAL DE MANTENIMIENTOS DE EQUIPOS DE INGENIEROS:
-    { titulo: 'Mantenimientos de equipos', ruta: '/dinco/equipos-ingenieros/mantenimientos-equip-ing' },
-    { titulo: 'Deméritos y desgastes de equipos' }
+    { titulo: 'Mantenimientos de equipos', ruta: '/dinco/equipos-ingenieros/mantenimientos-equip-ing' }
+    //LOS DEMÉRITOS Y DESGASTES SE GESTIONAN DESDE EL BOTÓN DE HISTORIAL DE CADA EQUIPO EN EL LISTADO DE EQUIPOS DE INGENIEROS.
   ];
 }

@@ -18,11 +18,13 @@ import { SubclasificacionesEquiposIngenierosService } from '../../../../../servi
 import { ElementosSubclasificacionesEquiposIngenierosService } from '../../../../../services/dinco/elementos-subclasificaciones-equipos-ingenieros/elementos-subclasificaciones-equipos-ingenieros.service';
 import { TiposAltasEquiposIngenierosService } from '../../../../../services/dinco/tipos-altas-equipos-ingenieros/tipos-altas-equipos-ingenieros.service';
 import { HistorialDiagnInicSeleccEquipIngService } from '../../../../../services/dinco/equipos-ingenieros/historial-diagn-inic-selecc-equip-ing/historial-diagn-inic-selecc-equip-ing.service';
+import { HistorialDemerDesgastEquipIngService } from '../../../../../services/dinco/equipos-ingenieros/historial-demer-desgast-equip-ing/historial-demer-desgast-equip-ing.service';
 import { SpinnerService } from '../../../../../services/spinner/spinner.service';
 
 import { AddUpdDelEquipoIngenieroComponent, ESTADOS_USO_EQUIPOS_INGENIEROS } from '../add-upd-del-equipo-ingeniero/add-upd-del-equipo-ingeniero.component';
 import { VistaEquipoIngenieroComponent } from '../vista-equipo-ingeniero/vista-equipo-ingeniero.component';
 import { ListadoHistDiagnInicSeleccEquipIngComponent } from '../historial-diagn-inic-selecc-equip-ing/listado-hist-diagn-inic-selecc-equip-ing/listado-hist-diagn-inic-selecc-equip-ing.component';
+import { ListadoHistDemerDesgastEquipIngComponent } from '../historial-demer-desgast-equip-ing/listado-hist-demer-desgast-equip-ing/listado-hist-demer-desgast-equip-ing.component';
 import { SemaforoContadoresComponent } from '../../../../../shared/components/semaforo-contadores/semaforo-contadores.component';
 
 //TONO DE CADA ESTADO DE USO EN EL SEMÁFORO Y EN EL BADGE DE LA TABLA (MISMO ORDEN DE ESTADOS_USO_EQUIPOS_INGENIEROS,
@@ -44,7 +46,7 @@ const TONOS_ESTADOS_USO_EQUIPOS_INGENIEROS: Record<string, string> = {
 @Component({
   selector: 'app-listado-equipos-ingenieros',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AddUpdDelEquipoIngenieroComponent, VistaEquipoIngenieroComponent, ListadoHistDiagnInicSeleccEquipIngComponent, SemaforoContadoresComponent],
+  imports: [CommonModule, ReactiveFormsModule, AddUpdDelEquipoIngenieroComponent, VistaEquipoIngenieroComponent, ListadoHistDiagnInicSeleccEquipIngComponent, ListadoHistDemerDesgastEquipIngComponent, SemaforoContadoresComponent],
   templateUrl: './listado-equipos-ingenieros.component.html',
   styleUrl: './listado-equipos-ingenieros.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -68,6 +70,8 @@ export class ListadoEquiposIngenierosComponent implements OnInit, OnDestroy {
 
   //CANTIDAD DE DIAGNÓSTICOS INICIALES DE SELECCIÓN DE MANTENIMIENTOS DE CADA EQUIPO (POR ID); null MIENTRAS SE CUENTAN:
   cantidadDiagnosticosPorEquipo: Map<number, number> | null = null;
+  //CANTIDAD DE DEMÉRITOS Y DESGASTES DE CADA EQUIPO (POR ID); null MIENTRAS SE CUENTAN:
+  cantidadDemeritosPorEquipo: Map<number, number> | null = null;
 
   equiposIngenierosForm: FormGroup;
 
@@ -79,6 +83,7 @@ export class ListadoEquiposIngenierosComponent implements OnInit, OnDestroy {
   modalAddUpdDelVisible = false;
   modalVistaVisible = false;
   modalHistorialDiagnosticosVisible = false;
+  modalHistorialDemeritosVisible = false;
   modalModo: 'guardar' | 'modificar' | 'eliminar' = 'guardar';
   equipoIngenieroSeleccionado: EquiposIngenierosI | null = null;
 
@@ -98,7 +103,8 @@ export class ListadoEquiposIngenierosComponent implements OnInit, OnDestroy {
     private elementosSubclasificacionesEquiposIngenierosService: ElementosSubclasificacionesEquiposIngenierosService,
     private tiposAltasEquiposIngenierosService: TiposAltasEquiposIngenierosService,
     private spinnerService: SpinnerService,
-    private historialDiagnInicSeleccEquipIngService: HistorialDiagnInicSeleccEquipIngService
+    private historialDiagnInicSeleccEquipIngService: HistorialDiagnInicSeleccEquipIngService,
+    private historialDemerDesgastEquipIngService: HistorialDemerDesgastEquipIngService
   ) {
     this.equiposIngenierosForm = this.formBuilder.group({
       ctextPalabraClave: new FormControl(''),
@@ -119,7 +125,36 @@ export class ListadoEquiposIngenierosComponent implements OnInit, OnDestroy {
     this.cargarElementosSubclasificacionesEquiposIngenieros();
     this.cargarTiposAltasEquiposIngenieros();
     this.cargarCantidadDiagnosticos();
+    this.cargarCantidadDemeritos();
     this.accionListar();
+  }
+
+  //CARGA EL HISTORIAL COMPLETO DE DEMÉRITOS Y DESGASTES Y CUENTA LOS DE CADA EQUIPO (MISMO PATRÓN QUE cargarCantidadDiagnosticos):
+  private cargarCantidadDemeritos(): void {
+    this.cantidadDemeritosPorEquipo = null;
+    this.historialDemerDesgastEquipIngService.findAllEngineerEquipmentDemeritAndWearHistories().subscribe({
+      next: registros => {
+        const cantidades = new Map<number, number>();
+        (registros ?? []).forEach(registro => {
+          const idEquipoIngeniero = registro.equipoIngenieroDTO?.idEquipoIngeniero;
+          if (idEquipoIngeniero !== undefined) cantidades.set(idEquipoIngeniero, (cantidades.get(idEquipoIngeniero) ?? 0) + 1);
+        });
+        this.cantidadDemeritosPorEquipo = cantidades;
+        this.changeDetectorRef.markForCheck();
+      },
+      error: err => {
+        console.error('ERROR AL CONTAR LOS DEMÉRITOS Y DESGASTES DE LOS EQUIPOS DE INGENIEROS: ', err);
+        //SI FALLA EL CONTEO NO SE DEJA LA COLUMNA EN "..." INDEFINIDAMENTE:
+        this.cantidadDemeritosPorEquipo = new Map<number, number>();
+        this.changeDetectorRef.markForCheck();
+      }
+    });
+  }
+
+  //CANTIDAD DE DEMÉRITOS Y DESGASTES DEL EQUIPO: null MIENTRAS SE CUENTAN ("..."), 0 SI NO TIENE ("NO"):
+  cantidadDemeritos(equipoIngeniero: EquiposIngenierosI): number | null {
+    if (!this.cantidadDemeritosPorEquipo) return null;
+    return this.cantidadDemeritosPorEquipo.get(equipoIngeniero.idEquipoIngeniero ?? -1) ?? 0;
   }
 
   //CARGA EL HISTORIAL COMPLETO DE DIAGNÓSTICOS INICIALES Y CUENTA LOS DE CADA EQUIPO (EL BACKEND NO FILTRA POR EQUIPO, ASÍ QUE SE
@@ -369,6 +404,22 @@ export class ListadoEquiposIngenierosComponent implements OnInit, OnDestroy {
     this.modalHistorialDiagnosticosVisible = false;
     this.equipoIngenieroSeleccionado = null;
     this.cargarCantidadDiagnosticos();
+  }
+
+  //ABRE EL HISTORIAL DE DEMÉRITOS Y DESGASTES DEL EQUIPO SELECCIONADO:
+  abrirModalHistorialDemeritos(equipoIngeniero: EquiposIngenierosI): void {
+    this.spinnerService.showBeforeOpening(() => {
+      this.equipoIngenieroSeleccionado = equipoIngeniero;
+      this.modalHistorialDemeritosVisible = true;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
+  //AL CERRAR EL HISTORIAL SE VUELVEN A CONTAR LOS DEMÉRITOS Y DESGASTES, PORQUE DENTRO SE PUDIERON CREAR O ELIMINAR:
+  cerrarModalHistorialDemeritos(): void {
+    this.modalHistorialDemeritosVisible = false;
+    this.equipoIngenieroSeleccionado = null;
+    this.cargarCantidadDemeritos();
   }
 
   //RECIBE EL EQUIPO NUEVO O MODIFICADO DESDE EL MODAL Y LO ENVÍA AL BACKEND (POST SI ES NUEVO, PUT SI YA TIENE ID).
