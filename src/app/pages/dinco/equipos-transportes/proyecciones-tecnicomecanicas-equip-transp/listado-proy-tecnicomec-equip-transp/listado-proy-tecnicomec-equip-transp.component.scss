@@ -1,0 +1,5 @@
+//MISMOS ESTILOS DE LOS HISTORIALES DE EQUIPOS DE TRANSPORTE (LISTADO BASE Y ACCIONES):
+@use '../../historial-equip-transp-apoy-atenc-prev-emerg-desast/listado-hist-eq-tr-apoy-atenc-prev/listado-hist-eq-tr-apoy-atenc-prev.component';
+
+.valor-total { margin: 0; font-size: 14px; color: var(--sicim-gray); }
+.celda-valor { text-align: right; white-space: nowrap; }

@@ -1,0 +1,22 @@
+@if (data; as x) {
+  <div class="vista-historial">
+    <h3>{{ x.equipoIngenieroDTO.denominacionEquipoIngeniero }} — {{ x.numeroPlacaEquipoTransporte }}</h3>
+    <div class="vista-seccion">
+      <div class="datos-grid">
+        <div class="dato-grupo"><span class="dato-label">Número de registro</span><span>{{ x.numRegHistorialEquipTranspApoyAtencPrevEmergDesast }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Apoyo</span><span>{{ x.apoyoAtencPrevEmergDesastDTO.codigoRadicadoApoyoAtencPrevEmergDesast }} — {{ x.apoyoAtencPrevEmergDesastDTO.nombreEntidadInstitucionalSolicApoyoAtencPrevEmergDesast }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Unidad militar del apoyo</span><span>{{ x.apoyoAtencPrevEmergDesastDTO.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Equipo de ingenieros</span><span>{{ x.equipoIngenieroDTO.denominacionEquipoIngeniero }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">N.° de inventario del equipo</span><span>{{ x.equipoIngenieroDTO.numeroInventarioEquipoIngeniero || '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Clasificación</span><span>{{ x.clasificacionEquipoIngenieroDTO.nombreClasificacionEquipoIngeniero }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Subclasificación</span><span>{{ x.subclasificacionEquipoIngenieroDTO.nombreSubclasificacionEquipoIngeniero }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Elemento de la subclasificación</span><span>{{ x.elementoSubclasificacionEquipoIngenieroDTO.nombreElementoSubclasificacionEquipoIngeniero }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Placa del equipo de transporte</span><span>{{ x.numeroPlacaEquipoTransporte }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Días empleados</span><span>{{ x.diasEmpleadosEquipoTransporte }}</span></div>
+      </div>
+    </div>
+    <div class="vista-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cerrar</button>
+    </div>
+  </div>
+}

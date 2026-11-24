@@ -1,0 +1,6 @@
+//MISMOS ESTILOS DEL LISTADO BASE (BARRA, TABLA, PAGINACIÓN, MODALES Y TOAST) QUE USA EL HISTORIAL DE EQUIPOS DE TRANSPORTE DE DIGEI:
+@use '../../../../panel-control/historial-integrantes-documentos/listado-historial-integrantes-documentos/listado-historial-integrantes-documentos.component';
+
+.acciones-celda { display: flex; align-items: center; gap: 5px; }
+.btn-accion { width: 30px; height: 30px; padding: 0; overflow: visible; }
+.btn-accion svg { display: block; width: 14px; height: 14px; overflow: visible; }

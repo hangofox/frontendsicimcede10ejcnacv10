@@ -1,0 +1,63 @@
+<div class="modal-formulario">
+  @if (modo === 'eliminar') {
+    <div class="alerta-eliminar">Esta acción eliminará el registro del historial de equipos de transporte del apoyo. ¿Desea continuar?</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="enviar()">
+    <div class="form-seccion">
+      <div class="seccion-titulo">Apoyo a obras, reducción y mitigación de gestión del riesgo</div>
+      <div class="form-grid">
+        <div class="form-group"><label for="hetor-registro">Número de registro</label><input id="hetor-registro" formControlName="registro" placeholder="Asignado automáticamente"></div>
+        <div class="form-group">
+          <label for="hetor-apoyo">Apoyo (*)</label>
+          <select id="hetor-apoyo" formControlName="apoyoSeleccionado" [class.invalido]="campoInvalido('apoyoSeleccionado')">
+            <option value="">-- Seleccione --</option>
+            @for (apoyo of apoyos; track apoyo.idApoyoObrRedMitigGestRiesgDesast) {
+              <option [value]="apoyo.idApoyoObrRedMitigGestRiesgDesast">{{ apoyo.codigoRadicadoApoyoObrRedMitigGestRiesgDesast }} — {{ apoyo.nombreEntidadInstitucionalSolicApoyoObrRedMitigGestRiesgDesast }} ({{ apoyo.unidadMilitarDTO.siglaoAcronimoUnidadMilitar }})</option>
+            }
+          </select>
+          @if (campoInvalido('apoyoSeleccionado')) { <span class="error-campo">Seleccione el apoyo.</span> }
+        </div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos del equipo de transporte</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="hetor-equipo">Equipo de transporte (*)</label>
+          <select id="hetor-equipo" formControlName="equipoIngenieroSeleccionado" (change)="onCambioEquipoIngeniero()" [class.invalido]="campoInvalido('equipoIngenieroSeleccionado')">
+            <option value="">-- Seleccione --</option>
+            @for (equipo of equiposIngenieros; track equipo.idEquipoIngeniero) {
+              <option [value]="equipo.idEquipoIngeniero">{{ equipo.denominacionEquipoIngeniero }} ({{ equipo.numeroInventarioEquipoIngeniero }})</option>
+            }
+          </select>
+          @if (campoInvalido('equipoIngenieroSeleccionado')) { <span class="error-campo">Seleccione el equipo.</span> }
+          @if (equipoNoEsTransporte && modo !== 'eliminar') { <span class="error-campo">Este registro tiene un equipo que no es de transporte; seleccione un equipo de transporte para guardarlo.</span> }
+        </div>
+        <div class="form-group"><label for="hetor-clasificacion">Clasificación</label><input id="hetor-clasificacion" formControlName="clasificacion" placeholder="Se toma del equipo seleccionado"></div>
+        <div class="form-group"><label for="hetor-subclasificacion">Subclasificación</label><input id="hetor-subclasificacion" formControlName="subclasificacion" placeholder="Se toma del equipo seleccionado"></div>
+        <div class="form-group"><label for="hetor-elemento">Elemento de la subclasificación</label><input id="hetor-elemento" formControlName="elemento" placeholder="Se toma del equipo seleccionado"></div>
+        <div class="form-group">
+          <label for="hetor-placa">Placa del equipo de transporte (*)</label>
+          <input id="hetor-placa" formControlName="placa" placeholder="Ej. EJC-EI-001" [class.invalido]="campoInvalido('placa')">
+          @if (campoInvalido('placa')) { <span class="error-campo">Ingrese la placa.</span> }
+        </div>
+        <div class="form-group">
+          <label for="hetor-horas">Total de horas empleadas (*)</label>
+          <input id="hetor-horas" type="number" min="0" formControlName="horas" placeholder="Ej. 24" [class.invalido]="campoInvalido('horas')">
+          @if (campoInvalido('horas')) { <span class="error-campo">Ingrese un número de horas mayor o igual a 0.</span> }
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" [disabled]="guardando" (click)="cerrarModal.emit()">Cancelar</button>
+      @if (modo === 'eliminar') {
+        <button type="button" class="btn-titulo-sistema btn-peligro" [disabled]="guardando" (click)="confirmar()">{{ guardando ? 'Eliminando...' : 'Eliminar' }}</button>
+      } @else {
+        <button type="submit" class="btn-titulo-sistema btn-primario" [disabled]="form.invalid || guardando || equipoNoEsTransporte">{{ guardando ? 'Guardando...' : (modo === 'modificar' ? 'Modificar' : 'Guardar') }}</button>
+      }
+    </div>
+  </form>
+</div>

@@ -163,6 +163,19 @@ export const routes: Routes = [
                 ]
               }
             ]
+          },
+          {
+            //EQUIPOS DE TRANSPORTE: ÁREA DE DINCO CON SUS OPCIONES DENTRO (MISMO ESQUEMA DE EQUIPOS DE INGENIEROS).
+            path: 'equipos-transportes',
+            children: [
+              { path: '', loadComponent: () => import('./pages/dinco/equipos-transportes/equipos-transportes.component').then(m => m.EquiposTransportesComponent), title: 'Equipos de transporte | SICIM' },
+              { path: 'historial-equip-transp-apoy-atenc-prev-emerg-desast/listado-hist-eq-tr-apoy-atenc-prev', loadComponent: () => import('./pages/dinco/equipos-transportes/historial-equip-transp-apoy-atenc-prev-emerg-desast/listado-hist-eq-tr-apoy-atenc-prev/listado-hist-eq-tr-apoy-atenc-prev.component').then(m => m.ListadoHistEqTrApoyAtencPrevComponent), title: 'Historial de equipos de transporte de apoyo de atención y prevención de emergencias | SICIM' },
+              { path: 'historial-equip-transp-apoy-atenc-prev-emerg-desast', redirectTo: 'historial-equip-transp-apoy-atenc-prev-emerg-desast/listado-hist-eq-tr-apoy-atenc-prev', pathMatch: 'full' },
+              { path: 'historial-equip-transp-apoy-obr-red-mitig-riesg-desast/listado-hist-eq-tr-apoy-obr-red-mitig', loadComponent: () => import('./pages/dinco/equipos-transportes/historial-equip-transp-apoy-obr-red-mitig-riesg-desast/listado-hist-eq-tr-apoy-obr-red-mitig/listado-hist-eq-tr-apoy-obr-red-mitig.component').then(m => m.ListadoHistEqTrApoyObrRedMitigComponent), title: 'Historial de equipos de transporte de apoyo a obras, reducción y mitigación de gestión del riesgo | SICIM' },
+              { path: 'historial-equip-transp-apoy-obr-red-mitig-riesg-desast', redirectTo: 'historial-equip-transp-apoy-obr-red-mitig-riesg-desast/listado-hist-eq-tr-apoy-obr-red-mitig', pathMatch: 'full' },
+              { path: 'proyecciones-tecnicomecanicas-equip-transp/listado-proy-tecnicomec-equip-transp', loadComponent: () => import('./pages/dinco/equipos-transportes/proyecciones-tecnicomecanicas-equip-transp/listado-proy-tecnicomec-equip-transp/listado-proy-tecnicomec-equip-transp.component').then(m => m.ListadoProyTecnicomecEquipTranspComponent), title: 'Proyecciones de técnico-mecánicas de equipos de transporte | SICIM' },
+              { path: 'proyecciones-tecnicomecanicas-equip-transp', redirectTo: 'proyecciones-tecnicomecanicas-equip-transp/listado-proy-tecnicomec-equip-transp', pathMatch: 'full' }
+            ]
           }
         ]
       },

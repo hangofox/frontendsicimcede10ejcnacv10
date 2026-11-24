@@ -1,0 +1,22 @@
+@if (data; as x) {
+  <div class="vista-historial">
+    <h3>{{ x.equipoIngenieroDTO.denominacionEquipoIngeniero }}</h3>
+    <div class="vista-seccion">
+      <div class="datos-grid">
+        <div class="dato-grupo"><span class="dato-label">Equipo de ingenieros</span><span>{{ x.equipoIngenieroDTO.denominacionEquipoIngeniero }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">N.° de inventario del equipo</span><span>{{ x.equipoIngenieroDTO.numeroInventarioEquipoIngeniero || '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Placa del equipo</span><span>{{ x.equipoIngenieroDTO.numeroPlacaEquipoIngeniero || '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Unidad militar</span><span>{{ x.equipoIngenieroDTO.unidadMilitarDTO.siglaoAcronimoUnidadMilitar || '-' }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Clasificación</span><span>{{ x.equipoIngenieroDTO.clasificacionEquipoIngenieroDTO.nombreClasificacionEquipoIngeniero }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Subclasificación</span><span>{{ x.equipoIngenieroDTO.subclasificacionEquipoIngenieroDTO.nombreSubclasificacionEquipoIngeniero }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Elemento de la subclasificación</span><span>{{ x.equipoIngenieroDTO.elementoSubclasificacionEquipoIngenieroDTO.nombreElementoSubclasificacionEquipoIngeniero }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Nombre y número del rubro</span><span>{{ x.nombreYNumeroRubroProyeccionTecnicomecanicaEquipTransp }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Valor solicitado</span><span>{{ formatearValor(x.valorSolicitadoProyeccionTecnicomecanicaEquipTransp) }}</span></div>
+        <div class="dato-grupo"><span class="dato-label">Fecha de la proyección</span><span>{{ formatearFecha(x.fechaHMSProyeccionTecnicomecanicaEquipTransp) }}</span></div>
+      </div>
+    </div>
+    <div class="vista-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" (click)="cerrarModal.emit()">Cerrar</button>
+    </div>
+  </div>
+}

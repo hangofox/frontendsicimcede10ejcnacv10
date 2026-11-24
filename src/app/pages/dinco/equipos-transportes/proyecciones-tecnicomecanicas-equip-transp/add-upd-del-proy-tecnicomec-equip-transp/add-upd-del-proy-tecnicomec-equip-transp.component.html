@@ -1,0 +1,57 @@
+<div class="modal-formulario">
+  @if (modo === 'eliminar') {
+    <div class="alerta-eliminar">Esta acción eliminará la proyección de técnico-mecánica del equipo de transporte. ¿Desea continuar?</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="enviar()">
+    <div class="form-seccion">
+      <div class="seccion-titulo">Equipo de transporte</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="ptet-equipo">Equipo de transporte (*)</label>
+          <select id="ptet-equipo" formControlName="equipoIngenieroSeleccionado" (change)="onCambioEquipoIngeniero()" [class.invalido]="campoInvalido('equipoIngenieroSeleccionado')">
+            <option value="">-- Seleccione --</option>
+            @for (equipo of equiposIngenieros; track equipo.idEquipoIngeniero) {
+              <option [value]="equipo.idEquipoIngeniero">{{ equipo.denominacionEquipoIngeniero }} ({{ equipo.numeroInventarioEquipoIngeniero }})</option>
+            }
+          </select>
+          @if (campoInvalido('equipoIngenieroSeleccionado')) { <span class="error-campo">Seleccione el equipo.</span> }
+          @if (equipoNoEsTransporte && modo !== 'eliminar') { <span class="error-campo">Este registro tiene un equipo que no es de transporte; seleccione un equipo de transporte para guardarlo.</span> }
+        </div>
+        <div class="form-group"><label for="ptet-clasificacion">Clasificación</label><input id="ptet-clasificacion" formControlName="clasificacion" placeholder="Se toma del equipo seleccionado"></div>
+        <div class="form-group"><label for="ptet-subclasificacion">Subclasificación</label><input id="ptet-subclasificacion" formControlName="subclasificacion" placeholder="Se toma del equipo seleccionado"></div>
+        <div class="form-group"><label for="ptet-elemento">Elemento de la subclasificación</label><input id="ptet-elemento" formControlName="elemento" placeholder="Se toma del equipo seleccionado"></div>
+      </div>
+    </div>
+
+    <div class="form-seccion">
+      <div class="seccion-titulo">Datos de la proyección de técnico-mecánica</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="ptet-rubro">Nombre y número del rubro (*)</label>
+          <input id="ptet-rubro" formControlName="rubro" maxlength="255" placeholder="Ej. RUBRO 2.1.01 - REVISIÓN TÉCNICO-MECÁNICA 2026" [class.invalido]="campoInvalido('rubro')">
+          @if (campoInvalido('rubro')) { <span class="error-campo">Ingrese el nombre y número del rubro.</span> }
+        </div>
+        <div class="form-group">
+          <label for="ptet-valor">Valor solicitado (*)</label>
+          <input id="ptet-valor" formControlName="valor" inputmode="decimal" placeholder="Ej. 295000.00" [class.invalido]="campoInvalido('valor')">
+          @if (campoInvalido('valor')) { <span class="error-campo">Ingrese el valor solo con números (decimales con punto).</span> }
+        </div>
+        <div class="form-group">
+          <label for="ptet-fecha">Fecha de la proyección (*)</label>
+          <input id="ptet-fecha" type="datetime-local" formControlName="fecha" [class.invalido]="campoInvalido('fecha')">
+          @if (campoInvalido('fecha')) { <span class="error-campo">Ingrese la fecha.</span> }
+        </div>
+      </div>
+    </div>
+
+    <div class="form-acciones">
+      <button type="button" class="btn-titulo-sistema btn-secundario" [disabled]="guardando" (click)="cerrarModal.emit()">Cancelar</button>
+      @if (modo === 'eliminar') {
+        <button type="button" class="btn-titulo-sistema btn-peligro" [disabled]="guardando" (click)="confirmar()">{{ guardando ? 'Eliminando...' : 'Eliminar' }}</button>
+      } @else {
+        <button type="submit" class="btn-titulo-sistema btn-primario" [disabled]="form.invalid || guardando || equipoNoEsTransporte">{{ guardando ? 'Guardando...' : (modo === 'modificar' ? 'Modificar' : 'Guardar') }}</button>
+      }
+    </div>
+  </form>
+</div>

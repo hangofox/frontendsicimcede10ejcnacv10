@@ -7,22 +7,6 @@
   gap: 4px;
   margin-bottom: 18px;
 
-  &__regresar {
-    align-self: flex-start;
-    font-size: .88rem;
-    font-weight: 700;
-    color: #245b85;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-
-    &:hover { color: #163d5c; }
-
-    &:focus-visible {
-      outline: 3px solid var(--sicim-focus);
-      outline-offset: 2px;
-    }
-  }
-
   &__titulo {
     margin: 0;
     font-size: 1.25rem;
