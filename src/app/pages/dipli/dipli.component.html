@@ -1,16 +1,71 @@
 <app-placa-titulo-seccion texto="Dirección de Planeación de Ingenieros" icono="dipli" />
-<section class="page-card" aria-label="Área de trabajo DIPLI">
-  <div class="modulo-vacio">
-    <img src="assets/images/imagen_dipli_01.png" alt="" width="74" height="74">
-    <h3>Dirección de Planeación de Ingenieros</h3>
-    <p>Componente preparado para integrar las opciones funcionales y los servicios del módulo DIPLI.</p>
+<div class="dipli-contenido">
+  <!-- Propuesta (pendiente de aprobar con la dueña del sistema): áreas y subopciones armadas con las tablas de planeación
+       que ya existen en la base de datos y que aún no tienen pantallas. Todavía no navegan; debajo de cada subopción va su tabla. -->
+  <section class="page-card dipli-opciones" aria-label="Opciones de DIPLI">
+    <div class="dipli-grupo">
+      <h2><a role="link" aria-disabled="true">Plan Anual de Adquisiciones</a></h2>
+      <ul class="dipli-propuesta">
+        <li>Proyecciones generales por vigencia (2007 - 2026)
+          <span>TABLA_PROYECCIONES_PLANES_ANUALES_ADQ_GENERALES</span></li>
+        <li>Proyecciones de mantenimientos de comandos de ingenieros
+          <span>TABLA_PROYECCIONES_PLANES_ANUALES_ADQ_CDOS_ING</span>
+          <span>TABLA_DOCUMENTACION_ANEXAS_COTIZ_PROY_PL_AN_ADQ_CDOS_ING</span></li>
+        <li>Proyecciones de infraestructuras
+          <span>TABLA_PROYECCIONES_PLANES_ANUALES_ADQ_INFRAEST</span></li>
+        <li>Proyecciones de equipos fijos de ingenieros
+          <span>TABLA_PROYECCIONES_PLANES_ANUALES_ADQ_EQUIP_FIJ_ING</span></li>
+        <li>Proyecciones de bienes y servicios de equipos de ingenieros
+          <span>TABLA_PROYECCIONES_PLANES_ANUALES_EQUIP_SUBS</span></li>
+        <li>Proyecciones de pozos
+          <span>TABLA_PROYECCIONES_PLANES_ANUALES_POZOS</span></li>
+        <li>Proyecciones de arrendamientos
+          <span>TABLA_PROYECCIONES_PLANES_ANUALES_ARRENDAMIENTOS</span></li>
+        <li>Proyecciones de aseguramientos de bienes
+          <span>TABLA_PROYECCIONES_PLANES_ANUALES_ASEG_BIENES</span></li>
+      </ul>
+    </div>
 
-    <!-- OPCIONES DISPONIBLES DEL MÓDULO -->
-    <nav class="modulo-opciones" aria-label="Opciones de DIPLI">
-      <a class="btn-titulo-sistema btn-primario" routerLink="/dipli/piscinas-infraestructuras/listado-piscinas-infraestructuras">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v5l-5 9a3 3 0 0 0 2.6 4.5h8.8A3 3 0 0 0 19 17l-5-9V3"/><path d="M7.5 15h9"/></svg>
-        Piscinas
-      </a>
-    </nav>
-  </div>
-</section>
+    <div class="dipli-grupo">
+      <h2><a role="link" aria-disabled="true">Proyecciones Anuales de Funcionamiento</a></h2>
+      <ul class="dipli-propuesta">
+        <li>Historial de proyecciones anuales de adquisiciones de papelerías
+          <span>TABLA_HISTORIAL_PROYECCIONES_ANUALES_ADQ_PAPELERIAS</span></li>
+        <li>Historial de proyecciones anuales de servicios públicos
+          <span>TABLA_HISTORIAL_PROYECCIONES_ANUALES_ADQ_SERV_PUBLIC</span></li>
+        <li>Historial de proyecciones anuales de aseos y limpiezas de infraestructuras
+          <span>TABLA_HISTORIAL_PROYECCIONES_ANUALES_ASEOS_LIMP_INFRAEST</span></li>
+        <li>Historial de proyecciones anuales de multas y sancionatorias
+          <span>TABLA_HISTORIAL_PROYECCIONES_ANUALES_MULTAS_Y_SANCIONATORIAS</span></li>
+      </ul>
+    </div>
+
+    <div class="dipli-grupo">
+      <h2><a role="link" aria-disabled="true">Seguros y SOAT</a></h2>
+      <ul class="dipli-propuesta">
+        <li>Proyecciones de seguros de infraestructuras (con sus contratos e inclusiones)
+          <span>TABLA_PROYECCIONES_SEGUROS_INFRAESTRUCTURAS</span>
+          <span>TABLA_CONTRATOS_PROYECCIONES_SEGUROS_INFRAESTRUCTURAS</span>
+          <span>TABLA_INCLUSIONES_SEGUROS_INFRAESTRUCTURAS</span></li>
+        <li>Aseguramientos de equipos de ingenieros (con sus inclusiones)
+          <span>TABLA_ASEGURAMIENTOS_EQUIPOS_INGENIEROS</span>
+          <span>TABLA_INCLUSIONES_SEGUROS_EQUIPOS_INGENIEROS</span></li>
+        <li>Aseguramientos de equipos de línea blanca (con sus inclusiones)
+          <span>TABLA_ASEGURAMIENTOS_LINEAS_BLANCAS</span>
+          <span>TABLA_INCLUSIONES_SEGUROS_LINEAS_BLANCAS</span></li>
+        <li>Proyecciones de SOAT de equipos de línea blanca
+          <span>TABLA_PROYECCIONES_SOATS_LINEAS_BLANCAS</span>
+          <span>TABLA_DOCUMENTACION_ANEXAS_COTIZ_PROY_SOATS_LIN_BLANC</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PISCINAS: OPCIÓN YA CONSTRUIDA; QUEDA A UN LADO MIENTRAS SE DEFINE EN QUÉ ÁREA SE UBICA. -->
+  <aside class="page-card dipli-lateral" aria-label="Opciones pendientes de ubicar">
+    <h2>Pendiente de ubicar</h2>
+    <a class="btn-titulo-sistema btn-primario" routerLink="/dipli/piscinas-infraestructuras/listado-piscinas-infraestructuras">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v5l-5 9a3 3 0 0 0 2.6 4.5h8.8A3 3 0 0 0 19 17l-5-9V3"/><path d="M7.5 15h9"/></svg>
+      Piscinas
+    </a>
+  </aside>
+</div>
